@@ -1,2 +1,3 @@
-# Dashboardify
-Github repository for Adform Aademy Dashboardify project.
+# dashboardify-chrome-plugin
+
+Use `npm install` to get packages, then import in chrome extensions
