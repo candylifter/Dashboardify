@@ -1,3 +1,5 @@
+
+//just for testing
 const HIGHLIGHT_CLASSNAME = 'dashboardify-highlight';
 
 function disableEvents(callback) {}
