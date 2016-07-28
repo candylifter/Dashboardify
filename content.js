@@ -1,5 +1,3 @@
-
-//just for testing
 const HIGHLIGHT_CLASSNAME = 'dashboardify-highlight';
 
 function disableEvents(callback) {}
@@ -22,40 +20,39 @@ function getPathTo(element) {
     }
 }
 
-function alertXPath() {
-	alert(getPathTo(this));
+function alertXPath(e) {
+  alert(getPathTo(this));
 
-	//Remove highlight and event listener from clicked element
-	this.classList.remove(HIGHLIGHT_CLASSNAME);
-	this.removeEventListener('click', alertXPath);
-	document.body.onmouseover = undefined;
+  //Remove highlight and event listener from clicked element
+  this.classList.remove(HIGHLIGHT_CLASSNAME);
+  this.removeEventListener('click', alertXPath);
+  e.stopPropagation();	//
+  e.preventDefault();	//
+  document.body.onmouseover = undefined;
+ 
 }
 
 function highlightDOMElements() {
-	var prev;
+  var prev;
 
-	document.body.onmouseover = handler;
-	
-	function handler(event) {
-		if (event.target === document.body || (prev && prev === event.target)) {
-			return;
-		}
+  document.body.onmouseover = handler;
+
+  function handler(event) {
+    if (event.target === document.body || (prev && prev === event.target)) {
+      return;
+    }
     
-		if (prev) {
-			prev.removeEventListener('click', alertXPath);
-			prev.classList.toggle(HIGHLIGHT_CLASSNAME);
-			prev = undefined;
-		}
+    if (prev) {
+      prev.removeEventListener('click', alertXPath);
 
-		if (event.target) {
-	
-		prev = event.target;
-		prev.classList.toggle(HIGHLIGHT_CLASSNAME);
-		document.addEventListener("click",handler,true);
-		function handler(e){
-			e.preventDefault();
-		}
-		prev.addEventListener('click', alertXPath);
-		}
-	}  
+      prev.classList.toggle(HIGHLIGHT_CLASSNAME);
+      prev = undefined;
+    }
+
+    if (event.target) {
+      prev = event.target;
+      prev.classList.toggle(HIGHLIGHT_CLASSNAME);
+      prev.addEventListener('click', alertXPath);
+    }
+  }
 }
