@@ -1,5 +1,7 @@
-USE DashboarDify
+CREATE DATABASE DashBoardify;
+
 GO
+USE DashBoardify
 
 
 
