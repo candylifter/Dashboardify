@@ -50,6 +50,7 @@ CREATE TABLE Items
 	Id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	DashBoardId INT NOT NULL,
 	Name VARCHAR(255) NOT NULL,
+	Website VARCHAR(255) NOT NULL,
 	CheckInterval INT NOT NULL,
 	IsActive BIT NOT NULL DEFAULT 1,
 	XPath VARCHAR(255) NOT NULL,
@@ -77,4 +78,4 @@ INSERT INTO DashBoards (Name, UserID, DateModified) VALUES('AUDINES', @User1Id, 
 
 DECLARE @DashId INT = (SELECT Id FROM DashBoards WHERE Name ='AUDINES')
 
-INSERT INTO Items(DashBoardID, Name, CheckInterval,XPath,LastChecked,Modified,ScrnshtURL) VALUES(@DashId,'BULKA',20,'BODY[1]/CONTAINER[2]',GETDATE(),GETDATE(),'http://autogidas-img.dgn.lt/4_21_83702552/audi-80-b3-sedanas-1987.jpg')
+INSERT INTO Items(DashBoardID, Name,Website, CheckInterval,XPath,LastChecked,Modified,ScrnshtURL) VALUES(@DashId,'BULKA','http://autogidas.LT',20,'BODY[1]/CONTAINER[2]',GETDATE(),GETDATE(),'http://autogidas-img.dgn.lt/4_21_83702552/audi-80-b3-sedanas-1987.jpg')
