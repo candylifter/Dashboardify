@@ -1,4 +1,5 @@
 ﻿using Topshelf;
+using HtmlAgilityPack;
 
 namespace Dashboardify.Service
 {
