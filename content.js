@@ -1,7 +1,5 @@
 const HIGHLIGHT_CLASSNAME = 'dashboardify-highlight';
 
-function disableEvents(callback) {}
-
 //Returns XPath to element
 function getPathTo(element) {
     if (element.tagName == 'HTML')
