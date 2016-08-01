@@ -1,0 +1,22 @@
+{
+  "name": "dashboardify-web",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mutkusas/Dashboardify.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mutkusas/Dashboardify/issues"
+  },
+  "homepage": "https://github.com/mutkusas/Dashboardify#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
+}
