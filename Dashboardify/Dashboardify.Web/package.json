@@ -17,6 +17,11 @@
   },
   "homepage": "https://github.com/mutkusas/Dashboardify#readme",
   "devDependencies": {
-    "gulp": "^3.9.1"
+    "gulp": "^3.9.1",
+    "browserify": "13.1.0",
+    "gulp-concat": "^2.6.0",
+    "handlebars": "^4.0.5",
+    "hbsfy": "^2.7.0",
+    "vinyl-source-stream": "1.1.0"
   }
 }

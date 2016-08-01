@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace Dashboardify.Web
+namespace Dashboardify.Web.Controllers
 {
     public class RouteConfig
     {
