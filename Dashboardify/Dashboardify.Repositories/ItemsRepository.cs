@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
+
 
 namespace Dashboardify.Repositories
 {
@@ -26,7 +29,15 @@ namespace Dashboardify.Repositories
 
         public void Update(Item item)
         {
-            // UPDATE ITEM BY ID
+            foreach (Item obj in _results)
+            {
+                if (obj.Id == item.Id)
+                {
+                    obj.Url = item.Url;
+                    obj.Xpath = item.Xpath;
+                }
+            }
+            
         }
     }
 }
