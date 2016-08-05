@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C46B3AE5-DBBB-4117-AB45-9F2FB4B16623}</ProjectGuid>
+    <ProjectGuid>{86391CDA-2533-4CF0-ADB0-B73F069683D6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dashboardify.Repositories</RootNamespace>
-    <AssemblyName>Dashboardify.Repositories</AssemblyName>
+    <RootNamespace>Dashboardify.Models</RootNamespace>
+    <AssemblyName>Dashboardify.Models</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,14 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ItemsRepository.cs" />
+    <Compile Include="Item.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Dashboardify.Models\Dashboardify.Models.csproj">
-      <Project>{86391cda-2533-4cf0-adb0-b73f069683d6}</Project>
-      <Name>Dashboardify.Models</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
