@@ -1,24 +1,24 @@
 ﻿using System;
-using System.Timers;
-using HtmlAgilityPack;
 using System.Text.RegularExpressions;
+using System.Timers;
 using Dashboardify.Repositories;
+using HtmlAgilityPack;
 
 namespace Dashboardify.Service
 {
     public class Service
     {
-        private ItemsRepository _itemsRepository;
-
         private readonly Timer _timer;
+        private readonly ItemsRepository _itemsRepository;
+
         public Service()
         {
-            _timer = new Timer(1000) { AutoReset = true };
+            _timer = new Timer(1000) {AutoReset = true};
             _timer.Elapsed += TimeElapsedEventHandler;
 
             _itemsRepository = new ItemsRepository();
         }
-        
+
         public void TimeElapsedEventHandler(object sender, ElapsedEventArgs e)
         {
             Console.WriteLine("Testing");
@@ -29,20 +29,19 @@ namespace Dashboardify.Service
 
             firstItem.Xpath = RemakeXpath(firstItem.Xpath);
 
-            HtmlDocument doc = new HtmlDocument();
+            var doc = new HtmlDocument();
 
-            HtmlWeb hw = new HtmlWeb();
+            var hw = new HtmlWeb();
             doc = hw.Load(firstItem.Url);
 
-            HtmlNode node = doc.DocumentNode.SelectSingleNode(firstItem.Xpath);
-            string content = node.InnerText;
-            Console.WriteLine(Regex.Replace(content,@"\s+"," "));
+            var node = doc.DocumentNode.SelectSingleNode(firstItem.Xpath);
+            var content = node.InnerText;
+            Console.WriteLine(Regex.Replace(content, @"\s+", " "));
 
 
             _timer.Stop();
-
-
         }
+
         /*
         public void GetItemContent(string url, string xpath)
         {
@@ -62,16 +61,16 @@ namespace Dashboardify.Service
         */
 
         /// <summary>
-        /// Method that makes XPath compatible with HTMLAgilityPack
+        ///     Method that makes XPath compatible with HTMLAgilityPack
         /// </summary>
         /// <param name="xpath">Xpath</param>
         /// <returns>Xpath added with extra /</returns>
         private string RemakeXpath(string xpath)
         {
-            string goodXpath = "";
-            for (int i=0; i<xpath.Length;i++)
+            var goodXpath = "";
+            for (var i = 0; i < xpath.Length; i++)
             {
-                if (xpath[i].ToString()=="/")
+                if (xpath[i].ToString() == "/")
                 {
                     goodXpath = goodXpath + "/";
                 }
@@ -79,16 +78,16 @@ namespace Dashboardify.Service
             }
             return goodXpath;
         }
-   
 
 
+        public void Start()
+        {
+            _timer.Start();
+        }
 
-        public void Start() { _timer.Start(); }
-        public void Stop() { _timer.Stop(); }
-
-
-
+        public void Stop()
+        {
+            _timer.Stop();
+        }
     }
-
-
 }
