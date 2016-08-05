@@ -7,5 +7,7 @@
         public string Url { get; set; }
 
         public string Xpath { get; set; }
+
+        public string Content { get; set; }
     }
 }

@@ -8,6 +8,7 @@ namespace Dashboardify.Models
 {
     public class User
     {
-        public int userId { get; set; }
+        public int UserId { get; set; }
+        //prirasyti atributus pagal db structure
     }
 }

@@ -9,5 +9,6 @@ namespace Dashboardify.Models
     public class DashBoard
     {
         public string dashId { get; set; }
+
     }
 }

@@ -11,7 +11,7 @@ namespace Dashboardify.Repositories
     {
         private IList<User> _users;
 
-        public void UpdateList(User user)
+        public void Update(User user)
         {
             
         }

@@ -11,7 +11,7 @@ namespace Dashboardify.Repositories
     {
         private IList<DashBoard> _dashBoards;
 
-        public void updateDash(DashBoard dash)
+        public void UpdateDash(DashBoard dash)
         {
             
         }
