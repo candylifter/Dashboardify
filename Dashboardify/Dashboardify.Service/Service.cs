@@ -13,7 +13,7 @@ namespace Dashboardify.Service
 
         public Service()
         {
-            _timer = new Timer(1000) {AutoReset = true};
+            _timer = new Timer(5000) {AutoReset = true};
             _timer.Elapsed += TimeElapsedEventHandler;
 
             _itemsRepository = new ItemsRepository();
@@ -21,26 +21,66 @@ namespace Dashboardify.Service
 
         public void TimeElapsedEventHandler(object sender, ElapsedEventArgs e)
         {
-            Console.WriteLine("Testing");
+            Console.WriteLine("\n->  Testing\n");
 
-            var items = _itemsRepository.GetList();
+            //var items = _itemsRepository.GetList();
 
-            var firstItem = items[0];
+            //var firstItem = items[0];
 
-            firstItem.Xpath = RemakeXpath(firstItem.Xpath);
+            //firstItem.Xpath = RemakeXpath(firstItem.Xpath);
 
-            var doc = new HtmlDocument();
+            //var content = GetContentFromWebsite(firstItem.Url, firstItem.Xpath);
 
-            var hw = new HtmlWeb();
-            doc = hw.Load(firstItem.Url);
+            //Console.WriteLine(Regex.Replace(content, @"\s+", " "));
 
-            var node = doc.DocumentNode.SelectSingleNode(firstItem.Xpath);
-            var content = node.InnerText;
-            Console.WriteLine(Regex.Replace(content, @"\s+", " "));
-
+            PrintAllItems();
 
             _timer.Stop();
         }
+
+        public string GetContentFromWebsite(string url, string xpath)
+        {
+            HtmlWeb hw = new HtmlWeb();
+            HtmlDocument doc = new HtmlDocument();
+
+
+            try
+            {
+                doc = hw.Load(url);
+                var node = doc.DocumentNode.SelectSingleNode(xpath);
+                var content =  node.InnerText ;
+
+
+                return content;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return null;
+        }
+
+        public void PrintAllItems()
+        {
+            var items = _itemsRepository.GetList();
+
+            foreach (var item in items)
+            {
+                string content = GetContentFromWebsite(item.Url, RemakeXpath(item.Xpath));
+
+                Console.WriteLine("\n" + item.Url + "\n");
+
+                if (content != null) {
+                    Console.WriteLine(Regex.Replace(content, @"\s+", " "));
+                } else {
+                    Console.WriteLine("Content is null");
+                }
+
+                Console.WriteLine("\n---\n");
+            }
+        }
+
 
         /*
         public void GetItemContent(string url, string xpath)

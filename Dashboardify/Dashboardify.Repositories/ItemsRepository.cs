@@ -20,6 +20,19 @@ namespace Dashboardify.Repositories
                 Url = "http://www.autogidas.lt/automobiliai/?f_1=&f_model_14=&f_215=&f_216=&f_41=&f_42=&f_3=&f_2=&f_376=",
                 Xpath = "/html/body/div/div[8]/div/div[2]/a[1]/div"
             });
+
+            _results.Add(new Item
+            {
+                Id = 2,
+                Url = "http://site.adform.com/",
+                Xpath = "/html[1]/body[1]/div[1]/section[1]/div[2]/div[1]/div[1]/article[1]"
+            });
+            _results.Add(new Item
+            {
+                Id = 3,
+                Url = "https://news.ycombinator.com/",
+                Xpath = "/html/body/table/tbody/tr[14]/td[2]/span[1]"
+            });
         }
 
         public IList<Item> GetList()
