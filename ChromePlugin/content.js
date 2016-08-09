@@ -12,14 +12,15 @@ function getPathTo(element) {
     for (var i= 0; i<siblings.length; i++) {
         var sibling= siblings[i];
         if (sibling===element)
-            return getPathTo(element.parentNode)+'/'+element.tagName+'['+(ix+1)+']';
+            return (getPathTo(element.parentNode)+'/'+element.tagName+'['+(ix+1)+']').toLowerCase();
         if (sibling.nodeType===1 && sibling.tagName===element.tagName)
             ix++;
     }
 }
 
 function alertXPath(e) {
-  alert(getPathTo(this));
+  // alert(getPathTo(this));
+  console.log(getPathTo(this));
 
   //Remove highlight and event listener from clicked element
   this.classList.remove(HIGHLIGHT_CLASSNAME);
