@@ -40,55 +40,65 @@ namespace Dashboardify.Service
             //Console.WriteLine(Regex.Replace(content, @"\s+", " "));
 
             _timer.Stop();
-            PrintAllItems();
-
+            //PrintAllItems();
+            TakeScreenshots();
         }
 
-        // TODO: Refactor to take a list of items as parameter and create screenshots from one instance of webdriver
-        public void TakeScreenshot(string url, string name, string xpath)
+        // TODO: Refactor to separate methods
+        public void TakeScreenshots()
         {
-            Console.WriteLine("Preparing to take a screenshot...");
             var driver = new FirefoxDriver();
-            driver.Navigate().GoToUrl(url);
 
-            var el = driver.FindElement(By.XPath(xpath));
+            var items = _itemsRepository.GetList();
 
-            RemoteWebElement remElement = (RemoteWebElement)driver.FindElement(By.XPath(xpath));
-            Point location = remElement.LocationOnScreenOnceScrolledIntoView;
+            foreach (var item in items)
+            {
+                driver.Navigate().GoToUrl(item.Url);
 
-            int viewportWidth = Convert.ToInt32(((IJavaScriptExecutor)driver).ExecuteScript("return document.documentElement.clientWidth"));
-            int viewportHeight = Convert.ToInt32(((IJavaScriptExecutor)driver).ExecuteScript("return document.documentElement.clientHeight"));
+                var el = driver.FindElement(By.XPath(item.Xpath));
+
+                RemoteWebElement remElement = (RemoteWebElement)driver.FindElement(By.XPath(item.Xpath));
+                Point location = remElement.LocationOnScreenOnceScrolledIntoView;
+
+                int viewportWidth = Convert.ToInt32(((IJavaScriptExecutor)driver).ExecuteScript("return document.documentElement.clientWidth"));
+                int viewportHeight = Convert.ToInt32(((IJavaScriptExecutor)driver).ExecuteScript("return document.documentElement.clientHeight"));
 
 
-            driver.SwitchTo();
+                driver.SwitchTo();
 
-            int elementLocation_X = location.X;
-            int elementLocation_Y = location.Y;
+                int elementLocation_X = location.X;
+                int elementLocation_Y = location.Y;
 
-            IWebElement img = driver.FindElement(By.XPath(xpath));
+                IWebElement img = driver.FindElement(By.XPath(item.Xpath));
 
-            int elementSize_Width = img.Size.Width;
-            int elementSize_Height = img.Size.Height;
-            Console.WriteLine("Taking screenshot");
+                int elementSize_Width = img.Size.Width;
+                int elementSize_Height = img.Size.Height;
+                Console.WriteLine("Taking screenshot");
 
-            Size s = new Size();
-            s.Width = driver.Manage().Window.Size.Width;
-            s.Height = driver.Manage().Window.Size.Height;
+                Size s = new Size();
+                s.Width = driver.Manage().Window.Size.Width;
+                s.Height = driver.Manage().Window.Size.Height;
 
-            Bitmap bitmap = new Bitmap(s.Width, s.Height);
-            Graphics graphics = Graphics.FromImage(bitmap as Image);
-            graphics.CopyFromScreen(0, 0, 0, 0, s);
+                Bitmap bitmap = new Bitmap(s.Width, s.Height);
+                Graphics graphics = Graphics.FromImage(bitmap as Image);
+                graphics.CopyFromScreen(0, 0, 0, 0, s);
 
-            bitmap.Save(name+".png", System.Drawing.Imaging.ImageFormat.Png);
+                bitmap.Save(item.Name + ".png", System.Drawing.Imaging.ImageFormat.Png);
 
-            RectangleF part = new RectangleF(elementLocation_X, elementLocation_Y + (s.Height - viewportHeight), elementSize_Width, elementSize_Height);
+                RectangleF part = new RectangleF(elementLocation_X, elementLocation_Y + (s.Height - viewportHeight), elementSize_Width, elementSize_Height);
 
-            Bitmap bmpobj = (Bitmap)Image.FromFile(name + ".png");
-            Bitmap bn = bmpobj.Clone(part, bmpobj.PixelFormat);
-            bn.Save(name+"-cropped.jpeg", System.Drawing.Imaging.ImageFormat.Jpeg);
+                Bitmap bmpobj = (Bitmap)Image.FromFile(item.Name + ".png");
+                Bitmap bn = bmpobj.Clone(part, bmpobj.PixelFormat);
+                bn.Save(item.Name + "-cropped.jpeg", System.Drawing.Imaging.ImageFormat.Jpeg);
 
+
+
+
+            }
 
             driver.Close();
+
+
 
         }
 
