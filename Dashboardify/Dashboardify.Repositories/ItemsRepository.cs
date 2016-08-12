@@ -22,17 +22,26 @@ namespace Dashboardify.Repositories
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
 
-                connection.Open();
+                try
+                {
+                    //Console.WriteLine("Connected Succesfully");
+                    connection.Open();
 
-                SqlDataReader reader = command.ExecuteReader();
+                    SqlDataReader reader = command.ExecuteReader();
 
-                DataTable dt = new DataTable();
+                    DataTable dt = new DataTable();
 
-                dt.Load(reader);
+                    dt.Load(reader);
 
-                reader.Close();
+                    reader.Close();
 
-                return dt;
+                    return dt;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return null;
+                }
             }
         }
 
