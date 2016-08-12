@@ -9,6 +9,17 @@ namespace Dashboardify.Models
     public class User
     {
         public int UserId { get; set; }
-        //prirasyti atributus pagal db structure
+
+        public string Name { get; set; }
+
+        public string Password { get; set; }
+
+        public string Email { get; set; }
+
+        public bool IsActive { get; set; }
+
+        public DateTime Registered { get; set; }
+
+        public DateTime Modified { get; set; }
     }
 }
