@@ -8,10 +8,21 @@ namespace Dashboardify.Repositories
 {
     public class ItemsRepository
     {
+        private string _connectionString = "Data Source=.;" +
+                                            "Initial Catalog=DashBoardify;" +
+                                            "User id=DashboardifyUser;" +
+                                            "Password=123456;";
+
         private IList<Item> _results;
 
         public ItemsRepository()
         {
+
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = _connectionString;
+            conn.Open();
+
+
             _results = new List<Item>();
 
             _results.Add(new Item
