@@ -48,7 +48,7 @@ namespace Dashboardify.Service
         public void TakeScreenshot(string url, string name, string xpath)
         {
             Console.WriteLine("Preparing to take a screenshot...");
-            var driver = new ChromeDriver();
+            var driver = new FirefoxDriver();
             driver.Navigate().GoToUrl(url);
 
             var el = driver.FindElement(By.XPath(xpath));
