@@ -141,7 +141,7 @@ namespace Dashboardify.Service
                     Console.WriteLine("Content is null");
                 }
 
-                TakeScreenshot(item.Url, item.Name, item.Xpath);
+                //TakeScreenshot(item.Url, item.Name, item.Xpath);
 
                 Console.WriteLine("\n---\n");
             }
