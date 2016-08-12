@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -15,15 +16,39 @@ namespace Dashboardify.Repositories
 
         private IList<Item> _results;
 
+        private static void ReadSingleRow(IDataRecord record)
+        {
+            Console.WriteLine(String.Format("{0}, {1}", record[0], record[1]));
+        }
+
         public ItemsRepository()
         {
 
-            SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = _connectionString;
-            conn.Open();
+     
+            string queryString = "SELECT Id,Name FROM dbo.Items";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Console.WriteLine("Reading from database");
+                    ReadSingleRow((IDataRecord)reader);
+
+                }
+
+                reader.Close();
+
+            }
 
 
-            _results = new List<Item>();
+
+                _results = new List<Item>();
 
             _results.Add(new Item
             {
