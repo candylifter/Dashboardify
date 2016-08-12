@@ -3,6 +3,12 @@ using System.Text.RegularExpressions;
 using System.Timers;
 using Dashboardify.Repositories;
 using HtmlAgilityPack;
+using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium;
+using System.Drawing.Imaging;
+using System.Drawing;
+using OpenQA.Selenium.Remote;
 
 namespace Dashboardify.Service
 {
@@ -13,7 +19,7 @@ namespace Dashboardify.Service
 
         public Service()
         {
-            _timer = new Timer(5000) {AutoReset = true};
+            _timer = new Timer(15000) {AutoReset = true};
             _timer.Elapsed += TimeElapsedEventHandler;
 
             _itemsRepository = new ItemsRepository();
@@ -33,9 +39,57 @@ namespace Dashboardify.Service
 
             //Console.WriteLine(Regex.Replace(content, @"\s+", " "));
 
+            _timer.Stop();
             PrintAllItems();
 
-            _timer.Stop();
+        }
+
+        // TODO: Refactor to take a list of items as parameter and create screenshots from one instance of webdriver
+        public void TakeScreenshot(string url, string name, string xpath)
+        {
+            Console.WriteLine("Preparing to take a screenshot...");
+            var driver = new ChromeDriver();
+            driver.Navigate().GoToUrl(url);
+
+            var el = driver.FindElement(By.XPath(xpath));
+
+            RemoteWebElement remElement = (RemoteWebElement)driver.FindElement(By.XPath(xpath));
+            Point location = remElement.LocationOnScreenOnceScrolledIntoView;
+
+            int viewportWidth = Convert.ToInt32(((IJavaScriptExecutor)driver).ExecuteScript("return document.documentElement.clientWidth"));
+            int viewportHeight = Convert.ToInt32(((IJavaScriptExecutor)driver).ExecuteScript("return document.documentElement.clientHeight"));
+
+
+            driver.SwitchTo();
+
+            int elementLocation_X = location.X;
+            int elementLocation_Y = location.Y;
+
+            IWebElement img = driver.FindElement(By.XPath(xpath));
+
+            int elementSize_Width = img.Size.Width;
+            int elementSize_Height = img.Size.Height;
+            Console.WriteLine("Taking screenshot");
+
+            Size s = new Size();
+            s.Width = driver.Manage().Window.Size.Width;
+            s.Height = driver.Manage().Window.Size.Height;
+
+            Bitmap bitmap = new Bitmap(s.Width, s.Height);
+            Graphics graphics = Graphics.FromImage(bitmap as Image);
+            graphics.CopyFromScreen(0, 0, 0, 0, s);
+
+            bitmap.Save(name+".png", System.Drawing.Imaging.ImageFormat.Png);
+
+            RectangleF part = new RectangleF(elementLocation_X, elementLocation_Y + (s.Height - viewportHeight), elementSize_Width, elementSize_Height);
+
+            Bitmap bmpobj = (Bitmap)Image.FromFile(name + ".png");
+            Bitmap bn = bmpobj.Clone(part, bmpobj.PixelFormat);
+            bn.Save(name+"-cropped.jpeg", System.Drawing.Imaging.ImageFormat.Jpeg);
+
+
+            driver.Close();
+
         }
 
         public string GetContentFromWebsite(string url, string xpath)
@@ -77,8 +131,12 @@ namespace Dashboardify.Service
                     Console.WriteLine("Content is null");
                 }
 
+                TakeScreenshot(item.Url, item.Name, item.Xpath);
+
                 Console.WriteLine("\n---\n");
             }
+
+
         }
 
 
