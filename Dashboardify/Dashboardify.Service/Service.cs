@@ -9,6 +9,7 @@ using OpenQA.Selenium;
 using System.Drawing.Imaging;
 using System.Drawing;
 using OpenQA.Selenium.Remote;
+using System.Collections.Generic;
 
 namespace Dashboardify.Service
 {
@@ -19,7 +20,7 @@ namespace Dashboardify.Service
 
         public Service()
         {
-            _timer = new Timer(15000) {AutoReset = true};
+            _timer = new Timer(100) {AutoReset = true};
             _timer.Elapsed += TimeElapsedEventHandler;
 
             _itemsRepository = new ItemsRepository();
@@ -47,53 +48,84 @@ namespace Dashboardify.Service
         // TODO: Refactor to separate methods
         public void TakeScreenshots()
         {
-            var driver = new FirefoxDriver();
+            Console.WriteLine("Creating webdriver instance");
+            var driver = new ChromeDriver();
+            driver.Manage().Window.Maximize();
 
             var items = _itemsRepository.GetList();
 
             foreach (var item in items)
             {
+                Console.WriteLine("Navigating to: " + item.Url);
+
                 driver.Navigate().GoToUrl(item.Url);
 
-                var el = driver.FindElement(By.XPath(item.Xpath));
+                RemoteWebElement el = (RemoteWebElement)driver.FindElement(By.XPath(item.Xpath));
 
-                RemoteWebElement remElement = (RemoteWebElement)driver.FindElement(By.XPath(item.Xpath));
-                Point location = remElement.LocationOnScreenOnceScrolledIntoView;
+                Console.WriteLine("Scrolling to the element");
 
-                int viewportWidth = Convert.ToInt32(((IJavaScriptExecutor)driver).ExecuteScript("return document.documentElement.clientWidth"));
-                int viewportHeight = Convert.ToInt32(((IJavaScriptExecutor)driver).ExecuteScript("return document.documentElement.clientHeight"));
+                driver.ExecuteScript(@"
+                                    (function () {
 
+                                     var rect = document.evaluate(
+                                      '" + item.Xpath + @"',
+                                      document,
+                                      null,
+                                      XPathResult.FIRST_ORDERED_NODE_TYPE,
+                                      null
+                                     ).singleNodeValue.getBoundingClientRect();
+                                     window.scrollTo(0, rect.top - ((document.documentElement.clientHeight / 2) - (rect.height / 2)));
 
-                driver.SwitchTo();
+                                    })();");
 
-                int elementLocation_X = location.X;
-                int elementLocation_Y = location.Y;
 
                 IWebElement img = driver.FindElement(By.XPath(item.Xpath));
 
-                int elementSize_Width = img.Size.Width;
-                int elementSize_Height = img.Size.Height;
+                int elementWidth = img.Size.Width;
+                int elementHeight = img.Size.Height;
+
+
+                //Using built in selenium methods fails getting exact coordactes for some reason, so I used javascript instead to get X and Y
+                string jsQuery = @"return document.evaluate(
+                                '" + item.Xpath + @"',
+                                document,
+                                null,
+                                XPathResult.FIRST_ORDERED_NODE_TYPE,
+                                null
+                                ).singleNodeValue.getBoundingClientRect()";
+
+                int elementTop = Convert.ToInt32(((IJavaScriptExecutor)driver).ExecuteScript(jsQuery+".top;"));
+
+
+                int elementLeft = Convert.ToInt32(((IJavaScriptExecutor)driver).ExecuteScript(jsQuery+".left;"));
+
+
+
                 Console.WriteLine("Taking screenshot");
 
-                Size s = new Size();
-                s.Width = driver.Manage().Window.Size.Width;
-                s.Height = driver.Manage().Window.Size.Height;
+                Screenshot ss = ((ITakesScreenshot)driver).GetScreenshot();
 
-                Bitmap bitmap = new Bitmap(s.Width, s.Height);
-                Graphics graphics = Graphics.FromImage(bitmap as Image);
-                graphics.CopyFromScreen(0, 0, 0, 0, s);
-
-                bitmap.Save(item.Name + ".png", System.Drawing.Imaging.ImageFormat.Png);
-
-                RectangleF part = new RectangleF(elementLocation_X, elementLocation_Y + (s.Height - viewportHeight), elementSize_Width, elementSize_Height);
-
-                Bitmap bmpobj = (Bitmap)Image.FromFile(item.Name + ".png");
-                Bitmap bn = bmpobj.Clone(part, bmpobj.PixelFormat);
-                bn.Save(item.Name + "-cropped.jpeg", System.Drawing.Imaging.ImageFormat.Jpeg);
+                //Save screenshot
+                string screenshot = ss.AsBase64EncodedString;
+                byte[] screenshotAsByteArray = ss.AsByteArray;
+                ss.SaveAsFile(item.Name + ".png", ImageFormat.Png); 
+                ss.ToString();
 
 
+                //Crop screenshot
+                Rectangle cropRect = new Rectangle(elementLeft, elementTop, elementWidth, elementHeight);
 
+                Bitmap src = Image.FromFile(item.Name + ".png") as Bitmap;
+                Bitmap target = new Bitmap(cropRect.Width, cropRect.Height);
 
+                using (Graphics g = Graphics.FromImage(target))
+                {
+                    g.DrawImage(src, new Rectangle(0, 0, target.Width, target.Height),
+                                     cropRect,
+                                     GraphicsUnit.Pixel);
+                }
+
+                target.Save(item.Name + "-cropped.jpeg", ImageFormat.Jpeg);
             }
 
             driver.Close();

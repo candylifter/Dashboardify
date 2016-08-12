@@ -86,6 +86,9 @@ INSERT INTO DashBoards (Name, UserID, DateModified) VALUES('AUDINES', @User1Id, 
 
 DECLARE @DashId INT = (SELECT Id FROM DashBoards WHERE Name ='AUDINES')
 
-INSERT INTO Items(DashBoardID, Name,Website, CheckInterval,XPath,LastChecked,Modified,ScrnshtURL) VALUES(@DashId,'BULKA','http://www.autogidas.lt/automobiliai/',20,'/html[1]/body[1]/div[1]/div[8]/div[1]/div[2]/a[1]/div[1]/div[3]/div[2]/div[3]',GETDATE(),GETDATE(),'http://autogidas-img.dgn.lt/4_21_83702552/audi-80-b3-sedanas-1987.jpg')
+INSERT INTO Items(DashBoardID, Name,Website, CheckInterval,XPath,LastChecked,Modified,ScrnshtURL) VALUES(@DashId,'Autogidas','http://www.autogidas.lt/automobiliai/',20,'/html[1]/body[1]/div[1]/div[8]/div[1]/div[2]/a[30]/div[1]',GETDATE(),GETDATE(),'http://autogidas-img.dgn.lt/4_21_83702552/audi-80-b3-sedanas-1987.jpg')
 INSERT INTO Items(DashBoardID, Name,Website, CheckInterval,XPath,LastChecked,Modified,ScrnshtURL) VALUES(@DashId,'Adform naujienos','http://site.adform.com/',20,'/html[1]/body[1]/div[1]/section[1]/div[2]/div[1]/div[1]/article[1]',GETDATE(),GETDATE(),' ')
 INSERT INTO Items(DashBoardID, Name,Website, CheckInterval,XPath,LastChecked,Modified,ScrnshtURL) VALUES(@DashId,'Buzzfeed','https://www.buzzfeed.com/',20,'/html[1]/body[1]/div[4]/div[1]/div[3]/div[1]/ul[1]/li[1]/div[1]',GETDATE(),GETDATE(),' ')
+INSERT INTO Items(DashBoardID, Name,Website, CheckInterval,XPath,LastChecked,Modified,ScrnshtURL) VALUES(@DashId,'Reddit frontpage','https://www.reddit.com/',20,'/html[1]/body[1]/div[4]/div[4]/div[1]/div[1]',GETDATE(),GETDATE(),' ')
+INSERT INTO Items(DashBoardID, Name,Website, CheckInterval,XPath,LastChecked,Modified,ScrnshtURL) VALUES(@DashId,'Hacker News','https://news.ycombinator.com/',20,'/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[3]/td[1]/table[1]/tbody[1]/tr[1]/td[3]',GETDATE(),GETDATE(),' ')
+INSERT INTO Items(DashBoardID, Name,Website, CheckInterval,XPath,LastChecked,Modified,ScrnshtURL) VALUES(@DashId,'Humble Bundle','https://www.humblebundle.com/',20,'/html[1]/body[1]/div[1]/div[2]/div[3]/div[1]/div[2]/div[1]',GETDATE(),GETDATE(),' ')
