@@ -16,17 +16,8 @@ namespace Dashboardify.Repositories
 
         private IList<Item> _results;
 
-        private static void ReadSingleRow(IDataRecord record)
+        private DataTable _GetTableFromDB(string queryString)
         {
-            Console.WriteLine(String.Format("{0}, {1}", record[0], record[1]));
-        }
-
-        public ItemsRepository()
-        {
-
-     
-            string queryString = "SELECT * FROM dbo.Items";
-
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
@@ -35,54 +26,45 @@ namespace Dashboardify.Repositories
 
                 SqlDataReader reader = command.ExecuteReader();
 
-                _results = new List<Item>();
+                DataTable dt = new DataTable();
 
-                while (reader.Read())
-                {
-                    Item i = new Item();
-                    i.Id = (int)reader["Id"];
-                    i.DashBoardId = (int)reader["DashBoardId"];
-                    i.Name = (string)reader["Name"];
-                    i.Url = (string)reader["Website"];
-                    i.CheckInterval = (int)reader["CheckInterval"];
-                    i.isActive = (bool)reader["IsActive"];
-                    i.Xpath = (string)reader["XPath"];
-                    i.LastChecked = (DateTime)reader["LastChecked"];
-                    i.Created = (DateTime)reader["Created"];
-                    i.Modified = (DateTime)reader["Modified"];
-                    i.ScrnshtURL = (string)reader["ScrnshtURL"];
-
-                    _results.Add(i);
-
-                }
+                dt.Load(reader);
 
                 reader.Close();
 
+                return dt;
             }
+        }
 
+        public ItemsRepository()
+        {
 
+     
+            string queryString = "SELECT * FROM dbo.Items";
 
-            //    _results = new List<Item>();
+            DataTable datatable = _GetTableFromDB(queryString);
 
-            //_results.Add(new Item
-            //{
-            //    Id = 1,
-            //    Url = "http://www.autogidas.lt/automobiliai/?f_1=&f_model_14=&f_215=&f_216=&f_41=&f_42=&f_3=&f_2=&f_376=",
-            //    Xpath = "/html/body/div/div[8]/div/div[2]/a[1]/div"
-            //});
+            _results = new List<Item>();
 
-            //_results.Add(new Item
-            //{
-            //    Id = 2,
-            //    Url = "http://site.adform.com/",
-            //    Xpath = "/html[1]/body[1]/div[1]/section[1]/div[2]/div[1]/div[1]/article[1]"
-            //});
-            //_results.Add(new Item
-            //{
-            //    Id = 3,
-            //    Url = "https://news.ycombinator.com/",
-            //    Xpath = "/html/body/table/tbody/tr[14]/td[2]/span[1]"
-            //});
+            foreach (DataRow dr in datatable.Rows)
+            {
+                Item i = new Item();
+
+                i.Id = (int)dr["Id"];
+                i.DashBoardId = (int)dr["DashBoardId"];
+                i.Name = (string)dr["Name"];
+                i.Url = (string)dr["Website"];
+                i.CheckInterval = (int)dr["CheckInterval"];
+                i.isActive = (bool)dr["IsActive"];
+                i.Xpath = (string)dr["XPath"];
+                i.LastChecked = (DateTime)dr["LastChecked"];
+                i.Created = (DateTime)dr["Created"];
+                i.Modified = (DateTime)dr["Modified"];
+                i.ScrnshtURL = (string)dr["ScrnshtURL"];
+
+                _results.Add(i);
+
+            }
         }
 
         public IList<Item> GetList()
