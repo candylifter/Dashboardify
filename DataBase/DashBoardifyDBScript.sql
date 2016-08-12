@@ -86,4 +86,4 @@ INSERT INTO DashBoards (Name, UserID, DateModified) VALUES('AUDINES', @User1Id, 
 
 DECLARE @DashId INT = (SELECT Id FROM DashBoards WHERE Name ='AUDINES')
 
-INSERT INTO Items(DashBoardID, Name,Website, CheckInterval,XPath,LastChecked,Modified,ScrnshtURL) VALUES(@DashId,'BULKA','http://autogidas.LT',20,'BODY[1]/CONTAINER[2]',GETDATE(),GETDATE(),'http://autogidas-img.dgn.lt/4_21_83702552/audi-80-b3-sedanas-1987.jpg')
+INSERT INTO Items(DashBoardID, Name,Website, CheckInterval,XPath,LastChecked,Modified,ScrnshtURL) VALUES(@DashId,'BULKA','http://www.autogidas.lt/automobiliai/',20,'/html[1]/body[1]/div[1]/div[8]/div[1]/div[2]/a[1]/div[1]/div[3]/div[2]/div[3]',GETDATE(),GETDATE(),'http://autogidas-img.dgn.lt/4_21_83702552/audi-80-b3-sedanas-1987.jpg')

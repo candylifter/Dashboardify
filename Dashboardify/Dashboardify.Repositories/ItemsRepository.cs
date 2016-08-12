@@ -25,7 +25,7 @@ namespace Dashboardify.Repositories
         {
 
      
-            string queryString = "SELECT Id,Name FROM dbo.Items";
+            string queryString = "SELECT * FROM dbo.Items";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
@@ -35,10 +35,24 @@ namespace Dashboardify.Repositories
 
                 SqlDataReader reader = command.ExecuteReader();
 
+                _results = new List<Item>();
+
                 while (reader.Read())
                 {
-                    Console.WriteLine("Reading from database");
-                    ReadSingleRow((IDataRecord)reader);
+                    Item i = new Item();
+                    i.Id = (int)reader["Id"];
+                    i.DashBoardId = (int)reader["DashBoardId"];
+                    i.Name = (string)reader["Name"];
+                    i.Url = (string)reader["Website"];
+                    i.CheckInterval = (int)reader["CheckInterval"];
+                    i.isActive = (bool)reader["IsActive"];
+                    i.Xpath = (string)reader["XPath"];
+                    i.LastChecked = (DateTime)reader["LastChecked"];
+                    i.Created = (DateTime)reader["Created"];
+                    i.Modified = (DateTime)reader["Modified"];
+                    i.ScrnshtURL = (string)reader["ScrnshtURL"];
+
+                    _results.Add(i);
 
                 }
 
@@ -48,27 +62,27 @@ namespace Dashboardify.Repositories
 
 
 
-                _results = new List<Item>();
+            //    _results = new List<Item>();
 
-            _results.Add(new Item
-            {
-                Id = 1,
-                Url = "http://www.autogidas.lt/automobiliai/?f_1=&f_model_14=&f_215=&f_216=&f_41=&f_42=&f_3=&f_2=&f_376=",
-                Xpath = "/html/body/div/div[8]/div/div[2]/a[1]/div"
-            });
+            //_results.Add(new Item
+            //{
+            //    Id = 1,
+            //    Url = "http://www.autogidas.lt/automobiliai/?f_1=&f_model_14=&f_215=&f_216=&f_41=&f_42=&f_3=&f_2=&f_376=",
+            //    Xpath = "/html/body/div/div[8]/div/div[2]/a[1]/div"
+            //});
 
-            _results.Add(new Item
-            {
-                Id = 2,
-                Url = "http://site.adform.com/",
-                Xpath = "/html[1]/body[1]/div[1]/section[1]/div[2]/div[1]/div[1]/article[1]"
-            });
-            _results.Add(new Item
-            {
-                Id = 3,
-                Url = "https://news.ycombinator.com/",
-                Xpath = "/html/body/table/tbody/tr[14]/td[2]/span[1]"
-            });
+            //_results.Add(new Item
+            //{
+            //    Id = 2,
+            //    Url = "http://site.adform.com/",
+            //    Xpath = "/html[1]/body[1]/div[1]/section[1]/div[2]/div[1]/div[1]/article[1]"
+            //});
+            //_results.Add(new Item
+            //{
+            //    Id = 3,
+            //    Url = "https://news.ycombinator.com/",
+            //    Xpath = "/html/body/table/tbody/tr[14]/td[2]/span[1]"
+            //});
         }
 
         public IList<Item> GetList()
