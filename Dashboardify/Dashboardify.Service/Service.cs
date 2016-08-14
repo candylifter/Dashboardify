@@ -10,6 +10,7 @@ using System.Drawing.Imaging;
 using System.Drawing;
 using OpenQA.Selenium.Remote;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Dashboardify.Service
 {
@@ -18,13 +19,18 @@ namespace Dashboardify.Service
         private readonly Timer _timer;
         private readonly ItemsRepository _itemsRepository;
 
+        private readonly int _timerInterval = 60000; //miliseconds
+
         public Service()
         {
-            _timer = new Timer(100) {AutoReset = true};
+            _timer = new Timer(_timerInterval) {AutoReset = true};
             _timer.Elapsed += TimeElapsedEventHandler;
 
             _itemsRepository = new ItemsRepository();
+
+            UpdateItems();
         }
+
 
         public void TimeElapsedEventHandler(object sender, ElapsedEventArgs e)
         {
@@ -40,19 +46,104 @@ namespace Dashboardify.Service
 
             //Console.WriteLine(Regex.Replace(content, @"\s+", " "));
 
-            _timer.Stop();
+
             //PrintAllItems();
-            TakeScreenshots();
+            //TakeScreenshots();
+            UpdateItems();
+            //_timer.Stop();
         }
 
+        public void UpdateItems()
+        {
+
+            DateTime now = DateTime.Now;
+            var items = _itemsRepository.GetList();
+            var scheduledItems = FilterScheduledItems(items, now);
+
+            //Testing filtering
+            Console.WriteLine("\n\nItems from db:\n");
+
+            foreach(var item in items)
+            {
+                Console.WriteLine(item.Name);
+            }
+
+            Console.WriteLine("\n\nScheduled items:\n");
+
+            foreach (var item in scheduledItems)
+            {
+                Console.WriteLine(item.Name);
+            }
+
+
+            var outdatedItems = FilterOutdatedItems(scheduledItems, now);
+
+            Console.WriteLine("\n\nOutdated items:\n");
+
+
+            foreach (var item in outdatedItems)
+            {
+                Console.WriteLine(item.Name);
+            }
+
+            TakeScreenshots(outdatedItems);
+
+        }
+
+        public IList<Item> FilterScheduledItems(IList<Item> items, DateTime now)
+        {
+            var filteredItems = items.Where(item => (
+                    item.LastChecked.AddMilliseconds(item.CheckInterval)) <= now && 
+                    item.isActive == true
+                ).ToList();
+
+            return filteredItems;
+        }
+
+        public IList<Item> FilterOutdatedItems(IList<Item> items, DateTime now)
+        {
+
+            IList<Item> outdatedItems = new List<Item>();
+
+            foreach(var item in items)
+            {
+                if (CheckIfOutdated(item, now))
+                {
+                    outdatedItems.Add(item);
+                }
+            }
+
+            return outdatedItems;
+        }
+
+        public bool CheckIfOutdated(Item item, DateTime now)
+        {
+
+            var newContent = GetContentFromWebsite(item.Url, item.Xpath);
+
+            if (newContent != item.Content)
+            {
+
+                Console.WriteLine("Content from DB: " + item.Content);
+                item.Content = newContent;
+                Console.WriteLine("Content from Web: " + item.Content);
+
+                item.LastChecked = now;
+                _itemsRepository.UpdateItem(item);
+                return true;
+            } else
+            {
+                return false;
+            }
+        }
+
+
         // TODO: Refactor to separate methods
-        public void TakeScreenshots()
+        public void TakeScreenshots(IList<Item> items)
         {
             Console.WriteLine("Creating webdriver instance");
             var driver = new ChromeDriver();
             driver.Manage().Window.Maximize();
-
-            var items = _itemsRepository.GetList();
 
             foreach (var item in items)
             {
@@ -60,7 +151,17 @@ namespace Dashboardify.Service
 
                 driver.Navigate().GoToUrl(item.Url);
 
-                RemoteWebElement el = (RemoteWebElement)driver.FindElement(By.XPath(item.Xpath));
+                try
+                {
+                    RemoteWebElement el = (RemoteWebElement)driver.FindElement(By.XPath(item.Xpath));
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    break;
+                }
+
 
                 Console.WriteLine("Scrolling to the element");
 
@@ -134,6 +235,8 @@ namespace Dashboardify.Service
 
         }
 
+
+        // TODO: Handle all exceptions
         public string GetContentFromWebsite(string url, string xpath)
         {
             HtmlWeb hw = new HtmlWeb();
@@ -146,15 +249,15 @@ namespace Dashboardify.Service
                 var node = doc.DocumentNode.SelectSingleNode(xpath);
                 var content =  node.InnerText ;
 
-
-                return content;
+               
+                return Regex.Replace(content, @"\s+", " ");
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
 
-            return null;
+            return "Nope";
         }
 
         public void PrintAllItems()
