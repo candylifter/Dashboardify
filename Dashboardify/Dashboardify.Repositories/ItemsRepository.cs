@@ -9,7 +9,7 @@ namespace Dashboardify.Repositories
 {
     public class ItemsRepository
     {
-        private string _connectionString = "Data Source=.;" +
+        private string _connectionString = "Data Source=.DESKTOP-11VK3U9;" +
                                             "Initial Catalog=DashBoardify;" +
                                             "User id=DashboardifyUser;" +
                                             "Password=123456;";
@@ -24,7 +24,7 @@ namespace Dashboardify.Repositories
 
                 try
                 {
-                    //Console.WriteLine("Connected Succesfully");
+                    Console.WriteLine("Connected Succesfully");
                     connection.Open();
 
                     SqlDataReader reader = command.ExecuteReader();
@@ -80,18 +80,25 @@ namespace Dashboardify.Repositories
         {
             return _results.ToList();
         }
-
-        public void Update(Item item)
+        
+        public void UpdateItemsOnTimer()
         {
-            foreach (Item obj in _results)
+            IList<Item> duomenys = GetList();
+            string date = DateTime.Now.ToString(); // 00:00 format
+
+            foreach (Item obj in duomenys)
             {
-                if (obj.Id == item.Id)
+                if (obj.LastChecked.AddMinutes(obj.CheckInterval) > DateTime.Parse(date).AddMinutes(obj.CheckInterval))
                 {
-                    obj.Url = item.Url;
-                    obj.Xpath = item.Xpath;
+                    Update(obj);
                 }
             }
             
         }
+        public void Update(Item item)
+        {
+               
+        }
+
     }
 }

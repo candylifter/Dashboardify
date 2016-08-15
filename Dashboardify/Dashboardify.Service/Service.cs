@@ -41,7 +41,8 @@ namespace Dashboardify.Service
 
             _timer.Stop();
             //PrintAllItems();
-            TakeScreenshots();
+            //TakeScreenshots();
+            
         }
 
         // TODO: Refactor to separate methods
@@ -90,16 +91,9 @@ namespace Dashboardify.Service
                 Bitmap bmpobj = (Bitmap)Image.FromFile(item.Name + ".png");
                 Bitmap bn = bmpobj.Clone(part, bmpobj.PixelFormat);
                 bn.Save(item.Name + "-cropped.jpeg", System.Drawing.Imaging.ImageFormat.Jpeg);
-
-
-
-
             }
 
             driver.Close();
-
-
-
         }
 
         public string GetContentFromWebsite(string url, string xpath)
