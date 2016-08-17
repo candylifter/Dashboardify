@@ -22,17 +22,26 @@ namespace Dashboardify.Repositories
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
 
-                connection.Open();
+                try
+                {
+                    //Console.WriteLine("Connected Succesfully");
+                    connection.Open();
 
-                SqlDataReader reader = command.ExecuteReader();
+                    SqlDataReader reader = command.ExecuteReader();
 
-                DataTable dt = new DataTable();
+                    DataTable dt = new DataTable();
 
-                dt.Load(reader);
+                    dt.Load(reader);
 
-                reader.Close();
+                    reader.Close();
 
-                return dt;
+                    return dt;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return null;
+                }
             }
         }
 
@@ -61,6 +70,7 @@ namespace Dashboardify.Repositories
                 i.Created = (DateTime)dr["Created"];
                 i.Modified = (DateTime)dr["Modified"];
                 i.ScrnshtURL = (string)dr["ScrnshtURL"];
+                i.Content = (string)dr["Content"];
 
                 _results.Add(i);
 
@@ -70,6 +80,39 @@ namespace Dashboardify.Repositories
         public IList<Item> GetList()
         {
             return _results.ToList();
+        }
+
+        public void UpdateItem(Item item)
+        {
+
+            string query = @"UPDATE dbo.Items
+                            SET Content=@Item_Content,LastChecked=@Item_LastChecked 
+                            WHERE Id=@Item_Id";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+
+                try
+                {
+                    connection.Open();
+                    Console.WriteLine("Opened connection to DB");
+
+                    command.Parameters.AddWithValue("@Item_Id", item.Id);
+                    command.Parameters.AddWithValue("@Item_Content", item.Content);
+                    command.Parameters.AddWithValue("@Item_LastChecked", item.LastChecked.ToString("yyyy-MM-dd HH:mm:ss:fff"));
+                
+                    command.ExecuteNonQuery();
+                    Console.WriteLine("Executed query");
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+
+
         }
 
         public void Update(Item item)
