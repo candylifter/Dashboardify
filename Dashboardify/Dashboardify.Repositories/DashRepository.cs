@@ -66,10 +66,47 @@ namespace Dashboardify.Repositories
             }
         }
 
-        public DashBoard getDashboard(int DashboardId) { };
-        public IList<DashBoard> getDashboards() { };
-        public void updateDasboard(DashBoard dash) { };
-        public int createDashboard(DashBoard dash) { };
-        public void deleteDashboard(int DashId) { };
+        public DashBoard GetDashboard(int dashboardId) {
+
+        };
+
+        public IList<DashBoard> getDashboards() {
+
+        };
+
+        public void updateDasboard(DashBoard dash) {
+
+        };
+
+        public int createDashboard(DashBoard dash) {
+            string query = @"INSERT INTO dbo.DashBoards (UserId, IsActive, Name, DateCreated, DateModified)
+                            VALUES (@UId, @IsAct, @Name, @DateCreated, @DateModified)";
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+
+                try
+                {
+                    connection.Open();
+                    Console.WriteLine("Opened connection to DB");
+                    command.Parameters.AddWithValue("@UId", dash.UserId);
+                    command.Parameters.AddWithValue("@IsAct", dash.IsActive);
+                    command.Parameters.AddWithValue("@Name", dash.Name);
+                    command.Parameters.AddWithValue("@DateCreated", dash.DateCreated);
+                    command.Parameters.AddWithValue("@DateModified", dash.DateModified);
+
+                    command.ExecuteNonQuery();
+                    Console.WriteLine("Executed query");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+        };
+
+        public void deleteDashboard(int DashId) {
+
+        };
     }
 }
