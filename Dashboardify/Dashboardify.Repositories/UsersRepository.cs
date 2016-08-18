@@ -123,27 +123,27 @@ namespace Dashboardify.Repositories
             return null;
         }
 
-        public void CreateUsers(User user)
+        public void CreateUser(User user)
         {
-            string query = "INSERT INTO dbo.Users (Id,Name,Password,Email,IsActive,DateRegistered, DateModified) VALUES (@id, @name, @password, @email, @isactive, @dateregistered, @datemodified)";
+            string query = "INSERT INTO dbo.Users (Name,Password,Email,IsActive,DateRegistered, DateModified) VALUES (@name, @password, @email, @isactive)";
             try
             {
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
-                    cmd.Parameters.Add("@id", SqlDbType.Int).Value = user.UserId;
+                    
 
                     cmd.Parameters.Add("@name", SqlDbType.VarChar).Value = user.Name;
 
-                    cmd.Parameters.Add("@id", SqlDbType.VarChar).Value = _HashPassword(user.Password);
+                    cmd.Parameters.Add("@password", SqlDbType.VarChar).Value = _HashPassword(user.Password);
 
-                    cmd.Parameters.Add("@id", SqlDbType.VarChar).Value = user.Email;
+                    cmd.Parameters.Add("@email", SqlDbType.VarChar).Value = user.Email;
 
-                    cmd.Parameters.Add("@id", SqlDbType.VarChar).Value = user.IsActive;
+                    cmd.Parameters.Add("@isactive", SqlDbType.VarChar).Value = user.IsActive;
 
-                    cmd.Parameters.Add("@id", SqlDbType.DateTime).Value = user.Registered;
+                    
 
-                    cmd.Parameters.Add("@id", SqlDbType.DateTime).Value = user.Modified;
+                    
 
                     connection.Open();
                     cmd.ExecuteNonQuery();
@@ -153,6 +153,33 @@ namespace Dashboardify.Repositories
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+        }
+
+        public void DeleteUser(int userId)
+        {
+            SqlConnection connection = new SqlConnection();
+
+            using (SqlConnection sc = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    sc.Open();
+                    SqlCommand command = new SqlCommand(
+                        "DELETE FROM Users WHERE id = '@id'" +
+                        connection);
+
+                    command.Parameters.AddWithValue("@id", userId);
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                finally
+                {
+                    sc.Close();
+                }
             }
         }
 
