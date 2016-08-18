@@ -64,9 +64,12 @@ namespace Dashboardify.Repositories
 
                 _results.Add(d);
             }
-        public void UpdateDash(DashBoard dash)
-        {
-            
         }
+
+        public DashBoard getDashboard(int DashboardId) { };
+        public IList<DashBoard> getDashboards() { };
+        public void updateDasboard(DashBoard dash) { };
+        public int createDashboard(DashBoard dash) { };
+        public void deleteDashboard(int DashId) { };
     }
 }
