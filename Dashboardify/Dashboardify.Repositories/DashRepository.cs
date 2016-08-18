@@ -66,21 +66,21 @@ namespace Dashboardify.Repositories
             }
         }
 
-        public DashBoard GetDashboard(int dashboardId) {
+        public DashBoard Get(int dashboardId) {
 
-        };
+        }
 
-        public IList<DashBoard> getDashboards() {
+        public void Update(DashBoard dash) {
 
-        };
+        }
 
-        public void updateDasboard(DashBoard dash) {
-
-        };
-
-        public int createDashboard(DashBoard dash) {
+        public void Create(DashBoard dash) {
             string query = @"INSERT INTO dbo.DashBoards (UserId, IsActive, Name, DateCreated, DateModified)
-                            VALUES (@UId, @IsAct, @Name, @DateCreated, @DateModified)";
+                            VALUES (@UId, @IsAct, @Name, @DateCreated, @DateModified);
+                            SELECT SCOPE_IDENTITY()";
+
+
+            string query2 = "IDENT_CURRENT(dbo.DashBoards)"; 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 SqlCommand command = new SqlCommand(query, connection);
@@ -96,6 +96,8 @@ namespace Dashboardify.Repositories
                     command.Parameters.AddWithValue("@DateModified", dash.DateModified);
 
                     command.ExecuteNonQuery();
+                    int modified = (int)command.ExecuteScalar();
+                    dash.Id = modified;
                     Console.WriteLine("Executed query");
                 }
                 catch (Exception ex)
@@ -103,10 +105,10 @@ namespace Dashboardify.Repositories
                     Console.WriteLine(ex.Message);
                 }
             }
-        };
+        }
 
         public void deleteDashboard(int DashId) {
 
-        };
+        }
     }
 }
