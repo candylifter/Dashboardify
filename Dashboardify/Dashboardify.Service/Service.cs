@@ -9,6 +9,8 @@ using OpenQA.Selenium;
 using System.Drawing.Imaging;
 using System.Drawing;
 using OpenQA.Selenium.Remote;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Dashboardify.Service
 {
@@ -17,13 +19,18 @@ namespace Dashboardify.Service
         private readonly Timer _timer;
         private readonly ItemsRepository _itemsRepository;
 
+        private readonly int _timerInterval = 60000; //miliseconds
+
         public Service()
         {
-            _timer = new Timer(15000) {AutoReset = true};
+            _timer = new Timer(_timerInterval) {AutoReset = true};
             _timer.Elapsed += TimeElapsedEventHandler;
 
             _itemsRepository = new ItemsRepository();
+
+            UpdateItems();
         }
+
 
         public void TimeElapsedEventHandler(object sender, ElapsedEventArgs e)
         {
@@ -39,63 +46,197 @@ namespace Dashboardify.Service
 
             //Console.WriteLine(Regex.Replace(content, @"\s+", " "));
 
-            _timer.Stop();
+
             //PrintAllItems();
             //TakeScreenshots();
-            
+            UpdateItems();
+            //_timer.Stop();
         }
 
-        // TODO: Refactor to separate methods
-        public void TakeScreenshots()
+        public void UpdateItems()
         {
-            var driver = new FirefoxDriver();
 
+            DateTime now = DateTime.Now;
             var items = _itemsRepository.GetList();
+            var scheduledItems = FilterScheduledItems(items, now);
+
+            //Testing filtering
+            Console.WriteLine("\n\nItems from db:\n");
+
+            foreach(var item in items)
+            {
+                Console.WriteLine(item.Name);
+            }
+
+            Console.WriteLine("\n\nScheduled items:\n");
+
+            foreach (var item in scheduledItems)
+            {
+                Console.WriteLine(item.Name);
+            }
+
+
+            var outdatedItems = FilterOutdatedItems(scheduledItems, now);
+
+            Console.WriteLine("\n\nOutdated items:\n");
+
+
+            foreach (var item in outdatedItems)
+            {
+                Console.WriteLine(item.Name);
+            }
+
+            TakeScreenshots(outdatedItems);
+
+        }
+
+        public IList<Item> FilterScheduledItems(IList<Item> items, DateTime now)
+        {
+            var filteredItems = items.Where(item => (
+                    item.LastChecked.AddMilliseconds(item.CheckInterval)) <= now && 
+                    item.isActive == true
+                ).ToList();
+
+            return filteredItems;
+        }
+
+        public IList<Item> FilterOutdatedItems(IList<Item> items, DateTime now)
+        {
+
+            IList<Item> outdatedItems = new List<Item>();
+
+            foreach(var item in items)
+            {
+                if (CheckIfOutdated(item, now))
+                {
+                    outdatedItems.Add(item);
+                }
+            }
+
+            return outdatedItems;
+        }
+
+        public bool CheckIfOutdated(Item item, DateTime now)
+        {
+
+            var newContent = GetContentFromWebsite(item.Url, item.Xpath);
+
+            if (newContent != item.Content)
+            {
+
+                Console.WriteLine("Content from DB: " + item.Content);
+                item.Content = newContent;
+                Console.WriteLine("Content from Web: " + item.Content);
+
+                item.LastChecked = now;
+                _itemsRepository.UpdateItem(item);
+                return true;
+            } else
+            {
+                return false;
+            }
+        }
+
+
+        // TODO: Refactor to separate methods
+        public void TakeScreenshots(IList<Item> items)
+        {
+            Console.WriteLine("Creating webdriver instance");
+            var driver = new ChromeDriver();
+            driver.Manage().Window.Maximize();
 
             foreach (var item in items)
             {
+                Console.WriteLine("Navigating to: " + item.Url);
+
                 driver.Navigate().GoToUrl(item.Url);
 
-                var el = driver.FindElement(By.XPath(item.Xpath));
+                try
+                {
+                    RemoteWebElement el = (RemoteWebElement)driver.FindElement(By.XPath(item.Xpath));
 
-                RemoteWebElement remElement = (RemoteWebElement)driver.FindElement(By.XPath(item.Xpath));
-                Point location = remElement.LocationOnScreenOnceScrolledIntoView;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    break;
+                }
 
-                int viewportWidth = Convert.ToInt32(((IJavaScriptExecutor)driver).ExecuteScript("return document.documentElement.clientWidth"));
-                int viewportHeight = Convert.ToInt32(((IJavaScriptExecutor)driver).ExecuteScript("return document.documentElement.clientHeight"));
 
+                Console.WriteLine("Scrolling to the element");
 
-                driver.SwitchTo();
+                driver.ExecuteScript(@"
+                                    (function () {
 
-                int elementLocation_X = location.X;
-                int elementLocation_Y = location.Y;
+                                     var rect = document.evaluate(
+                                      '" + item.Xpath + @"',
+                                      document,
+                                      null,
+                                      XPathResult.FIRST_ORDERED_NODE_TYPE,
+                                      null
+                                     ).singleNodeValue.getBoundingClientRect();
+                                     window.scrollTo(0, rect.top - ((document.documentElement.clientHeight / 2) - (rect.height / 2)));
+
+                                    })();");
+
 
                 IWebElement img = driver.FindElement(By.XPath(item.Xpath));
 
-                int elementSize_Width = img.Size.Width;
-                int elementSize_Height = img.Size.Height;
+                int elementWidth = img.Size.Width;
+                int elementHeight = img.Size.Height;
+
+
+                //Using built in selenium methods fails getting exact coordactes for some reason, so I used javascript instead to get X and Y
+                string jsQuery = @"return document.evaluate(
+                                '" + item.Xpath + @"',
+                                document,
+                                null,
+                                XPathResult.FIRST_ORDERED_NODE_TYPE,
+                                null
+                                ).singleNodeValue.getBoundingClientRect()";
+
+                int elementTop = Convert.ToInt32(((IJavaScriptExecutor)driver).ExecuteScript(jsQuery+".top;"));
+
+
+                int elementLeft = Convert.ToInt32(((IJavaScriptExecutor)driver).ExecuteScript(jsQuery+".left;"));
+
+
+
                 Console.WriteLine("Taking screenshot");
 
-                Size s = new Size();
-                s.Width = driver.Manage().Window.Size.Width;
-                s.Height = driver.Manage().Window.Size.Height;
+                Screenshot ss = ((ITakesScreenshot)driver).GetScreenshot();
 
-                Bitmap bitmap = new Bitmap(s.Width, s.Height);
-                Graphics graphics = Graphics.FromImage(bitmap as Image);
-                graphics.CopyFromScreen(0, 0, 0, 0, s);
+                //Save screenshot
+                string screenshot = ss.AsBase64EncodedString;
+                byte[] screenshotAsByteArray = ss.AsByteArray;
+                ss.SaveAsFile(item.Name + ".png", ImageFormat.Png); 
+                ss.ToString();
 
-                bitmap.Save(item.Name + ".png", System.Drawing.Imaging.ImageFormat.Png);
 
-                RectangleF part = new RectangleF(elementLocation_X, elementLocation_Y + (s.Height - viewportHeight), elementSize_Width, elementSize_Height);
+                //Crop screenshot
+                Rectangle cropRect = new Rectangle(elementLeft, elementTop, elementWidth, elementHeight);
 
-                Bitmap bmpobj = (Bitmap)Image.FromFile(item.Name + ".png");
-                Bitmap bn = bmpobj.Clone(part, bmpobj.PixelFormat);
-                bn.Save(item.Name + "-cropped.jpeg", System.Drawing.Imaging.ImageFormat.Jpeg);
+                Bitmap src = Image.FromFile(item.Name + ".png") as Bitmap;
+                Bitmap target = new Bitmap(cropRect.Width, cropRect.Height);
+
+                using (Graphics g = Graphics.FromImage(target))
+                {
+                    g.DrawImage(src, new Rectangle(0, 0, target.Width, target.Height),
+                                     cropRect,
+                                     GraphicsUnit.Pixel);
+                }
+
+                target.Save(item.Name + "-cropped.jpeg", ImageFormat.Jpeg);
             }
 
             driver.Close();
+
+
+
         }
 
+
+        // TODO: Handle all exceptions
         public string GetContentFromWebsite(string url, string xpath)
         {
             HtmlWeb hw = new HtmlWeb();
@@ -108,15 +249,15 @@ namespace Dashboardify.Service
                 var node = doc.DocumentNode.SelectSingleNode(xpath);
                 var content =  node.InnerText ;
 
-
-                return content;
+               
+                return Regex.Replace(content, @"\s+", " ");
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
 
-            return null;
+            return "Nope";
         }
 
         public void PrintAllItems()

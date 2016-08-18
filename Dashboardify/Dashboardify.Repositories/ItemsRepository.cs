@@ -9,7 +9,7 @@ namespace Dashboardify.Repositories
 {
     public class ItemsRepository
     {
-        private string _connectionString = "Data Source=.DESKTOP-11VK3U9;" +
+        private string _connectionString = "Data Source=.;" +
                                             "Initial Catalog=DashBoardify;" +
                                             "User id=DashboardifyUser;" +
                                             "Password=123456;";
@@ -24,7 +24,7 @@ namespace Dashboardify.Repositories
 
                 try
                 {
-                    Console.WriteLine("Connected Succesfully");
+                    //Console.WriteLine("Connected Succesfully");
                     connection.Open();
 
                     SqlDataReader reader = command.ExecuteReader();
@@ -70,6 +70,7 @@ namespace Dashboardify.Repositories
                 i.Created = (DateTime)dr["Created"];
                 i.Modified = (DateTime)dr["Modified"];
                 i.ScrnshtURL = (string)dr["ScrnshtURL"];
+                i.Content = (string)dr["Content"];
 
                 _results.Add(i);
 
@@ -80,25 +81,51 @@ namespace Dashboardify.Repositories
         {
             return _results.ToList();
         }
-        
-        public void UpdateItemsOnTimer()
-        {
-            IList<Item> duomenys = GetList();
-            string date = DateTime.Now.ToString(); // 00:00 format
 
-            foreach (Item obj in duomenys)
+        public void UpdateItem(Item item)
+        {
+
+            string query = @"UPDATE dbo.Items
+                            SET Content=@Item_Content,LastChecked=@Item_LastChecked 
+                            WHERE Id=@Item_Id";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                if (obj.LastChecked.AddMinutes(obj.CheckInterval) > DateTime.Parse(date).AddMinutes(obj.CheckInterval))
+                SqlCommand command = new SqlCommand(query, connection);
+
+                try
                 {
-                    Update(obj);
+                    connection.Open();
+                    Console.WriteLine("Opened connection to DB");
+
+                    command.Parameters.AddWithValue("@Item_Id", item.Id);
+                    command.Parameters.AddWithValue("@Item_Content", item.Content);
+                    command.Parameters.AddWithValue("@Item_LastChecked", item.LastChecked.ToString("yyyy-MM-dd HH:mm:ss:fff"));
+                
+                    command.ExecuteNonQuery();
+                    Console.WriteLine("Executed query");
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+
+
+        }
+
+        public void Update(Item item)
+        {
+            foreach (Item obj in _results)
+            {
+                if (obj.Id == item.Id)
+                {
+                    obj.Url = item.Url;
+                    obj.Xpath = item.Xpath;
                 }
             }
             
         }
-        public void Update(Item item)
-        {
-               
-        }
-
     }
 }

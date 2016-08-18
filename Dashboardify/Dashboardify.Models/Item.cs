@@ -26,7 +26,6 @@ namespace Dashboardify.Repositories
 
         public string ScrnshtURL { get; set; }
 
-        //Remove later
         public string Content { get; set; }
     }
 }
