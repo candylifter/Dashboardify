@@ -4,6 +4,9 @@ using System.Linq;
 using Dashboardify.Models;
 using System.Data.SqlClient;
 using System.Data;
+using System.Linq.Expressions;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Dashboardify.Repositories
 {
@@ -105,5 +108,67 @@ namespace Dashboardify.Repositories
                 }
             }
         }
+
+        public User Get(int id)
+        {
+            IList<User> users = GetList();
+
+            foreach (var user in users)
+            {
+                if (user.UserId == id)
+                {
+                    return user;
+                }
+            }
+            return null;
+        }
+
+        public void CreateUsers(User user)
+        {
+            string query = "INSERT INTO dbo.Users (Id,Name,Password,Email,IsActive,DateRegistered, DateModified) VALUES (@id, @name, @password, @email, @isactive, @dateregistered, @datemodified)";
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.Add("@id", SqlDbType.Int).Value = user.UserId;
+
+                    cmd.Parameters.Add("@name", SqlDbType.VarChar).Value = user.Name;
+
+                    cmd.Parameters.Add("@id", SqlDbType.VarChar).Value = _HashPassword(user.Password);
+
+                    cmd.Parameters.Add("@id", SqlDbType.VarChar).Value = user.Email;
+
+                    cmd.Parameters.Add("@id", SqlDbType.VarChar).Value = user.IsActive;
+
+                    cmd.Parameters.Add("@id", SqlDbType.DateTime).Value = user.Registered;
+
+                    cmd.Parameters.Add("@id", SqlDbType.DateTime).Value = user.Modified;
+
+                    connection.Open();
+                    cmd.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private string _HashPassword(string password)
+        {
+            MD5 md5 = MD5.Create();
+            byte[] inputBytes = Encoding.ASCII.GetBytes(password);
+            byte[] hash = md5.ComputeHash(inputBytes);
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < hash.Length; i++)
+            {
+                sb.Append(hash[i].ToString("X2"));
+            }
+            return sb.ToString();
+        }
+
     }
 }

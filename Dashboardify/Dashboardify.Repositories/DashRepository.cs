@@ -55,15 +55,17 @@ namespace Dashboardify.Repositories
             {
                 DashBoard d = new DashBoard();
 
-                d.Id = (int)dr["DashId"];
-                d.UserId = (int)dr["UserId"];
-                d.IsActive = (bool)dr["IsActive"];
-                d.Name = (string)dr["Name"];
-                d.DateCreated = (DateTime)dr["DateCreated"];
-                d.DateModified = (DateTime)dr["DateModified"];
+                d.Id = (int) dr["DashId"];
+                d.UserId = (int) dr["UserId"];
+                d.IsActive = (bool) dr["IsActive"];
+                d.Name = (string) dr["Name"];
+                d.DateCreated = (DateTime) dr["DateCreated"];
+                d.DateModified = (DateTime) dr["DateModified"];
 
                 _results.Add(d);
             }
+        }
+
         public void UpdateDash(DashBoard dash)
         {
             
