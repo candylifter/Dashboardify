@@ -42,8 +42,7 @@ namespace Dashboardify.Repositories
 
         public ItemsRepository()
         {
-            string queryString = "SELECT * FROM dbo.Items";
-
+            string queryString = "SELECT * FROM dbo.Items(NOLOCK)";
             DataTable datatable = _GetTableFromDB(queryString);
 
             _results = new List<Item>();
