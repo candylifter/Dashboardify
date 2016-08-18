@@ -26,15 +26,10 @@ namespace Dashboardify.Repositories
                 {
                     //Console.WriteLine("Connected Succesfully");
                     connection.Open();
-
                     SqlDataReader reader = command.ExecuteReader();
-
                     DataTable dt = new DataTable();
-
                     dt.Load(reader);
-
                     reader.Close();
-
                     return dt;
                 }
                 catch (Exception ex)
@@ -47,8 +42,6 @@ namespace Dashboardify.Repositories
 
         public ItemsRepository()
         {
-
-     
             string queryString = "SELECT * FROM dbo.Items";
 
             DataTable datatable = _GetTableFromDB(queryString);
@@ -73,7 +66,6 @@ namespace Dashboardify.Repositories
                 i.Content = (string)dr["Content"];
 
                 _results.Add(i);
-
             }
         }
 
