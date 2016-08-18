@@ -66,8 +66,22 @@ namespace Dashboardify.Repositories
             }
         }
 
-        public DashBoard Get(int dashboardId) {
+        public IList<DashBoard> GetList()
+        {
+            return _results.ToList();
+        }
 
+        public DashBoard Get(int dashboardId) {
+            IList<DashBoard> dashboards = GetList();
+
+            foreach (var dashboard in dashboards)
+            {
+                if (dashboard.Id == dashboardId)
+                {
+                    return dashboard;
+                }
+            }
+            return null;
         }
 
         public void Update(DashBoard dash) {
@@ -78,9 +92,6 @@ namespace Dashboardify.Repositories
             string query = @"INSERT INTO dbo.DashBoards (UserId, IsActive, Name, DateCreated, DateModified)
                             VALUES (@UId, @IsAct, @Name, @DateCreated, @DateModified);
                             SELECT SCOPE_IDENTITY()";
-
-
-            string query2 = "IDENT_CURRENT(dbo.DashBoards)"; 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 SqlCommand command = new SqlCommand(query, connection);
@@ -107,8 +118,30 @@ namespace Dashboardify.Repositories
             }
         }
 
-        public void deleteDashboard(int DashId) {
+        public void deleteDashboard(int dashId) {
+            SqlConnection connection = new SqlConnection();
 
+            using (SqlConnection sc = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    sc.Open();
+                    SqlCommand command = new SqlCommand(
+                        "DELETE FROM DashBoards WHERE Id = '@id'" +
+                        connection);
+
+                    command.Parameters.AddWithValue("@id", dashId);
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                finally
+                {
+                    sc.Close();
+                }
+            }
         }
     }
 }
