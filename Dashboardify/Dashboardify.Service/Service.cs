@@ -45,9 +45,9 @@ namespace Dashboardify.Service
 
             //var firstItem = items[0];
 
-            //firstItem.Xpath = RemakeXpath(firstItem.Xpath);
+            //firstitem.XPath = RemakeXpath(firstitem.XPath);
 
-            //var content = GetContentFromWebsite(firstItem.Url, firstItem.Xpath);
+            //var content = GetContentFromWebsite(firstitem.Website, firstitem.XPath);
 
             //Console.WriteLine(Regex.Replace(content, @"\s+", " "));
 
@@ -124,7 +124,7 @@ namespace Dashboardify.Service
         public bool CheckIfOutdated(Item item, DateTime now)
         {
 
-            var newContent = GetContentFromWebsite(item.Url, item.Xpath);
+            var newContent = GetContentFromWebsite(item.Website, item.XPath);
 
             if (newContent != item.Content)
             {
@@ -152,13 +152,13 @@ namespace Dashboardify.Service
 
             foreach (var item in items)
             {
-                Console.WriteLine("Navigating to: " + item.Url);
+                Console.WriteLine("Navigating to: " + item.Website);
 
-                driver.Navigate().GoToUrl(item.Url);
+                driver.Navigate().GoToUrl(item.Website);
 
                 try
                 {
-                    RemoteWebElement el = (RemoteWebElement)driver.FindElement(By.XPath(item.Xpath));
+                    RemoteWebElement el = (RemoteWebElement)driver.FindElement(By.XPath(item.XPath));
 
                 }
                 catch (Exception ex)
@@ -174,7 +174,7 @@ namespace Dashboardify.Service
                                     (function () {
 
                                      var rect = document.evaluate(
-                                      '" + item.Xpath + @"',
+                                      '" + item.XPath + @"',
                                       document,
                                       null,
                                       XPathResult.FIRST_ORDERED_NODE_TYPE,
@@ -185,7 +185,7 @@ namespace Dashboardify.Service
                                     })();");
 
 
-                IWebElement img = driver.FindElement(By.XPath(item.Xpath));
+                IWebElement img = driver.FindElement(By.XPath(item.XPath));
 
                 int elementWidth = img.Size.Width;
                 int elementHeight = img.Size.Height;
@@ -193,7 +193,7 @@ namespace Dashboardify.Service
 
                 //Using built in selenium methods fails getting exact coordactes for some reason, so I used javascript instead to get X and Y
                 string jsQuery = @"return document.evaluate(
-                                '" + item.Xpath + @"',
+                                '" + item.XPath + @"',
                                 document,
                                 null,
                                 XPathResult.FIRST_ORDERED_NODE_TYPE,
@@ -271,9 +271,9 @@ namespace Dashboardify.Service
 
             foreach (var item in items)
             {
-                string content = GetContentFromWebsite(item.Url, RemakeXpath(item.Xpath));
+                string content = GetContentFromWebsite(item.Website, RemakeXpath(item.XPath));
 
-                Console.WriteLine("\n" + item.Url + "\n");
+                Console.WriteLine("\n" + item.Website + "\n");
 
                 if (content != null) {
                     Console.WriteLine(Regex.Replace(content, @"\s+", " "));
@@ -281,7 +281,7 @@ namespace Dashboardify.Service
                     Console.WriteLine("Content is null");
                 }
 
-                //TakeScreenshot(item.Url, item.Name, item.Xpath);
+                //TakeScreenshot(item.Website, item.Name, item.XPath);
 
                 Console.WriteLine("\n---\n");
             }
