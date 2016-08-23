@@ -11,24 +11,39 @@ namespace Dashboardify.Repositories
 {
     public class ItemsRepository
     {
-        private string _connString;
-
+        private string _connectionString;
+        /// <summary>
+        /// Item repository
+        /// </summary>
+        /// <param name="connString">ConnectionString to DB</param>
         public ItemsRepository(string connString)
         {
-            this._connString = connString;
+            this._connectionString = connString;
         }
-        
- 
-
+        /// <summary>
+        /// Gets list of all items from Item table
+        /// </summary>
+        /// <returns>Items</returns>
         public IList<Item> GetList()
         {
-            IList<Item> listItems = new List<Item>();
-            string queryString = "SELECT * FROM Items";
+            string queryString = @"SELECT Id,
+                                          DashBoardId, 
+                                          Name, 
+                                          Website,
+                                          CheckInterval, 
+                                          IsActive, 
+                                          XPath, 
+                                          LastChecked, 
+                                          Created, 
+                                          Modified, 
+                                          ScrnshtURL, 
+                                          Content 
+                                  FROM Items";
           
             try
             {
                 using (IDbConnection db = new
-            SqlConnection(_connString))
+            SqlConnection(_connectionString))
                 {
                     return db.Query<Item>
                     (queryString).ToList();
@@ -52,12 +67,19 @@ namespace Dashboardify.Repositories
         public int Update(Item item)
         {
 
-            string query = @"UPDATE dbo.Items
-                            SET Content=@Item_Content,LastChecked=@Item_LastChecked 
-                            WHERE Id=@Item_Id";
+            string query = string.Format(@"UPDATE dbo.Items
+                            SET Content=@Item_Content,
+                            LastChecked=@Item_LastChecked,
+                            DashBoardId=@DashId,
+                            Name=@DashName,
+                            CheckInterval=@CheckInterval,
+                            XPath=@Xpath,
+                            IsActive=@isActive,
+                            ScrnshtURL=@scrUrl
+                            WHERE Id=@Item_Id",item.Content,item.LastChecked,item.DashBoardId,item.Name,item.CheckInterval,item.XPath,item.isActive,item.ScrnshtURL,item.Id);
             try
             {
-                using (IDbConnection db = new SqlConnection(_connString))
+                using (IDbConnection db = new SqlConnection(_connectionString))
                 {
                     int rowsAffected = db.Execute(query, item);
                     return rowsAffected;
@@ -84,9 +106,22 @@ namespace Dashboardify.Repositories
         {
             try
             {
-                using (IDbConnection db = new SqlConnection(_connString))
+                using (IDbConnection db = new SqlConnection(_connectionString))
                 {
-                    return db.Query<Item>("SELECT * FROM Items WHERE Id = @Id", new { itemId }).SingleOrDefault();
+                    return db.Query<Item>(@"SELECT
+                                          Id,
+                                          DashBoardId, 
+                                          Name, 
+                                          Website,
+                                          CheckInterval, 
+                                          IsActive, 
+                                          XPath, 
+                                          LastChecked, 
+                                          Created, 
+                                          Modified, 
+                                          ScrnshtURL, 
+                                          Content 
+                                          FROM Items WHERE Id = @Id", new { itemId }).SingleOrDefault(); //item.id
                 }
             }
             catch (Exception ex)
@@ -104,10 +139,23 @@ namespace Dashboardify.Repositories
         /// <returns>List of all items in same dash</returns>
         public IList<Item> GetByDashId(int dashId)
         {
-            string query = "SELECT * FROM items WHERE DashBoardId = " + dashId.ToString();
+            string query = @"SELECT
+                            Id,
+                            DashBoardId, 
+                            Name, 
+                            Website,
+                            CheckInterval, 
+                            IsActive, 
+                            XPath, 
+                            LastChecked, 
+                            Created, 
+                            Modified, 
+                            ScrnshtURL, 
+                            Content  
+                            FROM items WHERE DashBoardId = " + dashId.ToString();
             try
             {
-                using (IDbConnection db = new SqlConnection(_connString))
+                using (IDbConnection db = new SqlConnection(_connectionString))
                 {
                     return db.Query<Item>
                         (query).ToList();
@@ -127,7 +175,7 @@ namespace Dashboardify.Repositories
         {
             try
             {
-                using (IDbConnection db = new SqlConnection(_connString))
+                using (IDbConnection db = new SqlConnection(_connectionString))
                 {
                     string query = @"INSERT INTO Items([Id],[DashBoardId],[Name],[Website],[CheckInterval],[IsActive],[XPath],[LastChecked],[Created],[Modified],[ScrnshtURL],[Content] ) VALUES (@Id,@DashBoardId,@DashBoardId,@Name,@Website,@CheckInterval,@IsActive,@XPath,@LastChecked,@Created,@Modified,@ScrnshtURL,@Content)";
                     var result = db.Execute(query, item);
@@ -149,7 +197,7 @@ namespace Dashboardify.Repositories
         {
             try
             {
-                using (IDbConnection db = new SqlConnection(_connString))
+                using (IDbConnection db = new SqlConnection(_connectionString))
                 {
                     string query = "DELETE * FROM Items WHERE Id= " + itemId.ToString();
                     int rowsAffected = db.Execute(query);
@@ -163,6 +211,7 @@ namespace Dashboardify.Repositories
             }
            
         }
+
 
        
     }

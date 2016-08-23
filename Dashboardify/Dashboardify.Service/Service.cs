@@ -134,7 +134,7 @@ namespace Dashboardify.Service
                 Console.WriteLine("Content from Web: " + item.Content);
 
                 item.LastChecked = now;
-                _itemsRepository.UpdateItem(item);
+                _itemsRepository.Update(item);
                 return true;
             } else
             {
