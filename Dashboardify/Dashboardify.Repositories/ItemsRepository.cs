@@ -9,39 +9,12 @@ namespace Dashboardify.Repositories
 {
     public class ItemsRepository
     {
-        private string _connectionString = "Data Source=.;" +
-                                            "Initial Catalog=DashBoardify;" +
-                                            "User id=DashboardifyUser;" +
-                                            "Password=123456;";
+        private string _connString;
 
-        private IList<Item> _results;
-
-        private DataTable _GetTableFromDB(string queryString)
+        public ItemsRepository(string connString)
         {
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                SqlCommand command = new SqlCommand(queryString, connection);
-
-                try
-                {
-                    //Console.WriteLine("Connected Succesfully");
-                    connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
-                    DataTable dt = new DataTable();
-                    dt.Load(reader);
-                    reader.Close();
-                    return dt;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    return null;
-                }
-            }
-        }
-
-        public ItemsRepository()
-        {
+            this._connString = connString;
+            /*
             string queryString = "SELECT * FROM dbo.Items(NOLOCK)";
             DataTable datatable = _GetTableFromDB(queryString);
 
@@ -65,12 +38,74 @@ namespace Dashboardify.Repositories
                 i.Content = (string)dr["Content"];
 
                 _results.Add(i);
+                */
+        }
+        
+        
+        private DataTable _GetTableFromDB(string queryString)
+        {
+            using (SqlConnection connection = new SqlConnection(_connString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+
+                try
+                {
+                    //Console.WriteLine("Connected Succesfully");
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    DataTable dt = new DataTable();
+                    dt.Load(reader);
+                    reader.Close();
+                    return dt;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return null;
+                }
             }
         }
+        
 
         public IList<Item> GetList()
         {
-            return _results.ToList();
+            IList<Item> listItems = new List<Item>();
+            string queryString = "SELECT * FROM Items";
+            try
+            {
+                DataTable data = _GetTableFromDB(queryString);
+
+                foreach (DataRow dr in data.Rows)
+                {
+                    Item d = new Item();
+
+                    d.Id = (int) dr["Id"];
+                    d.DashBoardId = (int) dr["DashBoardId"];
+                    d.Name = (string) dr["Name"];
+                    d.Url = (string) dr["Website"];
+                    d.CheckInterval = (int) dr["CheckInterval"];
+                    d.isActive = (bool) dr["IsActive"];
+                    d.Xpath = (string) dr["XPath"];
+                    d.LastChecked = (DateTime) dr["LastChecked"];
+                    d.Created = (DateTime) dr["Created"];
+                    d.Modified = (DateTime) dr["Modified"];
+                    d.ScrnshtURL = (string) dr["ScrnshtURL"];
+                    d.Content = (string) dr["Content"];
+
+                    listItems.Add(d);
+
+                }
+                return listItems.ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Sekmės Irmantai :)");
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+            
+
+
         }
 
         public void UpdateItem(Item item)
@@ -80,7 +115,7 @@ namespace Dashboardify.Repositories
                             SET Content=@Item_Content,LastChecked=@Item_LastChecked 
                             WHERE Id=@Item_Id";
 
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_connString))
             {
                 SqlCommand command = new SqlCommand(query, connection);
 
@@ -106,17 +141,6 @@ namespace Dashboardify.Repositories
 
         }
 
-        public void Update(Item item)
-        {
-            foreach (Item obj in _results)
-            {
-                if (obj.Id == item.Id)
-                {
-                    obj.Url = item.Url;
-                    obj.Xpath = item.Xpath;
-                }
-            }
-            
-        }
+       
     }
 }
