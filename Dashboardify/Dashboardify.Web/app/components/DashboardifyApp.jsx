@@ -1,10 +1,14 @@
 import React from 'react';
 
+import Navbar from 'Navbar';
+import ItemDashboard from 'ItemDashboard';
+
 class DashboardifyApp extends React.Component {
   render() {
     return (
       <div>
-        <h1>Dashboardify App</h1>
+        <Navbar/>
+        <ItemDashboard/>
       </div>
     )
   }
