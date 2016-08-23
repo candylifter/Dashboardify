@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 using System.Timers;
 using Dashboardify.Repositories;
@@ -16,6 +19,7 @@ namespace Dashboardify.Service
 {
     public class Service
     {
+        string connectionString = ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
         private readonly Timer _timer;
         private readonly ItemsRepository _itemsRepository;
 
@@ -23,10 +27,11 @@ namespace Dashboardify.Service
 
         public Service()
         {
+            Console.WriteLine(connectionString);
             _timer = new Timer(_timerInterval) {AutoReset = true};
             _timer.Elapsed += TimeElapsedEventHandler;
 
-            _itemsRepository = new ItemsRepository();
+            _itemsRepository = new ItemsRepository(connectionString);
 
             UpdateItems();
         }
