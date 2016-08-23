@@ -68,7 +68,7 @@ namespace Dashboardify.Repositories
             return _results.ToList();
         }
 
-        public void Update(User user, string email, string password)
+        public void Update(User user, string email, string password)// string uzsisteina konstruktorium, private_results nereikia
         {
             string query = @"UPDATE dbo.Users
                             SET Password=@User_Pass
