@@ -42,68 +42,13 @@ namespace Dashboardify.Repositories
                 */
         }
         
-        
-        private DataTable _GetTableFromDB(string queryString)
-        {
-            using (SqlConnection connection = new SqlConnection(_connString))
-            {
-                SqlCommand command = new SqlCommand(queryString, connection);
-
-                try
-                {
-                    //Console.WriteLine("Connected Succesfully");
-                    connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
-                    DataTable dt = new DataTable();
-                    dt.Load(reader);
-                    reader.Close();
-                    return dt;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    return null;
-                }
-            }
-        }
-        
+ 
 
         public IList<Item> GetList()
         {
             IList<Item> listItems = new List<Item>();
             string queryString = "SELECT * FROM Items";
-            //try
-            //{
-            //    DataTable data = _GetTableFromDB(queryString);
-
-            //    foreach (DataRow dr in data.Rows)
-            //    {
-            //        //Item d = new Item();
-
-            //        //d.Id = (int) dr["Id"];
-            //        //d.DashBoardId = (int) dr["DashBoardId"];
-            //        //d.Name = (string) dr["Name"];
-            //        //d.Url = (string) dr["Website"];
-            //        //d.CheckInterval = (int) dr["CheckInterval"];
-            //        //d.isActive = (bool) dr["IsActive"];
-            //        //d.Xpath = (string) dr["XPath"];
-            //        //d.LastChecked = (DateTime) dr["LastChecked"];
-            //        //d.Created = (DateTime) dr["Created"];
-            //        //d.Modified = (DateTime) dr["Modified"];
-            //        //d.ScrnshtURL = (string) dr["ScrnshtURL"];
-            //        //d.Content = (string) dr["Content"];
-
-            //        //listItems.Add(d);
-
-            //    }
-            //    return listItems.ToList();
-            //}
-            //catch (Exception ex)
-            //{
-            //    //Console.WriteLine("Sekmės Irmantai :)");
-            //    //Console.WriteLine(ex.Message);
-            //    //throw;
-            //}
+          
             try
             {
                 using (IDbConnection db = new
@@ -114,46 +59,84 @@ namespace Dashboardify.Repositories
 
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 Console.WriteLine("MAESTRO SAUNA DAR VIENA EXCEPTIONA");
+                Console.WriteLine(ex.Message);
                 throw;
             }
             
 
         }
-
-        public void UpdateItem(Item item)
+        /// <summary>
+        /// Updates Item in DB, and 
+        /// </summary>
+        /// <param name="item">Item object</param>
+        /// <returns>returns number of lines affected</returns>
+        public int Update(Item item)
         {
 
             string query = @"UPDATE dbo.Items
                             SET Content=@Item_Content,LastChecked=@Item_LastChecked 
                             WHERE Id=@Item_Id";
 
-            using (SqlConnection connection = new SqlConnection(_connString))
+            using (IDbConnection db = new SqlConnection(_connString))
             {
-                SqlCommand command = new SqlCommand(query, connection);
-
-                try
-                {
-                    connection.Open();
-                    Console.WriteLine("Opened connection to DB");
-
-                    command.Parameters.AddWithValue("@Item_Id", item.Id);
-                    command.Parameters.AddWithValue("@Item_Content", item.Content);
-                    command.Parameters.AddWithValue("@Item_LastChecked", item.LastChecked.ToString("yyyy-MM-dd HH:mm:ss:fff"));
-                
-                    command.ExecuteNonQuery();
-                    Console.WriteLine("Executed query");
-
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
+                int rowsAffected = db.Execute(query, item);
+                return rowsAffected;
             }
 
+            //using (SqlConnection connection = new SqlConnection(_connString))
+            //{
 
+            //    SqlCommand command = new SqlCommand(query, connection);
+
+            //    try
+            //    {
+            //        connection.Open();
+            //        Console.WriteLine("Opened connection to DB");
+
+            //        command.Parameters.AddWithValue("@Item_Id", item.Id);
+            //        command.Parameters.AddWithValue("@Item_Content", item.Content);
+            //        command.Parameters.AddWithValue("@Item_LastChecked", item.LastChecked.ToString("yyyy-MM-dd HH:mm:ss:fff"));
+                
+            //        command.ExecuteNonQuery();
+            //        Console.WriteLine("Executed query");
+
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Console.WriteLine(ex.Message);
+            //    }
+            //}
+
+
+        }
+        /// <summary>
+        /// Gets single item
+        /// </summary>
+        /// <param name="itemId">Item Id attribute</param>
+        /// <returns>Returns all data of selected item</returns>
+        public Item Get(int itemId)
+        {
+            using (IDbConnection db = new SqlConnection(_connString))
+            {
+                return db.Query<Item>("SELECT * FROM Items WHERE Id = @Id", new {itemId}).SingleOrDefault();
+            }
+        }
+        /// <summary>
+        /// Returns List of items in same dashboard
+        /// </summary>
+        /// <param name="dashId">Dashboard Id</param>
+        /// <returns>List of all items in same dash</returns>
+        public IList<Item> GetByDashId(int dashId)
+        {
+            string query = "SELECT * FROM items WHERE DashBoardId = " + dashId.ToString();
+            using (IDbConnection db = new SqlConnection(_connString))
+            {
+                return db.Query<Item>
+                (query).ToList();
+            }
         }
 
        
