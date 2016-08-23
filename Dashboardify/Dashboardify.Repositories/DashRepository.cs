@@ -6,86 +6,93 @@ using System.Threading.Tasks;
 using Dashboardify.Models;
 using System.Data;
 using System.Data.SqlClient;
+using Dapper;
 
 namespace Dashboardify.Repositories
 {
     public class DashRepository
     {
 
-        private string _connectionString = "Data Source=.;" +
-                                            "Initial Catalog =DashBoardify;" +
-                                            "User id=DashBoardify;" +
-                                            "Password=123456;";
+        private string _connectionString;
 
         private IList<DashBoard> _results;
 
-        private DataTable _GetTableFromDB(string queryString)
+       
+
+        public DashRepository(string constring)
         {
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                SqlCommand command = new SqlCommand(queryString, connection);
-
-                try
-                {
-                    Console.WriteLine("Connected Succesfully");
-                    connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
-                    DataTable dt = new DataTable();
-                    dt.Load(reader);
-                    reader.Close();
-                    return dt;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    return null;
-                }
-            }
+            this._connectionString = constring;
         }
-
-        public DashRepository()
-        {
-            string queryString = "SELECT * FROM dbo.DashBoards";
-
-            DataTable datatable = _GetTableFromDB(queryString);
-
-            _results = new List<DashBoard>();
-
-            foreach (DataRow dr in datatable.Rows)
-            {
-                DashBoard d = new DashBoard();
-
-                d.Id = (int)dr["DashId"];
-                d.UserId = (int)dr["UserId"];
-                d.IsActive = (bool)dr["IsActive"];
-                d.Name = (string)dr["Name"];
-                d.DateCreated = (DateTime)dr["DateCreated"];
-                d.DateModified = (DateTime)dr["DateModified"];
-
-                _results.Add(d);
-            }
-        }
-
+        /// <summary>
+        /// Gets all data from DashBoards table in a list<>
+        /// </summary>
+        /// <returns>List of all items</returns>
         public IList<DashBoard> GetList()
         {
-            return _results.ToList();
-        }
-
-        public DashBoard Get(int dashboardId) {
-            IList<DashBoard> dashboards = GetList();
-
-            foreach (var dashboard in dashboards)
+            string queryString = "SELECT * FROM DashBoards";
+            try
             {
-                if (dashboard.Id == dashboardId)
+                using (IDbConnection db = new
+            SqlConnection(_connectionString))
                 {
-                    return dashboard;
+                    return db.Query<DashBoard>
+                    (queryString).ToList();
+
                 }
             }
-            return null;
+            catch (Exception ex)
+            {
+                Console.WriteLine("MAESTRO SAUNA DAR VIENA EXCEPTIONA");
+                Console.WriteLine(ex.Message);
+                throw;
+            }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="DashId"></param>
+        /// <returns></returns>
+        public DashBoard Get(int DashId)
+        {
+            try
+            {
+                using (IDbConnection db = new SqlConnection(_connectionString))
+                {
+                    return db.Query<DashBoard>("SELECT * FROM DashBoards WHERE Id = @Id", new { DashId }).SingleOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Sekems Irmantai :))))))))");
+                Console.WriteLine(ex.Message);
+                throw;
+            }
 
-        public void Update(DashBoard dash) {
+        }
+        /// <summary>
+        /// Updates dashboard in dashboard table
+        /// </summary>
+        /// <param name="dash">Dashboard Object</param>
+        public int Update(DashBoard dash)
+        {
+            string query = @"UPDATE dbo.DashBoards
+                            SET Content=@Item_Content,LastChecked=@Item_LastChecked 
+                            WHERE Id=@Item_Id";
+            try
+            {
+                using (IDbConnection db = new SqlConnection(_connectionString))
+                {
+                    int rowsAffected = db.Execute(query, dash);
+                    return rowsAffected;
+                }
 
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Sekems Irmantai :))))))))");
+                Console.WriteLine(ex.Message);
+                throw;
+            }
         }
 
         public void Create(DashBoard dash) {
