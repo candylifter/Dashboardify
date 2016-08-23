@@ -4,7 +4,7 @@ import {Router, Route} from 'react-router';
 
 import DashboardifyApp from 'DashboardifyApp';
 
-require('style!css!sass!applicationStyles');
+import 'style!css!sass!applicationStyles';
 
 ReactDOM.render(
   <DashboardifyApp/>
