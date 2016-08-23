@@ -15,9 +15,6 @@ namespace Dashboardify.Repositories
 
         private string _connectionString;
 
-        private IList<DashBoard> _results;
-
-       
 
         public DashRepository(string constring)
         {
@@ -29,7 +26,14 @@ namespace Dashboardify.Repositories
         /// <returns>List of all items</returns>
         public IList<DashBoard> GetList()
         {
-            string queryString = "SELECT * FROM DashBoards";
+            string queryString = @"SELECT
+                                 Id,
+                                 UserId,
+                                 IsActive,
+                                 Name,
+                                 DateCreated,
+                                 DateModified, 
+                                 FROM DashBoards";
             try
             {
                 using (IDbConnection db = new
@@ -58,7 +62,14 @@ namespace Dashboardify.Repositories
             {
                 using (IDbConnection db = new SqlConnection(_connectionString))
                 {
-                    return db.Query<DashBoard>("SELECT * FROM DashBoards WHERE Id = @Id", new { DashId }).SingleOrDefault();
+                    return db.Query<DashBoard>(@"SELECT
+                                 Id,
+                                 UserId,
+                                 IsActive,
+                                 Name,
+                                 DateCreated,
+                                 DateModified, 
+                                               FROM DashBoards WHERE Id = @Id", new { DashId }).SingleOrDefault();
                 }
             }
             catch (Exception ex)
@@ -93,7 +104,7 @@ namespace Dashboardify.Repositories
                 Console.WriteLine(ex.Message);
                 throw;
             }
-        }
+        } //Ties situo metodu testi
 
         public void Create(DashBoard dash) {
             string query = @"INSERT INTO dbo.DashBoards (UserId, IsActive, Name, DateCreated, DateModified)

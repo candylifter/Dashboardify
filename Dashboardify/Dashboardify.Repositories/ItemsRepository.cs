@@ -69,8 +69,14 @@ namespace Dashboardify.Repositories
 
             string query = string.Format(@"UPDATE dbo.Items
                             SET Content=@Item_Content,
-                            LastChecked=@Item_LastChecked 
-                            WHERE Id=@Item_Id",item.Content,item.LastChecked,item.Id);
+                            LastChecked=@Item_LastChecked,
+                            DashBoardId=@DashId,
+                            Name=@DashName,
+                            CheckInterval=@CheckInterval,
+                            XPath=@Xpath,
+                            IsActive=@isActive,
+                            ScrnshtURL=@scrUrl
+                            WHERE Id=@Item_Id",item.Content,item.LastChecked,item.DashBoardId,item.Name,item.CheckInterval,item.XPath,item.isActive,item.ScrnshtURL,item.Id);
             try
             {
                 using (IDbConnection db = new SqlConnection(_connectionString))
