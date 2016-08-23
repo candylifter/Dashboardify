@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using Dapper;
 
 
 namespace Dashboardify.Repositories
@@ -71,40 +72,54 @@ namespace Dashboardify.Repositories
         {
             IList<Item> listItems = new List<Item>();
             string queryString = "SELECT * FROM Items";
+            //try
+            //{
+            //    DataTable data = _GetTableFromDB(queryString);
+
+            //    foreach (DataRow dr in data.Rows)
+            //    {
+            //        //Item d = new Item();
+
+            //        //d.Id = (int) dr["Id"];
+            //        //d.DashBoardId = (int) dr["DashBoardId"];
+            //        //d.Name = (string) dr["Name"];
+            //        //d.Url = (string) dr["Website"];
+            //        //d.CheckInterval = (int) dr["CheckInterval"];
+            //        //d.isActive = (bool) dr["IsActive"];
+            //        //d.Xpath = (string) dr["XPath"];
+            //        //d.LastChecked = (DateTime) dr["LastChecked"];
+            //        //d.Created = (DateTime) dr["Created"];
+            //        //d.Modified = (DateTime) dr["Modified"];
+            //        //d.ScrnshtURL = (string) dr["ScrnshtURL"];
+            //        //d.Content = (string) dr["Content"];
+
+            //        //listItems.Add(d);
+
+            //    }
+            //    return listItems.ToList();
+            //}
+            //catch (Exception ex)
+            //{
+            //    //Console.WriteLine("Sekmės Irmantai :)");
+            //    //Console.WriteLine(ex.Message);
+            //    //throw;
+            //}
             try
             {
-                DataTable data = _GetTableFromDB(queryString);
-
-                foreach (DataRow dr in data.Rows)
+                using (IDbConnection db = new
+            SqlConnection(_connString))
                 {
-                    Item d = new Item();
-
-                    d.Id = (int) dr["Id"];
-                    d.DashBoardId = (int) dr["DashBoardId"];
-                    d.Name = (string) dr["Name"];
-                    d.Url = (string) dr["Website"];
-                    d.CheckInterval = (int) dr["CheckInterval"];
-                    d.isActive = (bool) dr["IsActive"];
-                    d.Xpath = (string) dr["XPath"];
-                    d.LastChecked = (DateTime) dr["LastChecked"];
-                    d.Created = (DateTime) dr["Created"];
-                    d.Modified = (DateTime) dr["Modified"];
-                    d.ScrnshtURL = (string) dr["ScrnshtURL"];
-                    d.Content = (string) dr["Content"];
-
-                    listItems.Add(d);
+                    return db.Query<Item>
+                    (queryString).ToList();
 
                 }
-                return listItems.ToList();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine("Sekmės Irmantai :)");
-                Console.WriteLine(ex.Message);
+                Console.WriteLine("MAESTRO SAUNA DAR VIENA EXCEPTIONA");
                 throw;
             }
             
-
 
         }
 
