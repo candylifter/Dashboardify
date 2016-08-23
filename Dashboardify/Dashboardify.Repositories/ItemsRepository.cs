@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net.Http.Headers;
 using Dapper;
 
 
@@ -15,31 +16,6 @@ namespace Dashboardify.Repositories
         public ItemsRepository(string connString)
         {
             this._connString = connString;
-            /*
-            string queryString = "SELECT * FROM dbo.Items(NOLOCK)";
-            DataTable datatable = _GetTableFromDB(queryString);
-
-            _results = new List<Item>();
-
-            foreach (DataRow dr in datatable.Rows)
-            {
-                Item i = new Item();
-
-                i.Id = (int)dr["Id"];
-                i.DashBoardId = (int)dr["DashBoardId"];
-                i.Name = (string)dr["Name"];
-                i.Url = (string)dr["Website"];
-                i.CheckInterval = (int)dr["CheckInterval"];
-                i.isActive = (bool)dr["IsActive"];
-                i.Xpath = (string)dr["XPath"];
-                i.LastChecked = (DateTime)dr["LastChecked"];
-                i.Created = (DateTime)dr["Created"];
-                i.Modified = (DateTime)dr["Modified"];
-                i.ScrnshtURL = (string)dr["ScrnshtURL"];
-                i.Content = (string)dr["Content"];
-
-                _results.Add(i);
-                */
         }
         
  
@@ -79,36 +55,23 @@ namespace Dashboardify.Repositories
             string query = @"UPDATE dbo.Items
                             SET Content=@Item_Content,LastChecked=@Item_LastChecked 
                             WHERE Id=@Item_Id";
-
-            using (IDbConnection db = new SqlConnection(_connString))
+            try
             {
-                int rowsAffected = db.Execute(query, item);
-                return rowsAffected;
+                using (IDbConnection db = new SqlConnection(_connString))
+                {
+                    int rowsAffected = db.Execute(query, item);
+                    return rowsAffected;
+                }
+
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Sekems Irmantai :))))))))");
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+            
 
-            //using (SqlConnection connection = new SqlConnection(_connString))
-            //{
-
-            //    SqlCommand command = new SqlCommand(query, connection);
-
-            //    try
-            //    {
-            //        connection.Open();
-            //        Console.WriteLine("Opened connection to DB");
-
-            //        command.Parameters.AddWithValue("@Item_Id", item.Id);
-            //        command.Parameters.AddWithValue("@Item_Content", item.Content);
-            //        command.Parameters.AddWithValue("@Item_LastChecked", item.LastChecked.ToString("yyyy-MM-dd HH:mm:ss:fff"));
-                
-            //        command.ExecuteNonQuery();
-            //        Console.WriteLine("Executed query");
-
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Console.WriteLine(ex.Message);
-            //    }
-            //}
 
 
         }
@@ -119,10 +82,20 @@ namespace Dashboardify.Repositories
         /// <returns>Returns all data of selected item</returns>
         public Item Get(int itemId)
         {
-            using (IDbConnection db = new SqlConnection(_connString))
+            try
             {
-                return db.Query<Item>("SELECT * FROM Items WHERE Id = @Id", new {itemId}).SingleOrDefault();
+                using (IDbConnection db = new SqlConnection(_connString))
+                {
+                    return db.Query<Item>("SELECT * FROM Items WHERE Id = @Id", new { itemId }).SingleOrDefault();
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Sekems Irmantai :))))))))");
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+            
         }
         /// <summary>
         /// Returns List of items in same dashboard
@@ -132,11 +105,63 @@ namespace Dashboardify.Repositories
         public IList<Item> GetByDashId(int dashId)
         {
             string query = "SELECT * FROM items WHERE DashBoardId = " + dashId.ToString();
-            using (IDbConnection db = new SqlConnection(_connString))
+            try
             {
-                return db.Query<Item>
-                (query).ToList();
+                using (IDbConnection db = new SqlConnection(_connString))
+                {
+                    return db.Query<Item>
+                        (query).ToList();
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+        /// <summary>
+        /// CreatesItem
+        /// </summary>
+        /// <param name="item">Item object</param>
+        public void Create(Item item)
+        {
+            try
+            {
+                using (IDbConnection db = new SqlConnection(_connString))
+                {
+                    string query = @"INSERT INTO Items([Id],[DashBoardId],[Name],[Website],[CheckInterval],[IsActive],[XPath],[LastChecked],[Created],[Modified],[ScrnshtURL],[Content] ) VALUES (@Id,@DashBoardId,@DashBoardId,@Name,@Website,@CheckInterval,@IsActive,@XPath,@LastChecked,@Created,@Modified,@ScrnshtURL,@Content)";
+                    var result = db.Execute(query, item);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+           
+        }
+        /// <summary>
+        /// Deletes item by id
+        /// </summary>
+        /// <param name="itemId">ItemId</param>
+        /// <returns>Number of rows affected</returns>
+        public int Delete(int itemId)
+        {
+            try
+            {
+                using (IDbConnection db = new SqlConnection(_connString))
+                {
+                    string query = "DELETE * FROM Items WHERE Id= " + itemId.ToString();
+                    int rowsAffected = db.Execute(query);
+                    return rowsAffected;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+           
         }
 
        
