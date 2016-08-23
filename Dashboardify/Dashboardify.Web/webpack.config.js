@@ -45,11 +45,22 @@ module.exports = {
         },
         test: /\.jsx?$/,
         exclude: /(node_modules|bower_components)/
-      }
+      },
+      {
+  			test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+  			loader: "url-loader?limit=10000&mimetype=application/font-woff"
+  		},
+      {
+  			test: /\.(ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+  			loader: "file-loader"
+  		}
     ]
   },
   sassLoader: {
     includePaths: [
+      path.resolve(__dirname, './node_modules/bootstrap-sass/assets/stylesheets'),
+      path.resolve(__dirname, './node_modules/bootstrap-sass'),
+
       // path.resolve(__dirname, './node_modules/foundation-sites/scss')
     ]
   },
