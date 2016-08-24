@@ -86,9 +86,10 @@ namespace Dashboardify.Repositories
         /// <param name="dash">Dashboard Object</param>
         public int Update(DashBoard dash)
         {
-            string query = @"UPDATE dbo.DashBoards
-                            SET Content=@Item_Content,LastChecked=@Item_LastChecked 
-                            WHERE Id=@Item_Id";
+            string query = @"UPDATE DashBoards
+                            SET IsActive=@IsActive,
+                            Name=@Name,
+                            DateModified=@Datemod";
             try
             {
                 using (IDbConnection db = new SqlConnection(_connectionString))
@@ -104,61 +105,80 @@ namespace Dashboardify.Repositories
                 Console.WriteLine(ex.Message);
                 throw;
             }
-        } //Ties situo metodu testi
-
-        public void Create(DashBoard dash) {
+        } 
+        /// <summary>
+        /// Creates new dashboard
+        /// </summary>
+        /// <param name="dash">Dashboard</param>
+        public bool Create(DashBoard dash)
+        {
             string query = @"INSERT INTO dbo.DashBoards (UserId, IsActive, Name, DateCreated, DateModified)
-                            VALUES (@UId, @IsAct, @Name, @DateCreated, @DateModified);
-                            SELECT SCOPE_IDENTITY()";
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+                            VALUES (@UId, @IsAct, @Name, @DateCreated, @DateModified)";
+            using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                SqlCommand command = new SqlCommand(query, connection);
-
                 try
                 {
-                    connection.Open();
-                    Console.WriteLine("Opened connection to DB");
-                    command.Parameters.AddWithValue("@UId", dash.UserId);
-                    command.Parameters.AddWithValue("@IsAct", dash.IsActive);
-                    command.Parameters.AddWithValue("@Name", dash.Name);
-                    command.Parameters.AddWithValue("@DateCreated", dash.DateCreated);
-                    command.Parameters.AddWithValue("@DateModified", dash.DateModified);
-
-                    command.ExecuteNonQuery();
-                    int modified = (int)command.ExecuteScalar();
-                    dash.Id = modified;
-                    Console.WriteLine("Executed query");
+                    var result = db.Execute(query, dash);
+                    return true;
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine(new Exception().Message);
+                    throw;
+                }
+                
+            }
+        }
+        /// <summary>
+        /// Deletes dashboard
+        /// </summary>
+        /// <param name="dashId">DashboardId</param>
+        /// <returns>bool</returns>
+        public bool DeleteDashboard(int dashId)
+        {
+            string deleteQuery = "DELETE * FROM DashBoards";
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    var result = db.Execute(deleteQuery);
+                    return true;
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    throw;
                 }
             }
         }
-
-        public void deleteDashboard(int dashId) {
-            SqlConnection connection = new SqlConnection();
-
-            using (SqlConnection sc = new SqlConnection(_connectionString))
+        /// <summary>
+        /// Gets 
+        /// </summary>
+        /// <param name="userId">Id of the user</param>
+        /// <returns>Ilist</returns>
+        public IList<DashBoard> GetByUserId(int userId)
+        {
+            string query = @"SELECT
+                            Id,
+                            UserId,
+                            IsActive,
+                            Name,
+                            DateCreated,
+                            DateModified
+                            FROM DashBoards WHERE UserId = " + userId.ToString();
+            using (IDbConnection db = new SqlConnection(_connectionString))
             {
                 try
                 {
-                    sc.Open();
-                    SqlCommand command = new SqlCommand(
-                        "DELETE FROM DashBoards WHERE Id = '@id'" +
-                        connection);
-
-                    command.Parameters.AddWithValue("@id", dashId);
-                    command.ExecuteNonQuery();
+                    return db.Query<DashBoard>
+                      (query).ToList();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(new Exception().Message);
+                    throw;
                 }
-                finally
-                {
-                    sc.Close();
-                }
+                
             }
         }
     }
