@@ -113,7 +113,7 @@ namespace Dashboardify.Repositories
         public bool Create(DashBoard dash)
         {
             string query = @"INSERT INTO dbo.DashBoards (UserId, IsActive, Name, DateCreated, DateModified)
-                            VALUES (@UId, @IsAct, @Name, @DateCreated, @DateModified)";
+                            VALUES (@UserId, @IsActive, @Name, @DateCreated, @DateModified)";
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
                 try

@@ -89,31 +89,15 @@ namespace Dashboardify.Repositories
 
         }
 
-        public void CreateUser(User user)
+        public bool CreateUser(User user)
         {
-            string query = "INSERT INTO dbo.Users (Name,Password,Email,IsActive,DateRegistered, DateModified) VALUES (@name, @password, @email, @isactive)";
+            string query = @"INSERT INTO dbo.Users (Name,Password,Email,IsActive,DateRegistered, DateModified) 
+                                            VALUES (@Name,@Password,@Email,@IsActive,@DateRegistered,@Datemodified)";
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
-                using (SqlCommand cmd = new SqlCommand(query, connection))
+                using (IDbConnection db = new SqlConnection(_connectionString))
                 {
-                    
-
-                    cmd.Parameters.Add("@name", SqlDbType.VarChar).Value = user.Name;
-
-                    cmd.Parameters.Add("@password", SqlDbType.VarChar).Value = _HashPassword(user.Password);
-
-                    cmd.Parameters.Add("@email", SqlDbType.VarChar).Value = user.Email;
-
-                    cmd.Parameters.Add("@isactive", SqlDbType.VarChar).Value = user.IsActive;
-
-                    
-
-                    
-
-                    connection.Open();
-                    cmd.ExecuteNonQuery();
-                    connection.Close();
+                    var result = db.Execute(query, user);
                 }
             }
             catch (Exception ex)
