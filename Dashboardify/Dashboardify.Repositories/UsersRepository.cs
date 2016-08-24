@@ -47,6 +47,7 @@ namespace Dashboardify.Repositories
 
         public void Update(User user)
         {
+            //pasiklausti Zilvino
             string query = @"UPDATE dbo.Users
                             SET Password=@Password,
                             Email=@Email
@@ -54,40 +55,38 @@ namespace Dashboardify.Repositories
 
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
-
-                if (!(string.IsNullOrEmpty(user.Email)))
-                {
-                    command.Parameters.AddWithValue("@User_Email", email);
-                }
-                else
-                {
-                    command.Parameters.AddWithValue("@User_Email", user.Email);
-                }
-
-                if (!(string.IsNullOrEmpty(password)))
-                {
-                    command.Parameters.AddWithValue("@User_Pass", password);
-                }
-                else
-                {
-                    command.Parameters.AddWithValue("@User_Pass", user.Password);
-                }
+                
             }
 
-        }
+        }//needs work
 
         public User Get(int id)
         {
-            IList<User> users = GetList();
-
-            foreach (var user in users)
+            
+            try
             {
-                if (user.UserId == id)
+                using (IDbConnection db = new SqlConnection(_connectionString))
                 {
-                    return user;
+                    return db.Query<User>(@"SELECT 
+                            Id,
+                            Name,
+                            Password,
+                            Email,
+                            IsActive,
+                            DateRegistered,
+                            DateModified
+                            FROM Users WHERE Id = @Id", new {id}).SingleOrDefault();
+
                 }
             }
-            return null;
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+
+
+
         }
 
         public void CreateUser(User user)
