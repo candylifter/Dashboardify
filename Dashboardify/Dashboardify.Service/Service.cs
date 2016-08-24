@@ -19,16 +19,14 @@ namespace Dashboardify.Service
 {
     public class Service
     {
-        string connectionString = ConfigurationManager.ConnectionStrings["DBZygis"].ConnectionString;
+        string connectionString = ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
         private readonly Timer _timer;
         private readonly ItemsRepository _itemsRepository;
-
-        private readonly int _timerInterval = 60000; //miliseconds
 
         public Service()
         {
             Console.WriteLine(connectionString);
-            _timer = new Timer(_timerInterval) {AutoReset = true};
+            _timer = new Timer(Int32.Parse(ConfigurationManager.AppSettings["interval"])) {AutoReset = true};
             _timer.Elapsed += TimeElapsedEventHandler;
 
             _itemsRepository = new ItemsRepository(connectionString);
@@ -55,6 +53,7 @@ namespace Dashboardify.Service
             //PrintAllItems();
             //TakeScreenshots();
             UpdateItems();
+            Console.ReadLine();
             //_timer.Stop();
         }
 
