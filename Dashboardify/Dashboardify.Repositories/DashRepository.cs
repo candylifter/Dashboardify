@@ -62,14 +62,19 @@ namespace Dashboardify.Repositories
             {
                 using (IDbConnection db = new SqlConnection(_connectionString))
                 {
-                    return db.Query<DashBoard>(@"SELECT
+                    var query = @"SELECT
                                  Id,
                                  UserId,
                                  IsActive,
                                  Name,
                                  DateCreated,
                                  DateModified, 
-                                               FROM DashBoards WHERE Id = @Id", new { DashId }).SingleOrDefault();
+                          FROM 
+                                 DashBoards 
+                          WHERE 
+                                 Id = @Id";
+
+                    return db.Query<DashBoard>(query, new { DashId }).SingleOrDefault();
                 }
             }
             catch (Exception ex)

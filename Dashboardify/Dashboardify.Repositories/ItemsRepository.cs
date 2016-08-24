@@ -20,6 +20,7 @@ namespace Dashboardify.Repositories
         {
             this._connectionString = connString;
         }
+
         /// <summary>
         /// Gets list of all items from Item table
         /// </summary>
@@ -59,6 +60,7 @@ namespace Dashboardify.Repositories
             
 
         }
+
         /// <summary>
         /// Updates Item in DB, and 
         /// </summary>
@@ -97,6 +99,7 @@ namespace Dashboardify.Repositories
 
 
         }
+
         /// <summary>
         /// Gets single item
         /// </summary>
@@ -132,6 +135,7 @@ namespace Dashboardify.Repositories
             }
             
         }
+
         /// <summary>
         /// Returns List of items in same dashboard
         /// </summary>
@@ -140,19 +144,20 @@ namespace Dashboardify.Repositories
         public IList<Item> GetByDashId(int dashId)
         {
             string query = @"SELECT
-                            Id,
-                            DashBoardId, 
-                            Name, 
-                            Website,
-                            CheckInterval, 
-                            IsActive, 
-                            XPath, 
-                            LastChecked, 
-                            Created, 
-                            Modified, 
-                            ScrnshtURL, 
-                            Content  
-                            FROM items WHERE DashBoardId = " + dashId.ToString();
+                                Id,
+                                DashBoardId, 
+                                Name, 
+                                Website,
+                                CheckInterval, 
+                                IsActive, 
+                                XPath, 
+                                LastChecked, 
+                                Created, 
+                                Modified, 
+                                ScrnshtURL, 
+                                Content  
+                             FROM Items 
+                                 WHERE DashBoardId = " + dashId.ToString();
             try
             {
                 using (IDbConnection db = new SqlConnection(_connectionString))
@@ -167,6 +172,7 @@ namespace Dashboardify.Repositories
                 throw;
             }
         }
+
         /// <summary>
         /// CreatesItem
         /// </summary>
@@ -177,7 +183,32 @@ namespace Dashboardify.Repositories
             {
                 using (IDbConnection db = new SqlConnection(_connectionString))
                 {
-                    string query = @"INSERT INTO Items([Id],[DashBoardId],[Name],[Website],[CheckInterval],[IsActive],[XPath],[LastChecked],[Created],[Modified],[ScrnshtURL],[Content] ) VALUES (@Id,@DashBoardId,@DashBoardId,@Name,@Website,@CheckInterval,@IsActive,@XPath,@LastChecked,@Created,@Modified,@ScrnshtURL,@Content)";
+                    string query = @"INSERT INTO Items(
+                                         Id, 
+                                         DashBoardId, 
+                                         Name,
+                                         Website,
+                                         CheckInterval,
+                                         IsActive,
+                                         XPath,
+                                         LastChecked,
+                                         Created,
+                                         Modified,
+                                         ScrnshtURL,
+                                         Content) 
+                                     VALUES (
+                                         @Id,
+                                         @DashBoardId,
+                                         @Name,
+                                         @Website,
+                                         @CheckInterval,
+                                         @IsActive,
+                                         @XPath,
+                                         @LastChecked,
+                                         @Created,
+                                         @Modified,
+                                         @ScrnshtURL,
+                                         @Content)";
                     var result = db.Execute(query, item);
                 }
             }
@@ -188,6 +219,7 @@ namespace Dashboardify.Repositories
             }
            
         }
+
         /// <summary>
         /// Deletes item by id
         /// </summary>
