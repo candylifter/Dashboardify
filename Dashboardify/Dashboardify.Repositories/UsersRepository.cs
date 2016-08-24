@@ -98,39 +98,32 @@ namespace Dashboardify.Repositories
                 using (IDbConnection db = new SqlConnection(_connectionString))
                 {
                     var result = db.Execute(query, user);
+                    return true;
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                throw;
             }
         }
 
         public void DeleteUser(int userId)
         {
-            SqlConnection connection = new SqlConnection();
-
-            using (SqlConnection sc = new SqlConnection(_connectionString))
+            string query = "DELETE * FROM Users WHERE Id = @Id";
+            try
             {
-                try
+                using (IDbConnection db = new SqlConnection(_connectionString))
                 {
-                    sc.Open();
-                    SqlCommand command = new SqlCommand(
-                        "DELETE FROM Users WHERE id = '@id'" +
-                        connection);
-
-                    command.Parameters.AddWithValue("@id", userId);
-                    command.ExecuteNonQuery();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-                finally
-                {
-                    sc.Close();
+                    db.Execute(query, userId);
                 }
             }
+            catch (Exception eex)
+            {
+                Console.WriteLine(eex.Message);
+                throw;
+            }
+            
         }
 
         private string _HashPassword(string password)
