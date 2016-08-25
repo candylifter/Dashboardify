@@ -67,7 +67,7 @@ namespace Dashboardify.Service
             //Testing filtering
             Console.WriteLine("\n\nItems from db:\n");
 
-            foreach(var item in items)
+            foreach (var item in items)
             {
                 Console.WriteLine(item.Name);
             }
@@ -97,7 +97,7 @@ namespace Dashboardify.Service
         public IList<Item> FilterScheduledItems(IList<Item> items, DateTime now)
         {
             var filteredItems = items.Where(item => (
-                    item.LastChecked.AddMilliseconds(item.CheckInterval)) <= now && 
+                    item.LastChecked.AddMilliseconds(item.CheckInterval)) <= now &&
                     item.isActive == true
                 ).ToList();
 
@@ -109,7 +109,7 @@ namespace Dashboardify.Service
 
             IList<Item> outdatedItems = new List<Item>();
 
-            foreach(var item in items)
+            foreach (var item in items)
             {
                 if (CheckIfOutdated(item, now))
                 {
@@ -135,7 +135,8 @@ namespace Dashboardify.Service
                 item.LastChecked = now;
                 _itemsRepository.Update(item);
                 return true;
-            } else
+            }
+            else
             {
                 return false;
             }
@@ -199,10 +200,10 @@ namespace Dashboardify.Service
                                 null
                                 ).singleNodeValue.getBoundingClientRect()";
 
-                int elementTop = Convert.ToInt32(((IJavaScriptExecutor)driver).ExecuteScript(jsQuery+".top;"));
+                int elementTop = Convert.ToInt32(((IJavaScriptExecutor)driver).ExecuteScript(jsQuery + ".top;"));
 
 
-                int elementLeft = Convert.ToInt32(((IJavaScriptExecutor)driver).ExecuteScript(jsQuery+".left;"));
+                int elementLeft = Convert.ToInt32(((IJavaScriptExecutor)driver).ExecuteScript(jsQuery + ".left;"));
 
 
 
@@ -213,7 +214,7 @@ namespace Dashboardify.Service
                 //Save screenshot
                 string screenshot = ss.AsBase64EncodedString;
                 byte[] screenshotAsByteArray = ss.AsByteArray;
-                ss.SaveAsFile(item.Name + ".png", ImageFormat.Png); 
+                ss.SaveAsFile(item.Name + ".png", ImageFormat.Png);
                 ss.ToString();
 
 
@@ -251,9 +252,9 @@ namespace Dashboardify.Service
             {
                 doc = hw.Load(url);
                 var node = doc.DocumentNode.SelectSingleNode(xpath);
-                var content =  node.InnerText ;
+                var content = node.InnerText;
 
-               
+
                 return Regex.Replace(content, @"\s+", " ");
             }
             catch (Exception e)
@@ -274,9 +275,12 @@ namespace Dashboardify.Service
 
                 Console.WriteLine("\n" + item.Website + "\n");
 
-                if (content != null) {
+                if (content != null)
+                {
                     Console.WriteLine(Regex.Replace(content, @"\s+", " "));
-                } else {
+                }
+                else
+                {
                     Console.WriteLine("Content is null");
                 }
 
