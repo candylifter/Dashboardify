@@ -13,13 +13,8 @@ namespace Dashboardify.Models
 
         public string Name { get; set; }
 
-        public string Password
-        {
-            get { return this.Password; }
-            set { this.Password = HashPassword(Password); }
-        }
-        
-
+        public string Password { get; set; }
+         
         public string Email { get; set; }
 
         public bool IsActive { get; set; }
@@ -28,19 +23,19 @@ namespace Dashboardify.Models
 
         public DateTime Modified { get; set; }
 
-        private string HashPassword(string pass)
-        {
-            MD5 md5 = MD5.Create();
-            byte[] inputBytes = Encoding.ASCII.GetBytes(pass);
-            byte[] hash = md5.ComputeHash(inputBytes);
+        //private string HashPassword(string pass)
+        //{
+        //    MD5 md5 = MD5.Create();
+        //    byte[] inputBytes = Encoding.ASCII.GetBytes(pass);
+        //    byte[] hash = md5.ComputeHash(inputBytes);
 
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < hash.Length; i++)
-            {
-                sb.Append(hash[i].ToString("X2"));
-            }
-            return sb.ToString();
-        }
+        //    StringBuilder sb = new StringBuilder();
+        //    for (int i = 0; i < hash.Length; i++)
+        //    {
+        //        sb.Append(hash[i].ToString("X2"));
+        //    }
+        //    return sb.ToString();
+        //}
 
 
     }

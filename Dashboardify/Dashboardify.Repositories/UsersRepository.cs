@@ -49,6 +49,9 @@ namespace Dashboardify.Repositories
         public void Update(User user)
         {
             //pasiklausti Zilvino
+            
+            
+
             string query = @"UPDATE dbo.Users
                             SET Password=@Password,
                             Email=@Email
