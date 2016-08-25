@@ -1,53 +1,32 @@
 import React from 'react';
-import lodash from 'lodash';
 
 import ItemList from 'ItemList';
 import ItemPanel from 'ItemPanel';
+import DashboardifyAPI from 'DashboardifyAPI';
 
 class ItemDashboard extends React.Component {
     constructor(props, context) {
         super(props, context);
-
         this.state = {
-            items: [
-                {
-                    id: 1,
-                    name: 'Nikoliukas',
-                    img: 'https://www.placecage.com/gif/200/200',
-                    url: '//www.autogidas.lt',
-                    isActive: true,
-                    isSelected: false,
-                    checkInterval: '5 min',
-                    lastChecked: 999,
-                    lastModified: 1472129223
-                },
-                {
-                    id: 2,
-                    name: 'Nikoliukas nomer du',
-                    img: 'https://www.placecage.com/gif/201/201',
-                    url: '//www.autoplius.lt',
-                    isActive: false,
-                    isSelected: false,
-                    checkInterval: '10 min',
-                    lastChecked: 10000,
-                    lastModified: 1472119223
-                },
-                {
-                    id: 3,
-                    name: 'Nikoliukas nomer tri',
-                    img: 'https://www.placecage.com/gif/203/203',
-                    url: '//www.autoplius.lt',
-                    isActive: true,
-                    isSelected: false,
-                    checkInterval: '1 hour',
-                    lastChecked: 10000,
-                    lastModified: 1472129023
-                }
-            ],
+            items: DashboardifyAPI.getItems(this.props.params.id),
 
-            selectedItemId: 1
+            selectedItemId: undefined
 
         }
+    }
+
+    handleToggleItem(id) {
+        let updatedItems = this.state.items.map((item) => {
+            if (item.id === id) {
+                item.isActive = !item.isActive;
+            }
+
+            return item;
+        });
+
+        this.setState({
+            items: updatedItems
+        })
     }
 
     handleItemClick(id) {
@@ -70,7 +49,6 @@ class ItemDashboard extends React.Component {
     render() {
 
         let {items} = this.state;
-
         let getSelectedItem = (id) => {
             let itemId  = items.findIndex((item) => {
                 if (item.id === id) {
@@ -79,6 +57,14 @@ class ItemDashboard extends React.Component {
             });
 
             return itemId;
+        }
+
+        let renderItemPanel = () => {
+            if (typeof this.state.selectedItemId === 'number') {
+                return (
+                    <ItemPanel item={items[getSelectedItem(this.state.selectedItemId)]} toggleItem={this.handleToggleItem.bind(this)}/>
+                )
+            }
         }
 
 
@@ -111,7 +97,7 @@ class ItemDashboard extends React.Component {
                             <ItemList items={items} itemClick={this.handleItemClick.bind(this)}/>
                         </div>
                         <div className="col-md-6 col-lg-4">
-                            <ItemPanel item={items[getSelectedItem(this.state.selectedItemId)]}/>
+                            {renderItemPanel()}
                         </div>
                     </div>
                 </div>

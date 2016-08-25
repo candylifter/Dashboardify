@@ -30,6 +30,7 @@ module.exports = {
     ],
     alias: {
       applicationStyles: 'app/styles/app.scss',
+      DashboardifyAPI: 'app/api/DashboardifyAPI.jsx',
       // actions: 'app/actions/actions.jsx',
       // reducers: 'app/reducers/reducers.jsx',
       // configureStore: 'app/store/configureStore.jsx'
