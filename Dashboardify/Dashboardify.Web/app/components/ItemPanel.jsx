@@ -17,7 +17,7 @@ class ItemPanel extends React.Component {
                 <div className="panel-body">
                     <div className="row">
                         <div className="col-sm-12">
-                            <a href="#" className="thumbnail">
+                            <a href="#" target="_blank" className="thumbnail">
                                 <img src={item.img}/>
                             </a>
                         </div>
