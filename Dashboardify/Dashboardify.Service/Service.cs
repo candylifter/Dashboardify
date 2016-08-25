@@ -26,7 +26,7 @@ namespace Dashboardify.Service
         public Service()
         {
             Console.WriteLine(connectionString);
-            _timer = new Timer(Int32.Parse(ConfigurationManager.AppSettings["interval"])) {AutoReset = true};
+            _timer = new Timer(Int32.Parse(ConfigurationManager.AppSettings["interval"])) { AutoReset = true };
             _timer.Elapsed += TimeElapsedEventHandler;
 
             _itemsRepository = new ItemsRepository(connectionString);
