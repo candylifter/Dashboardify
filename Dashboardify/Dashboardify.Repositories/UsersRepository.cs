@@ -14,7 +14,8 @@ namespace Dashboardify.Repositories
     public class UsersRepository
     {
         private string _connectionString;
- 
+        
+
         public UsersRepository(string connectionString)
         {
             this._connectionString = connectionString;
@@ -53,30 +54,40 @@ namespace Dashboardify.Repositories
                             Email=@Email
                             WHERE Id=@Id";
 
+            
+            
+
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                
+
             }
+
+
+
+
 
         }//needs work
 
         public User Get(int id)
         {
-            
+
             try
             {
                 using (IDbConnection db = new SqlConnection(_connectionString))
                 {
-                    return db.Query<User>(@"SELECT 
-                            Id,
-                            Name,
-                            Password,
-                            Email,
-                            IsActive,
-                            DateRegistered,
-                            DateModified
-                                    FROM Users WHERE 
-                                            Id = @Id", new {id}).SingleOrDefault();
+                    return db.Query<User>(@"
+                            SELECT 
+                                Id,
+                                Name,
+                                Password,
+                                Email,
+                                IsActive,
+                                DateRegistered,
+                                DateModified
+                            FROM 
+                                Users 
+                            WHERE 
+                                Id = @Id", new { id }).SingleOrDefault();
 
                 }
             }
@@ -126,6 +137,8 @@ namespace Dashboardify.Repositories
             string query = @"DELETE * FROM Users 
                             WHERE 
                                 Id = @Id";
+            
+
             try
             {
                 using (IDbConnection db = new SqlConnection(_connectionString))
@@ -138,7 +151,7 @@ namespace Dashboardify.Repositories
                 Console.WriteLine(eex.Message);
                 throw;
             }
-            
+
         }
 
         private string _HashPassword(string password)
