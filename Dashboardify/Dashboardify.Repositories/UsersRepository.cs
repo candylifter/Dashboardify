@@ -75,7 +75,8 @@ namespace Dashboardify.Repositories
                             IsActive,
                             DateRegistered,
                             DateModified
-                            FROM Users WHERE Id = @Id", new {id}).SingleOrDefault();
+                                    FROM Users WHERE 
+                                            Id = @Id", new {id}).SingleOrDefault();
 
                 }
             }
@@ -91,8 +92,20 @@ namespace Dashboardify.Repositories
 
         public bool CreateUser(User user)
         {
-            string query = @"INSERT INTO dbo.Users (Name,Password,Email,IsActive,DateRegistered, DateModified) 
-                                            VALUES (@Name,@Password,@Email,@IsActive,@DateRegistered,@Datemodified)";
+            string query = @"INSERT INTO dbo.Users
+                                (Name,
+                                Password,
+                                Email,
+                                IsActive,
+                                DateRegistered, 
+                                DateModified) 
+                           VALUES 
+                                (@Name,
+                                @Password,
+                                @Email,
+                                @IsActive,
+                                @DateRegistered,
+                                @Datemodified)";
             try
             {
                 using (IDbConnection db = new SqlConnection(_connectionString))
@@ -110,7 +123,9 @@ namespace Dashboardify.Repositories
 
         public void DeleteUser(int userId)
         {
-            string query = "DELETE * FROM Users WHERE Id = @Id";
+            string query = @"DELETE * FROM Users 
+                            WHERE 
+                                Id = @Id";
             try
             {
                 using (IDbConnection db = new SqlConnection(_connectionString))
