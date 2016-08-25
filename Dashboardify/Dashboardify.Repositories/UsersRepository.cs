@@ -7,180 +7,151 @@ using System.Data;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
 using System.Text;
+using Dapper;
 
 namespace Dashboardify.Repositories
 {
     public class UsersRepository
     {
-        private string _connectionString = "Data Source=,;" +
-                                            "Initial Catalog=DashBoardify;" +
-                                            "User id=DashboardifyUser;" +
-                                            "Password=123456;";
-        private IList<User> _results;
+        private string _connectionString;
+        
 
-        private DataTable _GetTableFromDB(string queryString)
+        public UsersRepository(string connectionString)
         {
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                SqlCommand command = new SqlCommand(queryString, connection);
-
-                try
-                {
-                    connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
-                    DataTable dt = new DataTable();
-                    dt.Load(reader);
-                    reader.Close();
-                    return dt;
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    return null;
-                }
-            }
-        }
-
-        public UsersRepository()
-        {
-            string queryString = "SELECT - FROM dbo.Users";
-            DataTable datatable = _GetTableFromDB(queryString);
-            _results = new List<User>();
-
-            foreach (DataRow dr in datatable.Rows)
-            {
-                User u = new User();
-
-                u.UserId = (int)dr["UserId"];
-                u.Name = (string)dr["Name"];
-                u.Password = (string)dr["Password"];
-                u.Email = (string)dr["Email"];
-                u.IsActive = (bool)dr["IsActive"];
-                u.Registered = (DateTime)dr["DateRegistered"];
-                u.Modified = (DateTime)dr["DateModified"];
-
-                _results.Add(u);
-            }
+            this._connectionString = connectionString;
         }
 
         public IList<User> GetList()
         {
-            return _results.ToList();
-        }
-
-        public void Update(User user, string email, string password)// string uzsisteina konstruktorium, private_results nereikia
-        {
-            string query = @"UPDATE dbo.Users
-                            SET Password=@User_Pass
-                            SET Email=@User_Email
-                            WHERE Id=@User_Id";
-
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            string query = @"SELECT Id,
+                            Name,
+                            Password,
+                            Email,
+                            IsActive,
+                            DateRegistered,
+                            DateModified
+                            FROM Users";
+            using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                SqlCommand command = new SqlCommand(query, connection);
-
                 try
                 {
-                    connection.Open();
-                    Console.WriteLine("Opened connection to DB");
-                    command.Parameters.AddWithValue("@User_Id", user.UserId);
-
-                    if (!(string.IsNullOrEmpty(email)))
-                    {
-                        command.Parameters.AddWithValue("@User_Email", email);
-                    } else {
-                        command.Parameters.AddWithValue("@User_Email", user.Email);
-                    }
-
-                    if (!(string.IsNullOrEmpty(password)))
-                    {
-                        command.Parameters.AddWithValue("@User_Pass", password);
-                    } else {
-                        command.Parameters.AddWithValue("@User_Pass", user.Password);
-                    }
-
-                    command.ExecuteNonQuery();
-                    Console.WriteLine("Executed query");
+                    return db.Query<User>
+                        (query).ToList();
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    throw;
                 }
             }
         }
+
+        public void Update(User user)
+        {
+            //pasiklausti Zilvino
+            string query = @"UPDATE dbo.Users
+                            SET Password=@Password,
+                            Email=@Email
+                            WHERE Id=@Id";
+
+            
+            
+
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+
+            }
+
+
+
+
+
+        }//needs work
 
         public User Get(int id)
         {
-            IList<User> users = GetList();
 
-            foreach (var user in users)
-            {
-                if (user.UserId == id)
-                {
-                    return user;
-                }
-            }
-            return null;
-        }
-
-        public void CreateUser(User user)
-        {
-            string query = "INSERT INTO dbo.Users (Name,Password,Email,IsActive,DateRegistered, DateModified) VALUES (@name, @password, @email, @isactive)";
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
-                using (SqlCommand cmd = new SqlCommand(query, connection))
+                using (IDbConnection db = new SqlConnection(_connectionString))
                 {
-                    
+                    return db.Query<User>(@"
+                            SELECT 
+                                Id,
+                                Name,
+                                Password,
+                                Email,
+                                IsActive,
+                                DateRegistered,
+                                DateModified
+                            FROM 
+                                Users 
+                            WHERE 
+                                Id = @Id", new { id }).SingleOrDefault();
 
-                    cmd.Parameters.Add("@name", SqlDbType.VarChar).Value = user.Name;
-
-                    cmd.Parameters.Add("@password", SqlDbType.VarChar).Value = _HashPassword(user.Password);
-
-                    cmd.Parameters.Add("@email", SqlDbType.VarChar).Value = user.Email;
-
-                    cmd.Parameters.Add("@isactive", SqlDbType.VarChar).Value = user.IsActive;
-
-                    
-
-                    
-
-                    connection.Open();
-                    cmd.ExecuteNonQuery();
-                    connection.Close();
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                throw;
+            }
+
+
+
+        }
+
+        public bool CreateUser(User user)
+        {
+            string query = @"INSERT INTO dbo.Users
+                                (Name,
+                                Password,
+                                Email,
+                                IsActive,
+                                DateRegistered, 
+                                DateModified) 
+                           VALUES 
+                                (@Name,
+                                @Password,
+                                @Email,
+                                @IsActive,
+                                @DateRegistered,
+                                @Datemodified)";
+            try
+            {
+                using (IDbConnection db = new SqlConnection(_connectionString))
+                {
+                    var result = db.Execute(query, user);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
             }
         }
 
         public void DeleteUser(int userId)
         {
-            SqlConnection connection = new SqlConnection();
+            string query = @"DELETE * FROM Users 
+                            WHERE 
+                                Id = @Id";
+            
 
-            using (SqlConnection sc = new SqlConnection(_connectionString))
+            try
             {
-                try
+                using (IDbConnection db = new SqlConnection(_connectionString))
                 {
-                    sc.Open();
-                    SqlCommand command = new SqlCommand(
-                        "DELETE FROM Users WHERE id = '@id'" +
-                        connection);
-
-                    command.Parameters.AddWithValue("@id", userId);
-                    command.ExecuteNonQuery();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-                finally
-                {
-                    sc.Close();
+                    db.Execute(query, userId);
                 }
             }
+            catch (Exception eex)
+            {
+                Console.WriteLine(eex.Message);
+                throw;
+            }
+
         }
 
         private string _HashPassword(string password)
