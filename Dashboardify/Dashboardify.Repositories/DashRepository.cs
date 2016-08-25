@@ -20,6 +20,7 @@ namespace Dashboardify.Repositories
         {
             this._connectionString = constring;
         }
+
         /// <summary>
         /// Gets all data from DashBoards table in a list<>
         /// </summary>
@@ -51,6 +52,7 @@ namespace Dashboardify.Repositories
                 throw;
             }
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -85,6 +87,7 @@ namespace Dashboardify.Repositories
             }
 
         }
+
         /// <summary>
         /// Updates dashboard in dashboard table
         /// </summary>
@@ -92,9 +95,9 @@ namespace Dashboardify.Repositories
         public int Update(DashBoard dash)
         {
             string query = @"UPDATE DashBoards
-                            SET IsActive=@IsActive,
-                            Name=@Name,
-                            DateModified=@Datemod";
+                                SET IsActive=@IsActive,
+                                Name=@Name,
+                                DateModified=@Datemod";
             try
             {
                 using (IDbConnection db = new SqlConnection(_connectionString))
@@ -111,14 +114,25 @@ namespace Dashboardify.Repositories
                 throw;
             }
         } 
+
         /// <summary>
         /// Creates new dashboard
         /// </summary>
         /// <param name="dash">Dashboard</param>
         public bool Create(DashBoard dash)
         {
-            string query = @"INSERT INTO dbo.DashBoards (UserId, IsActive, Name, DateCreated, DateModified)
-                            VALUES (@UserId, @IsActive, @Name, @DateCreated, @DateModified)";
+            string query = @"INSERT INTO dbo.DashBoards 
+                                (UserId, 
+                                IsActive, 
+                                Name, 
+                                DateCreated, 
+                                DateModified)
+                            VALUES 
+                                (@UserId, 
+                                @IsActive, 
+                                @Name, 
+                                @DateCreated, 
+                                @DateModified)";
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
                 try
@@ -134,6 +148,7 @@ namespace Dashboardify.Repositories
                 
             }
         }
+
         /// <summary>
         /// Deletes dashboard
         /// </summary>
@@ -141,7 +156,7 @@ namespace Dashboardify.Repositories
         /// <returns>bool</returns>
         public bool DeleteDashboard(int dashId)
         {
-            string deleteQuery = "DELETE * FROM DashBoards";
+            string deleteQuery = "DELETE FROM DashBoards";
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
                 try
@@ -156,6 +171,7 @@ namespace Dashboardify.Repositories
                 }
             }
         }
+
         /// <summary>
         /// Gets 
         /// </summary>
@@ -164,13 +180,15 @@ namespace Dashboardify.Repositories
         public IList<DashBoard> GetByUserId(int userId)
         {
             string query = @"SELECT
-                            Id,
-                            UserId,
-                            IsActive,
-                            Name,
-                            DateCreated,
-                            DateModified
-                            FROM DashBoards WHERE UserId = " + userId.ToString();
+                                Id,
+                                UserId,
+                                IsActive,
+                                Name,
+                                DateCreated,
+                                DateModified
+                                FROM DashBoards 
+                           WHERE UserId = " + userId.ToString();
+
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
                 try
