@@ -136,6 +136,17 @@
     <Content Include="package.json" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="app\app.jsx" />
+    <Content Include="app\components\DashboardifyApp.jsx" />
+    <Content Include="app\components\DashboardifyIndex.jsx" />
+    <Content Include="app\components\ItemDashboard.jsx" />
+    <Content Include="app\components\ItemList.jsx" />
+    <Content Include="app\components\ItemPanel.jsx" />
+    <Content Include="app\components\Navbar.jsx" />
+    <Content Include="app\styles\app.scss" />
+    <Content Include="app\styles\base\_base.scss" />
+    <Content Include="app\styles\base\_bootstrap-variables.scss" />
+    <Content Include="app\styles\base\_variables.scss" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -144,6 +155,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="app\styles\components\" />
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
     <Folder Include="scripts\" />
