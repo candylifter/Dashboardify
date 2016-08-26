@@ -9,7 +9,7 @@ namespace Dashboardify.Models
 {
     public class User
     {
-        public int UserId { get; set; }
+        public int Id { get; set; }
 
         public string Name { get; set; }
 
@@ -19,9 +19,9 @@ namespace Dashboardify.Models
 
         public bool IsActive { get; set; }
 
-        public DateTime Registered { get; set; }
+        public DateTime DateRegistered { get; set; }
 
-        public DateTime Modified { get; set; }
+        public DateTime DateModified { get; set; }
 
         //private string HashPassword(string pass)
         //{
