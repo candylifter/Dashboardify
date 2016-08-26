@@ -1,14 +1,22 @@
 import React from 'react';
 
 import Navbar from 'Navbar';
-import ItemDashboard from 'ItemDashboard';
+
+
 
 class DashboardifyApp extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+
+
+  }
+
+//<DashboardifyIndex/>
   render() {
     return (
       <div>
         <Navbar/>
-        <ItemDashboard/>
+        {this.props.children}
       </div>
     )
   }
