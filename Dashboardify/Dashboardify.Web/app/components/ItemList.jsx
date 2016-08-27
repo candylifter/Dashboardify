@@ -3,13 +3,6 @@ import moment from 'moment';
 
 class Item extends React.Component {
 
-    /*
-    <div className="col-xs-6 col-md-4 col-lg-3" onClick={() => this.props.itemClick(id)}>
-        <a href="#" className="thumbnail">
-            <img src={img} alt="..."/>
-        </a>
-    </div>
-    */
     render() {
         let {id, img, name, isSelected, lastModified} = this.props
 

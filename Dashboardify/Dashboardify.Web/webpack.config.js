@@ -26,6 +26,7 @@ module.exports = {
     modulesDirectories: [
       'node_modules',
       './app/components',
+      './app/pages',
       './app/api'
     ],
     alias: {
@@ -61,6 +62,8 @@ module.exports = {
     includePaths: [
       path.resolve(__dirname, './node_modules/bootstrap-sass/assets/stylesheets'),
       path.resolve(__dirname, './node_modules/bootstrap-sass'),
+      path.resolve(__dirname, './node_modules/bourbon/app/assets/stylesheets/'),
+      path.resolve(__dirname, './node_modules/bourbon-neat/app/assets/stylesheets/'),
 
       // path.resolve(__dirname, './node_modules/foundation-sites/scss')
     ]
