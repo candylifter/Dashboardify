@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux';
 
 import ItemList from 'ItemList';
 import ItemPanel from 'ItemPanel';
@@ -43,22 +44,6 @@ class Dashboard extends React.Component {
 		this.setState({selectedItemId: id, items: updatedItems});
 	}
 
-	handleSearch(searchText) {
-		let updatedItems = [];
-		if (searchText.length !== 0) {
-			updatedItems = DashboardifyAPI.getItems(this.props.params.id).filter((item) => {
-				return item.name.toLowerCase().indexOf(searchText) !== -1;
-			});
-		} else {
-			updatedItems = DashboardifyAPI.getItems(this.props.params.id);
-		}
-
-		this.setState({
-			items: updatedItems
-		})
-
-	}
-
 	render() {
 
 		let {items} = this.state;
@@ -88,11 +73,11 @@ class Dashboard extends React.Component {
 								<Breadcrumb dashboardId={this.props.params.id}/>
 							</div>
 							<div className="col-md-6">
-								<Search onSearch={this.handleSearch.bind(this)}/>
+								<Search/>
 							</div>
 						</div>
 						<hr/>
-						<ItemList items={items} itemClick={this.handleItemClick.bind(this)}/>
+						<ItemList dashboardId={this.props.params.id} itemClick={this.handleItemClick.bind(this)}/>
 					</div>
 					<div className="col-md-6 col-lg-4">
 						{renderItemPanel()}
@@ -104,4 +89,6 @@ class Dashboard extends React.Component {
 	}
 }
 
-export default Dashboard;
+export default connect(
+	(state) => state
+)(Dashboard);
