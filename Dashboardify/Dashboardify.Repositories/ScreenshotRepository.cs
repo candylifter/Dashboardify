@@ -59,6 +59,21 @@ namespace Dashboardify.Repositories
                             FROM 
                                 ScreenShots
                             WHERE Id=" + "";
+
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    return db.Query<Screenshot>
+                        (query).ToList();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    throw;
+                }
+            }
+
         }
 
     }

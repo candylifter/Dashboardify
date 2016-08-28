@@ -22,13 +22,14 @@ namespace Dashboardify.Repositories
         public IList<User> GetList()
         {
             string query = @"SELECT Id,
-                            Name,
-                            Password,
-                            Email,
-                            IsActive,
-                            DateRegistered,
-                            DateModified
-                            FROM Users";
+                                Name,
+                                Password,
+                                Email,
+                                IsActive,
+                                DateRegistered,
+                                DateModified
+                            FROM 
+                                Users";
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
                 try
