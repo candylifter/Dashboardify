@@ -136,6 +136,27 @@
     <Content Include="package.json" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="app\actions\actions.jsx" />
+    <Content Include="app\api\DashboardifyAPI.jsx" />
+    <Content Include="app\app.jsx" />
+    <Content Include="app\components\Dashboard.jsx" />
+    <Content Include="app\components\DashboardifyApp.jsx" />
+    <Content Include="app\components\DashboardifyIndex.jsx" />
+    <Content Include="app\components\DashboardList.jsx" />
+    <Content Include="app\components\ItemDashboard.jsx" />
+    <Content Include="app\components\ItemList.jsx" />
+    <Content Include="app\components\ItemPanel.jsx" />
+    <Content Include="app\components\LoginForm.jsx" />
+    <Content Include="app\components\Navbar.jsx" />
+    <Content Include="app\pages\Dashboards.jsx" />
+    <Content Include="app\pages\Item.jsx" />
+    <Content Include="app\pages\Login.jsx" />
+    <Content Include="app\pages\Register.jsx" />
+    <Content Include="app\styles\app.scss" />
+    <Content Include="app\styles\base\_base.scss" />
+    <Content Include="app\styles\base\_bootstrap-variables.scss" />
+    <Content Include="app\styles\base\_variables.scss" />
+    <Content Include="app\styles\pages\login.scss" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

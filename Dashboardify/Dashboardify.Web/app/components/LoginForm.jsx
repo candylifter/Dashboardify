@@ -43,7 +43,7 @@ class LoginForm extends React.Component {
 			setTimeout(() => {
 
 				if (email.value === 'maestro@maestro.lt' && password.value === '123') {
-					that.props.router.push('/');
+					that.props.router.push('/dashboards');
 				} else {
 					this.toggleInputs();
 

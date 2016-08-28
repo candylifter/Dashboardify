@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Dashboard from 'Dashboard';
+import DashboardListItem from 'DashboardListItem';
 
 class DashboardList extends React.Component {
   render() {
@@ -8,7 +8,7 @@ class DashboardList extends React.Component {
 
     let renderDashboards = () => {
       return dashboards.map((dashboard) => {
-        return <Dashboard key={dashboard.id} {...dashboard} />
+        return <DashboardListItem key={dashboard.id} {...dashboard} />
       });
     };
 
