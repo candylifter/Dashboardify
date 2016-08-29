@@ -102,6 +102,11 @@ namespace Dashboardify.Repositories
 
         public User Get(int id)
         {
+            var userTest = Get(id);
+            if (userTest == null)
+            {
+               throw new Exception("User was not found in database");
+            }
 
             try
             {

@@ -10,7 +10,7 @@ using Dashboardify.Models;
 
 namespace Dashboardify.Repositories
 {
-    class ScreenshotRepository
+    public class ScreenshotRepository
     {
         private string _connectionString;
 
@@ -19,35 +19,42 @@ namespace Dashboardify.Repositories
             this._connectionString = connectionString;
         }
 
-        public Screenshot GetLast(int itemId)
+        public Screenshot GetLastByItemId(int ItemId)
         {
-            try
+            if (ItemId < 1)
             {
-                using (IDbConnection db = new SqlConnection(_connectionString))
+                throw new Exception("Id must be greater than 1 integer");
+            }
+            else
+            {
+                try
                 {
-                    return db.Query<User>(@"
-                            SELECT 
-                                Id,
-                                Name,
-                                Password,
-                                Email,
-                                IsActive,
-                                DateRegistered,
-                                DateModified
-                            FROM 
-                                Users 
-                            WHERE 
-                                Id = @Id", new { id }).SingleOrDefault();
-
+                    using (IDbConnection db = new SqlConnection(_connectionString))
+                    {
+                        return db.Query<Screenshot>(@"SELECT
+	                                                TOP 1
+	                                                Id,
+	                                                ItemId,
+	                                                ScrnshtURL,
+	                                                DateTaken
+                                                FROM 
+	                                                ScreenShots 
+                                                WHERE 
+	                                                ItemId = @ItemId
+                                                ORDER BY 
+	                                                DateTaken DESC", new { ItemId }).SingleOrDefault();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    throw;
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw;
-            }
 
-        }
+           
+
+        }//Done Debuged
 
         public IList<Screenshot> GetAll()
         {
@@ -57,8 +64,7 @@ namespace Dashboardify.Repositories
                                 ScrnshtURL,
                                 DateTaken
                             FROM 
-                                ScreenShots
-                            WHERE Id=" + "";
+                                ScreenShots";
 
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
@@ -74,7 +80,102 @@ namespace Dashboardify.Repositories
                 }
             }
 
-        }
+        }//Done Debuged
+
+        public bool Create(Screenshot screen)
+        {
+            if (screen == null)
+            {
+                throw new Exception("Null object");                
+            }
+            else
+            {
+                string query = @"INSERT INTO dbo.ScreenShots                               
+                                    (ItemId,
+                                    ScrnshtURL,
+                                    DateTaken) 
+                               VALUES 
+                                    (@ItemId,
+                                    @ScrnshtURL,
+                                    @DateTaken)";
+                try
+                {
+                    using (IDbConnection db = new SqlConnection(_connectionString))
+                    {
+                        var result = db.Execute(query, screen);
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    throw;
+                }
+            }
+        } //Done
+
+        public bool Delete(int screenId)
+        {
+            if (screenId < 1)
+            {
+                throw new Exception("Id must be greater than 0");
+            }
+            else
+            {
+                
+                string query = @"DELETE FROM ScreenShots
+                                WHERE Id =" + screenId.ToString();
+                try
+                {
+                    using (IDbConnection db = new SqlConnection(_connectionString))
+                    {
+                        db.Execute(query, screenId);
+                    }
+                    return true;
+                }
+                catch (Exception)
+                {                 
+                    Console.WriteLine(new Exception().Message);
+                    throw;
+                }
+                
+            }
+            
+        } // Done
+
+        public Screenshot Get(int id)
+        {
+            if (id < 1)
+            {
+                throw new Exception("Id must be greater than 0");
+            }
+            else
+            {
+                string query = @"SELECT
+                                   Id,
+                                   ItemId,
+                                   ScrnshtURL, 
+                                   DateTaken
+                               FROM 
+                                    ScreenShots
+                                WHERE Id = " + id.ToString();
+
+                try
+                {
+                    using (IDbConnection db = new SqlConnection(_connectionString))
+                    {
+                        return db.Query<Screenshot>(query, id).SingleOrDefault();
+                    }
+                }
+                catch (Exception)
+                {
+                    
+                    throw;
+                }                 
+                
+            }
+            
+        } //Done
 
     }
 }
