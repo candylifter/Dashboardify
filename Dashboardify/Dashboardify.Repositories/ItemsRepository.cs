@@ -9,7 +9,7 @@ using Dapper;
 
 namespace Dashboardify.Repositories
 {
-    public class ItemsRepository
+    public class ItemsRepository //TODO: Scrnsht url panaikintas pakeisti cia
     {
         private string _connectionString;
         /// <summary>
@@ -40,8 +40,6 @@ namespace Dashboardify.Repositories
                                           ScrnshtURL, 
                                           Content 
                                   FROM Items";
-
-            
           
             try
             {

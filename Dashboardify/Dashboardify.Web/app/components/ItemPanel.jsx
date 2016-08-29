@@ -4,9 +4,7 @@ class ItemPanel extends React.Component {
     constructor(props, context) {
         super(props, context);
 
-        this.state = {
-            isActive: this.props.item.isActive
-        }
+    
     }
 
     render() {
@@ -17,7 +15,7 @@ class ItemPanel extends React.Component {
                 <div className="panel-body">
                     <div className="row">
                         <div className="col-sm-12">
-                            <a href="#" className="thumbnail">
+                            <a href="#" target="_blank" className="thumbnail">
                                 <img src={item.img}/>
                             </a>
                         </div>
@@ -37,7 +35,7 @@ class ItemPanel extends React.Component {
                         <div className="col-sm-6">
                             <span>Active</span>
                         </div>
-                        <div className="col-sm-6 text-right"><input type="checkbox" checked={this.state.isActive} /></div>
+                        <div className="col-sm-6 text-right"><input type="checkbox" checked={item.isActive} onChange={() => this.props.toggleItem(item.id)}/></div>
                     </div>
                     <div className="row">
                         <div className="col-sm-6">

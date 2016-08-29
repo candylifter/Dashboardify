@@ -4,7 +4,6 @@ using System.Linq;
 using Dashboardify.Models;
 using System.Data.SqlClient;
 using System.Data;
-using System.Linq.Expressions;
 using System.Security.Cryptography;
 using System.Text;
 using Dapper;
@@ -14,7 +13,6 @@ namespace Dashboardify.Repositories
     public class UsersRepository
     {
         private string _connectionString;
-        
 
         public UsersRepository(string connectionString)
         {
@@ -24,13 +22,14 @@ namespace Dashboardify.Repositories
         public IList<User> GetList()
         {
             string query = @"SELECT Id,
-                            Name,
-                            Password,
-                            Email,
-                            IsActive,
-                            DateRegistered,
-                            DateModified
-                            FROM Users";
+                                Name,
+                                Password,
+                                Email,
+                                IsActive,
+                                DateRegistered,
+                                DateModified
+                            FROM 
+                                Users";
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
                 try
@@ -46,27 +45,60 @@ namespace Dashboardify.Repositories
             }
         }
 
-        public void Update(User user)
+        // TODO: Needs work
+        public void Update(User user) //Daugiau if validation
         {
-            //pasiklausti Zilvino
-            string query = @"UPDATE dbo.Users
-                            SET Password=@Password,
-                            Email=@Email
-                            WHERE Id=@Id";
+            var origin = Get(user.Id);
 
-            
-            
+            if (origin == null)
+            {
+                throw new Exception("User not found in data base!");
+            }
+
+            if (origin.Name != user.Name)
+            {
+                origin.Name = user.Name;
+            }
+            if (origin.Password != user.Password)
+            {
+                origin.Password = user.Password;
+            }
+            if (origin.Email != user.Email)
+            {
+                origin.Email = user.Email;
+            }
+            if (origin.IsActive != user.IsActive)
+            {
+                origin.IsActive = user.IsActive;
+            }
+            origin.DateModified = DateTime.Now;
+
+            string query = @"
+                            UPDATE 
+                                Users
+                            SET 
+                                Name = @Name,
+                                Password = @Password,
+                                Email = @Email,
+                                IsActive = @IsActive, 
+                                DateModified = @DateModified
+                            WHERE 
+                                Id = @Id";
 
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
+                try
+                {
+                    db.Execute(query, user);
 
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
             }
 
-
-
-
-
-        }//needs work
+        }
 
         public User Get(int id)
         {
@@ -134,10 +166,17 @@ namespace Dashboardify.Repositories
 
         public void DeleteUser(int userId)
         {
-            string query = @"DELETE * FROM Users 
+            var user = Get(userId);
+
+            if (user == null)
+            {
+                throw new Exception("User not found in data base!");
+            }
+
+            string query = @"DELETE FROM Users 
                             WHERE 
                                 Id = @Id";
-            
+
 
             try
             {

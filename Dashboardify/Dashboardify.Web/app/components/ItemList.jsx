@@ -1,31 +1,18 @@
 import React from 'react';
+import moment from 'moment';
+import { connect } from 'react-redux';
 
-class Item extends React.Component {
-
-
-    render() {
-        let {id, img} = this.props
-        return (
-            <div className="col-xs-6 col-md-4 col-lg-3">
-                <a href="#" className="thumbnail">
-                    <img src={img} alt="..."/>
-                </a>
-            </div>
-        )
-    }
-}
+import ItemListItem from 'ItemListItem';
+import DashboardifyAPI from 'DashboardifyAPI';
 
 class ItemList extends React.Component {
 
-
     render() {
-
-        let {items} = this.props;
-
+        let {items, searchText, dashboardId} = this.props;
         let renderItems = () => {
-            return items.map((item) => {
+            return DashboardifyAPI.filterItems(items, dashboardId, searchText).map((item) => {
                 return (
-                    <Item key={item.id} {...item} />
+                    <ItemListItem key={item.id} {...item} itemClick={this.props.itemClick}/>
                 );
             });
         }
@@ -38,4 +25,12 @@ class ItemList extends React.Component {
     }
 }
 
-export default ItemList;
+
+export default connect(
+    (state) => {
+        return {
+            items: state.items,
+            searchText: state.searchText
+        }
+    }
+)(ItemList);
