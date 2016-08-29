@@ -25,7 +25,7 @@ namespace Dashboardify.Repositories
             {
                 using (IDbConnection db = new SqlConnection(_connectionString))
                 {
-                    return db.Query<User>(@"
+                    return db.Query<Screenshot>(@"
                             SELECT 
                                 Id,
                                 Name,
@@ -37,7 +37,7 @@ namespace Dashboardify.Repositories
                             FROM 
                                 Users 
                             WHERE 
-                                Id = @Id", new { id }).SingleOrDefault();
+                                Id = @Id", new { itemId }).SingleOrDefault();
 
                 }
             }
