@@ -14,12 +14,13 @@ using System.Drawing;
 using OpenQA.Selenium.Remote;
 using System.Collections.Generic;
 using System.Linq;
+using NReco.PhantomJS;
 
 namespace Dashboardify.Service
 {
     public class Service
     {
-        string connectionString = ConfigurationManager.ConnectionStrings["DBZygis"].ConnectionString;
+        string connectionString = ConfigurationManager.ConnectionStrings["DBconnection"].ConnectionString;
         private readonly Timer _timer;
         private readonly ItemsRepository _itemsRepository;
 
@@ -146,97 +147,40 @@ namespace Dashboardify.Service
         // TODO: Refactor to separate methods
         public void TakeScreenshots(IList<Item> items)
         {
-            Console.WriteLine("Creating webdriver instance");
-            var driver = new ChromeDriver();
-            driver.Manage().Window.Maximize();
 
             foreach (var item in items)
             {
-                Console.WriteLine("Navigating to: " + item.Website);
 
-                driver.Navigate().GoToUrl(item.Website);
+                var phantomJS = new PhantomJS();
+                phantomJS.OutputReceived += (sender, e) => {
+                    Console.WriteLine("PhantomJS output: {0}", e.Data);
+                };
+                phantomJS.RunScript(@"var page = require('webpage').create();
 
-                try
-                {
-                    RemoteWebElement el = (RemoteWebElement)driver.FindElement(By.XPath(item.XPath));
+                page.viewportSize = {
+                    width: 1920,
+                    height: 1080
+                };
 
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                    break;
-                }
+                page.open('"+item.Website+ @"', function() {
+                    var clipRect = page.evaluate(function() {
+                        return document.evaluate( '"+item.XPath+@"' ,document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue.getBoundingClientRect();
+                    });
 
-
-                Console.WriteLine("Scrolling to the element");
-
-                driver.ExecuteScript(@"
-                                    (function () {
-
-                                     var rect = document.evaluate(
-                                      '" + item.XPath + @"',
-                                      document,
-                                      null,
-                                      XPathResult.FIRST_ORDERED_NODE_TYPE,
-                                      null
-                                     ).singleNodeValue.getBoundingClientRect();
-                                     window.scrollTo(0, rect.top - ((document.documentElement.clientHeight / 2) - (rect.height / 2)));
-
-                                    })();");
+                page.clipRect = {
+                    top: clipRect.top,
+                    left: clipRect.left,
+                    width: clipRect.width,
+                    height: clipRect.height
+                };
+                    page.render('" + item.Name+@".png');
+                    phantom.exit();
+                });", null);
 
 
-                IWebElement img = driver.FindElement(By.XPath(item.XPath));
+                
 
-                int elementWidth = img.Size.Width;
-                int elementHeight = img.Size.Height;
-
-
-                //Using built in selenium methods fails getting exact coordactes for some reason, so I used javascript instead to get X and Y
-                string jsQuery = @"return document.evaluate(
-                                '" + item.XPath + @"',
-                                document,
-                                null,
-                                XPathResult.FIRST_ORDERED_NODE_TYPE,
-                                null
-                                ).singleNodeValue.getBoundingClientRect()";
-
-                int elementTop = Convert.ToInt32(((IJavaScriptExecutor)driver).ExecuteScript(jsQuery + ".top;"));
-
-
-                int elementLeft = Convert.ToInt32(((IJavaScriptExecutor)driver).ExecuteScript(jsQuery + ".left;"));
-
-
-
-                Console.WriteLine("Taking screenshot");
-
-                Screenshot ss = ((ITakesScreenshot)driver).GetScreenshot();
-
-                //Save screenshot
-                string screenshot = ss.AsBase64EncodedString;
-                byte[] screenshotAsByteArray = ss.AsByteArray;
-                ss.SaveAsFile(item.Name + ".png", ImageFormat.Png);
-                ss.ToString();
-
-
-                //Crop screenshot
-                Rectangle cropRect = new Rectangle(elementLeft, elementTop, elementWidth, elementHeight);
-
-                Bitmap src = Image.FromFile(item.Name + ".png") as Bitmap;
-                Bitmap target = new Bitmap(cropRect.Width, cropRect.Height);
-
-                using (Graphics g = Graphics.FromImage(target))
-                {
-                    g.DrawImage(src, new Rectangle(0, 0, target.Width, target.Height),
-                                     cropRect,
-                                     GraphicsUnit.Pixel);
-                }
-
-                target.Save(item.Name + "-cropped.jpeg", ImageFormat.Jpeg);
             }
-
-            driver.Close();
-
-
 
         }
 

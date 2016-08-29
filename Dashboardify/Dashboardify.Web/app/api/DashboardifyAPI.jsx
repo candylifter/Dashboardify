@@ -32,7 +32,7 @@ export default {
 
   },
 
-  getItems: (dashboardId) => {
+  getItems: () => {
 
     //Mock method and data
 
@@ -99,8 +99,19 @@ export default {
       },
     ];
 
-    let filteredItems = items.filter((item) => {
-      return item.dashboardId == dashboardId ? true : false;
+    return items;
+  },
+
+  filterItems: (items, dashboardId, searchText) => {
+    let filteredItems = items;
+
+    filteredItems = filteredItems.filter((item) => {
+      return item.dashboardId == dashboardId;
+    });
+
+    filteredItems = filteredItems.filter((item) => {
+      let containsSearchText = item.name.toLowerCase().indexOf(searchText) !== -1;
+      return searchText.length === 0 || containsSearchText;
     });
 
     return filteredItems;

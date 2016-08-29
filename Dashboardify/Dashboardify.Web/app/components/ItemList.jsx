@@ -1,16 +1,16 @@
 import React from 'react';
 import moment from 'moment';
+import { connect } from 'react-redux';
 
 import ItemListItem from 'ItemListItem';
+import DashboardifyAPI from 'DashboardifyAPI';
 
 class ItemList extends React.Component {
 
     render() {
-
-        let {items} = this.props;
-
+        let {items, searchText, dashboardId} = this.props;
         let renderItems = () => {
-            return items.map((item) => {
+            return DashboardifyAPI.filterItems(items, dashboardId, searchText).map((item) => {
                 return (
                     <ItemListItem key={item.id} {...item} itemClick={this.props.itemClick}/>
                 );
@@ -26,5 +26,11 @@ class ItemList extends React.Component {
 }
 
 
-
-export default ItemList;
+export default connect(
+    (state) => {
+        return {
+            items: state.items,
+            searchText: state.searchText
+        }
+    }
+)(ItemList);

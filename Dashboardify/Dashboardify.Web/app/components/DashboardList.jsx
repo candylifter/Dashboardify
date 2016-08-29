@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import DashboardListItem from 'DashboardListItem';
 
@@ -7,6 +8,12 @@ class DashboardList extends React.Component {
     let {dashboards} = this.props;
 
     let renderDashboards = () => {
+      if (dashboards.length === 0) {
+        return (
+          <p>Nothing to show</p>
+        )
+      }
+
       return dashboards.map((dashboard) => {
         return <DashboardListItem key={dashboard.id} {...dashboard} />
       });
@@ -20,4 +27,6 @@ class DashboardList extends React.Component {
   }
 }
 
-export default DashboardList;
+export default connect(
+  (state) => state
+)(DashboardList);
