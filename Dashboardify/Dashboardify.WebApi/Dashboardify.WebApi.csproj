@@ -108,6 +108,16 @@
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dashboardify.Models\Dashboardify.Models.csproj">
+      <Project>{86391CDA-2533-4CF0-ADB0-B73F069683D6}</Project>
+      <Name>Dashboardify.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dashboardify.Repositories\Dashboardify.Repositories.csproj">
+      <Project>{c46b3ae5-dbbb-4117-ab45-9f2fb4b16623}</Project>
+      <Name>Dashboardify.Repositories</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
