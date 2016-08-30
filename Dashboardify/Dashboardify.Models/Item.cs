@@ -25,8 +25,19 @@ namespace Dashboardify.Repositories
 
         public DateTime Modified { get; set; }
 
-        public string ScrnshtURL { get; set; }
-
         public string Content { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return
+                String.Format(
+                    "Id: {0}, DashBoardId: {1}, Name: {2},Website: {3}, Checkinterval: {4}, IsActive: {5}, XPath: {6}, LastChecked: {7}, Created: {8}, Modified:{9}, Content: {10}",
+                    Id, DashBoardId, Name, Website, CheckInterval, isActive, XPath, LastChecked, Created, Modified,
+                    Content);
+        }
     }
 }

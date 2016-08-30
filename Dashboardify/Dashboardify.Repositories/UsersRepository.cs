@@ -94,6 +94,7 @@ namespace Dashboardify.Repositories
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine(ex.Message);
                     throw;
                 }
             }
@@ -102,11 +103,11 @@ namespace Dashboardify.Repositories
 
         public User Get(int id)
         {
-            var userTest = Get(id);
-            if (userTest == null)
-            {
-               throw new Exception("User was not found in database");
-            }
+            //var userTest = Get(id);
+            //if (userTest == null)
+            //{
+            //   throw new Exception("User was not found in database");
+            //}
 
             try
             {
@@ -180,7 +181,7 @@ namespace Dashboardify.Repositories
 
             string query = @"DELETE FROM Users 
                             WHERE 
-                                Id = @Id";
+                                Id =" + userId.ToString();
 
 
             try

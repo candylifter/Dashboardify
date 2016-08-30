@@ -68,6 +68,11 @@ namespace Dashboardify.Repositories
         public int Update(Item item)
         {
 
+            if (item.Id < 1)
+            {
+                throw new Exception("Invalid item Id error");
+            }
+
             string query = @"UPDATE dbo.Items
                             SET Content=@Content,
                             LastChecked=@LastChecked,
@@ -111,7 +116,7 @@ namespace Dashboardify.Repositories
                 {
                     return db.Query<Item>(@"SELECT
                                           Id,
-                                          DashBoardId, 
+                                          DashBoardId,
                                           Name, 
                                           Website,
                                           CheckInterval, 
@@ -119,10 +124,9 @@ namespace Dashboardify.Repositories
                                           XPath, 
                                           LastChecked, 
                                           Created, 
-                                          Modified, 
-                                          ScrnshtURL, 
+                                          Modified,  
                                           Content 
-                                          FROM Items WHERE Id = @Id", new { itemId }).SingleOrDefault(); //item.id
+                                          FROM Items WHERE Id = " + itemId.ToString()).SingleOrDefault(); //item.id
                 }
             }
             catch (Exception ex)
@@ -142,8 +146,7 @@ namespace Dashboardify.Repositories
         public IList<Item> GetByDashId(int dashId)
         {
             string query = @"SELECT
-                                Id,
-                                DashBoardId, 
+                                Id, 
                                 Name, 
                                 Website,
                                 CheckInterval, 
@@ -152,7 +155,6 @@ namespace Dashboardify.Repositories
                                 LastChecked, 
                                 Created, 
                                 Modified, 
-                                ScrnshtURL, 
                                 Content  
                              FROM Items 
                                  WHERE DashBoardId = " + dashId.ToString();
@@ -181,8 +183,7 @@ namespace Dashboardify.Repositories
             {
                 using (IDbConnection db = new SqlConnection(_connectionString))
                 {
-                    string query = @"INSERT INTO Items(
-                                         Id, 
+                    string query = @"INSERT INTO Items( 
                                          DashBoardId, 
                                          Name,
                                          Website,
@@ -192,10 +193,8 @@ namespace Dashboardify.Repositories
                                          LastChecked,
                                          Created,
                                          Modified,
-                                         ScrnshtURL,
                                          Content) 
                                      VALUES (
-                                         @Id,
                                          @DashBoardId,
                                          @Name,
                                          @Website,
@@ -205,7 +204,6 @@ namespace Dashboardify.Repositories
                                          @LastChecked,
                                          @Created,
                                          @Modified,
-                                         @ScrnshtURL,
                                          @Content)";
                     var result = db.Execute(query, item);
                 }
