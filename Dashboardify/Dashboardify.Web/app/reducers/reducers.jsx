@@ -16,6 +16,16 @@ export let itemsReducer = (state = [], action) => {
       return [
         ...state,
         ...action.items
+      ];
+    case 'SELECT_ITEM':
+      return [
+        ...state.map((item) => {
+          if (item.dashboardId === action.dashboardId ) {
+            item.isSelected = item.id === action.id;
+          }
+
+          return item;
+        })
       ]
     default:
       return state;

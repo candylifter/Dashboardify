@@ -1,14 +1,15 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 import DashboardifyAPI from 'DashboardifyAPI';
 
 class Breadcrumb extends React.Component {
   render () {
-    let { dashboardId } = this.props;
+    let { dashboards, dashboardId } = this.props;
 
     let dashboardName = (dashboardId) => {
-      let currentDashboard =  DashboardifyAPI.getDashboards().filter((dashboard) => {
+      let currentDashboard =  dashboards.filter((dashboard) => {
         return dashboard.id == dashboardId ? true : false;
       });
 
@@ -24,4 +25,10 @@ class Breadcrumb extends React.Component {
   }
 }
 
-export default Breadcrumb;
+export default connect(
+  (state) => {
+    return {
+      dashboards: state.dashboards
+    }
+  }
+)(Breadcrumb);

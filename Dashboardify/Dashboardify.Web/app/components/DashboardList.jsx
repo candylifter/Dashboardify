@@ -28,5 +28,9 @@ class DashboardList extends React.Component {
 }
 
 export default connect(
-  (state) => state
+  (state) => {
+    return {
+      dashboards: state.dashboards
+    }
+  }
 )(DashboardList);

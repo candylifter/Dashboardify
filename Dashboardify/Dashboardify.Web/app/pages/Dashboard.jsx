@@ -57,11 +57,11 @@ class Dashboard extends React.Component {
 			return itemId;
 		}
 
-		let renderItemPanel = () => {
-			if (typeof this.state.selectedItemId === 'number') {
-				return (<ItemPanel item={items[getSelectedItem(this.state.selectedItemId)]} toggleItem={this.handleToggleItem.bind(this)}/>)
-			}
-		}
+		// let renderItemPanel = () => {
+		// 	if (typeof this.state.selectedItemId === 'number') {
+		// 		return (<ItemPanel item={items[getSelectedItem(this.state.selectedItemId)]} toggleItem={this.handleToggleItem.bind(this)}/>)
+		// 	}
+		// }
 
 		//Needs refactoring
 		return (
@@ -80,7 +80,7 @@ class Dashboard extends React.Component {
 						<ItemList dashboardId={this.props.params.id} itemClick={this.handleItemClick.bind(this)}/>
 					</div>
 					<div className="col-md-6 col-lg-4">
-						{renderItemPanel()}
+						<ItemPanel dashboardId={this.props.params.id} toggleItem={this.handleToggleItem.bind(this)}/>
 					</div>
 				</div>
 			</div>

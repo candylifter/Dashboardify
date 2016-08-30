@@ -18,3 +18,11 @@ export let addItems = (items) => {
     items
   }
 }
+
+export let selectItem = (id, dashboardId) => {
+  return {
+    type: 'SELECT_ITEM',
+    id,
+    dashboardId
+  }
+}
