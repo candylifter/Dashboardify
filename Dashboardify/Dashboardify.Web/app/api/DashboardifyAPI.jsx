@@ -45,9 +45,9 @@ export default {
         url: '//www.autogidas.lt',
         isActive: true,
         isSelected: false,
-        checkInterval: '5 min',
-        lastChecked: 999,
-        lastModified: 1472129223
+        checkInterval: 600000,
+        lastChecked: '2016-08-23 06:36:40',
+        lastModified: '2016-08-23 06:36:40'
       },
       {
         id: 2,
@@ -57,9 +57,9 @@ export default {
         url: '//www.autogidas.lt',
         isActive: true,
         isSelected: false,
-        checkInterval: '5 min',
-        lastChecked: 999,
-        lastModified: 1472129223
+        checkInterval: 600000,
+        lastChecked: '2016-08-23 06:36:40',
+        lastModified: '2016-08-23 06:36:40'
       },
       {
         id: 3,
@@ -69,9 +69,9 @@ export default {
         url: '//www.autogidas.lt',
         isActive: true,
         isSelected: false,
-        checkInterval: '5 min',
-        lastChecked: 999,
-        lastModified: 1472129223
+        checkInterval: 600000,
+        lastChecked: '2016-08-23 06:36:40',
+        lastModified: '2016-08-23 06:36:40'
       },
       {
         id: 4,
@@ -81,9 +81,9 @@ export default {
         url: '//www.autogidas.lt',
         isActive: true,
         isSelected: false,
-        checkInterval: '5 min',
-        lastChecked: 999,
-        lastModified: 1472129223
+        checkInterval: 600000,
+        lastChecked: '2016-08-23 06:36:40',
+        lastModified: '2016-08-23 06:36:40'
       },
       {
         id: 5,
@@ -93,9 +93,9 @@ export default {
         url: '//www.autogidas.lt',
         isActive: true,
         isSelected: false,
-        checkInterval: '5 min',
-        lastChecked: 999,
-        lastModified: 1472129223
+        checkInterval: 600000,
+        lastChecked: '2016-08-23 06:36:40',
+        lastModified: '2016-08-23 06:36:40'
       },
     ];
 
@@ -115,5 +115,32 @@ export default {
     });
 
     return filteredItems;
-  }
+  },
+
+  getCheckIntervals: () => {
+    let checkIntervals = [
+      {
+        id: 1,
+        checkInterval: 300000 //5 min
+      },
+      {
+        id: 2,
+        checkInterval: 600000 //10 min
+      },
+      {
+        id: 3,
+        checkInterval: 900000 //15 min
+      },
+      {
+        id: 4,
+        checkInterval: 1800000 //30 min
+      },
+      {
+        id: 5,
+        checkInterval: 3600000 //1 hour
+      },
+    ];
+
+    return checkIntervals;
+  },
 }

@@ -1,6 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import moment from 'moment';
+
 const actions = require('actions');
+import CheckIntervalList from 'CheckIntervalList';
 
 class ItemPanel extends React.Component {
     constructor(props, context) {
@@ -50,13 +53,7 @@ class ItemPanel extends React.Component {
                                 <span>Check interval</span>
                             </div>
                             <div className="col-sm-6">
-                                <select className="form-control">
-                                    <option>5 min.</option>
-                                    <option>10 min.</option>
-                                    <option>15 min.</option>
-                                    <option>30 min.</option>
-                                    <option>1 hour</option>
-                                </select>
+                                <CheckIntervalList itemId={item.id}/>
                             </div>
                         </div>
                         <div className="row">
@@ -64,7 +61,7 @@ class ItemPanel extends React.Component {
                                 <span>Last Checked</span>
                             </div>
                             <div className="col-sm-6 text-right">
-                                <span className="text-muted">15 minutes ago</span>
+                                <span className="text-muted">{moment(item.lastChecked).fromNow()}</span>
                             </div>
                         </div>
                         <div className="row">
@@ -72,7 +69,7 @@ class ItemPanel extends React.Component {
                                 <span>Last Modified</span>
                             </div>
                             <div className="col-sm-6 text-right">
-                                <span className="text-muted">1 hour ago</span>
+                                <span className="text-muted">{moment(item.lastModified).fromNow()}</span>
                             </div>
                         </div>
                         <hr/>
