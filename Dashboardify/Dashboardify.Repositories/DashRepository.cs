@@ -33,7 +33,7 @@ namespace Dashboardify.Repositories
                                  IsActive,
                                  Name,
                                  DateCreated,
-                                 DateModified, 
+                                 DateModified 
                                  FROM DashBoards";
             try
             {
@@ -60,6 +60,11 @@ namespace Dashboardify.Repositories
         /// <returns></returns>
         public DashBoard Get(int DashId)
         {
+            if (DashId < 1)
+            {
+                throw new Exception("Id must be greater or equl to 1");
+            }
+
             try
             {
                 using (IDbConnection db = new SqlConnection(_connectionString))
@@ -70,13 +75,13 @@ namespace Dashboardify.Repositories
                                  IsActive,
                                  Name,
                                  DateCreated,
-                                 DateModified, 
+                                 DateModified 
                           FROM 
                                  DashBoards 
                           WHERE 
-                                 Id = @Id";
+                                 Id = " + DashId.ToString();
 
-                    return db.Query<DashBoard>(query, new { DashId }).SingleOrDefault();
+                    return db.Query<DashBoard>(query).SingleOrDefault();
                 }
             }
             catch (Exception ex)
@@ -94,10 +99,15 @@ namespace Dashboardify.Repositories
         /// <param name="dash">Dashboard Object</param>
         public int Update(DashBoard dash)
         {
+            if (dash == null)
+            {
+                throw new Exception("User not found");
+            }
+
             string query = @"UPDATE DashBoards
                                 SET IsActive=@IsActive,
                                 Name=@Name,
-                                DateModified=@Datemod";
+                                DateModified=@Datemodified";
             try
             {
                 using (IDbConnection db = new SqlConnection(_connectionString))
@@ -121,6 +131,11 @@ namespace Dashboardify.Repositories
         /// <param name="dash">Dashboard</param>
         public bool Create(DashBoard dash)
         {
+            if (dash == null)
+            {
+                throw new Exception("Object not found in DB");
+            }
+
             string query = @"INSERT INTO dbo.DashBoards 
                                 (UserId, 
                                 IsActive, 
