@@ -37,6 +37,16 @@ export let itemsReducer = (state = [], action) => {
           return item;
         })
       ];
+    case 'SET_ITEM_CHECK_INTERVAL':
+      return [
+        ...state.map((item) => {
+          if (item.id === action.id) {
+            item.checkInterval = action.checkInterval;
+          }
+
+          return item;
+        })
+      ]
     default:
       return state;
   }
@@ -46,6 +56,15 @@ export let searchTextReducer = (state = '', action) => {
   switch (action.type) {
     case 'SET_SEARCH_TEXT':
       return action.searchText;
+    default:
+      return state;
+  }
+}
+
+export let checkIntervalsReducer = (state = [], action) => {
+  switch (action.type) {
+    case 'ADD_CHECK_INTERVALS':
+      return action.checkIntervals;
     default:
       return state;
   }

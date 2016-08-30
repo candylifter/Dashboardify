@@ -33,3 +33,18 @@ export let toggleItem = (id) => {
     id
   }
 }
+
+export let setItemCheckInterval = (id, checkInterval) => {
+  return {
+    type: 'SET_ITEM_CHECK_INTERVAL',
+    id,
+    checkInterval
+  }
+}
+
+export let addCheckIntervals = (checkIntervals) => {
+  return {
+    type: 'ADD_CHECK_INTERVALS',
+    checkIntervals
+  }
+}

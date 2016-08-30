@@ -13,5 +13,9 @@ namespace Dashboardify.Models
         public string ScrnshtURL { get; set; }
         public DateTime DateTaken { get; set; }
 
+        public override string ToString()
+        {
+            return String.Format("Id {0}, ItemId {1}, ScrnshtURL {2}, DateTaken {3}", Id, ItemId, ScrnshtURL, DateTaken);
+        }
     }
 }
