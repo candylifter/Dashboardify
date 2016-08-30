@@ -39,11 +39,24 @@ namespace Dashboardify.Sandbox
 
             // Works fine UpdateDash(connectionString);
             
-            CreateDash(connectionString);
+            // Works fine CreateDash(connectionString);
+
+            // Works fine GetDashByUserId(connectionString);
+
+            // Works fine PrintAllScreens(connectionString);
+
+            // Works fine GetScreen(connectionString);
+
+            // Works fine CreateScreenShoot(connectionString);
+
+            // Works fine DeleteScren(connectionString);
+
+            PrinScreen(connectionString);
+
 
             //TODO Wait Zilvinas response
             // Needs work DeleteUser(connectionString);
-
+            //All delete methods needs wurk wurk wurk wurk
             Console.ReadKey();
         }
         public static void PrintUsers(string connectionString)
@@ -149,7 +162,7 @@ namespace Dashboardify.Sandbox
         static void GetByDashId(string connectionString)
         {
             var itemRepo = new ItemsRepository(connectionString);
-            foreach (var item in itemRepo.GetByDashId(2))
+            foreach (var item in itemRepo.GetByDashId(1))
             {
                 Console.WriteLine(item.ToString());
             }
@@ -226,25 +239,87 @@ namespace Dashboardify.Sandbox
 
             DateTime rngMax = (DateTime)System.Data.SqlTypes.SqlDateTime.MaxValue;
             
-            Console.WriteLine(rngMin);
-            Console.WriteLine(rngMax);
-            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd hh:MM:ss"));
+            //Console.WriteLine(rngMin);
+            //Console.WriteLine(rngMax);
+            //Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd hh:MM:ss"));
 
-            //var dashRepo = new DashRepository(connectionString);
-            //Console.WriteLine("Before");
-            //GetDashList(connectionString);
-            //var dash = new DashBoard();
-            //dash.Name = "Klarko Skrybeles";
-            //dash.DateCreated = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd H:mm:ss"));
-            //dash.IsActive = true;
-            //dash.UserId = 1;
-            //Console.WriteLine("Item to create" + dash.ToString());
-            //dashRepo.Create(dash);
-            //Console.WriteLine("Dash created");
-            //GetDashList(connectionString);
+            var dashRepo = new DashRepository(connectionString);
+
+            Console.WriteLine("Before");
+
+            GetDashList(connectionString);
+
+            var dash = new DashBoard();
+
+            dash.Name = "Klarko Skrybeles";
+
+            dash.DateCreated = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd hh:MM:ss"));
+            dash.DateModified = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd hh:MM:ss"));
+
+            dash.IsActive = true;
+
+            dash.UserId = 1;
+
+            Console.WriteLine("Item to create" + dash.ToString());
+
+            dashRepo.Create(dash);
+
+            Console.WriteLine("Dash created");
+
+            GetDashList(connectionString);
 
 
 
+        }
+
+        static void GetDashByUserId(string connctionString)
+        {
+            var dash =new DashRepository(connctionString);
+            foreach (var ds in dash.GetByUserId(1))
+            {
+                Console.WriteLine(ds.ToString());
+            }
+        }
+
+        static void PrintAllScreens(string connectionString)
+        {
+            var screenRepo = new ScreenshotRepository(connectionString);
+            foreach (var screen in screenRepo.GetAll())
+            {
+                Console.WriteLine(screen.ToString());
+            }
+        }
+
+        static void GetScreen(string connectionString)
+        {
+            var screenRepo = new ScreenshotRepository(connectionString);
+            Console.WriteLine(screenRepo.Get(0));
+        }
+
+        static void CreateScreenShoot(string connectionString)
+        {
+            var screenRepo = new ScreenshotRepository(connectionString);
+            PrintAllScreens(connectionString);
+            Console.WriteLine("before");
+            var screen = screenRepo.Get(2);
+            screen.ScrnshtURL = "www.maestro.com";
+            screenRepo.Create(screen);
+            PrintAllScreens(connectionString);
+        }
+
+        static void DeleteScren(string conn)
+        {
+            var screen = new ScreenshotRepository(conn);
+            PrintAllScreens(conn);
+            Console.WriteLine("fdgfdgfdg");
+            screen.Delete(4);
+            PrintAllScreens(conn);
+        }
+
+        static void PrinScreen(string connectionString)
+        {
+            var screeRepo = new ScreenshotRepository(connectionString);
+            Console.WriteLine(screeRepo.Get(1).ToString());
         }
     }
 
