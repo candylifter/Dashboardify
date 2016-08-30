@@ -35,8 +35,11 @@ namespace Dashboardify.Sandbox
 
             // Works fine GetDashList(connectionString);
 
-            GetDash(connectionString);
+            // Works fine GetDash(connectionString);
+
+            // Works fine UpdateDash(connectionString);
             
+            CreateDash(connectionString);
 
             //TODO Wait Zilvinas response
             // Needs work DeleteUser(connectionString);
@@ -202,9 +205,44 @@ namespace Dashboardify.Sandbox
 
         }
 
-        static void Update(string connectionString)
+        static void UpdateDash(string connectionString)
         {
             var dashRepo = new DashRepository(connectionString);
+            var origin = dashRepo.Get(1).ToString();
+            var update = dashRepo.Get(1);
+            update.Name = "Maestro Trumpi";
+            Console.WriteLine(origin);
+            Console.WriteLine(update);
+            dashRepo.Update(update);
+            Console.WriteLine(dashRepo.Get(1).ToString());
+
+
+
+        }
+
+        static void CreateDash(string connectionString)
+        {
+            DateTime rngMin = (DateTime)System.Data.SqlTypes.SqlDateTime.MinValue;
+
+            DateTime rngMax = (DateTime)System.Data.SqlTypes.SqlDateTime.MaxValue;
+            
+            Console.WriteLine(rngMin);
+            Console.WriteLine(rngMax);
+            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd hh:MM:ss"));
+
+            //var dashRepo = new DashRepository(connectionString);
+            //Console.WriteLine("Before");
+            //GetDashList(connectionString);
+            //var dash = new DashBoard();
+            //dash.Name = "Klarko Skrybeles";
+            //dash.DateCreated = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd H:mm:ss"));
+            //dash.IsActive = true;
+            //dash.UserId = 1;
+            //Console.WriteLine("Item to create" + dash.ToString());
+            //dashRepo.Create(dash);
+            //Console.WriteLine("Dash created");
+            //GetDashList(connectionString);
+
 
 
         }

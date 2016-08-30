@@ -99,6 +99,11 @@ namespace Dashboardify.Repositories
         /// <param name="dash">Dashboard Object</param>
         public int Update(DashBoard dash)
         {
+            if (dash == null)
+            {
+                throw new Exception("User not found");
+            }
+
             string query = @"UPDATE DashBoards
                                 SET IsActive=@IsActive,
                                 Name=@Name,
@@ -126,6 +131,11 @@ namespace Dashboardify.Repositories
         /// <param name="dash">Dashboard</param>
         public bool Create(DashBoard dash)
         {
+            if (dash == null)
+            {
+                throw new Exception("Object not found in DB");
+            }
+
             string query = @"INSERT INTO dbo.DashBoards 
                                 (UserId, 
                                 IsActive, 
