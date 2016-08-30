@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export default {
   getDashboards: (/*userId*/) => {
     return [
@@ -100,6 +102,15 @@ export default {
     ];
 
     return items;
+
+    // return axios.get('//localhost/api/Items/GetItems/')
+    //   .then((res) => {
+    //     console.log(res.data.items);
+    //     return res.data.items;
+    //
+    //   })
+    //   .catch((err) => console.log(err));
+
   },
 
   filterItems: (items, dashboardId, searchText) => {

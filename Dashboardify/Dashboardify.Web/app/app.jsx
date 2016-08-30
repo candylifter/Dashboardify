@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router, IndexRoute, Route, browserHistory } from 'react-router';
+import { Router, IndexRoute, Route, hashHistory } from 'react-router';
+//
+import axios from 'axios';
+//
 
 import DashboardifyAPI from 'DashboardifyAPI';
 let actions = require('actions');
@@ -25,12 +28,40 @@ store.subscribe(() => {
 });
 
 store.dispatch(actions.addDashboards(DashboardifyAPI.getDashboards()));
+
 store.dispatch(actions.addItems(DashboardifyAPI.getItems()));
+// axios.get('//localhost/api/Items/GetItems/')
+//   .then((res) => {
+//     let apiItems = res.data.items;
+//     let items = [];
+//
+//     for (var i = 0; i < apiItems.length; i++) {
+//       let item = {
+//         id: apiItems[i].Id,
+//         dashboardId: apiItems[i].DashBoardId,
+//         name: apiItems[i].Name,
+//         img: 'https://www.placecage.com/gif/500/200',
+//         url: apiItems[i].Website,
+//         isActive: apiItems[i].isActive,
+//         isSelected: false,
+//         checkInterval: apiItems[i].CheckInterval,
+//         lastChecked: apiItems[i].LastChecked,
+//         lastModified: apiItems[i].Modified
+//       };
+//
+//       items.push(item);
+//     }
+//
+//     store.dispatch(actions.addItems(items));
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   })
 store.dispatch(actions.addCheckIntervals(DashboardifyAPI.getCheckIntervals()));
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={browserHistory}>
+    <Router history={hashHistory}>
       <Route path="/" component={DashboardifyApp}>
         <IndexRoute component={Login}/>
         <Route path="dashboards" component={Dashboards}/>

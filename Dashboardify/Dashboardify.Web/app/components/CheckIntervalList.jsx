@@ -24,7 +24,7 @@ const CheckIntervalList = ({checkIntervals, items, itemId, dispatch}) => {
         <select
             className="form-control"
             value={item.checkInterval}
-            onChange={(e) => dispatch(actions.setItemCheckInterval(item.id, e.target.value))}
+            onChange={(e) => dispatch(actions.setItemCheckInterval(item.Id, e.target.value))}
             >
             {renderIntervals()}
         </select>
