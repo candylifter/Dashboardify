@@ -6,8 +6,6 @@ import ItemListItem from 'ItemListItem';
 import DashboardifyAPI from 'DashboardifyAPI';
 
 class ItemList extends React.Component {
-    // {/*<ItemListItem key={item.id} {...item} itemClick={this.props.itemClick}/>*/}
-
     render() {
         let {items, searchText, dashboardId} = this.props;
         let renderItems = () => {

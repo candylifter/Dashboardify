@@ -21,10 +21,12 @@ store.subscribe(() => {
   var state = store.getState();
 
   console.log(state);
+  // Note: send state changes to WebAPI
 });
 
 store.dispatch(actions.addDashboards(DashboardifyAPI.getDashboards()));
 store.dispatch(actions.addItems(DashboardifyAPI.getItems()));
+store.dispatch(actions.addCheckIntervals(DashboardifyAPI.getCheckIntervals()));
 
 ReactDOM.render(
   <Provider store={store}>

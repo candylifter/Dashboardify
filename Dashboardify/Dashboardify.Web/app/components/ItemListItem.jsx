@@ -18,7 +18,7 @@ class ItemListItem extends React.Component {
 					<div className="panel-body">
 						<img src={img} alt={"Screenshot of " + name} className="img-responsive"></img>
 					</div>
-					<div className="panel-footer">Last modified: {moment.unix(lastModified).fromNow()}</div>
+					<div className="panel-footer">Last modified: {moment(lastModified).fromNow()}</div>
 				</div>
 			</div>
 		)
