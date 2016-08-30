@@ -8,16 +8,6 @@ import Search from 'Search';
 import DashboardifyAPI from 'DashboardifyAPI';
 
 class Dashboard extends React.Component {
-	constructor(props, context) {
-		super(props, context);
-		this.state = {
-			items: DashboardifyAPI.getItems(this.props.params.id),
-
-			selectedItemId: undefined
-
-		}
-	}
-
 	handleToggleItem(id) {
 		let updatedItems = this.state.items.map((item) => {
 			if (item.id === id) {
@@ -30,40 +20,19 @@ class Dashboard extends React.Component {
 		this.setState({items: updatedItems})
 	}
 
-	handleItemClick(id) {
-		let updatedItems = this.state.items.map((item) => {
-			if (item.id === id) {
-				item.isSelected = true;
-			} else {
-				item.isSelected = false;
-			}
-
-			return item;
-		});
-
-		this.setState({selectedItemId: id, items: updatedItems});
-	}
-
 	render() {
 
-		let {items} = this.state;
-		let getSelectedItem = (id) => {
-			let itemId = items.findIndex((item) => {
-				if (item.id === id) {
-					return item;
-				}
-			});
-
-			return itemId;
-		}
-
-		// let renderItemPanel = () => {
-		// 	if (typeof this.state.selectedItemId === 'number') {
-		// 		return (<ItemPanel item={items[getSelectedItem(this.state.selectedItemId)]} toggleItem={this.handleToggleItem.bind(this)}/>)
-		// 	}
+		let {items} = this.props;
+		// let getSelectedItem = (id) => {
+		// 	let itemId = items.findIndex((item) => {
+		// 		if (item.id === id) {
+		// 			return item;
+		// 		}
+		// 	});
+		//
+		// 	return itemId;
 		// }
 
-		//Needs refactoring
 		return (
 			<div className="container-fluid">
 				<div className="row">
@@ -77,10 +46,10 @@ class Dashboard extends React.Component {
 							</div>
 						</div>
 						<hr/>
-						<ItemList dashboardId={this.props.params.id} itemClick={this.handleItemClick.bind(this)}/>
+						<ItemList dashboardId={this.props.params.id}/>
 					</div>
 					<div className="col-md-6 col-lg-4">
-						<ItemPanel dashboardId={this.props.params.id} toggleItem={this.handleToggleItem.bind(this)}/>
+						<ItemPanel dashboardId={this.props.params.id}/>
 					</div>
 				</div>
 			</div>
@@ -90,5 +59,9 @@ class Dashboard extends React.Component {
 }
 
 export default connect(
-	(state) => state
+	(state) => {
+		return {
+			items: state.items
+		}
+	}
 )(Dashboard);

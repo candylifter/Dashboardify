@@ -26,3 +26,10 @@ export let selectItem = (id, dashboardId) => {
     dashboardId
   }
 }
+
+export let toggleItem = (id) => {
+  return {
+    type: 'TOGGLE_ITEM',
+    id
+  }
+}

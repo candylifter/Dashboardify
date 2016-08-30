@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+const actions = require('actions');
 
 class ItemPanel extends React.Component {
     constructor(props, context) {
@@ -8,7 +9,7 @@ class ItemPanel extends React.Component {
 
     render() {
 
-        let {items, dashboardId} = this.props;
+        let {items, dashboardId, dispatch} = this.props;
 
         let item = items.find((item) => {
             return item.isSelected && (item.dashboardId == dashboardId)
@@ -42,7 +43,7 @@ class ItemPanel extends React.Component {
                             <div className="col-sm-6">
                                 <span>Active</span>
                             </div>
-                            <div className="col-sm-6 text-right"><input type="checkbox" checked={item.isActive} onChange={() => this.props.toggleItem(item.id)}/></div>
+                            <div className="col-sm-6 text-right"><input type="checkbox" checked={item.isActive} onChange={() => dispatch(actions.toggleItem(item.id))}/></div>
                         </div>
                         <div className="row">
                             <div className="col-sm-6">

@@ -26,7 +26,17 @@ export let itemsReducer = (state = [], action) => {
 
           return item;
         })
-      ]
+      ];
+    case 'TOGGLE_ITEM':
+      return [
+        ...state.map((item) => {
+          if (item.id === action.id) {
+            item.isActive = !item.isActive;
+          }
+
+          return item;
+        })
+      ];
     default:
       return state;
   }
