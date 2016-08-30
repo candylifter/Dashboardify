@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -145,7 +146,7 @@ namespace Dashboardify.Service
 
 
         // TODO: Refactor to separate methods
-        public void TakeScreenshots(IList<Item> items)
+        public String TakeScreenshots(IList<Item> items)
         {
 
             foreach (var item in items)
@@ -164,7 +165,7 @@ namespace Dashboardify.Service
 
                 page.open('"+item.Website+ @"', function() {
                     var clipRect = page.evaluate(function() {
-                        return document.evaluate( '"+item.XPath+@"' ,document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue.getBoundingClientRect();
+                        return document.evaluate( '"+item.XPath+ @"' ,document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue.getBoundingClientRect();
                     });
 
                 page.clipRect = {
@@ -173,15 +174,14 @@ namespace Dashboardify.Service
                     width: clipRect.width,
                     height: clipRect.height
                 };
-                    page.render('" + item.Name+@".png');
+                    page.render('screenshots/" + item.Name+@".png');
                     phantom.exit();
                 });", null);
 
-
+                return Path.GetFullPath(item.Name);
                 
-
             }
-
+            return "Įvyko klaida";
         }
 
 
