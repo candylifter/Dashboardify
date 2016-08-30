@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router, IndexRoute, Route, hashHistory } from 'react-router';
+import { Router, IndexRoute, Route, browserHistory } from 'react-router';
 
 import DashboardifyAPI from 'DashboardifyAPI';
 let actions = require('actions');
@@ -28,7 +28,7 @@ store.dispatch(actions.addItems(DashboardifyAPI.getItems()));
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={hashHistory}>
+    <Router history={browserHistory}>
       <Route path="/" component={DashboardifyApp}>
         <IndexRoute component={Login}/>
         <Route path="dashboards" component={Dashboards}/>
