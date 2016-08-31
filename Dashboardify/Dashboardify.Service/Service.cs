@@ -148,9 +148,10 @@ namespace Dashboardify.Service
         // TODO: Refactor to separate methods
         public void TakeScreenshots(IList<Item> items)
         {
-
+            Console.WriteLine("Preparing to take screenshots");
             foreach (var item in items)
             {
+                Console.WriteLine("Taking screenshot of " + item.Name);
 
                 var phantomJS = new PhantomJS();
                 phantomJS.OutputReceived += (sender, e) => {
@@ -174,12 +175,17 @@ namespace Dashboardify.Service
                     width: clipRect.width,
                     height: clipRect.height
                 };
-                    page.render('screenshots/" + item.Name+@".png');
+                    page.render('../../../Dashboardify.Web/Content/Screenshots/" + item.Name+@".png');
                     phantom.exit();
                 });", null);
 
+<<<<<<< HEAD
                 Console.WriteLine(Path.GetFullPath(item.Name));
                 
+=======
+                Console.WriteLine(Path.GetFullPath("../../../Dashboardify.Web/Content/Screenshots/" + item.Name + ".png"));
+               
+>>>>>>> 2f1b97f5f4a3bbc304cd355871170fc0ed110d7a
             }
         }
 
