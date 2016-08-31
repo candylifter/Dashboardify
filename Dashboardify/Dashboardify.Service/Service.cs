@@ -146,7 +146,7 @@ namespace Dashboardify.Service
 
 
         // TODO: Refactor to separate methods
-        public String TakeScreenshots(IList<Item> items)
+        public void TakeScreenshots(IList<Item> items)
         {
 
             foreach (var item in items)
@@ -178,10 +178,9 @@ namespace Dashboardify.Service
                     phantom.exit();
                 });", null);
 
-                return Path.GetFullPath(item.Name);
+                Console.WriteLine(Path.GetFullPath(item.Name));
                 
             }
-            return "Įvyko klaida";
         }
 
 
