@@ -13,7 +13,7 @@ namespace Dashboardify.WebApi.Controllers
     public class ItemsController : ApiController
     {
         private static string ConnectionString = ConfigurationManager.ConnectionStrings["DBIrmantas"].ConnectionString;
-        private ItemsRepository aitemai = new ItemsRepository(ConnectionString);
+        private ItemsRepository _itemsRepository = new ItemsRepository(ConnectionString);
 
         [HttpGet]
         public IHttpActionResult Index()
@@ -24,14 +24,14 @@ namespace Dashboardify.WebApi.Controllers
         [HttpGet]
         public IHttpActionResult GetItems()
         {
-            return Json(new { success = true, items = aitemai.GetList() });
+            return Json(new { success = true, items = _itemsRepository.GetList() });
         }
 
         public IHttpActionResult ToggleItem(int Id, int CheckInterval)
         {
-            var item = aitemai.Get(Id);
+            var item = _itemsRepository.Get(Id);
             item.CheckInterval = CheckInterval;
-            aitemai.Update(item);
+            _itemsRepository.Update(item);
             return Json(true);
         }
     }

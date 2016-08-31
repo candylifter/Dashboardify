@@ -46,7 +46,13 @@ class ItemPanel extends React.Component {
                             <div className="col-sm-6">
                                 <span>Active</span>
                             </div>
-                            <div className="col-sm-6 text-right"><input type="checkbox" checked={item.isActive} onChange={() => dispatch(actions.toggleItem(item.id))}/></div>
+                            <div className="col-sm-6 text-right">
+                                <input
+                                    type="checkbox"
+                                    checked={item.isActive}
+                                    onChange={() => dispatch(actions.toggleItem(item.id))}
+                                    />
+                            </div>
                         </div>
                         <div className="row">
                             <div className="col-sm-6">
