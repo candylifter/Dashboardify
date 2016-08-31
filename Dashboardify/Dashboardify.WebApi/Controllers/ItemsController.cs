@@ -1,5 +1,7 @@
 ﻿using System.Web.Http;
 using System.Configuration;
+using System.Net;
+using System.Net.Http;
 using Dashboardify.Contracts.Items;
 using Dashboardify.Handlers.Items;
 
@@ -10,7 +12,7 @@ namespace Dashboardify.WebApi.Controllers
         private static string connectionString = ConfigurationManager.ConnectionStrings["DBZygis"].ConnectionString;
 
         [HttpGet]
-        public IHttpActionResult GetList(int dashboardId)
+        public HttpResponseMessage GetList(int dashboardId)
         {
             var request = new GetItemsListRequest();
 
@@ -20,7 +22,9 @@ namespace Dashboardify.WebApi.Controllers
 
             var response = handler.Handle(request);
 
-            return Json(response);
+            var httpStatusCode = response.HasErrors ? HttpStatusCode.BadRequest : HttpStatusCode.OK;
+
+            return Request.CreateResponse(httpStatusCode, response);
         }
 
         //public IHttpActionResult ToggleItem(int Id, int CheckInterval)
