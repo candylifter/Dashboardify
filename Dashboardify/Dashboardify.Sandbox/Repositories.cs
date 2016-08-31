@@ -168,7 +168,7 @@ namespace Dashboardify.Sandbox
         public void GetByDashId(string connectionString)
         {
             var itemRepo = new ItemsRepository(connectionString);
-            foreach (var item in itemRepo.GetByDashId(1))
+            foreach (var item in itemRepo.GetByDashboardId(1))
             {
                 Console.WriteLine(item.ToString());
             }

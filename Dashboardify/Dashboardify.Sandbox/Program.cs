@@ -1,11 +1,4 @@
-﻿using System;
-using Dashboardify.Models;
-using Dashboardify.Repositories;
-using System.Data;
-using System.Dynamic;
-using System.Runtime.InteropServices;
-
-namespace Dashboardify.Sandbox
+﻿namespace Dashboardify.Sandbox
 {
     class Program
     {
@@ -15,11 +8,11 @@ namespace Dashboardify.Sandbox
 
         static void Main(string[] args)
         {
-            _repositories = new Repositories();
-            _repositories.Do();
+            //_repositories = new Repositories();
+            //_repositories.Do();
 
-            //_handlers = new Handlers();
-            //_handlers.Do();
+            _handlers = new Handlers();
+            _handlers.Do();
         }
     }
 

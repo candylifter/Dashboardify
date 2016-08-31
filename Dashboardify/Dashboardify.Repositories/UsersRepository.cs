@@ -45,33 +45,9 @@ namespace Dashboardify.Repositories
             }
         }
 
-        // TODO: Needs work
-        public void Update(User user) //Daugiau if validation
+        public void Update(User user)
         {
-            var origin = Get(user.Id);
-
-            //if (origin == null)
-            //{
-            //    throw new Exception("User not found in data base!");
-            //}
-
-            //if (origin.Name != user.Name)
-            //{
-            //    origin.Name = user.Name;
-            //}
-            //if (origin.Password != user.Password)
-            //{
-            //    origin.Password = user.Password;
-            //}
-            //if (origin.Email != user.Email)
-            //{
-            //    origin.Email = user.Email;
-            //}
-            //if (origin.IsActive != user.IsActive)
-            //{
-            //    origin.IsActive = user.IsActive;
-            //}
-            origin.DateModified = DateTime.Now;
+            user.DateModified = DateTime.Now;
 
             string query = @"
                             UPDATE 
@@ -80,7 +56,6 @@ namespace Dashboardify.Repositories
                                 Name = @Name,
                                 Password = @Password,
                                 Email = @Email,
-                                IsActive = @IsActive, 
                                 DateModified = @DateModified
                             WHERE 
                                 Id = @Id";
@@ -90,6 +65,32 @@ namespace Dashboardify.Repositories
                 try
                 {
                     db.Execute(query, user);
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    throw;
+                }
+            }
+
+        }
+
+        public void ChangeStatus(int id, bool isActive)
+        {
+            string query = @"
+                            UPDATE 
+                                Users
+                            SET 
+                                IsActive = @IsActive
+                            WHERE
+                                Id = @Id";
+
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    db.Execute(query, isActive);
 
                 }
                 catch (Exception ex)

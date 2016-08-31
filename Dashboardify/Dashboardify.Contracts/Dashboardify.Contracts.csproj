@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6E3CB52F-46FD-4858-B6F5-70DDC9BFAA6D}</ProjectGuid>
+    <ProjectGuid>{AC949BCA-2A0B-443A-B8B7-4DD7F1214E6E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dashboardify.Handlers</RootNamespace>
-    <AssemblyName>Dashboardify.Handlers</AssemblyName>
+    <RootNamespace>Dashboardify.Contracts</RootNamespace>
+    <AssemblyName>Dashboardify.Contracts</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,22 +40,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Items\GetItemsListHandler.cs" />
-    <Compile Include="Users\UpdateUserHandler.cs" />
+    <Compile Include="BaseRequest.cs" />
+    <Compile Include="BaseResponse.cs" />
+    <Compile Include="ErrorStatus.cs" />
+    <Compile Include="Items\GetItemsListRequest.cs" />
+    <Compile Include="Items\GetItemsListResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Users\UpdateUserRequest.cs" />
+    <Compile Include="Users\UpdateUserResponse.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\Dashboardify.Contracts\Dashboardify.Contracts.csproj">
-      <Project>{ac949bca-2a0b-443a-b8b7-4dd7f1214e6e}</Project>
-      <Name>Dashboardify.Contracts</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dashboardify.Models\Dashboardify.Models.csproj">
-      <Project>{86391cda-2533-4cf0-adb0-b73f069683d6}</Project>
+      <Project>{86391CDA-2533-4CF0-ADB0-B73F069683D6}</Project>
       <Name>Dashboardify.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dashboardify.Repositories\Dashboardify.Repositories.csproj">
-      <Project>{c46b3ae5-dbbb-4117-ab45-9f2fb4b16623}</Project>
-      <Name>Dashboardify.Repositories</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

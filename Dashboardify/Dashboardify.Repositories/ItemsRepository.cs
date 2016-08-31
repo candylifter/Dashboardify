@@ -143,7 +143,7 @@ namespace Dashboardify.Repositories
         /// </summary>
         /// <param name="dashId">Dashboard Id</param>
         /// <returns>List of all items in same dash</returns>
-        public IList<Item> GetByDashId(int dashId)
+        public IList<Item> GetByDashboardId(int dashId)
         {
             string query = @"SELECT
                                 Id, 

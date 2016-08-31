@@ -53,6 +53,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dashboardify.Contracts\Dashboardify.Contracts.csproj">
+      <Project>{ac949bca-2a0b-443a-b8b7-4dd7f1214e6e}</Project>
+      <Name>Dashboardify.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dashboardify.Handlers\Dashboardify.Handlers.csproj">
       <Project>{6e3cb52f-46fd-4858-b6f5-70ddc9bfaa6d}</Project>
       <Name>Dashboardify.Handlers</Name>
