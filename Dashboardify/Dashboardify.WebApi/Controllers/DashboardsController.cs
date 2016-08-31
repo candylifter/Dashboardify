@@ -13,17 +13,17 @@ namespace Dashboardify.WebApi.Controllers
     public class DashboardsController : ApiController
     {
         private static string ConnectionString = ConfigurationManager.ConnectionStrings["DBIrmantas"].ConnectionString;
-        private DashRepository deshai = new DashRepository(ConnectionString);
+        //private DashRepository deshai = new DashRepository(ConnectionString);
 
         [HttpGet]
         public IHttpActionResult Index()
         {
             return Json(true);
         }
-        [HttpGet]
-        public IHttpActionResult GetDashboards()
-        {
-            return Json(new { success = true, items = deshai.GetList() });
-        }
+        //[HttpGet]
+        //public IHttpActionResult GetDashboards()
+        //{
+        //    return Json(new { success = true, items = deshai.GetList() });
+        //}
     }
 }
