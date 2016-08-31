@@ -45,6 +45,8 @@
     <Compile Include="ErrorStatus.cs" />
     <Compile Include="Items\GetItemsListRequest.cs" />
     <Compile Include="Items\GetItemsListResponse.cs" />
+    <Compile Include="Items\UpdateItemRequest.cs" />
+    <Compile Include="Items\UpdateItemResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Users\UpdateUserRequest.cs" />
     <Compile Include="Users\UpdateUserResponse.cs" />
