@@ -50,27 +50,27 @@ namespace Dashboardify.Repositories
         {
             var origin = Get(user.Id);
 
-            if (origin == null)
-            {
-                throw new Exception("User not found in data base!");
-            }
+            //if (origin == null)
+            //{
+            //    throw new Exception("User not found in data base!");
+            //}
 
-            if (origin.Name != user.Name)
-            {
-                origin.Name = user.Name;
-            }
-            if (origin.Password != user.Password)
-            {
-                origin.Password = user.Password;
-            }
-            if (origin.Email != user.Email)
-            {
-                origin.Email = user.Email;
-            }
-            if (origin.IsActive != user.IsActive)
-            {
-                origin.IsActive = user.IsActive;
-            }
+            //if (origin.Name != user.Name)
+            //{
+            //    origin.Name = user.Name;
+            //}
+            //if (origin.Password != user.Password)
+            //{
+            //    origin.Password = user.Password;
+            //}
+            //if (origin.Email != user.Email)
+            //{
+            //    origin.Email = user.Email;
+            //}
+            //if (origin.IsActive != user.IsActive)
+            //{
+            //    origin.IsActive = user.IsActive;
+            //}
             origin.DateModified = DateTime.Now;
 
             string query = @"
@@ -172,12 +172,12 @@ namespace Dashboardify.Repositories
 
         public void DeleteUser(int userId)
         {
-            var user = Get(userId);
+            //var user = Get(userId);
 
-            if (user == null)
-            {
-                throw new Exception("User not found in data base!");
-            }
+            //if (user == null)
+            //{
+            //    throw new Exception("User not found in data base!");
+            //}
 
             string query = @"DELETE FROM Users 
                             WHERE 

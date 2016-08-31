@@ -8,7 +8,7 @@ namespace Dashboardify.Sandbox
         {
             var updateItemHandler = new UpdateItemHandler();
 
-            updateItemHandler.Handle();
+            updateItemHandler.Handle(null);
         }
     }
 }

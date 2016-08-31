@@ -45,12 +45,17 @@ namespace Dashboardify.Sandbox
 
             // Works fine DeleteScren(connectionString);
 
-            PrinScreen(connectionString);
+            // Works finePrinScreen(connectionString);
 
+            // Works fine DeleteUser(connectionString);
 
-            //TODO Wait Zilvinas response
-            // Needs work DeleteUser(connectionString);
-            //All delete methods needs wurk wurk wurk wurk
+            // Works fine DeleteUser(connectionString);
+
+            // Works fine DeleteDash(connectionString);
+            
+            // DeleteItem(connectionString);
+
+            
             Console.ReadKey();
         }
 
@@ -66,7 +71,7 @@ namespace Dashboardify.Sandbox
             }
         }
 
-        static void CreateUser(string connectionString)
+        public void CreateUser(string connectionString)
         {
 
 
@@ -88,15 +93,21 @@ namespace Dashboardify.Sandbox
 
         }
 
-        static void DeleteUser(string connectionString)
+        public void DeleteUser(string connectionString)
         {
+
+            PrintUsers(connectionString);
+            
             var repo = new UsersRepository(connectionString);
             var user = repo.Get(1);
             Console.WriteLine(user.Id);
             repo.DeleteUser(1);
+
+            Console.WriteLine("po");
+            PrintUsers(connectionString);
         }
 
-        static void PrintItems(string connectionString)
+        public void PrintItems(string connectionString)
         {
             var itemsRepo = new ItemsRepository(connectionString);
             foreach (var item in itemsRepo.GetList())
@@ -118,7 +129,7 @@ namespace Dashboardify.Sandbox
             }
         }
 
-        static void UpdateItem(string connectionString)
+        public void UpdateItem(string connectionString)
         {
             var itemRepo = new ItemsRepository(connectionString);
             var itemOrigin = itemRepo.Get(1);
@@ -148,13 +159,13 @@ namespace Dashboardify.Sandbox
 
         }
 
-        static void GetItem(string connectionString)
+        public void GetItem(string connectionString)
         {
             var itemRepo = new ItemsRepository(connectionString);
             Console.Write(itemRepo.Get(2).ToString());
         }
 
-        static void GetByDashId(string connectionString)
+        public void GetByDashId(string connectionString)
         {
             var itemRepo = new ItemsRepository(connectionString);
             foreach (var item in itemRepo.GetByDashId(1))
@@ -163,7 +174,7 @@ namespace Dashboardify.Sandbox
             }
         }
 
-        static void CreateItem(string connectionString)
+        public void CreateItem(string connectionString)
         {
             PrintItems(connectionString);
 
@@ -182,7 +193,7 @@ namespace Dashboardify.Sandbox
 
         }
 
-        static void UpdateUser(string connectionString)
+        public void UpdateUser(string connectionString)
         {
             var userRepo = new UsersRepository(connectionString);
             var UserOrigin = userRepo.Get(1);
@@ -197,7 +208,7 @@ namespace Dashboardify.Sandbox
 
         }
 
-        static void GetDashList(string connectionString)
+        public void GetDashList(string connectionString)
         {
             var dashRepo = new DashRepository(connectionString);
             foreach (var dash in dashRepo.GetList())
@@ -206,14 +217,14 @@ namespace Dashboardify.Sandbox
             }
         }
 
-        static void GetDash(string connectionString)
+        public void GetDash(string connectionString)
         {
             var DashRepo = new DashRepository(connectionString);
             Console.Write(DashRepo.Get(1));
 
         }
 
-        static void UpdateDash(string connectionString)
+        public void UpdateDash(string connectionString)
         {
             var dashRepo = new DashRepository(connectionString);
             var origin = dashRepo.Get(1).ToString();
@@ -229,7 +240,7 @@ namespace Dashboardify.Sandbox
 
         }
 
-        static void CreateDash(string connectionString)
+        public void CreateDash(string connectionString)
         {
             DateTime rngMin = (DateTime)System.Data.SqlTypes.SqlDateTime.MinValue;
 
@@ -268,7 +279,7 @@ namespace Dashboardify.Sandbox
 
         }
 
-        static void GetDashByUserId(string connctionString)
+        public void GetDashByUserId(string connctionString)
         {
             var dash = new DashRepository(connctionString);
             foreach (var ds in dash.GetByUserId(1))
@@ -277,7 +288,7 @@ namespace Dashboardify.Sandbox
             }
         }
 
-        static void PrintAllScreens(string connectionString)
+        public void PrintAllScreens(string connectionString)
         {
             var screenRepo = new ScreenshotRepository(connectionString);
             foreach (var screen in screenRepo.GetAll())
@@ -286,13 +297,13 @@ namespace Dashboardify.Sandbox
             }
         }
 
-        static void GetScreen(string connectionString)
+        public void GetScreen(string connectionString)
         {
             var screenRepo = new ScreenshotRepository(connectionString);
             Console.WriteLine(screenRepo.Get(0));
         }
 
-        static void CreateScreenShoot(string connectionString)
+        public void CreateScreenShoot(string connectionString)
         {
             var screenRepo = new ScreenshotRepository(connectionString);
             PrintAllScreens(connectionString);
@@ -303,7 +314,7 @@ namespace Dashboardify.Sandbox
             PrintAllScreens(connectionString);
         }
 
-        static void DeleteScren(string conn)
+        public void DeleteScren(string conn)
         {
             var screen = new ScreenshotRepository(conn);
             PrintAllScreens(conn);
@@ -312,10 +323,29 @@ namespace Dashboardify.Sandbox
             PrintAllScreens(conn);
         }
 
-        static void PrinScreen(string connectionString)
+        public void PrinScreen(string connectionString)
         {
             var screeRepo = new ScreenshotRepository(connectionString);
             Console.WriteLine(screeRepo.Get(1).ToString());
         }
+
+        public void DeleteDash(string connectionString)
+        {
+            var dashRepo = new DashRepository(connectionString);
+            GetDashList(connectionString);
+            dashRepo.DeleteDashboard(2);
+            Console.WriteLine("Po");
+            GetDashList(connectionString);
+        }
+
+        public void DeleteItem(string connectionString)
+        {
+            PrintItems(connectionString);
+            var itemsRepo = new ItemsRepository(connectionString);
+            itemsRepo.Delete(2);
+            PrintItems(connectionString);
+        }
+
+        
     }
 }
