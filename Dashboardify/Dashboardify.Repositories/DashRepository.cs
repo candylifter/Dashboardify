@@ -47,7 +47,7 @@ namespace Dashboardify.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine("MAESTRO SAUNA DAR VIENA EXCEPTIONA");
+                //Console.WriteLine("MAESTRO SAUNA DAR VIENA EXCEPTIONA");
                 Console.WriteLine(ex.Message);
                 throw;
             }
@@ -60,10 +60,10 @@ namespace Dashboardify.Repositories
         /// <returns></returns>
         public DashBoard Get(int DashId)
         {
-            if (DashId < 1)
-            {
-                throw new Exception("Id must be greater or equl to 1");
-            }
+            //if (DashId < 1)
+            //{
+            //    throw new Exception("Id must be greater or equl to 1");
+            //}
 
             try
             {
@@ -99,10 +99,10 @@ namespace Dashboardify.Repositories
         /// <param name="dash">Dashboard Object</param>
         public int Update(DashBoard dash)
         {
-            if (dash == null)
-            {
-                throw new Exception("User not found");
-            }
+            //if (dash == null)
+            //{
+            //    throw new Exception("User not found");
+            //}
 
             string query = @"UPDATE DashBoards
                                 SET IsActive=@IsActive,
@@ -131,10 +131,10 @@ namespace Dashboardify.Repositories
         /// <param name="dash">Dashboard</param>
         public bool Create(DashBoard dash)
         {
-            if (dash == null)
-            {
-                throw new Exception("Object not found in DB");
-            }
+            //if (dash == null)
+            //{
+            //    throw new Exception("Object not found in DB");
+            //}
 
             string query = @"INSERT INTO dbo.DashBoards 
                                 (UserId, 

@@ -86,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\DashboardsController.cs" />
     <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -110,12 +111,20 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dashboardify.Contracts\Dashboardify.Contracts.csproj">
+      <Project>{ac949bca-2a0b-443a-b8b7-4dd7f1214e6e}</Project>
+      <Name>Dashboardify.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dashboardify.Handlers\Dashboardify.Handlers.csproj">
+      <Project>{6e3cb52f-46fd-4858-b6f5-70ddc9bfaa6d}</Project>
+      <Name>Dashboardify.Handlers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dashboardify.Models\Dashboardify.Models.csproj">
       <Project>{86391CDA-2533-4CF0-ADB0-B73F069683D6}</Project>
       <Name>Dashboardify.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dashboardify.Repositories\Dashboardify.Repositories.csproj">
-      <Project>{c46b3ae5-dbbb-4117-ab45-9f2fb4b16623}</Project>
+      <Project>{C46B3AE5-DBBB-4117-AB45-9F2FB4B16623}</Project>
       <Name>Dashboardify.Repositories</Name>
     </ProjectReference>
   </ItemGroup>

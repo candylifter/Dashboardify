@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dashboardify.Handlers</RootNamespace>
     <AssemblyName>Dashboardify.Handlers</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,8 +41,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UpdateItemHandler.cs" />
+    <Compile Include="Items\GetItemsListHandler.cs" />
+    <Compile Include="Items\UpdateItemHandler.cs" />
+    <Compile Include="Users\UpdateUserHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dashboardify.Contracts\Dashboardify.Contracts.csproj">
+      <Project>{ac949bca-2a0b-443a-b8b7-4dd7f1214e6e}</Project>
+      <Name>Dashboardify.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dashboardify.Models\Dashboardify.Models.csproj">
+      <Project>{86391cda-2533-4cf0-adb0-b73f069683d6}</Project>
+      <Name>Dashboardify.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dashboardify.Repositories\Dashboardify.Repositories.csproj">
+      <Project>{c46b3ae5-dbbb-4117-ab45-9f2fb4b16623}</Project>
+      <Name>Dashboardify.Repositories</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

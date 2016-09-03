@@ -68,10 +68,10 @@ namespace Dashboardify.Repositories
         public int Update(Item item)
         {
 
-            if (item.Id < 1)
-            {
-                throw new Exception("Invalid item Id error");
-            }
+            //if (item.Id < 1)
+            //{
+            //    throw new Exception("Invalid item Id error");
+            //}
 
             string query = @"UPDATE dbo.Items
                             SET Content=@Content,
@@ -143,7 +143,7 @@ namespace Dashboardify.Repositories
         /// </summary>
         /// <param name="dashId">Dashboard Id</param>
         /// <returns>List of all items in same dash</returns>
-        public IList<Item> GetByDashId(int dashId)
+        public IList<Item> GetByDashboardId(int dashId)
         {
             string query = @"SELECT
                                 Id, 
