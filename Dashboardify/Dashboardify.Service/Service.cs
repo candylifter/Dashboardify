@@ -2,21 +2,11 @@
 using System.IO;
 using System.Configuration;
 using System.Data;
-using System.Data.SqlClient;
-using System.Text.RegularExpressions;
 using System.Timers;
 using Dashboardify.Repositories;
-using Dashboardify.Service;
-using HtmlAgilityPack;
-using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
-using System.Drawing.Imaging;
-using System.Drawing;
-using OpenQA.Selenium.Remote;
 using System.Collections.Generic;
 using System.Linq;
-using NReco.PhantomJS;
 
 namespace Dashboardify.Service
 {
@@ -25,6 +15,7 @@ namespace Dashboardify.Service
         string connectionString = ConfigurationManager.ConnectionStrings["DBconnection"].ConnectionString;
         private readonly Timer _timer;
         private readonly ItemsRepository _itemsRepository;
+        private readonly ScreenshotRepository _screenshotRepository;
         private readonly ItemFilters _itemFilters = new ItemFilters();
         private readonly ContentHandler _contentHandler = new ContentHandler();
 
@@ -36,6 +27,7 @@ namespace Dashboardify.Service
             _timer.Elapsed += TimeElapsedEventHandler;
 
             _itemsRepository = new ItemsRepository(connectionString);
+            _screenshotRepository = new ScreenshotRepository(connectionString);
 
             UpdateItems();
         }
@@ -43,179 +35,61 @@ namespace Dashboardify.Service
 
         public void TimeElapsedEventHandler(object sender, ElapsedEventArgs e)
         {
-            Console.WriteLine("\n->  Testing\n");
 
             UpdateItems();
-            Console.ReadLine();
+            Console.WriteLine("--> Completed updating items");
+            //Console.ReadLine();
             //_timer.Stop();
         }
 
         public void UpdateItems()
         {
+            Console.WriteLine("\n->  Updating\n");
 
-            DateTime now = DateTime.Now;
             var items = _itemsRepository.GetList();
 
 
             Console.WriteLine("\n\nItems from db:\n");
-
             foreach (var item in items)
-            {
                 Console.WriteLine(item.Name);
-            }
 
             var scheduledItems = _itemFilters.GetScheduledList(items);
-            Console.WriteLine("\n\nScheduled items:\n");
 
+            Console.WriteLine("\n\nScheduled items:\n");
             foreach (var item in scheduledItems)
-            {
                 Console.WriteLine(item.Name);
-            }
 
             var outdatedItems = _itemFilters.GetOutdatedList(scheduledItems);
-            Console.WriteLine("\n\nOutdated items:\n");
 
+            Console.WriteLine("\n\nOutdated items:\n");
+            foreach (var item in outdatedItems)
+                Console.WriteLine(item.Name);
+
+            //TakeScreenshots(outdatedItems);
 
             foreach (var item in outdatedItems)
             {
-                Console.WriteLine(item.Name);
+                string filename = _contentHandler.GetScreenshot(item);
+
+                var now = DateTime.Now;
+
+                item.LastChecked = now;
+                item.Modified = now;
+
+                _itemsRepository.Update(item);
+
+                Models.Screenshot screenshot = new Models.Screenshot();
+
+                screenshot.ItemId = item.Id;
+                screenshot.ScrnshtURL = filename;
+                screenshot.DateTaken = now;
+
+                _screenshotRepository.Create(screenshot);
+
+                Console.WriteLine("Updated item: " + item.Name);
             }
 
-            TakeScreenshots(outdatedItems);
-
         }
-
-        // TODO: Refactor to separate methods
-        public void TakeScreenshots(IList<Item> items)
-        {
-            Console.WriteLine("Preparing to take screenshots");
-            foreach (var item in items)
-            {
-                Console.WriteLine("Taking screenshot of " + item.Name);
-
-                var phantomJS = new PhantomJS();
-                phantomJS.OutputReceived += (sender, e) => {
-                    Console.WriteLine("PhantomJS output: {0}", e.Data);
-                };
-                phantomJS.RunScript(@"var page = require('webpage').create();
-
-                page.viewportSize = {
-                    width: 1920,
-                    height: 1080
-                };
-
-                page.open('"+item.Website+ @"', function() {
-                    var clipRect = page.evaluate(function() {
-                        return document.evaluate( '"+item.XPath+ @"' ,document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue.getBoundingClientRect();
-                    });
-
-                page.clipRect = {
-                    top: clipRect.top,
-                    left: clipRect.left,
-                    width: clipRect.width,
-                    height: clipRect.height
-                };
-                    page.render('../../../Dashboardify.Web/Content/Screenshots/" + item.Name+@".png');
-                    phantom.exit();
-                });", null);
-
-                Console.WriteLine(Path.GetFullPath(item.Name));
-                
-                Console.WriteLine(Path.GetFullPath("../../../Dashboardify.Web/Content/Screenshots/" + item.Name + ".png"));
-               
-            }
-        }
-
-
-        // TODO: Handle all exceptions
-        public string GetContentFromWebsite(string url, string xpath)
-        {
-            HtmlWeb hw = new HtmlWeb();
-            HtmlDocument doc = new HtmlDocument();
-
-
-            try
-            {
-                doc = hw.Load(url);
-                var node = doc.DocumentNode.SelectSingleNode(xpath);
-                var content = node.InnerText;
-
-
-                return Regex.Replace(content, @"\s+", " ");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-
-            return "Nope";
-        }
-
-        public void PrintAllItems()
-        {
-            var items = _itemsRepository.GetList();
-
-            foreach (var item in items)
-            {
-                string content = GetContentFromWebsite(item.Website, RemakeXpath(item.XPath));
-
-                Console.WriteLine("\n" + item.Website + "\n");
-
-                if (content != null)
-                {
-                    Console.WriteLine(Regex.Replace(content, @"\s+", " "));
-                }
-                else
-                {
-                    Console.WriteLine("Content is null");
-                }
-
-                //TakeScreenshot(item.Website, item.Name, item.XPath);
-
-                Console.WriteLine("\n---\n");
-            }
-
-
-        }
-
-
-        /*
-        public void GetItemContent(string url, string xpath)
-        {
-            xpath = RemakeXpath(xpath);
-            HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-            HtmlWeb hw = new HtmlWeb();
-            doc = hw.Load(url);
-
-            HtmlNode node = doc.DocumentNode.SelectSingleNode(xpath);
-            string content = node.InnerText;
-            Console.WriteLine(content);
-
-
-            _timer.Stop();
-            //return null;
-        }
-        */
-
-        /// <summary>
-        ///     Method that makes XPath compatible with HTMLAgilityPack
-        /// </summary>
-        /// <param name="xpath">Xpath</param>
-        /// <returns>Xpath added with extra /</returns>
-        private string RemakeXpath(string xpath)
-        {
-            var goodXpath = "";
-            for (var i = 0; i < xpath.Length; i++)
-            {
-                if (xpath[i].ToString() == "/")
-                {
-                    goodXpath = goodXpath + "/";
-                }
-                goodXpath = goodXpath + xpath[i];
-            }
-            return goodXpath;
-        }
-
 
         public void Start()
         {

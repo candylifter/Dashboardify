@@ -33,7 +33,7 @@ namespace Dashboardify.Service
             {
                 var newContent = _contentHandler.GetContentByXPath(item.Website, item.XPath);
 
-                if (newContent != null)
+                if (newContent != null && item.Content != newContent)
                 {
                     item.Content = newContent;
 
