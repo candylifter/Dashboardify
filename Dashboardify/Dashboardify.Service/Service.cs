@@ -1,12 +1,7 @@
 ﻿using System;
-using System.IO;
 using System.Configuration;
-using System.Data;
 using System.Timers;
 using Dashboardify.Repositories;
-using OpenQA.Selenium;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Dashboardify.Service
 {
@@ -46,26 +41,24 @@ namespace Dashboardify.Service
         {
             Console.WriteLine("\n->  Updating\n");
 
-            var items = _itemsRepository.GetList();
 
 
             Console.WriteLine("\n\nItems from db:\n");
+            var items = _itemsRepository.GetList();
             foreach (var item in items)
                 Console.WriteLine(item.Name);
 
-            var scheduledItems = _itemFilters.GetScheduledList(items);
 
             Console.WriteLine("\n\nScheduled items:\n");
+            var scheduledItems = _itemFilters.GetScheduledList(items);
             foreach (var item in scheduledItems)
                 Console.WriteLine(item.Name);
 
-            var outdatedItems = _itemFilters.GetOutdatedList(scheduledItems);
 
             Console.WriteLine("\n\nOutdated items:\n");
+            var outdatedItems = _itemFilters.GetOutdatedList(scheduledItems);
             foreach (var item in outdatedItems)
                 Console.WriteLine(item.Name);
-
-            //TakeScreenshots(outdatedItems);
 
             foreach (var item in outdatedItems)
             {
