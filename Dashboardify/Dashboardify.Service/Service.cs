@@ -179,13 +179,10 @@ namespace Dashboardify.Service
                     phantom.exit();
                 });", null);
 
-<<<<<<< HEAD
                 Console.WriteLine(Path.GetFullPath(item.Name));
                 
-=======
                 Console.WriteLine(Path.GetFullPath("../../../Dashboardify.Web/Content/Screenshots/" + item.Name + ".png"));
                
->>>>>>> 2f1b97f5f4a3bbc304cd355871170fc0ed110d7a
             }
         }
 

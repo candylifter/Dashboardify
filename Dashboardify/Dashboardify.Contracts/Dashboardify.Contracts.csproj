@@ -43,6 +43,8 @@
     <Compile Include="BaseRequest.cs" />
     <Compile Include="BaseResponse.cs" />
     <Compile Include="ErrorStatus.cs" />
+    <Compile Include="Items\CreateItemRequest.cs" />
+    <Compile Include="Items\CreateItemResponse.cs" />
     <Compile Include="Items\GetItemsListRequest.cs" />
     <Compile Include="Items\GetItemsListResponse.cs" />
     <Compile Include="Items\UpdateItemRequest.cs" />
