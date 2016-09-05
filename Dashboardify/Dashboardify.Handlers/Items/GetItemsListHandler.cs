@@ -37,10 +37,10 @@ namespace Dashboardify.Handlers.Items
         {
             var errors = new List<ErrorStatus>();
 
-            //if (request.DashboarId == 0)
-            //{
-            //    errors.Add(new ErrorStatus("DASHBOARDID_NOT_DEFINED"));
-            //}
+            if (request.DashboarId == 0)
+            {
+                errors.Add(new ErrorStatus("DASHBOARDID_NOT_DEFINED"));
+            }
 
             return errors;
         }
