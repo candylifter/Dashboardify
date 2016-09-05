@@ -27,12 +27,16 @@ namespace Dashboardify.WebApi.Controllers
             return Request.CreateResponse(httpStatusCode, response);
         }
 
-        //public IHttpActionResult ToggleItem(int Id, int CheckInterval)
-        //{
-        //    var item = _itemsRepository.Get(Id);
-        //    item.CheckInterval = CheckInterval;
-        //    _itemsRepository.Update(item);
-        //    return Json(true);
-        //}
+        [HttpPost]
+        public HttpResponseMessage CreateItem(CreateItemRequest request)
+        {
+            var handler = new CreateItemHandler(connectionString);
+
+            var response = handler.Handle(request);
+
+            var httpStatusCode = response.HasErrors ? HttpStatusCode.BadRequest : HttpStatusCode.OK;
+
+            return Request.CreateResponse(httpStatusCode, response);
+        }
     }
 }
