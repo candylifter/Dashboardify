@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 using System.Timers;
 using Dashboardify.Repositories;
+using Dashboardify.Service;
 using HtmlAgilityPack;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Chrome;
@@ -24,6 +25,9 @@ namespace Dashboardify.Service
         string connectionString = ConfigurationManager.ConnectionStrings["DBconnection"].ConnectionString;
         private readonly Timer _timer;
         private readonly ItemsRepository _itemsRepository;
+        private readonly ItemFilters _itemFilters = new ItemFilters();
+        private readonly ContentHandler _contentHandler = new ContentHandler();
+
 
         public Service()
         {
@@ -41,19 +45,6 @@ namespace Dashboardify.Service
         {
             Console.WriteLine("\n->  Testing\n");
 
-            //var items = _itemsRepository.GetList();
-
-            //var firstItem = items[0];
-
-            //firstitem.XPath = RemakeXpath(firstitem.XPath);
-
-            //var content = GetContentFromWebsite(firstitem.Website, firstitem.XPath);
-
-            //Console.WriteLine(Regex.Replace(content, @"\s+", " "));
-
-
-            //PrintAllItems();
-            //TakeScreenshots();
             UpdateItems();
             Console.ReadLine();
             //_timer.Stop();
@@ -64,9 +55,8 @@ namespace Dashboardify.Service
 
             DateTime now = DateTime.Now;
             var items = _itemsRepository.GetList();
-            var scheduledItems = FilterScheduledItems(items, now);
 
-            //Testing filtering
+
             Console.WriteLine("\n\nItems from db:\n");
 
             foreach (var item in items)
@@ -74,6 +64,7 @@ namespace Dashboardify.Service
                 Console.WriteLine(item.Name);
             }
 
+            var scheduledItems = _itemFilters.GetScheduledList(items);
             Console.WriteLine("\n\nScheduled items:\n");
 
             foreach (var item in scheduledItems)
@@ -81,9 +72,7 @@ namespace Dashboardify.Service
                 Console.WriteLine(item.Name);
             }
 
-
-            var outdatedItems = FilterOutdatedItems(scheduledItems, now);
-
+            var outdatedItems = _itemFilters.GetOutdatedList(scheduledItems);
             Console.WriteLine("\n\nOutdated items:\n");
 
 
@@ -95,55 +84,6 @@ namespace Dashboardify.Service
             TakeScreenshots(outdatedItems);
 
         }
-
-        public IList<Item> FilterScheduledItems(IList<Item> items, DateTime now)
-        {
-            var filteredItems = items.Where(item => (
-                    item.LastChecked.AddMilliseconds(item.CheckInterval)) <= now &&
-                    item.isActive == true
-                ).ToList();
-
-            return filteredItems;
-        }
-
-        public IList<Item> FilterOutdatedItems(IList<Item> items, DateTime now)
-        {
-
-            IList<Item> outdatedItems = new List<Item>();
-
-            foreach (var item in items)
-            {
-                if (CheckIfOutdated(item, now))
-                {
-                    outdatedItems.Add(item);
-                }
-            }
-
-            return outdatedItems;
-        }
-
-        public bool CheckIfOutdated(Item item, DateTime now)
-        {
-
-            var newContent = GetContentFromWebsite(item.Website, item.XPath);
-
-            if (newContent != item.Content)
-            {
-
-                Console.WriteLine("Content from DB: " + item.Content);
-                item.Content = newContent;
-                Console.WriteLine("Content from Web: " + item.Content);
-
-                item.LastChecked = now;
-                _itemsRepository.Update(item);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
 
         // TODO: Refactor to separate methods
         public void TakeScreenshots(IList<Item> items)
