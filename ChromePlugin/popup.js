@@ -18,3 +18,31 @@ document.addEventListener('DOMContentLoaded', function () {
 
   }
 });
+
+function postItem(item) {
+  $.post(
+    "http://localhost/api/Items/CreateItem",
+    { Item: item }
+  )
+    .done(function(res) {
+      console.log(res);
+    })
+    .fail(function() {});
+}
+
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+
+    if (request.action == 'POST_ITEM') {
+      $.post(
+        "http://localhost/api/Items/CreateItem",
+        { Item: request.item }
+      )
+        .done(function(res) {
+          sendResponse({data: res});
+        })
+        .fail(function() {
+          sendResponse({data: 'Error while posting'});
+        });
+    }
+  });

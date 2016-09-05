@@ -14,16 +14,9 @@ function handleElementClick(e) {
   Item.Name = prompt('Please enter item name:');
   Item.CheckInterval = parseInt(prompt('Please enter interval in miliseconds:'));
 
-  console.log(Item);
-
-  $.post(
-    "http://localhost/api/Items/CreateItem",
-    { Item: Item }
-  )
-    .done(function(res) {
-      console.log(res);
-    })
-    .fail(function() {});
+  chrome.runtime.sendMessage({action: "POST_ITEM", item: Item}, function(response) {
+    console.log(response.data);
+  });
 }
 
 function removeHighlight(el) {
