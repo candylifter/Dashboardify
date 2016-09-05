@@ -4,6 +4,6 @@ namespace Dashboardify.Contracts.Items
 {
     public class UpdateItemRequest:BaseRequest
     {
-        public Item item { get; set; }
+        public Item Item { get; set; }
     }
 }

@@ -9,6 +9,6 @@ namespace Dashboardify.Contracts.Users
 {
     public class DeleteUserRequest : BaseRequest
     {
-        public User user { get; set; }
+        public User User { get; set; }
     }
 }
