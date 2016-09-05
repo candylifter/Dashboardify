@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Dashboardify.Repositories;
 using System.Configuration;
+using Dashboardify.Contracts.Dashboards;
+using Dashboardify.Handlers.Dashboards;
 
 namespace Dashboardify.WebApi.Controllers
 {
@@ -20,6 +18,23 @@ namespace Dashboardify.WebApi.Controllers
         {
             return Json(true);
         }
+
+        [HttpGet]
+        public HttpResponseMessage GetList(int userId)
+        {
+            var request = new GetDashboardsRequest();
+
+            request.UserId = userId;
+
+            var handler = new GetDashboardsHandler(ConnectionString);
+
+            var response = handler.Handle(request);
+
+            var httpStatusCode = response.HasErrors ? HttpStatusCode.BadRequest : HttpStatusCode.OK;
+
+            return Request.CreateResponse(httpStatusCode, response);
+        }
+
         //[HttpGet]
         //public IHttpActionResult GetDashboards()
         //{

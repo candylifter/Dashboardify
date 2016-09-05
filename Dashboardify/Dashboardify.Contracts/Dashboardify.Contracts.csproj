@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="BaseRequest.cs" />
     <Compile Include="BaseResponse.cs" />
+    <Compile Include="Dashboards\GetDashboardsRequest.cs" />
+    <Compile Include="Dashboards\GetDashboardsResponse.cs" />
     <Compile Include="ErrorStatus.cs" />
     <Compile Include="Items\CreateItemRequest.cs" />
     <Compile Include="Items\CreateItemResponse.cs" />
