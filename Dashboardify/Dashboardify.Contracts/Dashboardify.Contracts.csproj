@@ -48,6 +48,8 @@
     <Compile Include="Items\UpdateItemRequest.cs" />
     <Compile Include="Items\UpdateItemResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Users\DeleteUserRequest.cs" />
+    <Compile Include="Users\DeleteUserResponse.cs" />
     <Compile Include="Users\UpdateUserRequest.cs" />
     <Compile Include="Users\UpdateUserResponse.cs" />
   </ItemGroup>
