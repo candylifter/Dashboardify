@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Dashboardify.Models;
+using System;
+using System.Collections.Generic;
 
 namespace Dashboardify.Repositories
 {
@@ -26,6 +28,13 @@ namespace Dashboardify.Repositories
         public DateTime Modified { get; set; }
 
         public string Content { get; set; }
+
+        public IList<Screenshot> Screenshots { get; set; }
+
+        public Item()
+        {
+            Screenshots = new List<Screenshot>();
+        }
 
         /// <summary>
         /// 

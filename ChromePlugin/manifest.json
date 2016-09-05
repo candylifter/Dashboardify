@@ -14,7 +14,7 @@
       {
         "matches": ["<all_urls>"],
         "css": ["content.css"],
-        "js": ["content.js"]
+        "js": ["./node_modules/jquery/dist/jquery.min.js" ,"content.js"]
       }
     ],
 
