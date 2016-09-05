@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Dashboardify.Repositories;
 using Dashboardify.Contracts;
 using Dashboardify.Contracts.Items;
-using Dashboardify.Contracts.Users;
-using Dashboardify.Models;
 
 namespace Dashboardify.Handlers.Items
 {
