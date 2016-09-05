@@ -29,14 +29,14 @@ namespace Dashboardify.Handlers.Items
                 return response;
             }
 
-            var item = _itemRepository.Get(request.item.Id);
+            var item = _itemRepository.Get(request.Item.Id);
 
             if (item == null)
             {
                 throw new Exception("ITEM_NOT_FOUND");
             }
 
-            UpdateItemObject(item,request.item);
+            UpdateItemObject(item,request.Item);
 
             _itemRepository.Update(item);
 
@@ -58,12 +58,12 @@ namespace Dashboardify.Handlers.Items
         {
             var errors = new List<ErrorStatus>();
 
-            if (request.item == null)
+            if (request.Item == null)
             {
                 errors.Add(new ErrorStatus("BAD_REQUEST"));
                 return errors;
             }
-            if (string.IsNullOrEmpty(request.item.DashBoardId.ToString()))
+            if (string.IsNullOrEmpty(request.Item.DashBoardId.ToString()))
             {
                 errors.Add(new ErrorStatus("NO_DASHBOARDS_FOUND_ON_THIS_USER")); 
             }

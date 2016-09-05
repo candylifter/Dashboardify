@@ -3,14 +3,16 @@ using Dashboardify.Contracts.Users;
 using Dashboardify.Handlers.Items;
 using Dashboardify.Handlers.Users;
 using Dashboardify.Models;
+using Dashboardify.Repositories;
 
 namespace Dashboardify.Sandbox
 {
     public class Handlers
     {
+        private string _connectionString = "Data Source=DESKTOP-11VK3U9;Initial Catalog = DashBoardify; User id = DashboardifyUser; Password=123456;";
         public void Do()
         {
-            TestGetItemsListHandler();
+            testItemUpdateHandler();
         }
 
         private void TestUserUpdateHandler()
@@ -43,6 +45,33 @@ namespace Dashboardify.Sandbox
             request.DashboarId = 1;
 
             var response = getItemsListHandler.Handle(request);
+        }
+
+        private void TestDeleteUserHandler()
+        {
+            var getDeleteUserHandler = new DeleteUserHandler(_connectionString);
+            var request = new DeleteUserRequest();
+            request.User = new User();
+            request.User.Id = 1;
+
+            var response = getDeleteUserHandler.Handle(request);
+        }
+
+        private void testItemUpdateHandler()
+        {
+            var updateUserHandelr = new UpdateItemHandler(_connectionString);
+
+            var request = new UpdateItemRequest();
+            
+            request.Item = new Item()
+            {
+                CheckInterval = 5,
+                Content = "Tuscias",
+                isActive = false,
+                Id = 1
+            };
+            var response = updateUserHandelr.Handle(request);
+
         }
     }
 }

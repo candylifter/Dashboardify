@@ -17,7 +17,7 @@ namespace Dashboardify.Handlers.Users
             _userRepository = new UsersRepository(connectionString);
         }
 
-        public DeleteUserResponse Handle(UpdateUserRequest request)
+        public DeleteUserResponse Handle(DeleteUserRequest request)
         {
             var response = new DeleteUserResponse();
             response.Errors = Validate(request);
@@ -32,7 +32,7 @@ namespace Dashboardify.Handlers.Users
 
         }
 
-        public IList<ErrorStatus> Validate(UpdateUserRequest request)
+        public IList<ErrorStatus> Validate(DeleteUserRequest request)
         {
             var errors = new List<ErrorStatus>();
             if (request.User.Id < 1)
