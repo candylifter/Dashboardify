@@ -67,7 +67,7 @@ namespace Dashboardify.Sandbox
             {
                 CheckInterval = 5,
                 Content = "Tuscias",
-                isActive = false,
+                IsActive = false,
                 Id = 1
             };
             var response = updateUserHandelr.Handle(request);

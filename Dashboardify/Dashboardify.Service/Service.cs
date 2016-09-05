@@ -100,7 +100,7 @@ namespace Dashboardify.Service
         {
             var filteredItems = items.Where(item => (
                     item.LastChecked.AddMilliseconds(item.CheckInterval)) <= now &&
-                    item.isActive == true
+                    item.IsActive == true
                 ).ToList();
 
             return filteredItems;

@@ -52,11 +52,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UserHandlerTest.cs" />
+    <Compile Include="ItemHandlerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserHandlerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dashboardify.Contracts\Dashboardify.Contracts.csproj">
+      <Project>{AC949BCA-2A0B-443A-B8B7-4DD7F1214E6E}</Project>
+      <Name>Dashboardify.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dashboardify.Handlers\Dashboardify.Handlers.csproj">
+      <Project>{6E3CB52F-46FD-4858-B6F5-70DDC9BFAA6D}</Project>
+      <Name>Dashboardify.Handlers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dashboardify.Models\Dashboardify.Models.csproj">
+      <Project>{86391cda-2533-4cf0-adb0-b73f069683d6}</Project>
+      <Name>Dashboardify.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dashboardify.Repositories\Dashboardify.Repositories.csproj">
+      <Project>{c46b3ae5-dbbb-4117-ab45-9f2fb4b16623}</Project>
+      <Name>Dashboardify.Repositories</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -117,7 +117,7 @@ namespace Dashboardify.Sandbox
                 Console.WriteLine(item.Name);
                 Console.WriteLine(item.Website);
                 Console.WriteLine(item.CheckInterval);
-                Console.WriteLine(item.isActive);
+                Console.WriteLine(item.IsActive);
                 Console.WriteLine(item.XPath);
                 Console.WriteLine(item.LastChecked);
                 Console.WriteLine(item.Created);
@@ -139,7 +139,7 @@ namespace Dashboardify.Sandbox
             itemNew.Name = "Maestro";
             itemNew.Website = "www.orlauskas.juokingai.juodas.betabu.dziazmenas.lt";
             itemNew.CheckInterval = 5;
-            itemNew.isActive = true;
+            itemNew.IsActive = true;
             itemNew.XPath = "body[0]/content[1]";
             itemNew.LastChecked = DateTime.Now.AddMinutes(-itemNew.CheckInterval);
             itemNew.Modified = DateTime.Now;
