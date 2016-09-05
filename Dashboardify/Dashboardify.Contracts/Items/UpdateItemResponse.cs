@@ -8,6 +8,6 @@ namespace Dashboardify.Contracts.Items
 {
     public class UpdateItemResponse:BaseResponse
     {
-        public bool succes { get; set; }
+        
     }
 }
