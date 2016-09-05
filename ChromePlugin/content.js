@@ -6,17 +6,24 @@ function handleElementClick(e) {
 
   removeHighlight(this);
 
-  console.log(getPathTo(this));
+  var Item = {};
 
-  var item = {};
+  Item.DashboardId = 1,
+  Item.Website = window.location.href;
+  Item.XPath = getPathTo(this);
+  Item.Name = prompt('Please enter item name:');
+  Item.CheckInterval = parseInt(prompt('Please enter interval in miliseconds:'));
 
-  item.website = window.location.href;
-  item.xpath = getPathTo(this);
-  item.name = prompt('Please enter item name:');
-  item.checkInterval = parseInt(prompt('Please enter interval in miliseconds:'));
+  console.log(Item);
 
-  console.log(item);
-
+  $.post(
+    "http://localhost/api/Items/CreateItem",
+    { Item: Item }
+  )
+    .done(function(res) {
+      console.log(res);
+    })
+    .fail(function() {});
 }
 
 function removeHighlight(el) {
