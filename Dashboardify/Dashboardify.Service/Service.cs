@@ -2,6 +2,8 @@
 using System.Configuration;
 using System.Timers;
 using Dashboardify.Repositories;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Dashboardify.Service
 {
@@ -54,11 +56,13 @@ namespace Dashboardify.Service
             foreach (var item in scheduledItems)
                 Console.WriteLine(item.Name);
 
-
             Console.WriteLine("\n\nOutdated items:\n");
             var outdatedItems = _itemFilters.GetOutdatedList(scheduledItems);
             foreach (var item in outdatedItems)
                 Console.WriteLine(item.Name);
+
+            UpdateNonOutdatedItems(items, outdatedItems);
+
 
             foreach (var item in outdatedItems)
             {
@@ -82,6 +86,23 @@ namespace Dashboardify.Service
                 Console.WriteLine("Updated item: " + item.Name);
             }
 
+        }
+
+        public void UpdateNonOutdatedItems(IList<Item> allItems, IList<Item> outdatedItems)
+        {
+            var items = allItems.Where(a => !outdatedItems.Any(o => o.Id == a.Id)).ToList();
+
+            Console.WriteLine("\n\nNot outdated items:");
+            foreach(var item in items)
+            {
+                Console.WriteLine(item.Name);
+
+                item.LastChecked = DateTime.Now;
+
+                _itemsRepository.Update(item);
+            }
+
+            //List<Firm> results = Firms.Where(f => !TrackedFirms.Any(t => t.FirmId = f.FirmId)).ToList();
         }
 
         public void Start()

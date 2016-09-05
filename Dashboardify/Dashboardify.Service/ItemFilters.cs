@@ -23,8 +23,6 @@ namespace Dashboardify.Service
 
         public IList<Item> GetOutdatedList(IList<Item> items)
         {
-            DateTime now = DateTime.Now;
-
             var outdatedItems = new List<Item>();
 
             foreach (var item in items)

@@ -48,11 +48,11 @@ namespace Dashboardify.Service
             // return null if not found or timeout
             // try to find element
             // return null if not found
-            // OR
-            // try to find it by CSS
-            // return null
+                // OR
+                // try to find it by CSS
+                // if not found by CSS, return null
             // clip viewport by element dimensions
-            // set background color to white (element's background could be transparent)
+            // set background color to white if element's background is transparent
             // save screenshot as jpg to Dashboardify.Screenshots (adjust quality if necessary)
             // exit phantomjs
             var phantomJS = new PhantomJS();
@@ -82,6 +82,8 @@ namespace Dashboardify.Service
                                                 null
                                             )
                                             .singleNodeValue; " + /* Often throws exception here*/ @"
+
+                        console.log(element);
                         } catch(err) {
                             console.error(err.message);
                             element = document.body;
