@@ -16,7 +16,6 @@ namespace Dashboardify.Repositories
 
         public int CheckInterval { get; set; }
 
-        [Column(Name="isActive")]
         public bool IsActive { get; set; }
 
         public string XPath { get; set; }
