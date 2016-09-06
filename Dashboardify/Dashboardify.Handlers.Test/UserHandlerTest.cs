@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Dashboardify.Contracts.Users;
 using Dashboardify.Handlers.Users;
 using Dashboardify.Models;
@@ -30,7 +29,13 @@ namespace Dashboardify.Handlers.Test
             var response = handler.Handle(request);
 
 
+            //var ex2 = Assert.Throws(, () => handler.Handle(request));
+            //var ex = Assert.Throws<SystemException>(() => handler.Handle(request));
 
+            //Assert.That(ex.Message, Is.EqualTo("User does not exist!"));
+
+            Assert.That(() => handler.Handle(request),
+                Throws.Exception.With.Property("Message").EqualTo("User does not exist!"));
 
 
         }
