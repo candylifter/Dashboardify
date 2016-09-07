@@ -131,7 +131,7 @@ namespace Dashboardify.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Sekems Irmantai :))))))))");
+                Console.WriteLine("Sekmes Irmantai :))))))))");
                 Console.WriteLine(ex.Message);
                 throw;
             }

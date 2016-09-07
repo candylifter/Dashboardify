@@ -38,5 +38,17 @@ namespace Dashboardify.WebApi.Controllers
 
             return Request.CreateResponse(httpStatusCode, response);
         }
+
+        [HttpPost]
+        public HttpResponseMessage Update(UpdateItemRequest request)
+        {
+            var handler = new UpdateItemHandler(connectionString);
+
+            var response = handler.Handle(request);
+
+            var httpStatusCode = response.HasErrors ? HttpStatusCode.BadRequest : HttpStatusCode.OK;
+
+            return Request.CreateResponse(httpStatusCode, response);
+        }
     }
 }

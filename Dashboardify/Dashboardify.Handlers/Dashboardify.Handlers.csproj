@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Dashboards\GetDashboardsHandler.cs" />
     <Compile Include="Items\CreateItemHandler.cs" />
+    <Compile Include="Items\GetItemHandler.cs" />
     <Compile Include="Items\GetItemsListHandler.cs" />
     <Compile Include="Items\UpdateItemHandler.cs" />
     <Compile Include="Users\DeleteUserHandler.cs" />
