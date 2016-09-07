@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Dashboardify.Contracts.Items;
+using Dashboardify.Contracts.Users;
 using Dashboardify.Handlers.Items;
+using Dashboardify.Models;
 using Dashboardify.Repositories;
 using NUnit.Framework;
 
@@ -27,7 +30,7 @@ namespace Dashboardify.Handlers.Test
 
             // Assert
             Assert.True(response.HasErrors);
-            Assert.AreEqual(5,response.Errors.Count);
+            Assert.AreEqual(5, response.Errors.Count);
         }
 
         [Test]
@@ -39,7 +42,9 @@ namespace Dashboardify.Handlers.Test
 
             request.Item.Id = 0;
 
-            var handler = new CreateItemHandler("Data Source=DESKTOP-11VK3U9;Initial Catalog=DashBoardify;User id=DashboardifyUser;Password=123456;");
+            var handler =
+                new CreateItemHandler(
+                    "Data Source=DESKTOP-11VK3U9;Initial Catalog=DashBoardify;User id=DashboardifyUser;Password=123456;");
 
             var response = handler.Handle(request);
 
@@ -47,6 +52,7 @@ namespace Dashboardify.Handlers.Test
             Assert.AreEqual("DASHBOARDID_NOT_DEFINED", response.Errors.First().Code);
 
         }
+
         [Test]
         public void WhenWrongIntervalPassed_CreateItem()
         {
@@ -58,11 +64,13 @@ namespace Dashboardify.Handlers.Test
             request.Item.CheckInterval = 30001;
             request.Item.XPath = "fdsgdfgfd";
 
-            var handler = new CreateItemHandler("Data Source=DESKTOP-11VK3U9;Initial Catalog=DashBoardify;User id=DashboardifyUser;Password=123456;");
+            var handler =
+                new CreateItemHandler(
+                    "Data Source=DESKTOP-11VK3U9;Initial Catalog=DashBoardify;User id=DashboardifyUser;Password=123456;");
 
             var response = handler.Handle(request);
 
-            Assert.AreEqual(2,response.Errors.Count);
+            Assert.AreEqual(2, response.Errors.Count);
             Assert.AreEqual("DASHBOARDID_NOT_DEFINED", response.Errors.First().Code);
         }
 
@@ -71,12 +79,14 @@ namespace Dashboardify.Handlers.Test
         {
             var request = new GetItemsListRequest();
             request.DashboarId = 0;
-            var handler = new GetItemsListHandler("Data Source=DESKTOP-11VK3U9;Initial Catalog=DashBoardify;User id=DashboardifyUser;Password=123456;");
+            var handler =
+                new GetItemsListHandler(
+                    "Data Source=DESKTOP-11VK3U9;Initial Catalog=DashBoardify;User id=DashboardifyUser;Password=123456;");
 
             var response = handler.Handle(request);
 
             Assert.True(response.HasErrors);
-            Assert.AreEqual("DASHBOARDID_NOT_DEFINED",response.Errors.First().Code);
+            Assert.AreEqual("DASHBOARDID_NOT_DEFINED", response.Errors.First().Code);
         }
 
         [Test]
@@ -84,18 +94,34 @@ namespace Dashboardify.Handlers.Test
         {
             var request = new GetItemsListRequest();
             request.DashboarId = -5;
-            var handler = new GetItemsListHandler("Data Source=DESKTOP-11VK3U9;Initial Catalog=DashBoardify;User id=DashboardifyUser;Password=123456;");
+            var handler =
+                new GetItemsListHandler(
+                    "Data Source=DESKTOP-11VK3U9;Initial Catalog=DashBoardify;User id=DashboardifyUser;Password=123456;");
 
             var response = handler.Handle(request);
 
             Assert.True(response.HasErrors);
         }
 
-        [Test]
-        public void NullUser_UpdateUser()
-        {
-            //TODO search how to deal with exception in NUnit testing
-        }
+        //[Test]
+        //public void NullItem_UpdateItem()
+        //{
+        //    var request = new UpdateItemRequest();
+        //    request.Item = new Item();
+
+        //    var handler =
+        //        new UpdateItemHandler(
+        //            "Data Source=DESKTOP-11VK3U9;Initial Catalog=DashBoardify;User id=DashboardifyUser;Password=123456;");
+
+        //    var response = handler.Handle(request);
+
+
+
+
+        //}
+
+        ////TODO search how to deal with exception in NUnit testing
+
     }
 
 
