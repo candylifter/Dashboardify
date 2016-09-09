@@ -61,7 +61,7 @@ namespace Dashboardify.Handlers.Test
             request.Item = new Item();
 
             request.Item.DashBoardId = 1;
-            request.Item.CheckInterval = 30001;
+            request.Item.CheckInterval = 10001;
             request.Item.XPath = "fdsgdfgfd";
 
             var handler =
@@ -70,8 +70,10 @@ namespace Dashboardify.Handlers.Test
 
             var response = handler.Handle(request);
 
-            Assert.AreEqual(2, response.Errors.Count);
-            Assert.AreEqual("DASHBOARDID_NOT_DEFINED", response.Errors.First().Code);
+            Assert.AreEqual(3, response.Errors.Count);
+            Assert.AreEqual("NAME_NOT_DEFINED",response.Errors[2].Code);
+            Assert.AreEqual("WEBSITE_NOT_DEFINED", response.Errors[1].Code);
+            Assert.AreEqual("CHECKINTERVAL_WRONG",response.Errors[0].Code);
         }
 
         [Test]
@@ -116,12 +118,49 @@ namespace Dashboardify.Handlers.Test
 
             var response = handler.Handle(request);
 
+            Assert.True(response.HasErrors);
+
             
 
 
         }
 
-        
+        [Test]
+        public void CorruptedId_DeleteItem()
+        {
+            var request = new DeleteItemRequest();
+            request.Item = new Item()
+            {
+              Id  = 5456
+
+            };
+            
+            var handler = new DeleteItemHandler("Data Source=DESKTOP-11VK3U9;Initial Catalog=DashBoardify;User id=DashboardifyUser;Password=123456;");
+
+            //var response = handler.Handle(request);
+
+            //Assert.True(response.HasErrors);
+
+
+            var ex = Assert.Throws<Exception>(() => handler.Handle(request));
+            Assert.That(ex.Message, Is.EqualTo("Item does not exsist"));
+
+        }
+
+        [Test]
+        public void CheckIfWorks_DeleteItem()
+        {
+            var request = new DeleteItemRequest();
+            request.Item = new Item()
+            {
+                Id = 5
+            };
+
+            var handler = new DeleteItemHandler("Data Source=DESKTOP-11VK3U9;Initial Catalog=DashBoardify;User id=DashboardifyUser;Password=123456;");
+            Assert.True(!handler.Handle(request).HasErrors);
+        }
+
+
 
     }
 

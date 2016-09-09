@@ -44,9 +44,13 @@
     <Compile Include="BaseResponse.cs" />
     <Compile Include="Dashboards\GetDashboardsRequest.cs" />
     <Compile Include="Dashboards\GetDashboardsResponse.cs" />
+    <Compile Include="Dashboards\UpdateDashboardRequest.cs" />
+    <Compile Include="Dashboards\UpdateDashboardResponse.cs" />
     <Compile Include="ErrorStatus.cs" />
     <Compile Include="Items\CreateItemRequest.cs" />
     <Compile Include="Items\CreateItemResponse.cs" />
+    <Compile Include="Items\DeleteItemRequest.cs" />
+    <Compile Include="Items\DeleteItemResponse.cs" />
     <Compile Include="Items\GetItemsListRequest.cs" />
     <Compile Include="Items\GetItemsListResponse.cs" />
     <Compile Include="Items\UpdateItemRequest.cs" />

@@ -1,6 +1,8 @@
 ﻿using System;
+using Dashboardify.Contracts.Dashboards;
 using Dashboardify.Contracts.Items;
 using Dashboardify.Contracts.Users;
+using Dashboardify.Handlers.Dashboards;
 using Dashboardify.Handlers.Items;
 using Dashboardify.Handlers.Users;
 using Dashboardify.Models;
@@ -13,8 +15,11 @@ namespace Dashboardify.Sandbox
         private string _connectionString = "Data Source=DESKTOP-11VK3U9;Initial Catalog = DashBoardify; User id = DashboardifyUser; Password=123456;";
         public void Do()
         {
-           TestItemUpdateHandler();
+           //TestItemUpdateHandler();
            //TestUserUpdateHandler();
+           //TestItemCreation();
+           //TestDeleteItemHandler();
+           TestUpdateDash();
         }
 
         private void TestUserUpdateHandler()
@@ -84,6 +89,61 @@ namespace Dashboardify.Sandbox
             var response = updateUserHandelr.Handle(request);
 
             foreach (var msg in response.Errors)
+            {
+                Console.WriteLine(msg.Code);
+            }
+
+        }
+
+        private void TestItemCreation()
+        {
+            var handler = new CreateItemHandler(_connectionString);
+            var request = new CreateItemRequest();
+
+            request.Item = new Item()
+            {
+                DashBoardId = 1,
+                CheckInterval = 10001,
+                XPath = "fdsgdfgfd"
+            };
+
+            var response = handler.Handle(request);
+            foreach (var msg in response.Errors)
+            {
+                Console.WriteLine(msg.Code);
+            }
+
+        }
+
+        private void TestDeleteItemHandler()
+        {
+            var handler = new DeleteItemHandler(_connectionString);
+            var request = new DeleteItemRequest();
+            request.Item = new Item()
+            {
+                Id = -5
+            };
+            var response = handler.Handle(request);
+
+            foreach (var msg in response.Errors)
+            {
+                Console.WriteLine(msg.Code);
+            }
+
+        }
+
+        private void TestUpdateDash()
+        {
+            var handler = new UpdateDashBoardHandler(_connectionString);
+
+            var request = new UpdateDashboardRequest();
+            request.DashBoard = new DashBoard()
+            {
+                Id = 1,
+                Name = "naujas dahsas"
+            };
+            var resposne = handler.Handle(request);
+            foreach (var msg in resposne.Errors)
             {
                 Console.WriteLine(msg.Code);
             }

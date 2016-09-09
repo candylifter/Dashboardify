@@ -19,6 +19,8 @@ namespace Dashboardify.Handlers.Items
         {
             var response = new UpdateItemResponse();
 
+            response.Errors = Validate(request);
+
             if (response.HasErrors)
             {
                 return response;
@@ -62,6 +64,7 @@ namespace Dashboardify.Handlers.Items
             {
                 errors.Add(new ErrorStatus("NO_DASHBOARDS_FOUND_ON_THIS_USER")); 
             }
+
             return errors;
         }
         
