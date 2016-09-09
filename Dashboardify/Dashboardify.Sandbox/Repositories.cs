@@ -25,7 +25,7 @@ namespace Dashboardify.Sandbox
 
             // Works fine CreateItem(connectionString);
 
-            // Works fine UpdateUser(connectionString);
+            UpdateUser(connectionString);
 
             // Works fine GetDashList(connectionString);
 
@@ -199,6 +199,9 @@ namespace Dashboardify.Sandbox
             var UserOrigin = userRepo.Get(1);
             var UserUpdate = userRepo.Get(1);
             UserUpdate.Email = "Maestro@Irmantas.com";
+            UserUpdate.Id = 1;
+            
+            UserUpdate.Name = "UniteTest";
             Console.WriteLine(UserOrigin.ToString());
             Console.WriteLine(UserUpdate.ToString());
 

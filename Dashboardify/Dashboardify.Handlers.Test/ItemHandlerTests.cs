@@ -103,24 +103,25 @@ namespace Dashboardify.Handlers.Test
             Assert.True(response.HasErrors);
         }
 
-        //[Test]
-        //public void NullItem_UpdateItem()
-        //{
-        //    var request = new UpdateItemRequest();
-        //    request.Item = new Item();
+        [Test]
+        public void NullItem_UpdateItem()
+        {
+            var request = new UpdateItemRequest();
+            request.Item = new Item();
+            request.Item = null;
 
-        //    var handler =
-        //        new UpdateItemHandler(
-        //            "Data Source=DESKTOP-11VK3U9;Initial Catalog=DashBoardify;User id=DashboardifyUser;Password=123456;");
+            var handler =
+                new UpdateItemHandler(
+                    "Data Source=DESKTOP-11VK3U9;Initial Catalog=DashBoardify;User id=DashboardifyUser;Password=123456;");
 
-        //    var response = handler.Handle(request);
+            var response = handler.Handle(request);
+
+            
 
 
+        }
 
-
-        //}
-
-        ////TODO search how to deal with exception in NUnit testing
+        
 
     }
 

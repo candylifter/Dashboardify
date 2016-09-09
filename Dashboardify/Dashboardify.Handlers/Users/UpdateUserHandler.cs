@@ -69,9 +69,14 @@ namespace Dashboardify.Handlers.Users
                 errors.Add(new ErrorStatus("BAD_REQUEST"));
 
                 return errors;
+            }
+            if (request.User.Id < 1)
+            {
+                errors.Add(new ErrorStatus("USER_NOT_FOUND"));
+  
             }            
 
-            if (!string.IsNullOrEmpty(request.User.Email) && request.User.Email == "one@one.lt")
+            if (!string.IsNullOrEmpty(request.User.Email) && request.User.Email.Contains("one.lt"))
             {
                 errors.Add(new ErrorStatus("EMAIL_WRONG_FORMAT"));
             }

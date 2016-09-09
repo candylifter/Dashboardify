@@ -1,4 +1,5 @@
-﻿using Dashboardify.Contracts.Items;
+﻿using System;
+using Dashboardify.Contracts.Items;
 using Dashboardify.Contracts.Users;
 using Dashboardify.Handlers.Items;
 using Dashboardify.Handlers.Users;
@@ -12,7 +13,8 @@ namespace Dashboardify.Sandbox
         private string _connectionString = "Data Source=DESKTOP-11VK3U9;Initial Catalog = DashBoardify; User id = DashboardifyUser; Password=123456;";
         public void Do()
         {
-            testItemUpdateHandler();
+           TestItemUpdateHandler();
+           //TestUserUpdateHandler();
         }
 
         private void TestUserUpdateHandler()
@@ -25,13 +27,22 @@ namespace Dashboardify.Sandbox
 
             request.User = new User()
             {
-                Id = 1,
-                Name = "Laba diena",
-                Email = "neone@one.lt",
-                Password = "Testas123"
-            };
+                //Id = 1,
+                //Name = "Laba diena",
+                //Email = "neone@one.lt",
+                //Password = "Testas123"
+
+                Id = -5,
+                Email = "",
+                Name = "UniteTest"
+
+        };
 
             var response = updateUserHandler.Handle(request);
+            foreach (var message in response.Errors)
+            {
+                Console.WriteLine(message.Code);
+            }
         }
 
         private void TestGetItemsListHandler()
@@ -57,7 +68,7 @@ namespace Dashboardify.Sandbox
             var response = getDeleteUserHandler.Handle(request);
         }
 
-        private void testItemUpdateHandler()
+        private void TestItemUpdateHandler()
         {
             var updateUserHandelr = new UpdateItemHandler(_connectionString);
 
@@ -71,6 +82,11 @@ namespace Dashboardify.Sandbox
                 Id = 1
             };
             var response = updateUserHandelr.Handle(request);
+
+            foreach (var msg in response.Errors)
+            {
+                Console.WriteLine(msg.Code);
+            }
 
         }
     }
