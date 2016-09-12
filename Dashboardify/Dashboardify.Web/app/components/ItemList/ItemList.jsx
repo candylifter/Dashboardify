@@ -3,13 +3,13 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 
 import { ItemListItem } from 'components';
-import DashboardifyAPI from 'DashboardifyAPI';
+import { ItemsAPI } from 'api';
 
 class ItemList extends React.Component {
     render() {
         let {items, searchText, dashboardId} = this.props;
         let renderItems = () => {
-            return DashboardifyAPI.filterItems(items, dashboardId, searchText).map((item) => {
+            return ItemsAPI.filterItems(items, dashboardId, searchText).map((item) => {
                 return (
                     <ItemListItem key={item.id} {...item}/>
 
