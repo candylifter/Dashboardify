@@ -5,16 +5,16 @@ import { DashboardListItem } from 'components';
 
 class DashboardList extends React.Component {
   render() {
-    let {dashboards} = this.props;
+    let { dashboards } = this.props;
 
     let renderDashboards = () => {
-      if (dashboards.length === 0) {
+      if (dashboards.data.length === 0 ) {
         return (
           <p>Nothing to show</p>
         )
       }
 
-      return dashboards.map((dashboard) => {
+      return dashboards.data.map((dashboard) => {
         return <DashboardListItem key={dashboard.id} {...dashboard} />
       });
     };

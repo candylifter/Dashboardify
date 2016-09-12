@@ -2,7 +2,16 @@ import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { dashboardsReducer, itemsReducer, searchTextReducer, checkIntervalsReducer } from 'reducers';
 
-const configureStore = (initialState = {}) => {
+const initial = {
+  dashboards: {
+    isFetching: false,
+    data: [],
+    error: undefined,
+  }
+}
+
+
+const configureStore = (initialState = initial) => {
   const reducer = combineReducers({
     dashboards: dashboardsReducer,
     items: itemsReducer,

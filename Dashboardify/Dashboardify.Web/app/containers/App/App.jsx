@@ -10,10 +10,8 @@ class App extends React.Component {
   componentWillMount() {
     const { dispatch } = this.props;
 
-    // dispatch(DashboardsActions.addDashboards(DashboardsAPI.getDashboards()));
-    dispatch(DashboardsActions.loadDashboards(1));
+    dispatch(DashboardsActions.fetchDashboards(1));
 
-    // dispatch(ItemsActions.addItems(ItemsAPI.getItems()));
     dispatch(ItemsActions.loadItems(1));
 
     dispatch(CheckIntervalsActions.addCheckIntervals(CheckIntervalsAPI.getCheckIntervals()));

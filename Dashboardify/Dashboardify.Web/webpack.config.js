@@ -13,7 +13,7 @@ module.exports = {
     new webpack.ProvidePlugin({
       '$': 'jquery',
       'jQuery': 'jquery'
-    }), 
+    }),
   ],
   output: {
     path: __dirname+'/public',
@@ -43,7 +43,8 @@ module.exports = {
       {
         loader: 'babel-loader',
         query: {
-          presets: ['react', 'es2015']
+          presets: ['react', 'es2015'],
+          plugins: ['transform-object-rest-spread'],
         },
         test: /\.jsx?$/,
         exclude: /(node_modules|bower_components)/
