@@ -1,5 +1,5 @@
 import React from 'react'
-let actions = require('actions');
+import { SearchTextActions } from 'actions';
 import { connect } from 'react-redux';
 
 class Search extends React.Component {
@@ -15,9 +15,7 @@ class Search extends React.Component {
           value={searchText}
           onChange={() => {
             let text = this.refs.search.value.toLowerCase();
-            console.log(text);
-            console.log(actions);
-            dispatch(actions.setSearchText(text))
+            dispatch(SearchTextActions.setSearchText(text))
           }}
         />
       </div>

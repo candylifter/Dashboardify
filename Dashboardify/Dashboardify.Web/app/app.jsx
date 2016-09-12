@@ -7,7 +7,8 @@ import axios from 'axios';
 //
 
 import DashboardifyAPI from 'DashboardifyAPI';
-let actions = require('actions');
+// let actions = require('actions');
+import { DashboardsActions, ItemsActions, CheckIntervalsActions } from 'actions';
 let store = require('configureStore').configure();
 
 import DashboardifyApp from 'DashboardifyApp';
@@ -27,9 +28,9 @@ store.subscribe(() => {
   // Note: send state changes to WebAPI
 });
 
-store.dispatch(actions.addDashboards(DashboardifyAPI.getDashboards()));
+store.dispatch(DashboardsActions.addDashboards(DashboardifyAPI.getDashboards()));
 
-store.dispatch(actions.addItems(DashboardifyAPI.getItems()));
+store.dispatch(ItemsActions.addItems(DashboardifyAPI.getItems()));
 // axios.get('//localhost/api/Items/GetItems/')
 //   .then((res) => {
 //     let apiItems = res.data.items;
@@ -57,7 +58,7 @@ store.dispatch(actions.addItems(DashboardifyAPI.getItems()));
 //   .catch((err) => {
 //     console.log(err);
 //   })
-store.dispatch(actions.addCheckIntervals(DashboardifyAPI.getCheckIntervals()));
+store.dispatch(CheckIntervalsActions.addCheckIntervals(DashboardifyAPI.getCheckIntervals()));
 
 ReactDOM.render(
   <Provider store={store}>
