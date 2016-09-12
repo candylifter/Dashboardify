@@ -1,17 +1,21 @@
-var redux = require('redux');
-var { dashboardsReducer, itemsReducer, searchTextReducer, checkIntervalsReducer } = require('reducers');
+import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import { dashboardsReducer, itemsReducer, searchTextReducer, checkIntervalsReducer } from 'reducers';
 
-export var configure = (initialState = {}) => {
-  var reducer = redux.combineReducers({
+const configureStore = (initialState = {}) => {
+  const reducer = combineReducers({
     dashboards: dashboardsReducer,
     items: itemsReducer,
     searchText: searchTextReducer,
     checkIntervals: checkIntervalsReducer,
   });
 
-  var store = redux.createStore(reducer, initialState, redux.compose(
+  const store = createStore(reducer, initialState, compose(
+    applyMiddleware(thunk),
     window.devToolsExtension ? window.devToolsExtension() : f => f
   ));
 
   return store;
 }
+
+export default configureStore;

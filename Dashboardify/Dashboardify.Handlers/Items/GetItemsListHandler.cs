@@ -36,7 +36,7 @@ namespace Dashboardify.Handlers.Items
         {
             var errors = new List<ErrorStatus>();
 
-            if (request.DashboarId == 0)
+            if (request.DashboarId < 1)
             {
                 errors.Add(new ErrorStatus("DASHBOARDID_NOT_DEFINED"));
             }

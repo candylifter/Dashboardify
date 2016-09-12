@@ -8,13 +8,12 @@ module.exports = {
   ],
   externals: {
     jquery: 'jQuery'
-
   },
   plugins: [
     new webpack.ProvidePlugin({
       '$': 'jquery',
       'jQuery': 'jquery'
-    })
+    }), 
   ],
   output: {
     path: __dirname+'/public',
@@ -24,16 +23,18 @@ module.exports = {
     root: __dirname,
     modulesDirectories: [
       'node_modules',
-      './app/components',
-      './app/pages',
       './app/api'
     ],
     alias: {
       applicationStyles: 'app/styles/app.scss',
       DashboardifyAPI: 'app/api/DashboardifyAPI.jsx',
-      actions: 'app/actions/actions.jsx',
-      reducers: 'app/reducers/reducers.jsx',
-      configureStore: 'app/store/configureStore.jsx'
+      api: 'app/api/index.jsx',
+      components: 'app/components/index.jsx',
+      containers: 'app/containers/index.jsx',
+      actions: 'app/actions/index.jsx',
+      reducers: 'app/reducers/index.jsx',
+      configureStore: 'app/store/configureStore.jsx',
+      routes: 'app/routes.jsx',
     },
     extensions: ['', '.js', '.jsx']
   },
@@ -63,8 +64,6 @@ module.exports = {
       path.resolve(__dirname, './node_modules/bootstrap-sass'),
       path.resolve(__dirname, './node_modules/bourbon/app/assets/stylesheets/'),
       path.resolve(__dirname, './node_modules/bourbon-neat/app/assets/stylesheets/'),
-
-      // path.resolve(__dirname, './node_modules/foundation-sites/scss')
     ]
   },
   devtool: 'cheap-module-eval-source-map'

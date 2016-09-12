@@ -27,18 +27,18 @@ namespace Dashboardify.Handlers.Users
                 return response;
             }
 
-            var user = _usersRepository.Get(request.User.Id);
+            var OriginUser = _usersRepository.Get(request.User.Id);
 
-            if (user == null)
+            if (OriginUser == null)
             {
                 throw new Exception("User does not exist!");
             }
 
-            UpdateUserObject(user, request.User);
+            UpdateUserObject(OriginUser, request.User);
 
-            user.Name = request.User.Name;
+            OriginUser.Name = request.User.Name;
             
-            _usersRepository.Update(user);
+            _usersRepository.Update(OriginUser);
 
             return response;
         }
@@ -70,8 +70,13 @@ namespace Dashboardify.Handlers.Users
 
                 return errors;
             }
+            if (request.User.Id < 1)
+            {
+                errors.Add(new ErrorStatus("USER_NOT_FOUND"));
+  
+            }            
 
-            if (!string.IsNullOrEmpty(request.User.Email) && request.User.Email == "one@one.lt")
+            if (!string.IsNullOrEmpty(request.User.Email) && request.User.Email.Contains("one.lt"))
             {
                 errors.Add(new ErrorStatus("EMAIL_WRONG_FORMAT"));
             }

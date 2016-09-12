@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Xml.Schema;
+﻿using System.Collections.Generic;
 using Dashboardify.Contracts;
 using Dashboardify.Contracts.Users;
-using Dashboardify.Handlers.Items;
-using Dashboardify.Models;
 using Dashboardify.Repositories;
 
 namespace Dashboardify.Handlers.Users
