@@ -11,8 +11,6 @@ function handleElementClick(e) {
   Item.DashboardId = 1,
   Item.Website = window.location.href;
   Item.XPath = getPathTo(this);
-  Item.Name = prompt('Please enter item name:');
-  Item.CheckInterval = parseInt(prompt('Please enter interval in miliseconds:'));
 
   chrome.runtime.sendMessage({action: "POST_ITEM", item: Item}, function(response) {
     console.log(response.data);
