@@ -7,9 +7,10 @@ import axios from 'axios';
 //
 
 import DashboardifyAPI from 'DashboardifyAPI';
-// let actions = require('actions');
 import { DashboardsActions, ItemsActions, CheckIntervalsActions } from 'actions';
-let store = require('configureStore').configure();
+import configureStore from 'configureStore';
+
+const store = configureStore();
 
 import DashboardifyApp from 'DashboardifyApp';
 
