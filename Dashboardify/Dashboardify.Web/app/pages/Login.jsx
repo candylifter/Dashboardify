@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 
-import LoginForm from 'LoginForm';
+import { LoginForm } from 'components';
 
 class Login extends React.Component {
 	render() {

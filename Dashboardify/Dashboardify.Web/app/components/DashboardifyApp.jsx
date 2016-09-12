@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Navbar from 'Navbar';
+import { Navbar } from 'components';
 
 class DashboardifyApp extends React.Component {
   render() {

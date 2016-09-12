@@ -1,11 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux';
 
-import ItemList from 'ItemList';
-import ItemPanel from 'ItemPanel';
-import Breadcrumb from 'Breadcrumb';
-import Search from 'Search';
 import DashboardifyAPI from 'DashboardifyAPI';
+
+import { Breadcrumb, Search, ItemList, ItemPanel } from 'components';
 
 class Dashboard extends React.Component {
 	handleToggleItem(id) {
