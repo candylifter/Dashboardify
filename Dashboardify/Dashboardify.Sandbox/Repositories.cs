@@ -25,7 +25,7 @@ namespace Dashboardify.Sandbox
 
             // Works fine CreateItem(connectionString);
 
-            UpdateUser(connectionString);
+            //UpdateUser(connectionString);
 
             // Works fine GetDashList(connectionString);
 
@@ -54,6 +54,8 @@ namespace Dashboardify.Sandbox
             // Works fine DeleteDash(connectionString);
             
             // DeleteItem(connectionString);
+
+            TestAddSession(connectionString);
 
             
             Console.ReadKey();
@@ -347,6 +349,22 @@ namespace Dashboardify.Sandbox
             var itemsRepo = new ItemsRepository(connectionString);
             itemsRepo.Delete(2);
             PrintItems(connectionString);
+        }
+
+        public void TestAddSession(string connectionString)
+        {
+            var userSesRep = new  UserSessionRepository(connectionString);
+
+            var sesija = new UserSession()
+            {
+                Id = "g1dsf56g1df65g1fd56gdfs",
+                UserId = 1,
+                Expires = DateTime.Now
+            };
+
+            
+            Console.WriteLine(userSesRep.AddSession(sesija));
+
         }
 
         
