@@ -4,6 +4,7 @@ using System.Linq;
 using Dashboardify.Models;
 using System.Data.SqlClient;
 using System.Data;
+using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using Dapper;
@@ -196,6 +197,35 @@ namespace Dashboardify.Repositories
             {
                 Console.WriteLine(eex.Message);
                 throw;
+            }
+
+        }
+
+        public User ReturnIfExsists(string username, string password)
+        {
+            
+            try
+            {
+                using (IDbConnection db = new SqlConnection(_connectionString))
+                {
+                    return db.Query<User>(String.Format(@"SELECT
+	                                            Id,
+	                                            Name,
+	                                            Password,
+	                                            Email,
+	                                            IsActive,
+	                                            DateRegistered,
+	                                            DateModified
+                                            FROM
+	                                            Users
+                                        WHERE Name = '{0}' AND Password ='{1}'"
+                                        ,username,password)).SingleOrDefault();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
 
         }

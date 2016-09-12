@@ -47,6 +47,7 @@
     <Compile Include="Items\DeleteItemHandler.cs" />
     <Compile Include="Items\GetItemsListHandler.cs" />
     <Compile Include="Items\UpdateItemHandler.cs" />
+    <Compile Include="UserSession\LoginUserHandler.cs" />
     <Compile Include="Users\DeleteUserHandler.cs" />
     <Compile Include="Users\UpdateUserHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
