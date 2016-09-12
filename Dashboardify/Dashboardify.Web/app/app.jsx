@@ -5,8 +5,6 @@ import { Router, hashHistory } from 'react-router';
 
 import routes from 'routes';
 
-import DashboardifyAPI from 'DashboardifyAPI';
-import { DashboardsActions, ItemsActions, CheckIntervalsActions } from 'actions';
 import configureStore from 'configureStore';
 
 const store = configureStore();
@@ -22,11 +20,7 @@ store.subscribe(() => {
   // Note: send state changes to WebAPI
 });
 
-store.dispatch(DashboardsActions.addDashboards(DashboardifyAPI.getDashboards()));
 
-store.dispatch(ItemsActions.addItems(DashboardifyAPI.getItems()));
-
-store.dispatch(CheckIntervalsActions.addCheckIntervals(DashboardifyAPI.getCheckIntervals()));
 
 ReactDOM.render(
   <Provider store={store}>

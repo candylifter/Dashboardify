@@ -3,13 +3,17 @@ var path = require('path');
 
 module.exports = {
   entry: [
+    'script!jquery/dist/jquery.min.js',
     './app/app.jsx'
   ],
   externals: {
-
+    jquery: 'jQuery'
   },
   plugins: [
-
+    new webpack.ProvidePlugin({
+      '$': 'jquery',
+      'jQuery': 'jquery'
+    }), 
   ],
   output: {
     path: __dirname+'/public',
@@ -24,6 +28,7 @@ module.exports = {
     alias: {
       applicationStyles: 'app/styles/app.scss',
       DashboardifyAPI: 'app/api/DashboardifyAPI.jsx',
+      api: 'app/api/index.jsx',
       components: 'app/components/index.jsx',
       containers: 'app/containers/index.jsx',
       actions: 'app/actions/index.jsx',

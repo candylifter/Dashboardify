@@ -2,8 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
-import DashboardifyAPI from 'DashboardifyAPI';
-
 class Breadcrumb extends React.Component {
   render () {
     let { dashboards, dashboardId } = this.props;
@@ -18,7 +16,7 @@ class Breadcrumb extends React.Component {
 
     return (
       <ol className="breadcrumb">
-        <li><Link to="/dashboards">Dashboards</Link></li>
+        <li><Link to="/">Dashboards</Link></li>
         <li className="active">{dashboardName(dashboardId)}</li>
       </ol>
     )
