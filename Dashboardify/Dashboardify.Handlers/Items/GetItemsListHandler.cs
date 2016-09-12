@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Dashboardify.Contracts;
 using Dashboardify.Contracts.Items;
-using Dashboardify.Models;
 using Dashboardify.Repositories;
 
 namespace Dashboardify.Handlers.Items
