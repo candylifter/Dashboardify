@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using Dashboardify.Models;
 
 namespace Dashboardify.Contracts.UserSession
 {
     public class LoginUserRequest:BaseRequest
     {
+        public User user { get; set; }
     }
 }
