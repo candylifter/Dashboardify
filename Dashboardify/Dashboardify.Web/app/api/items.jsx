@@ -1,8 +1,6 @@
 export default {
   getItems () {
 
-    //Mock method and data
-
     let items = [
       {
         id: 1,
@@ -68,14 +66,6 @@ export default {
 
     return items;
 
-    // return axios.get('//localhost/api/Items/GetItems/')
-    //   .then((res) => {
-    //     console.log(res.data.items);
-    //     return res.data.items;
-    //
-    //   })
-    //   .catch((err) => console.log(err));
-
   },
 
   mapBackendData (data) {
@@ -88,8 +78,9 @@ export default {
         url: item.Website,
         isActive: item.IsActive,
         isSelected: false,
+        created: item.Created,
         lastChecked: item.LastChecked,
-        lastModified: item.LastModified,
+        lastModified: item.Modified,
       }
     });
   },
