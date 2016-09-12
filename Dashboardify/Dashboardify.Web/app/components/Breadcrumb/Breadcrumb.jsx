@@ -7,11 +7,17 @@ class Breadcrumb extends React.Component {
     let { dashboards, dashboardId } = this.props;
 
     let dashboardName = (dashboardId) => {
-      let currentDashboard =  dashboards.filter((dashboard) => {
+
+
+      let currentDashboard = dashboards.filter((dashboard) => {
         return dashboard.id == dashboardId ? true : false;
       });
 
-      return currentDashboard[0].name;
+      if (dashboards.length != 0) {
+        return currentDashboard[0].name;
+      } else {
+        return '';
+      }
     }
 
     return (

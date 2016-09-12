@@ -5,6 +5,6 @@ namespace Dashboardify.Contracts.Dashboards
 {
     public class GetDashboardsResponse : BaseResponse
     {
-        public IList<DashBoard> Items { get; set; }
+        public IList<DashBoard> Dashboards { get; set; }
     }
 }
