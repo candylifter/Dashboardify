@@ -1,22 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router, IndexRoute, Route, hashHistory } from 'react-router';
-//
-import axios from 'axios';
-//
+import { Router, hashHistory } from 'react-router';
+
+import routes from 'routes';
 
 import DashboardifyAPI from 'DashboardifyAPI';
 import { DashboardsActions, ItemsActions, CheckIntervalsActions } from 'actions';
 import configureStore from 'configureStore';
 
 const store = configureStore();
-
-import DashboardifyApp from 'DashboardifyApp';
-
-import Login from 'Login';
-import Dashboards from 'Dashboards';
-import Dashboard from 'Dashboard';
 
 import 'style!css!sass!applicationStyles';
 import 'script!bootstrap-sass/assets/javascripts/bootstrap.min.js';
@@ -32,43 +25,13 @@ store.subscribe(() => {
 store.dispatch(DashboardsActions.addDashboards(DashboardifyAPI.getDashboards()));
 
 store.dispatch(ItemsActions.addItems(DashboardifyAPI.getItems()));
-// axios.get('//localhost/api/Items/GetItems/')
-//   .then((res) => {
-//     let apiItems = res.data.items;
-//     let items = [];
-//
-//     for (var i = 0; i < apiItems.length; i++) {
-//       let item = {
-//         id: apiItems[i].Id,
-//         dashboardId: apiItems[i].DashBoardId,
-//         name: apiItems[i].Name,
-//         img: 'https://www.placecage.com/gif/500/200',
-//         url: apiItems[i].Website,
-//         isActive: apiItems[i].isActive,
-//         isSelected: false,
-//         checkInterval: apiItems[i].CheckInterval,
-//         lastChecked: apiItems[i].LastChecked,
-//         lastModified: apiItems[i].Modified
-//       };
-//
-//       items.push(item);
-//     }
-//
-//     store.dispatch(actions.addItems(items));
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   })
+
 store.dispatch(CheckIntervalsActions.addCheckIntervals(DashboardifyAPI.getCheckIntervals()));
 
 ReactDOM.render(
   <Provider store={store}>
     <Router history={hashHistory}>
-      <Route path="/" component={DashboardifyApp}>
-        <IndexRoute component={Login}/>
-        <Route path="dashboards" component={Dashboards}/>
-        <Route path="dashboard/:id" component={Dashboard}/>
-      </Route>
+      {routes}
     </Router>
   </Provider>
 , document.getElementById('app'));
