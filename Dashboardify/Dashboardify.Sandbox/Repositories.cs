@@ -55,7 +55,9 @@ namespace Dashboardify.Sandbox
             
             // DeleteItem(connectionString);
 
-            TestAddSession(connectionString);
+            // TestAddSession(connectionString);
+
+            TestReturnIfExsists(connectionString);
 
             
             Console.ReadKey();
@@ -365,6 +367,17 @@ namespace Dashboardify.Sandbox
             
             Console.WriteLine(userSesRep.AddSession(sesija));
 
+        }
+
+        public void TestReturnIfExsists(string connectionString)
+        {
+            var usersrepo = new UsersRepository(connectionString);
+            var user = new User()
+            {
+                Name = "Labadiena",
+                Password = "asd56a5d6asd"
+            };
+            Console.WriteLine(usersrepo.ReturnIfExsists(user.Name,user.Password).ToString());
         }
 
         

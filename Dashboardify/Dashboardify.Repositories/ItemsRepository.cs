@@ -147,6 +147,7 @@ namespace Dashboardify.Repositories
         {
             string query = @"SELECT
                                 Id, 
+                                DashBoardId,
                                 Name, 
                                 Website,
                                 CheckInterval, 

@@ -25,9 +25,9 @@ namespace Dashboardify.Handlers.Dashboards
                 return response;
             }
 
-            var items = _dashboardsRepository.GetByUserId(request.UserId);
+            var dashboards = _dashboardsRepository.GetByUserId(request.UserId);
 
-            response.Items = items;
+            response.Dashboards = dashboards;
 
             return response;
         }

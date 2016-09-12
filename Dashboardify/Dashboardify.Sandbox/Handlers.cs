@@ -2,9 +2,11 @@
 using Dashboardify.Contracts.Dashboards;
 using Dashboardify.Contracts.Items;
 using Dashboardify.Contracts.Users;
+using Dashboardify.Contracts.UserSession;
 using Dashboardify.Handlers.Dashboards;
 using Dashboardify.Handlers.Items;
 using Dashboardify.Handlers.Users;
+using Dashboardify.Handlers.UserSession;
 using Dashboardify.Models;
 using Dashboardify.Repositories;
 
@@ -19,7 +21,8 @@ namespace Dashboardify.Sandbox
            //TestUserUpdateHandler();
            //TestItemCreation();
            //TestDeleteItemHandler();
-           TestUpdateDash();
+           //TestUpdateDash();
+           TestLoginUser();
         }
 
         private void TestUserUpdateHandler()
@@ -148,6 +151,25 @@ namespace Dashboardify.Sandbox
                 Console.WriteLine(msg.Code);
             }
 
+        }
+
+        private void TestLoginUser()
+        {
+            var handler = new LoginUserHandler(_connectionString);
+
+            var request= new LoginUserRequest();
+
+            request.user = new User()
+            {
+                Name = "Labadiena",
+                Password = "asd56a5d6asd"
+            };
+
+            var response = handler.Handle(request);
+            foreach (var msg in response.Errors)
+            {
+                Console.WriteLine(msg.Code);
+            }
         }
     }
 }

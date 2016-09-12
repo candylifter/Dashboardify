@@ -1,8 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux';
 
-import DashboardifyAPI from 'DashboardifyAPI';
-
 import { Breadcrumb, Search, ItemList, ItemPanel } from 'components';
 
 class Dashboard extends React.Component {

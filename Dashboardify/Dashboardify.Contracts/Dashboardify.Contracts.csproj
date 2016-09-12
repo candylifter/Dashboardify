@@ -56,6 +56,8 @@
     <Compile Include="Items\UpdateItemRequest.cs" />
     <Compile Include="Items\UpdateItemResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserSession\LoginUserRequest.cs" />
+    <Compile Include="UserSession\LoginUserResponse.cs" />
     <Compile Include="Users\DeleteUserRequest.cs" />
     <Compile Include="Users\DeleteUserResponse.cs" />
     <Compile Include="Users\UpdateUserRequest.cs" />
