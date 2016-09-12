@@ -32,7 +32,7 @@ module.exports = {
       applicationStyles: 'app/styles/app.scss',
       DashboardifyAPI: 'app/api/DashboardifyAPI.jsx',
       actions: 'app/actions/index.jsx',
-      reducers: 'app/reducers/reducers.jsx',
+      reducers: 'app/reducers/index.jsx',
       configureStore: 'app/store/configureStore.jsx'
     },
     extensions: ['', '.js', '.jsx']

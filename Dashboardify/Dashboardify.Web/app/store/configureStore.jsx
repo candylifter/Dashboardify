@@ -1,5 +1,5 @@
 var redux = require('redux');
-var { dashboardsReducer, itemsReducer, searchTextReducer, checkIntervalsReducer } = require('reducers');
+import { dashboardsReducer, itemsReducer, searchTextReducer, checkIntervalsReducer } from 'reducers';
 
 export var configure = (initialState = {}) => {
   var reducer = redux.combineReducers({
