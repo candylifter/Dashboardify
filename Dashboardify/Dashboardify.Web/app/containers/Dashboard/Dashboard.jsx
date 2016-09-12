@@ -3,31 +3,22 @@ import { connect } from 'react-redux';
 
 import { Breadcrumb, Search, ItemList, ItemPanel } from 'components';
 
+import { ItemsActions } from 'actions';
+
 class Dashboard extends React.Component {
-	handleToggleItem(id) {
-		let updatedItems = this.state.items.map((item) => {
-			if (item.id === id) {
-				item.isActive = !item.isActive;
-			}
+	componentWillMount() {
+		let { dashboardId } = this.props.routeParams;
+		let { dispatch } = this.props;
 
-			return item;
-		});
-
-		this.setState({items: updatedItems})
+		dispatch(ItemsActions.loadItems(parseInt(dashboardId)));
 	}
 
 	render() {
 
-		let {items} = this.props;
-		// let getSelectedItem = (id) => {
-		// 	let itemId = items.findIndex((item) => {
-		// 		if (item.id === id) {
-		// 			return item;
-		// 		}
-		// 	});
-		//
-		// 	return itemId;
-		// }
+		let { items } = this.props;
+		let { dashboardId } = this.props.routeParams;
+
+		dashboardId = parseInt(dashboardId);
 
 		return (
 			<div className="container-fluid">
@@ -35,17 +26,17 @@ class Dashboard extends React.Component {
 					<div className="col-md-6 col-lg-8">
 						<div className="row">
 							<div className="col-md-6">
-								<Breadcrumb dashboardId={this.props.params.id}/>
+								<Breadcrumb dashboardId={dashboardId}/>
 							</div>
 							<div className="col-md-6">
 								<Search/>
 							</div>
 						</div>
 						<hr/>
-						<ItemList dashboardId={this.props.params.id}/>
+						<ItemList dashboardId={dashboardId}/>
 					</div>
 					<div className="col-md-6 col-lg-4">
-						<ItemPanel dashboardId={this.props.params.id}/>
+						<ItemPanel dashboardId={dashboardId}/>
 					</div>
 				</div>
 			</div>

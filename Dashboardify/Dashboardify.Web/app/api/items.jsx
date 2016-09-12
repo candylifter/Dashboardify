@@ -21,7 +21,7 @@ export default {
     let filteredItems = items;
 
     filteredItems = filteredItems.filter((item) => {
-      return item.dashboardId == dashboardId;
+      return item.dashboardId === dashboardId;
     });
 
     filteredItems = filteredItems.filter((item) => {
