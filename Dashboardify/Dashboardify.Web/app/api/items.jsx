@@ -78,6 +78,22 @@ export default {
 
   },
 
+  mapBackendData (data) {
+    return data.Items.map((item) => {
+      return {
+        id: item.Id,
+        dashboardId: item.DashBoardId,
+        name: item.Name,
+        img: '',
+        url: item.Website,
+        isActive: item.IsActive,
+        isSelected: false,
+        lastChecked: item.LastChecked,
+        lastModified: item.LastModified,
+      }
+    });
+  },
+
   filterItems (items, dashboardId, searchText) {
     let filteredItems = items;
 
