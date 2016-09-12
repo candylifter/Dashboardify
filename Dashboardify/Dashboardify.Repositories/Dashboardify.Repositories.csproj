@@ -48,6 +48,7 @@
     <Compile Include="ItemsRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScreenshotRepository.cs" />
+    <Compile Include="UserSessionRepository.cs" />
     <Compile Include="UsersRepository.cs" />
   </ItemGroup>
   <ItemGroup>
