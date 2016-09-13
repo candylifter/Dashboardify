@@ -1,30 +1,44 @@
-import axios from 'axios';
-
 import { DashboardsAPI } from 'api';
 
 export default {
   addDashboards (dashboards) {
     return {
       type: 'ADD_DASHBOARDS',
-      dashboards
-    }
-  },
-
-  loadDashboards (userId) {
-    return (dispatch) => {
-      return this.fetchDashboards(userId)
-        .then(
-          (res) => dispatch(
-            this.addDashboards(
-              DashboardsAPI.mapBackendData(res.data)
-            )
-          ),
-          (err) => console.error(err) // TODO: display notification that fetch failed
-        );
+      dashboards,
     }
   },
 
   fetchDashboards (userId) {
-    return axios.get(`http://localhost/api/Dashboards/GetList?userId=${userId}`);
+    return (dispatch) => {
+      dispatch(this.startDashboardsFetch());
+
+      return DashboardsAPI.fetchDashboards(userId)
+        .then(
+          (res) => {
+            dispatch(this.addDashboards(DashboardsAPI.mapBackendData(res.data)));
+            dispatch(this.completeDashboardsFetch());
+          },
+          (err) => dispatch(this.failDashboardsFetch(err))
+        );
+    }
+  },
+
+  startDashboardsFetch () {
+    return {
+      type: 'START_DASHBOARDS_FETCH',
+    };
+  },
+
+  completeDashboardsFetch () {
+    return {
+      type: 'COMPLETE_DASHBOARDS_FETCH',
+    };
+  },
+
+  failDashboardsFetch (err) {
+    return {
+      type: 'FAIL_DASHBOARDS_FETCH',
+      err,
+    };
   },
 }

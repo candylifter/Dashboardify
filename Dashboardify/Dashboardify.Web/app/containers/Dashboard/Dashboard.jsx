@@ -3,31 +3,39 @@ import { connect } from 'react-redux';
 
 import { Breadcrumb, Search, ItemList, ItemPanel } from 'components';
 
+import { ItemsActions } from 'actions';
+
 class Dashboard extends React.Component {
-	handleToggleItem(id) {
-		let updatedItems = this.state.items.map((item) => {
-			if (item.id === id) {
-				item.isActive = !item.isActive;
-			}
+	componentWillMount() {
+		let { dashboardId } = this.props.routeParams;
+		let { dispatch } = this.props;
 
-			return item;
-		});
-
-		this.setState({items: updatedItems})
+		dispatch(ItemsActions.fetchItems(parseInt(dashboardId)));
 	}
 
 	render() {
+		let { isFetching, error } = this.props;
+		let { dashboardId } = this.props.routeParams;
 
-		let {items} = this.props;
-		// let getSelectedItem = (id) => {
-		// 	let itemId = items.findIndex((item) => {
-		// 		if (item.id === id) {
-		// 			return item;
-		// 		}
-		// 	});
-		//
-		// 	return itemId;
-		// }
+		dashboardId = parseInt(dashboardId);
+
+		let renderItemList = () => {
+			if (isFetching) {
+				return (
+					<div>
+						<p className="text-center">Loading...</p>
+					</div>
+				)
+			} else if (error === undefined) {
+				return (
+					<ItemList dashboardId={dashboardId}/>
+				)
+			} else {
+				return (
+					<p className="text-center">{error}</p>
+				)
+			}
+		};
 
 		return (
 			<div className="container-fluid">
@@ -35,17 +43,17 @@ class Dashboard extends React.Component {
 					<div className="col-md-6 col-lg-8">
 						<div className="row">
 							<div className="col-md-6">
-								<Breadcrumb dashboardId={this.props.params.id}/>
+								<Breadcrumb dashboardId={dashboardId}/>
 							</div>
 							<div className="col-md-6">
 								<Search/>
 							</div>
 						</div>
 						<hr/>
-						<ItemList dashboardId={this.props.params.id}/>
+						{renderItemList()}
 					</div>
 					<div className="col-md-6 col-lg-4">
-						<ItemPanel dashboardId={this.props.params.id}/>
+						<ItemPanel dashboardId={dashboardId}/>
 					</div>
 				</div>
 			</div>
@@ -57,7 +65,8 @@ class Dashboard extends React.Component {
 export default connect(
 	(state) => {
 		return {
-			items: state.items
+			isFetching: state.items.isFetching,
+			error: state.items.error,
 		}
 	}
 )(Dashboard);

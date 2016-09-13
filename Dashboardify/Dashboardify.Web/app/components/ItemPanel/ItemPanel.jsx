@@ -1,5 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import moment from 'moment';
 
 import { ItemsActions } from 'actions';
@@ -98,5 +98,5 @@ class ItemPanel extends React.Component {
 }
 
 export default connect((state) => {
-    return {items: state.items}
+    return {items: state.items.data}
 })(ItemPanel);

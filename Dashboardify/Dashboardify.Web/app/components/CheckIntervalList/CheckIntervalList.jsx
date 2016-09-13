@@ -2,14 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
-const actions = require('actions');
+// const actions = require('actions');
+import { ItemsActions } from 'actions';
 
 const CheckIntervalList = ({checkIntervals, items, itemId, dispatch}) => {
 
     let item = items.find((item) => {
         return item.id == itemId;
     });
-
     const renderIntervals = () => {
         return checkIntervals.map((interval) => {
             return (
@@ -24,7 +24,7 @@ const CheckIntervalList = ({checkIntervals, items, itemId, dispatch}) => {
         <select
             className="form-control"
             value={item.checkInterval}
-            onChange={(e) => dispatch(actions.setItemCheckInterval(item.id, e.target.value))}
+            onChange={(e) => dispatch(ItemsActions.setItemCheckInterval(item.id, e.target.value))}
             >
             {renderIntervals()}
         </select>
@@ -34,7 +34,7 @@ const CheckIntervalList = ({checkIntervals, items, itemId, dispatch}) => {
 export default connect(
     (state) => {
         return {
-            items: state.items,
+            items: state.items.data,
             checkIntervals: state.checkIntervals
         }
     }

@@ -9,11 +9,11 @@ class Breadcrumb extends React.Component {
     let dashboardName = (dashboardId) => {
 
 
-      let currentDashboard = dashboards.filter((dashboard) => {
+      let currentDashboard = dashboards.data.filter((dashboard) => {
         return dashboard.id == dashboardId ? true : false;
       });
 
-      if (dashboards.length != 0) {
+      if (dashboards.data.length != 0) {
         return currentDashboard[0].name;
       } else {
         return '';

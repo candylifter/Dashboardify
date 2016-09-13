@@ -9,12 +9,18 @@ class ItemList extends React.Component {
     render() {
         let {items, searchText, dashboardId} = this.props;
         let renderItems = () => {
-            return ItemsAPI.filterItems(items, dashboardId, searchText).map((item) => {
-                return (
-                    <ItemListItem key={item.id} {...item}/>
 
-                );
-            });
+            if (items.length === 0) {
+                return (
+                    <p className="text-center">No items in this dashboard</p>
+                )
+            } else {
+                return ItemsAPI.filterItems(items, dashboardId, searchText).map((item) => {
+                    return (
+                        <ItemListItem key={item.id} {...item}/>
+                    );
+                });
+            }
         }
 
         return (
@@ -29,7 +35,7 @@ class ItemList extends React.Component {
 export default connect(
     (state) => {
         return {
-            items: state.items,
+            items: state.items.data,
             searchText: state.searchText
         }
     }
