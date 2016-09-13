@@ -13,7 +13,6 @@ function getXpath(str) {
 var url = window.location.href;
 var xpath = getXpath(url);
 var website = getWebsite(url);
-console.log(xpath, website);
 
 var websiteInput = document.getElementById("website");
 var xpathInput = document.getElementById("xpath");
