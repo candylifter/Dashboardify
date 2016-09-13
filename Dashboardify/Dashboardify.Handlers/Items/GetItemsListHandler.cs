@@ -8,10 +8,12 @@ namespace Dashboardify.Handlers.Items
     public class GetItemsListHandler
     {
         private ItemsRepository _itemsRepository;
+        private ScreenshotRepository _screenshotRepository;
 
         public GetItemsListHandler(string connectionString)
         {
             _itemsRepository = new ItemsRepository(connectionString);
+            _screenshotRepository = new ScreenshotRepository(connectionString);
         }
 
         public GetItemsListResponse Handle(GetItemsListRequest request)
@@ -27,7 +29,21 @@ namespace Dashboardify.Handlers.Items
 
             var items = _itemsRepository.GetByDashboardId(request.DashboarId);
 
-            response.Items = items;
+            var itemsWithScreenshots = new List<Item>();
+
+            foreach (var item in items)
+            {
+                var screenshot = _screenshotRepository.GetLastByItemId(item.Id);
+
+                if (screenshot != null)
+                {
+                    item.Screenshots.Add(screenshot);
+                }
+
+                itemsWithScreenshots.Add(item);
+            }
+
+            response.Items = itemsWithScreenshots;
 
             return response;
         }

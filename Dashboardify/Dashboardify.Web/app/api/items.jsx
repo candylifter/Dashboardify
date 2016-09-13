@@ -8,12 +8,13 @@ export default {
   },
 
   mapBackendData (data) {
+    console.log(data);
     return data.Items.map((item) => {
       return {
         id: item.Id,
         dashboardId: item.DashBoardId,
         name: item.Name,
-        img: '',
+        img: item.Screenshots.length >= 1 ? 'http://localhost/screenshot/'+item.Screenshots[0].ScrnshtURL : '' ,
         url: item.Website,
         isActive: item.IsActive,
         isSelected: false,
