@@ -1,0 +1,39 @@
+.breadcrumbs {
+  display: block;
+  padding: 0;
+  margin: auto 1.5em;
+  list-style: none;
+  color: rgba(0, 0, 0, 0.4);
+
+  &__breadcrumb {
+    display: inline-block;
+    font-size: 19px;
+    vertical-align: middle;
+
+    &:not(:last-child) {
+      &:after {
+        content: '\E5CC';
+        color: rgba(0, 0, 0, 0.4);
+        vertical-align: top;
+        display: inline-block;
+        font-family: 'Material Icons';
+        font-weight: normal;
+        font-style: normal;
+        font-size: 25px;
+        margin: 0 10px 0 8px;
+        -webkit-font-smoothing: antialiased;
+      }
+    }
+
+    &__text {
+      vertical-align: top;
+      text-decoration: none;
+      color: inherit;
+      &--current {
+        color: rgba(0, 0, 0, 0.8);
+      }
+    }
+  }
+
+
+}

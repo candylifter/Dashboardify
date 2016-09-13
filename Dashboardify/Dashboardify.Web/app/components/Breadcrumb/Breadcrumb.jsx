@@ -21,9 +21,13 @@ class Breadcrumb extends React.Component {
     }
 
     return (
-      <ol className="breadcrumb">
-        <li><Link to="/">Dashboards</Link></li>
-        <li className="active">{dashboardName(dashboardId)}</li>
+      <ol className="breadcrumbs">
+        <li className="breadcrumbs__breadcrumb">
+          <Link className="breadcrumbs__breadcrumb__text" to="/">Dashboards</Link>
+        </li>
+        <li className="breadcrumbs__breadcrumb">
+          <span className="breadcrumbs__breadcrumb__text breadcrumbs__breadcrumb__text--current">{dashboardName(dashboardId)}</span>
+        </li>
       </ol>
     )
   }

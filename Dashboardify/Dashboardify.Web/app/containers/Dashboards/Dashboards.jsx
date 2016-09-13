@@ -1,16 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import CircularProgress from 'material-ui/CircularProgress';
+
 import { DashboardList } from 'components';
 
 const Dashboards = (props) => {
 
   let { isFetching, error } = props;
 
+  const style = {
+    display: 'flex',
+    justifyContent: 'center',
+  };
+
   let renderDashboardList = () => {
     if (isFetching) {
       return (
-        <p className="text-center">Loading...</p>
+        <CircularProgress size={1.5} />
       )
     } else if (error === undefined) {
       return (
@@ -18,13 +25,13 @@ const Dashboards = (props) => {
       )
     } else {
       return (
-        <p className="text-center">{error}</p>
+        <p>{error}</p>
       )
     }
   };
 
   return (
-    <div>
+    <div style={style}>
       {renderDashboardList()}
     </div>
   )

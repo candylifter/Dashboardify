@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const rootDomain = 'http://localhost/api';
+const rootDomain = `http://${window.location.hostname}/api`;
 
 export default {
   mapBackendData (data) {

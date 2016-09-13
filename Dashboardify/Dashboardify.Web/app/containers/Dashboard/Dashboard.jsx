@@ -1,8 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux';
 
-import { Breadcrumb, Search, ItemList, ItemPanel } from 'components';
+import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
+import Paper from 'material-ui/Paper';
 
+import { Breadcrumb, Search, ItemList, ItemPanel } from 'components';
 import { ItemsActions } from 'actions';
 
 class Dashboard extends React.Component {
@@ -37,27 +39,39 @@ class Dashboard extends React.Component {
 			}
 		};
 
-		return (
-			<div className="container-fluid">
-				<div className="row">
-					<div className="col-md-6 col-lg-8">
-						<div className="row">
-							<div className="col-md-6">
-								<Breadcrumb dashboardId={dashboardId}/>
-							</div>
-							<div className="col-md-6">
-								<Search/>
-							</div>
-						</div>
-						<hr/>
-						{renderItemList()}
-					</div>
-					<div className="col-md-6 col-lg-4">
-						<ItemPanel dashboardId={dashboardId}/>
-					</div>
-				</div>
-			</div>
+		const style = {
+			dashboard: {
+				maxWidth: 1200,
+				width: '100%',
+				margin: '40px auto 0',
+			},
+			ItemList: {
+				display: 'flex',
+				margin: '40px auto 0',
+			},
+			Toolbar: {
+				backgroundColor: 'transparent',
+			}
+		}
 
+		return (
+			<div style={style.dashboard}>
+				<Paper style={style} zDepth={1} rounded={false}>
+					<Toolbar style={style.Toolbar}>
+						<ToolbarGroup firstChild={true}>
+							<Breadcrumb dashboardId={dashboardId}/>
+						</ToolbarGroup>
+						<ToolbarGroup>
+							<Search/>
+						</ToolbarGroup>
+					</Toolbar>
+				</Paper>
+
+				<div style={style.ItemList}>
+					{renderItemList()}
+				</div>
+				<ItemPanel dashboardId={dashboardId}/>
+			</div>
 		);
 	}
 }

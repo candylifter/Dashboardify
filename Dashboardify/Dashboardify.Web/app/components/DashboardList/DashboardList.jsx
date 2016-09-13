@@ -7,6 +7,14 @@ class DashboardList extends React.Component {
   render() {
     let { dashboards } = this.props;
 
+    const style = {
+      display: 'flex',
+      maxWidth: 1200,
+      justifyContent: 'center',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+    };
+
     let renderDashboards = () => {
       if (dashboards.data.length === 0 ) {
         return (
@@ -20,7 +28,7 @@ class DashboardList extends React.Component {
     };
 
     return (
-      <div>
+      <div style={style}>
         {renderDashboards()}
       </div>
     )
