@@ -10,8 +10,10 @@
 </head>
 
 <body>
-    <div class="container">
-      <input type="text" class="form-control" placeholder="Item name:">
+    <div class="container create-item">
+      <input type="text" class="form-control item-name" placeholder="Item name:">
+      <input class="form-control" id="website" type="text" placeholder="Website" disabled>
+      <input class="form-control" id="xpath" type="text" placeholder="XPath" disabled>
       Check interval:
         <select class="form-control timer">
             <option>5 minutes</option>
@@ -20,11 +22,17 @@
             <option>1 hour</option>
             <option>6 hours</option>
         </select>
+        Dashboard:
+        <select class="form-control dasboard">
+            <option>Audinės</option>
+            <option>NeAudinės</option>
+            <option>Maestro prikolai</option>
+        </select>
         <input class="btn btn-default" type="submit" value="Create Item">
     </div>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="/popup.js"></script>
+    <script src="/createItem.js"></script>
 </body>
 
 </html>

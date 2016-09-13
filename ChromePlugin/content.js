@@ -8,13 +8,10 @@ function handleElementClick(e) {
 
   var Item = {};
 
-  Item.DashboardId = 1,
   Item.Website = window.location.href;
   Item.XPath = getPathTo(this);
 
-  chrome.runtime.sendMessage({action: "POST_ITEM", item: Item}, function(response) {
-    console.log(response.data);
-  });
+  chrome.runtime.sendMessage({action: "CREATE_ITEM", item: Item}, null);
 }
 
 function removeHighlight(el) {

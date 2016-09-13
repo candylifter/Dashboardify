@@ -7,7 +7,7 @@
 
   "browser_action": {
     "default_icon": "icon.png",
-    "default_popup": "views/popup.html"
+    "default_popup": "views/login.html"
   },
 
   "content_scripts": [
