@@ -14,11 +14,28 @@ class Dashboard extends React.Component {
 	}
 
 	render() {
-
-		let { items } = this.props;
+		let { isFetching, error } = this.props;
 		let { dashboardId } = this.props.routeParams;
 
 		dashboardId = parseInt(dashboardId);
+
+		let renderItemList = () => {
+			if (isFetching) {
+				return (
+					<div>
+						<p className="text-center">Loading...</p>
+					</div>
+				)
+			} else if (error === undefined) {
+				return (
+					<ItemList dashboardId={dashboardId}/>
+				)
+			} else {
+				return (
+					<p className="text-center">{error}</p>
+				)
+			}
+		};
 
 		return (
 			<div className="container-fluid">
@@ -33,7 +50,7 @@ class Dashboard extends React.Component {
 							</div>
 						</div>
 						<hr/>
-						<ItemList dashboardId={dashboardId}/>
+						{renderItemList()}
 					</div>
 					<div className="col-md-6 col-lg-4">
 						<ItemPanel dashboardId={dashboardId}/>
@@ -48,7 +65,8 @@ class Dashboard extends React.Component {
 export default connect(
 	(state) => {
 		return {
-			items: state.items.data
+			isFetching: state.items.isFetching,
+			error: state.items.error,
 		}
 	}
 )(Dashboard);
