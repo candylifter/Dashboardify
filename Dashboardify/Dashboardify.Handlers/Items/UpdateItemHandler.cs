@@ -48,6 +48,7 @@ namespace Dashboardify.Handlers.Items
             origin.CheckInterval = updated.CheckInterval;
             origin.Modified = updated.Modified;
             origin.XPath = updated.XPath;
+            origin.CSS = updated.CSS;
             origin.Content = updated.Content;
         }
 

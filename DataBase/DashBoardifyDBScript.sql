@@ -61,6 +61,7 @@ CREATE TABLE Items
 	CheckInterval INT NOT NULL,
 	IsActive BIT NOT NULL DEFAULT 1,
 	XPath VARCHAR(255) NOT NULL,
+	CSS VARCHAR(255) NOT NULL,
 	LastChecked DATETIME NOT NULL,
 	Created DATETIME NOT NULL DEFAULT GETDATE(),
 	Modified DATETIME NOT NULL,
@@ -100,14 +101,12 @@ INSERT INTO DashBoards (Name, UserID, DateModified) VALUES('AUDINES', @User1Id, 
 
 DECLARE @DashId INT = (SELECT Id FROM DashBoards WHERE Name ='AUDINES')
 
-INSERT INTO Items(DashBoardID, Name,Website, CheckInterval,XPath,LastChecked,Modified,Content) VALUES(@DashId,'Autogidas','http://www.autogidas.lt/automobiliai/',5000,'/html[1]/body[1]/div[1]/div[8]/div[1]/div[2]/a[30]/div[1]',GETDATE(),GETDATE(),'')
-INSERT INTO Items(DashBoardID, Name,Website, CheckInterval,XPath,LastChecked,Modified,Content) VALUES(@DashId,'Adform naujienos','http://site.adform.com/',5000,'/html[1]/body[1]/div[1]/section[1]/div[2]/div[1]/div[1]/article[1]',GETDATE(),GETDATE(),'')
-INSERT INTO Items(DashBoardID, Name,Website, CheckInterval,XPath,LastChecked,Modified,Content) VALUES(@DashId,'Buzzfeed','https://www.buzzfeed.com/',5000,'/html[1]/body[1]/div[4]/div[1]/div[3]/div[1]/ul[1]/li[1]/div[1]',GETDATE(),GETDATE(),'')
-INSERT INTO Items(DashBoardID, Name,Website, CheckInterval,XPath,LastChecked,Modified,Content) VALUES(@DashId,'Reddit frontpage','https://www.reddit.com/',10000,'/html[1]/body[1]/div[4]/div[4]/div[1]/div[1]',GETDATE(),GETDATE(),'')
-INSERT INTO Items(DashBoardID, Name,Website, CheckInterval,XPath,LastChecked,Modified,Content) VALUES(@DashId,'Hacker News','https://news.ycombinator.com/',10000,'/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[3]/td[1]/table[1]/tbody[1]/tr[1]/td[3]',GETDATE(),GETDATE(),'')
-INSERT INTO Items(DashBoardID, Name,Website, CheckInterval,XPath,LastChecked,Modified,Content) VALUES(@DashId,'Humble Bundle','https://www.humblebundle.com/',15000,'/html[1]/body[1]/div[1]/div[2]/div[3]/div[1]/div[2]/div[1]',GETDATE(),GETDATE(),'')
+INSERT INTO Items(DashBoardID, Name,Website, CheckInterval,XPath,CSS,LastChecked,Modified,Content) VALUES(@DashId,'Autogidas','http://www.autogidas.lt/automobiliai/',5000,'/html[1]/body[1]/div[1]/div[8]/div[1]/div[2]/a[30]/div[1]', 'body > div > div:nth-child(8) > div > div.all-ads-block > a:nth-child(1) > div', GETDATE(),GETDATE(),'')
+INSERT INTO Items(DashBoardID, Name,Website, CheckInterval,XPath,CSS,LastChecked,Modified,Content) VALUES(@DashId,'Adform naujienos','http://site.adform.com/',5000,'/html[1]/body[1]/div[1]/section[1]/div[2]/div[1]/div[1]/article[1]', 'body > div.sticky-wrap > section > div.custom-blocks > div > div > article:nth-child(1)', GETDATE(),GETDATE(),'')
+INSERT INTO Items(DashBoardID, Name,Website, CheckInterval,XPath,CSS,LastChecked,Modified,Content) VALUES(@DashId,'Buzzfeed','https://www.buzzfeed.com/',5000,'/html[1]/body[1]/div[4]/div[1]/div[3]/div[1]/ul[1]/li[1]/div[1]', 'body > div.hp-layout > div > div.row.wrapper-3col > div.col1 > ul:nth-child(1) > li:nth-child(1) > div', GETDATE(),GETDATE(),'')
+INSERT INTO Items(DashBoardID, Name,Website, CheckInterval,XPath,CSS,LastChecked,Modified,Content) VALUES(@DashId,'Reddit frontpage','https://www.reddit.com/',10000,'/html[1]/body[1]/div[4]/div[4]/div[1]/div[1]', '#thing_t3_52idnz', GETDATE(),GETDATE(),'')
+INSERT INTO Items(DashBoardID, Name,Website, CheckInterval,XPath,CSS,LastChecked,Modified,Content) VALUES(@DashId,'Hacker News','https://news.ycombinator.com/',10000,'/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[3]/td[1]/table[1]/tbody[1]/tr[1]/td[3]', '#\31 2485650', GETDATE(),GETDATE(),'')
 
 DECLARE @ItemId1 INT = (SELECT Id FROM Items WHERE Name = 'Autogidas')
 
 INSERT INTO ScreenShots(ItemId, ScrnshtURL, DateTaken) VALUES (@ItemId1,'http://autogidas-img.dgn.lt/4_21_83702552/audi-80-b3-sedanas-1987.jpg',GETDATE())
-

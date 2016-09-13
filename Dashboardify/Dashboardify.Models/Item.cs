@@ -20,6 +20,8 @@ namespace Dashboardify.Repositories
 
         public string XPath { get; set; }
 
+        public string CSS { get; set; }
+
         public DateTime LastChecked { get; set; }
 
         public DateTime Created { get; set; }

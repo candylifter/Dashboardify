@@ -26,6 +26,7 @@ namespace Dashboardify.Handlers.Items
                 return response;
             }
 
+            request.Item.IsActive = true;
             request.Item.Created = DateTime.Now;
             request.Item.Modified = DateTime.Now;
             request.Item.LastChecked = DateTime.Now;
@@ -55,6 +56,11 @@ namespace Dashboardify.Handlers.Items
             if (string.IsNullOrEmpty(request.Item.XPath))
             {
                 errors.Add(new ErrorStatus("XPATH_NOT_DEFINED"));
+            }
+
+            if (string.IsNullOrEmpty(request.Item.CSS))
+            {
+                errors.Add(new ErrorStatus("CSS_NOT_DEFINED"));
             }
 
             if (string.IsNullOrEmpty(request.Item.Website))

@@ -36,6 +36,32 @@ namespace Dashboardify.Service
             }
         }
 
+        public string GetContentByCSS(string url, string css)
+        {
+            HtmlWeb htmlWeb = new HtmlWeb();
+            HtmlDocument doc = new HtmlDocument();
+
+            try
+            {
+                doc = htmlWeb.Load(url);
+                var node = doc.QuerySelector(css);
+
+                if (node == null)
+                {
+                    throw new Exception("Cannot find element by CSS in website: " + url);
+                }
+
+                var content = node.InnerText;
+
+                return content;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
+
         public string GetScreenshot(Item item)
         {
             // generate guid for filename without dashes
@@ -83,7 +109,6 @@ namespace Dashboardify.Service
                                             )
                                             .singleNodeValue; " + /* Often throws exception here*/ @"
 
-                        console.log(element);
                         } catch(err) {
                             console.error(err.message);
                             element = document.body;

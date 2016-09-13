@@ -34,6 +34,7 @@ namespace Dashboardify.Repositories
                                           CheckInterval, 
                                           IsActive, 
                                           XPath, 
+                                          CSS,
                                           LastChecked, 
                                           Created, 
                                           Modified, 
@@ -80,6 +81,7 @@ namespace Dashboardify.Repositories
                             Name=@Name,
                             CheckInterval=@CheckInterval,
                             XPath=@XPath,
+                            CSS=@CSS,
                             IsActive=@IsActive
                             WHERE Id=@Id";
             try
@@ -122,6 +124,7 @@ namespace Dashboardify.Repositories
                                           CheckInterval, 
                                           IsActive, 
                                           XPath, 
+                                          CSS,
                                           LastChecked, 
                                           Created, 
                                           Modified,  
@@ -153,6 +156,7 @@ namespace Dashboardify.Repositories
                                 CheckInterval, 
                                 IsActive, 
                                 XPath, 
+                                CSS,
                                 LastChecked, 
                                 Created, 
                                 Modified, 
@@ -191,6 +195,7 @@ namespace Dashboardify.Repositories
                                          CheckInterval,
                                          IsActive,
                                          XPath,
+                                         CSS,
                                          LastChecked,
                                          Created,
                                          Modified,
@@ -202,6 +207,7 @@ namespace Dashboardify.Repositories
                                          @CheckInterval,
                                          @IsActive,
                                          @XPath,
+                                         @CSS,
                                          @LastChecked,
                                          @Created,
                                          @Modified,
