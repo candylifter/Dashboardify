@@ -10,10 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     //   });
     // });
 
-    chrome.tabs.getSelected(null, function(tab) {
-      chrome.tabs.executeScript({
-        code: 'highlightDOMElements()'
-      });
+    chrome.runtime.sendMessage({action: "HIGHLIGHT_ITEMS"}, function(response) {
     });
 
   }

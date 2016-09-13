@@ -4,3 +4,12 @@
 .timer {
   width: 150px;
 }
+.create-item {
+  position: absolute;
+  top: 30%;
+  left: 40%;
+}
+.form-control{
+  width: 150px;
+  margin-bottom: 5px;
+}

@@ -10,8 +10,10 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="container create-item">
       <input type="text" class="form-control" placeholder="Item name:">
+      <input class="form-control" id="website" type="text" placeholder="Website" disabled>
+      <input class="form-control" id="xpath" type="text" placeholder="XPath" disabled>
       Check interval:
         <select class="form-control timer">
             <option>5 minutes</option>
@@ -24,7 +26,7 @@
     </div>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="/popup.js"></script>
+    <script src="/createItem.js"></script>
 </body>
 
 </html>
