@@ -10,7 +10,7 @@ class Dashboard extends React.Component {
 		let { dashboardId } = this.props.routeParams;
 		let { dispatch } = this.props;
 
-		dispatch(ItemsActions.loadItems(parseInt(dashboardId)));
+		dispatch(ItemsActions.fetchItems(parseInt(dashboardId)));
 	}
 
 	render() {
@@ -48,7 +48,7 @@ class Dashboard extends React.Component {
 export default connect(
 	(state) => {
 		return {
-			items: state.items
+			items: state.items.data
 		}
 	}
 )(Dashboard);

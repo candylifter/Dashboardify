@@ -29,7 +29,7 @@ class ItemList extends React.Component {
 export default connect(
     (state) => {
         return {
-            items: state.items,
+            items: state.items.data,
             searchText: state.searchText
         }
     }

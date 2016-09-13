@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+const rootDomain = 'http://localhost/api';
+
 export default {
   mapBackendData (data) {
     return data.Dashboards.map((dashboard) => {
@@ -15,7 +17,7 @@ export default {
     });
   },
 
-  fetchDashboards(userId) {
-    return axios.get(`http://localhost/api/Dashboards/GetList?userId=${userId}`);
+  fetchDashboards (userId) {
+    return axios.get(`${rootDomain}/Dashboards/GetList?userId=${userId}`);
   }
 }

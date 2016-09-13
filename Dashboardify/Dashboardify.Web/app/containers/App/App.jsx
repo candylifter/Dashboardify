@@ -12,7 +12,6 @@ class App extends React.Component {
 
     dispatch(DashboardsActions.fetchDashboards(1));
 
-
     dispatch(CheckIntervalsActions.addCheckIntervals(CheckIntervalsAPI.getCheckIntervals()));
   }
 

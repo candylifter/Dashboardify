@@ -98,5 +98,5 @@ class ItemPanel extends React.Component {
 }
 
 export default connect((state) => {
-    return {items: state.items}
+    return {items: state.items.data}
 })(ItemPanel);

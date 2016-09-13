@@ -3,10 +3,7 @@ const dashboardsReducer = (state = {}, action) => {
     case 'ADD_DASHBOARDS':
       return {
         ...state,
-        data: [
-          ...state.data,
-          ...action.dashboards, // TODO: Compare existing array items before spreading
-        ],
+        data: action.dashboards,
       };
     case 'START_DASHBOARDS_FETCH':
       return {

@@ -1,4 +1,12 @@
+import axios from 'axios';
+
+const rootDomain = 'http://localhost/api';
+
 export default {
+  fetchItems (dashboardId) {
+    return axios.get(`${rootDomain}/Items/GetList?dashboardId=${dashboardId}`);
+  },
+
   mapBackendData (data) {
     return data.Items.map((item) => {
       return {
@@ -9,6 +17,7 @@ export default {
         url: item.Website,
         isActive: item.IsActive,
         isSelected: false,
+        checkInterval: item.CheckInterval,
         created: item.Created,
         lastChecked: item.LastChecked,
         lastModified: item.Modified,

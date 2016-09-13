@@ -10,22 +10,38 @@ export default {
     }
   },
 
-  loadItems (dashboardId) {
+  fetchItems (dashboardId) {
     return (dispatch) => {
-      return this.fetchItems(dashboardId)
+      dispatch(this.startItemsFetch());
+
+      return ItemsAPI.fetchItems(dashboardId)
         .then(
-          (res) => dispatch(
-            this.addItems(
-              ItemsAPI.mapBackendData(res.data)
-            )
-          ),
-          (err) => console.error(err)
-        );
+          (res) => {
+            dispatch(this.addItems(ItemsAPI.mapBackendData(res.data)));
+            dispatch(this.completeItemsFetch());
+          },
+          (err) => dispatch(this.failItemsFetch(err))
+        )
     }
   },
 
-  fetchItems (dashboardId) {
-    return axios.get(`http://localhost/api/Items/GetList?dashboardId=${dashboardId}`);
+  startItemsFetch () {
+    return {
+      type: 'START_ITEMS_FETCH',
+    };
+  },
+
+  completeItemsFetch () {
+    return {
+      type: 'COMPLETE_ITEMS_FETCH',
+    };
+  },
+
+  failItemsFetch (err) {
+    return {
+      type: 'FAIL_ITEMS_FETCH',
+      err,
+    };
   },
 
   selectItem (id, dashboardId) {

@@ -34,7 +34,7 @@ const CheckIntervalList = ({checkIntervals, items, itemId, dispatch}) => {
 export default connect(
     (state) => {
         return {
-            items: state.items,
+            items: state.items.data,
             checkIntervals: state.checkIntervals
         }
     }
