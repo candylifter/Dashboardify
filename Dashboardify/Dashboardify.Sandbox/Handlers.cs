@@ -22,7 +22,7 @@ namespace Dashboardify.Sandbox
             //TestItemCreation();
             //TestDeleteItemHandler();
             //TestUpdateDash();
-            TestCreateUser();   //leidzia dubliuoti
+            //TestCreateUser();   //leidzia dubliuoti
             TestLoginUser();
            
         }
@@ -178,6 +178,7 @@ namespace Dashboardify.Sandbox
             else
             {
                 Console.WriteLine("Mission complete");
+                
             }
 
         }

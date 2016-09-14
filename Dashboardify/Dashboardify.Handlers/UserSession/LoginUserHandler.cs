@@ -59,7 +59,15 @@ namespace Dashboardify.Handlers.UserSession
         {
             var user = _usersRepository.ReturnIfExsists(request.user.Name, request.user.Password);
 
-            var sessionId = Guid.NewGuid().ToString().Replace("-", "");
+            var session1 = Guid.NewGuid().ToString().Replace("-", "");
+
+            var session2 =  Guid.NewGuid().ToString().Replace("-", "");
+            
+            var session3 =  Guid.NewGuid().ToString().Replace("-", "");
+
+            var session4 = Guid.NewGuid().ToString().Replace("-", "");
+
+            var sessionId = session1 + session2 + session3 + session4;
 
             var session = new Models.UserSession()
             {
@@ -67,6 +75,8 @@ namespace Dashboardify.Handlers.UserSession
                 UserId = user.Id,
                 SessionId = sessionId
             };
+            
+            
 
             _userSessionRepository.AddSession(session);
         }
