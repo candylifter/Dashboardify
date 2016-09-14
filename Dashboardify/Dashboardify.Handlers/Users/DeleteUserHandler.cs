@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Dashboardify.Contracts;
 using Dashboardify.Contracts.Users;
 using Dashboardify.Repositories;
@@ -22,9 +23,18 @@ namespace Dashboardify.Handlers.Users
             {
                 return response;
             }
-            _userRepository.DeleteUser(request.User.Id);
+            try
+            {
+                _userRepository.DeleteUser(request.User.Id);
 
-            return response;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Errors.Add(new ErrorStatus(ex.Message));
+                return response;
+            }
+            
 
         }
 

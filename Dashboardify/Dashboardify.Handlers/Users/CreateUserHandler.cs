@@ -30,24 +30,32 @@ namespace Dashboardify.Handlers.Users
             {
                 return response;
             }
-
-            request.Password = HashPassword(request.Password);
-
-            _userRepository.CreateUser(new User()
+            try
             {
-                DateModified = DateTime.Now,
-                DateRegistered = DateTime.Now,
-                Name = request.Username,
-                Password = request.Password,
-                Email = request.Email,
-                IsActive = true
-                
-            });
+                request.Password = HashPassword(request.Password);
 
-            SendEmail(request);
+                _userRepository.CreateUser(new User()
+                {
+                    DateModified = DateTime.Now,
+                    DateRegistered = DateTime.Now,
+                    Name = request.Username,
+                    Password = request.Password,
+                    Email = request.Email,
+                    IsActive = true
+
+                });
+
+                SendEmail(request);
 
 
-            return response;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Errors.Add(new ErrorStatus(ex.Message));
+                return response;
+            }
+            
         }
 
         public IList<ErrorStatus> Validate(CreateUserRequest request)

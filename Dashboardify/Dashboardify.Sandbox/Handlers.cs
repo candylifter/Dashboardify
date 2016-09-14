@@ -163,7 +163,7 @@ namespace Dashboardify.Sandbox
 
             request.user = new User()
             {
-                Name = "zilas",
+                Name = "Irmantas",
                 Password = "maestro"
             };
 
@@ -189,8 +189,8 @@ namespace Dashboardify.Sandbox
             var request = new CreateUserRequest();
 
             request.Password = "maestro";
-            request.Email = "zygimantas.zilevicius@gmail.com";
-            request.Username = "zilas";
+            request.Email = "ivanauskas96@gmail.com";
+            request.Username = "Irmantas";
 
             var response = createUserHandler.Handle(request);
 

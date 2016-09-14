@@ -31,9 +31,19 @@ namespace Dashboardify.Handlers.Items
             {
                 return response;
             }
-            _itemsRepository.Delete(request.Item.Id);
+            try
+            {
+                _itemsRepository.Delete(request.Item.Id);
 
-            return response;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Errors.Add(new ErrorStatus(ex.Message));
+
+                return response;
+            }
+            
 
         }
 
