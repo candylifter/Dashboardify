@@ -4,9 +4,6 @@ using System.Linq;
 using Dashboardify.Models;
 using System.Data.SqlClient;
 using System.Data;
-using System.Net.Http.Headers;
-using System.Security.Cryptography;
-using System.Text;
 using Dapper;
 
 namespace Dashboardify.Repositories

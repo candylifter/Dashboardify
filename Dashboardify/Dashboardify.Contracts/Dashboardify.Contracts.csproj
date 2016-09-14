@@ -51,6 +51,8 @@
     <Compile Include="Items\CreateItemResponse.cs" />
     <Compile Include="Items\DeleteItemRequest.cs" />
     <Compile Include="Items\DeleteItemResponse.cs" />
+    <Compile Include="Items\GetItemRequest.cs" />
+    <Compile Include="Items\GetItemResponse.cs" />
     <Compile Include="Items\GetItemsListRequest.cs" />
     <Compile Include="Items\GetItemsListResponse.cs" />
     <Compile Include="Items\UpdateItemRequest.cs" />
