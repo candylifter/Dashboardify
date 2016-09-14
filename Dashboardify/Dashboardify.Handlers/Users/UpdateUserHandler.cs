@@ -31,16 +31,25 @@ namespace Dashboardify.Handlers.Users
 
             if (OriginUser == null)
             {
-                throw new Exception("User does not exist!");
+                response.Errors.Add(new ErrorStatus("USER_NOT_FOUND"));
+            }
+            try
+            {
+                UpdateUserObject(OriginUser, request.User);
+
+                OriginUser.Name = request.User.Name;
+
+                _usersRepository.Update(OriginUser);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Errors.Add(new ErrorStatus(ex.Message));
+                return response;
             }
 
-            UpdateUserObject(OriginUser, request.User);
-
-            OriginUser.Name = request.User.Name;
             
-            _usersRepository.Update(OriginUser);
-
-            return response;
         }
 
         private void UpdateUserObject(User origin, User updated)

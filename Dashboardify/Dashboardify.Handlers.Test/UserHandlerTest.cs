@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Dashboardify.Contracts.Users;
 using Dashboardify.Handlers.Users;
 using Dashboardify.Models;
@@ -93,7 +94,11 @@ namespace Dashboardify.Handlers.Test
             var handler = new UpdateUserHandler("Data Source=DESKTOP-11VK3U9;Initial Catalog=DashBoardify;User id=DashboardifyUser;Password=123456;");
             var response = handler.Handle(request);
 
-            Assert.False(response.HasErrors);
+            Assert.True(response.HasErrors);
+
+            
+            
+            
         }
     }
 }
