@@ -55,9 +55,9 @@ namespace Dashboardify.Sandbox
             
             // DeleteItem(connectionString);
 
-            // TestAddSession(connectionString);
+             TestAddSession(connectionString);
 
-            TestReturnIfExsists(connectionString);
+            //TestReturnIfExsists(connectionString);
 
             
             Console.ReadKey();
@@ -365,7 +365,14 @@ namespace Dashboardify.Sandbox
             };
 
             
-            Console.WriteLine(userSesRep.AddSession(sesija));
+            if(userSesRep.AddSession(sesija)==true)
+            {
+                Console.WriteLine("Succes");
+            }
+            else
+            {
+                Console.WriteLine("Unsuccesful");
+            }
 
         }
 
@@ -374,11 +381,34 @@ namespace Dashboardify.Sandbox
             var usersrepo = new UsersRepository(connectionString);
             var user = new User()
             {
-                Name = "Labadiena",
-                Password = "asd56a5d6asd"
+                Name = "arturas",
+                Password = "orlauskas"
             };
-            Console.WriteLine(usersrepo.ReturnIfExsists(user.Name,user.Password).ToString());
+            if (!(usersrepo.ReturnIfExsists(user.Name, user.Password) == null))
+            {
+                Console.WriteLine("user exsists");
+                Console.WriteLine(usersrepo.ReturnIfExsists(user.Name,user.Password).ToString());
+            }
+            else
+            {
+                Console.WriteLine("User does not exsist");   
+                
+            }
         }
+
+        //public void TestAddSession(string connectionString)
+        //{
+        //    var userSesRepo = new UserSessionRepository(connectionString);
+
+        //    var userSes = new UserSession()
+        //    {
+        //        Expires = DateTime.Now.AddMinutes(20),
+        //        Id = "156156165156151871891",
+        //        UserId = 4
+        //    };
+        //    userSesRepo.AddSession(userSes);
+
+        //}
 
         
     }

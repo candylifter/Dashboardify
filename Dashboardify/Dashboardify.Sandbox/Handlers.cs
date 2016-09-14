@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using Dashboardify.Contracts.Dashboards;
 using Dashboardify.Contracts.Items;
 using Dashboardify.Contracts.Users;
@@ -23,6 +24,7 @@ namespace Dashboardify.Sandbox
            //TestDeleteItemHandler();
            //TestUpdateDash();
            TestLoginUser();
+           //TestCreateUser();
         }
 
         private void TestUserUpdateHandler()
@@ -161,14 +163,44 @@ namespace Dashboardify.Sandbox
 
             request.user = new User()
             {
-                Name = "Labadiena",
-                Password = "asd56a5d6asd"
+                Name = "ObiWan",
+                Password = "trumpas"
             };
 
             var response = handler.Handle(request);
-            foreach (var msg in response.Errors)
+            if (response.HasErrors)
             {
-                Console.WriteLine(msg.Code);
+                foreach (var msg in response.Errors)
+                {
+                    Console.WriteLine(msg.Code);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Mission complete");
+            }
+
+        }
+
+        private void TestCreateUser()
+        {
+            var createUserHandler = new CreateUserHandler(_connectionString);
+
+            var request = new CreateUserRequest();
+
+            request.Password = "trumpas";
+            request.Email = "sexy@one.lt";
+            request.Username = "ObiWan";
+
+            var response = createUserHandler.Handle(request);
+
+            if (response.HasErrors)
+            {
+                Console.WriteLine("Errrrr");
+            }
+            else
+            {
+                Console.WriteLine("User created");
             }
         }
     }

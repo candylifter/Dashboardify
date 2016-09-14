@@ -1,12 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using System.Linq;
-using Dashboardify.Contracts;
+﻿using System.Linq;
 using Dashboardify.Contracts.Users;
 using Dashboardify.Handlers.Users;
 using Dashboardify.Models;
-using Dashboardify.Repositories;
-using Moq;
 using NUnit.Framework;
 
 namespace Dashboardify.Handlers.Test
@@ -14,6 +9,7 @@ namespace Dashboardify.Handlers.Test
     [TestFixture]
     public class UserHandlerTest
     {
+        //TODO write test for loginUser and createUser
         [Test]
         public void NoId_DeleteUser()
         {

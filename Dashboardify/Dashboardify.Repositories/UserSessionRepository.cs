@@ -39,8 +39,6 @@ namespace Dashboardify.Repositories
             catch (Exception ex)
             {
                 return false;
-                throw;
-
             }
         }
 
