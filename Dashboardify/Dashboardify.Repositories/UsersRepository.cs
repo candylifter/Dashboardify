@@ -181,9 +181,7 @@ namespace Dashboardify.Repositories
             //    throw new Exception("User not found in data base!");
             //}
 
-            string query = @"DELETE FROM Users 
-                            WHERE 
-                                Id =" + userId.ToString();
+            string query = $"DELETE FROM Users WHERE Id = {userId}";
 
 
             try
@@ -203,46 +201,28 @@ namespace Dashboardify.Repositories
 
         public User ReturnIfExsists(string username, string password)
         {
-            
-            try
+            using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                using (IDbConnection db = new SqlConnection(_connectionString))
-                {
-                    return db.Query<User>(String.Format(@"SELECT
-	                                            Id,
-	                                            Name,
-	                                            Password,
-	                                            Email,
-	                                            IsActive,
-	                                            DateRegistered,
-	                                            DateModified
-                                            FROM
-	                                            Users
-                                        WHERE Name = '{0}' AND Password ='{1}'"
-                                        ,username,password)).SingleOrDefault();
+                var query = $@"
+                            SELECT
+                                Id,
+                                Name,
+                                Password,
+                                Email,
+                                IsActive,
+                                DateRegistered,
+                                DateModified
+                            FROM
+                                Users
+                            WHERE
+                                Name = '{username}' AND 
+                                Password = '{password}'";
+                                   
 
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+                var result = db.Query<User>(query).SingleOrDefault();
 
+                return result;
+            }
         }
-
-        private string _HashPassword(string password)
-        {
-            MD5 md5 = MD5.Create();
-            byte[] inputBytes = Encoding.ASCII.GetBytes(password);
-            byte[] hash = md5.ComputeHash(inputBytes);
-
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < hash.Length; i++)
-            {
-                sb.Append(hash[i].ToString("X2"));
-            }
-            return sb.ToString();
-        }
-
     }
 }

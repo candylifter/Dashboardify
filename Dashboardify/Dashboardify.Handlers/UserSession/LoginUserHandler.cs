@@ -4,7 +4,6 @@ using System.Security.Cryptography;
 using System.Text;
 using Dashboardify.Contracts;
 using Dashboardify.Contracts.UserSession;
-using Dashboardify.Models;
 using Dashboardify.Repositories;
 
 namespace Dashboardify.Handlers.UserSession
@@ -20,29 +19,25 @@ namespace Dashboardify.Handlers.UserSession
         {
             _usersRepository = new UsersRepository(connectionString);
             _userSessionRepository = new UserSessionRepository(connectionString);
-            
+
         }
 
         public LoginUserResponse Handle(LoginUserRequest request)
         {
-            var respone = new LoginUserResponse();
+            var response = new LoginUserResponse();
 
             request.user.Password = HashPassword(request.user.Password);
 
-            respone.Errors = Validate(request);
-            if (respone.HasErrors)
+            response.Errors = Validate(request);
+            if (response.HasErrors)
             {
-                return respone;
+                return response;
             }
- 
-            var originUser = _usersRepository.ReturnIfExsists(request.user.Name, request.user.Password);
-                
-            AddSession(originUser);
-            
-            return respone;
-            
+            AddSession(request);
 
+            return response;
         }
+
 
         private IList<ErrorStatus> Validate(LoginUserRequest request)
         {
@@ -57,27 +52,23 @@ namespace Dashboardify.Handlers.UserSession
                 errors.Add(new ErrorStatus("USER_NOT_FOUND"));
             }
             return errors;
-            
+
         }
 
-        private void AddSession(User user)
+        private void AddSession(LoginUserRequest request)
         {
-            String guid = Guid.NewGuid().ToString();
+            var user = _usersRepository.ReturnIfExsists(request.user.Name, request.user.Password);
+
+            var sessionId = Guid.NewGuid().ToString().Replace("-", "");
+
             var session = new Models.UserSession()
             {
                 Expires = DateTime.Now.AddMinutes(20),
                 UserId = user.Id,
-                Id = guid
+                SessionId = sessionId
             };
-            
-            if(_userSessionRepository.AddSession(session))// add sesion yra bool (grazina true arba false)
-            {
-                
-            }
-            else
-            {
-                throw new Exception("Duplicate of session id");  
-            }
+
+            _userSessionRepository.AddSession(session);
         }
 
         private string HashPassword(string password)
@@ -91,7 +82,7 @@ namespace Dashboardify.Handlers.UserSession
             {
                 sb.Append(hash[i].ToString("X2"));
             }
-            return sb.ToString(); 
+            return sb.ToString();
         }
     }
 }

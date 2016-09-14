@@ -55,9 +55,9 @@ namespace Dashboardify.Sandbox
             
             // DeleteItem(connectionString);
 
-             TestAddSession(connectionString);
+             //TestAddSession(connectionString);
 
-            //TestReturnIfExsists(connectionString);
+            TestReturnIfExsists(connectionString);
 
             
             Console.ReadKey();
@@ -359,7 +359,7 @@ namespace Dashboardify.Sandbox
 
             var sesija = new UserSession()
             {
-                Id = "g1dsf56g1df65g1fd56gdfs",
+                SessionId = "g1dsf56g1df65g1fd56gdfs",
                 UserId = 1,
                 Expires = DateTime.Now
             };
@@ -381,8 +381,8 @@ namespace Dashboardify.Sandbox
             var usersrepo = new UsersRepository(connectionString);
             var user = new User()
             {
-                Name = "arturas",
-                Password = "orlauskas"
+                Name = "Laba diena",
+                Password = "asd56a+5d6asd"
             };
             if (!(usersrepo.ReturnIfExsists(user.Name, user.Password) == null))
             {

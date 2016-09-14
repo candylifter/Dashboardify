@@ -18,13 +18,14 @@ namespace Dashboardify.Sandbox
         private string _connectionString = "Data Source=DESKTOP-11VK3U9;Initial Catalog = DashBoardify; User id = DashboardifyUser; Password=123456;";
         public void Do()
         {
-           //TestItemUpdateHandler();
-           //TestUserUpdateHandler();
-           //TestItemCreation();
-           //TestDeleteItemHandler();
-           //TestUpdateDash();
-           TestLoginUser();
-           //TestCreateUser();
+            //TestItemUpdateHandler();
+            //TestUserUpdateHandler();
+            //TestItemCreation();
+            //TestDeleteItemHandler();
+            //TestUpdateDash();
+            TestCreateUser();   //leidzia dubliuoti
+            TestLoginUser();
+           
         }
 
         private void TestUserUpdateHandler()
@@ -163,8 +164,8 @@ namespace Dashboardify.Sandbox
 
             request.user = new User()
             {
-                Name = "ObiWan",
-                Password = "trumpas"
+                Name = "zilas",
+                Password = "maestro"
             };
 
             var response = handler.Handle(request);
@@ -188,9 +189,9 @@ namespace Dashboardify.Sandbox
 
             var request = new CreateUserRequest();
 
-            request.Password = "trumpas";
-            request.Email = "sexy@one.lt";
-            request.Username = "ObiWan";
+            request.Password = "maestro";
+            request.Email = "zygimantas.zilevicius@gmail.com";
+            request.Username = "zilas";
 
             var response = createUserHandler.Handle(request);
 
