@@ -26,7 +26,7 @@ namespace Dashboardify.Handlers.UserSession
         {
             var response = new LoginUserResponse();
 
-            request.user.Password = HashPassword(request.user.Password);
+            request.User.Password = HashPassword(request.User.Password);
 
             response.Errors = Validate(request);
             if (response.HasErrors)
@@ -43,11 +43,11 @@ namespace Dashboardify.Handlers.UserSession
         {
             var errors = new List<ErrorStatus>();
 
-            if (request.user.Name == "" || request.user.Password == "")
+            if (request.User.Name == "" || request.User.Password == "")
             {
                 errors.Add(new ErrorStatus("WRONG_INPUT"));
             }
-            if (_usersRepository.ReturnIfExsists(request.user.Name, request.user.Password) == null)
+            if (_usersRepository.ReturnIfExsists(request.User.Name, request.User.Password) == null)
             {
                 errors.Add(new ErrorStatus("USER_NOT_FOUND"));
             }
@@ -57,7 +57,7 @@ namespace Dashboardify.Handlers.UserSession
 
         private void AddSession(LoginUserRequest request)
         {
-            var user = _usersRepository.ReturnIfExsists(request.user.Name, request.user.Password);
+            var user = _usersRepository.ReturnIfExsists(request.User.Name, request.User.Password);
 
             var session1 = Guid.NewGuid().ToString().Replace("-", "");
 
