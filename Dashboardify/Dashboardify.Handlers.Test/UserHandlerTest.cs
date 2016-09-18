@@ -1,12 +1,8 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Linq;
-using Dashboardify.Contracts;
 using Dashboardify.Contracts.Users;
 using Dashboardify.Handlers.Users;
 using Dashboardify.Models;
-using Dashboardify.Repositories;
-using Moq;
 using NUnit.Framework;
 
 namespace Dashboardify.Handlers.Test
@@ -14,6 +10,7 @@ namespace Dashboardify.Handlers.Test
     [TestFixture]
     public class UserHandlerTest
     {
+        //TODO write test for loginUser and createUser
         [Test]
         public void NoId_DeleteUser()
         {
@@ -97,7 +94,11 @@ namespace Dashboardify.Handlers.Test
             var handler = new UpdateUserHandler("Data Source=DESKTOP-11VK3U9;Initial Catalog=DashBoardify;User id=DashboardifyUser;Password=123456;");
             var response = handler.Handle(request);
 
-            Assert.False(response.HasErrors);
+            Assert.True(response.HasErrors);
+
+            
+            
+            
         }
     }
 }

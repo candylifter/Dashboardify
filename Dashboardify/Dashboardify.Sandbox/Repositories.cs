@@ -55,7 +55,7 @@ namespace Dashboardify.Sandbox
             
             // DeleteItem(connectionString);
 
-            // TestAddSession(connectionString);
+             //TestAddSession(connectionString);
 
             TestReturnIfExsists(connectionString);
 
@@ -359,13 +359,20 @@ namespace Dashboardify.Sandbox
 
             var sesija = new UserSession()
             {
-                Id = "g1dsf56g1df65g1fd56gdfs",
+                SessionId = "g1dsf56g1df65g1fd56gdfs",
                 UserId = 1,
                 Expires = DateTime.Now
             };
 
             
-            Console.WriteLine(userSesRep.AddSession(sesija));
+            if(userSesRep.AddSession(sesija)==true)
+            {
+                Console.WriteLine("Succes");
+            }
+            else
+            {
+                Console.WriteLine("Unsuccesful");
+            }
 
         }
 
@@ -374,11 +381,34 @@ namespace Dashboardify.Sandbox
             var usersrepo = new UsersRepository(connectionString);
             var user = new User()
             {
-                Name = "Labadiena",
-                Password = "asd56a5d6asd"
+                Name = "Laba diena",
+                Password = "asd56a+5d6asd"
             };
-            Console.WriteLine(usersrepo.ReturnIfExsists(user.Name,user.Password).ToString());
+            if (!(usersrepo.ReturnIfExsists(user.Name, user.Password) == null))
+            {
+                Console.WriteLine("user exsists");
+                Console.WriteLine(usersrepo.ReturnIfExsists(user.Name,user.Password).ToString());
+            }
+            else
+            {
+                Console.WriteLine("User does not exsist");   
+                
+            }
         }
+
+        //public void TestAddSession(string connectionString)
+        //{
+        //    var userSesRepo = new UserSessionRepository(connectionString);
+
+        //    var userSes = new UserSession()
+        //    {
+        //        Expires = DateTime.Now.AddMinutes(20),
+        //        Id = "156156165156151871891",
+        //        UserId = 4
+        //    };
+        //    userSesRepo.AddSession(userSes);
+
+        //}
 
         
     }

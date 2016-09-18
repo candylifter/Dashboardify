@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Dashboardify.Contracts.Items;
-using Dashboardify.Contracts.Users;
 using Dashboardify.Handlers.Items;
-using Dashboardify.Models;
 using Dashboardify.Repositories;
 using NUnit.Framework;
 

@@ -1,4 +1,5 @@
-﻿using Dashboardify.Repositories;
+﻿using System;
+using Dashboardify.Repositories;
 using System.Collections.Generic;
 using Dashboardify.Contracts;
 using Dashboardify.Contracts.Dashboards;
@@ -24,12 +25,20 @@ namespace Dashboardify.Handlers.Dashboards
             {
                 return response;
             }
+            try
+            {
+                var dashboards = _dashboardsRepository.GetByUserId(request.UserId);
 
-            var dashboards = _dashboardsRepository.GetByUserId(request.UserId);
+                response.Dashboards = dashboards;
 
-            response.Dashboards = dashboards;
-
-            return response;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Errors.Add(new ErrorStatus(ex.Message));
+                return response;
+            }
+            
         }
 
         private IList<ErrorStatus> Validate(GetDashboardsRequest request)

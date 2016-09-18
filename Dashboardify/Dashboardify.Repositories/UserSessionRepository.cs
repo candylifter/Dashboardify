@@ -20,11 +20,11 @@ namespace Dashboardify.Repositories
         public bool AddSession(UserSession session)
         {
             string query = @"INSERT INTO dbo.UserSession                               
-                                    (Id,
+                                    (SessionId,
                                     UserId,
                                     Expires) 
                                VALUES 
-                                    (@Id,
+                                    (@SessionId,
                                     @UserId,
                                     @Expires)";
 
@@ -32,15 +32,13 @@ namespace Dashboardify.Repositories
             {
                 using (IDbConnection db = new SqlConnection(_connectionString))
                 {
-                    var result = db.Execute(query, session);
+                    db.Execute(query, session);
                 }
                 return true;
             }
             catch (Exception ex)
             {
                 return false;
-                throw;
-
             }
         }
 

@@ -4,8 +4,10 @@ namespace Dashboardify.Models
 {
     public class UserSession
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
 
+        public string SessionId { get; set; }
+        
         public int UserId { get; set; }
 
         public DateTime Expires { get; set; }

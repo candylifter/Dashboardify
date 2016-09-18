@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Dashboardify.Contracts;
 using Dashboardify.Contracts.Dashboards;
 using Dashboardify.Models;
@@ -29,13 +26,22 @@ namespace Dashboardify.Handlers.Dashboards
             {
                 return response;
             }
-            var dashOrigin = _dashRepository.Get(request.DashBoard.Id);
+            try
+            {
+                var dashOrigin = _dashRepository.Get(request.DashBoard.Id);
 
-            UpdateDashObject(dashOrigin,request.DashBoard);
+                UpdateDashObject(dashOrigin, request.DashBoard);
 
-            _dashRepository.Update(dashOrigin);
+                _dashRepository.Update(dashOrigin);
 
-            return response;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Errors.Add(new ErrorStatus(ex.Message));
+                return response;
+            }
+            
         }
 
         private void UpdateDashObject(DashBoard origin, DashBoard request)

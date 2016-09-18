@@ -200,21 +200,12 @@ namespace Dashboardify.Repositories
                                 DateCreated,
                                 DateModified
                                 FROM DashBoards 
-                           WHERE UserId = " + userId.ToString();
+                           WHERE UserId = " + userId;
 
             using (IDbConnection db = new SqlConnection(_connectionString))
-            {
-                try
-                {
+            {   
                     return db.Query<DashBoard>
                       (query).ToList();
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine(new Exception().Message);
-                    throw;
-                }
-                
             }
         }
     }

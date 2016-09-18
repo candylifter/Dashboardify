@@ -5,30 +5,20 @@ using System.Net.Http;
 using Dashboardify.Contracts.Users;
 using Dashboardify.Contracts.UserSession;
 using Dashboardify.Handlers.Users;
+using Dashboardify.Handlers.UserSession;
 
 namespace Dashboardify.WebApi.Controllers
 {
-
-    public class UsersController : ApiController
+    public class UserSessionController : ApiController
     {
         private static string connectionString = ConfigurationManager.ConnectionStrings["DBZygis"].ConnectionString;
-        
+
+
+        //TODO Fails, neprisiskiria Name n Passowrd User modelyje
         [HttpPost]
-        public HttpResponseMessage Update(UpdateUserRequest request)
+        public HttpResponseMessage Login(LoginUserRequest request)
         {
-            var handler = new UpdateUserHandler(connectionString);
-
-            var response = handler.Handle(request);
-
-            var httpStatusCode = response.HasErrors ? HttpStatusCode.BadRequest : HttpStatusCode.OK;
-
-            return Request.CreateResponse(httpStatusCode, response);
-        }
-
-        [HttpPost]
-        public HttpResponseMessage Create(CreateUserRequest request)
-        {
-            var handler =new CreateUserHandler(connectionString);
+            var handler = new LoginUserHandler(connectionString);
 
             var response = handler.Handle(request);
 
@@ -36,8 +26,5 @@ namespace Dashboardify.WebApi.Controllers
 
             return Request.CreateResponse(httpSatusCode, response);
         }
-
-        
-        
     }
 }

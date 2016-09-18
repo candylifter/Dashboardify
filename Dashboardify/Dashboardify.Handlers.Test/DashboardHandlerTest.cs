@@ -2,7 +2,6 @@
 using Dashboardify.Contracts.Dashboards;
 using Dashboardify.Handlers.Dashboards;
 using Dashboardify.Models;
-using NUnit.Framework.Internal;
 using NUnit.Framework;
 
 namespace Dashboardify.Handlers.Test

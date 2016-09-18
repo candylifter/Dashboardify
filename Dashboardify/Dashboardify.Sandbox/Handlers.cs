@@ -17,12 +17,14 @@ namespace Dashboardify.Sandbox
         private string _connectionString = "Data Source=DESKTOP-11VK3U9;Initial Catalog = DashBoardify; User id = DashboardifyUser; Password=123456;";
         public void Do()
         {
-           //TestItemUpdateHandler();
-           //TestUserUpdateHandler();
-           //TestItemCreation();
-           //TestDeleteItemHandler();
-           //TestUpdateDash();
-           TestLoginUser();
+            //TestItemUpdateHandler();
+            //TestUserUpdateHandler();
+            //TestItemCreation();
+            //TestDeleteItemHandler();
+            //TestUpdateDash();
+            //TestCreateUser();   //leidzia dubliuoti
+            TestLoginUser();
+           
         }
 
         private void TestUserUpdateHandler()
@@ -161,14 +163,45 @@ namespace Dashboardify.Sandbox
 
             request.user = new User()
             {
-                Name = "Labadiena",
-                Password = "asd56a5d6asd"
+                Name = "Eivinas",
+                Password = "savulionis"
             };
 
             var response = handler.Handle(request);
-            foreach (var msg in response.Errors)
+            if (response.HasErrors)
             {
-                Console.WriteLine(msg.Code);
+                foreach (var msg in response.Errors)
+                {
+                    Console.WriteLine(msg.Code);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Mission complete");
+                
+            }
+
+        }
+
+        private void TestCreateUser()
+        {
+            var createUserHandler = new CreateUserHandler(_connectionString);
+
+            var request = new CreateUserRequest();
+
+            request.Password = "savulionis";
+            request.Email = "eivinasgrigaitis@gmail.com";
+            request.Username = "Eivinas";
+
+            var response = createUserHandler.Handle(request);
+
+            if (response.HasErrors)
+            {
+                Console.WriteLine("Errrrr");
+            }
+            else
+            {
+                Console.WriteLine("User created");
             }
         }
     }

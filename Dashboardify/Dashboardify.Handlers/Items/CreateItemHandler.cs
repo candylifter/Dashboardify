@@ -26,17 +26,26 @@ namespace Dashboardify.Handlers.Items
                 return response;
             }
 
-            request.Item.IsActive = true;
-            request.Item.Created = DateTime.Now;
-            request.Item.Modified = DateTime.Now;
-            request.Item.LastChecked = DateTime.Now;
-            request.Item.Content = "";
+            try
+            {
+                request.Item.IsActive = true;
+                request.Item.Created = DateTime.Now;
+                request.Item.Modified = DateTime.Now;
+                request.Item.LastChecked = DateTime.Now;
+                request.Item.Content = "";
 
-            _itemRepository.Create(request.Item);
+                _itemRepository.Create(request.Item);
 
-            response.Success = true;
+                response.Success = true;
 
-            return response;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Errors.Add(new ErrorStatus(ex.Message));
+                return response;
+            }
+            
         }
 
         private IList<ErrorStatus> Validate(CreateItemRequest request)
