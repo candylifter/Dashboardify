@@ -14,7 +14,7 @@
       &:after {
         content: '\E5CC';
         color: rgba(0, 0, 0, 0.4);
-        vertical-align: top;
+        vertical-align: middle;
         display: inline-block;
         font-family: 'Material Icons';
         font-weight: normal;
@@ -26,7 +26,7 @@
     }
 
     &__text {
-      vertical-align: top;
+      vertical-align: middle;
       text-decoration: none;
       color: inherit;
       &--current {

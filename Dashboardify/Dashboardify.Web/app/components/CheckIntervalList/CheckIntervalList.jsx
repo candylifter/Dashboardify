@@ -4,10 +4,7 @@ import moment from 'moment'
 
 import { ItemsActions } from 'actions'
 
-const CheckIntervalList = ({ checkIntervals, items, itemId, dispatch }) => {
-  let item = items.find((item) => {
-    return item.id === itemId
-  })
+const CheckIntervalList = ({ checkIntervals, item, dispatch }) => {
   const renderIntervals = () => {
     return checkIntervals.map((interval) => {
       return (
