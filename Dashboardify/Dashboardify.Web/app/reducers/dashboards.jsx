@@ -1,30 +1,36 @@
-const dashboardsReducer = (state = {}, action) => {
+const initialState = {
+  isFetching: false,
+  data: [],
+  error: undefined
+}
+
+const dashboardsReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_DASHBOARDS':
       return {
         ...state,
-        data: action.dashboards,
-      };
+        data: action.dashboards
+      }
     case 'START_DASHBOARDS_FETCH':
       return {
         ...state,
-        isFetching: true,
-      };
+        isFetching: true
+      }
     case 'COMPLETE_DASHBOARDS_FETCH':
       return {
         ...state,
         isFetching: false,
-        error: undefined,
+        error: undefined
       }
     case 'FAIL_DASHBOARDS_FETCH':
       return {
         ...state,
         isFetching: false,
-        error: action.err.message,
+        error: action.err.message
       }
     default:
-      return state;
+      return state
   }
-};
+}
 
-export default dashboardsReducer;
+export default dashboardsReducer

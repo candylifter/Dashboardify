@@ -1,63 +1,69 @@
-const itemsReducer = (state = {}, action) => {
+const initialState = {
+  isFetching: false,
+  data: [],
+  error: undefined
+}
+
+const itemsReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_ITEMS':
       return {
         ...state,
         data: action.items
-      };
+      }
     case 'START_ITEMS_FETCH':
       return {
         ...state,
-        isFetching: true,
-      };
+        isFetching: true
+      }
     case 'COMPLETE_ITEMS_FETCH':
       return {
         ...state,
         isFetching: false,
-        error: undefined,
+        error: undefined
       }
     case 'FAIL_ITEMS_FETCH':
       return {
         ...state,
         isFetching: false,
-        error: action.err.message,
+        error: action.err.message
       }
     case 'SELECT_ITEM':
       return {
         ...state,
         data: state.data.map((item) => {
-          if (item.dashboardId === action.dashboardId ) {
-            item.isSelected = item.id === action.id;
+          if (item.dashboardId === action.dashboardId) {
+            item.isSelected = item.id === action.id
           }
 
-          return item;
-        }),
-      };
+          return item
+        })
+      }
     case 'TOGGLE_ITEM':
       return {
         ...state,
         data: state.data.map((item) => {
           if (item.id === action.id) {
-            item.isActive = !item.isActive;
+            item.isActive = !item.isActive
           }
 
-          return item;
-        }),
-      };
+          return item
+        })
+      }
     case 'SET_ITEM_CHECK_INTERVAL':
       return {
         ...state,
         data: state.data.map((item) => {
           if (item.id === action.id) {
-            item.checkInterval = action.checkInterval;
+            item.checkInterval = action.checkInterval
           }
 
-          return item;
-        }),
-      };
+          return item
+        })
+      }
     default:
-      return state;
+      return state
   }
-};
+}
 
-export default itemsReducer;
+export default itemsReducer
