@@ -15,6 +15,7 @@ namespace Dashboardify.Sandbox
     public class Handlers
     {
         private string _connectionString = "Data Source=DESKTOP-11VK3U9;Initial Catalog = DashBoardify; User id = DashboardifyUser; Password=123456;";
+
         public void Do()
         {
             //TestItemUpdateHandler();
@@ -23,7 +24,9 @@ namespace Dashboardify.Sandbox
             //TestDeleteItemHandler();
             //TestUpdateDash();
             //TestCreateUser();   //leidzia dubliuoti
-            TestLoginUser();
+            //TestLoginUser();
+
+            TestGetDashById();
            
         }
 
@@ -161,10 +164,10 @@ namespace Dashboardify.Sandbox
 
             var request= new LoginUserRequest();
 
-            request.user = new User()
+            request.User = new User()
             {
-                Name = "Eivinas",
-                Password = "savulionis"
+                Name = "zygimantas",
+                Password = "zygimantas"
             };
 
             var response = handler.Handle(request);
@@ -189,9 +192,9 @@ namespace Dashboardify.Sandbox
 
             var request = new CreateUserRequest();
 
-            request.Password = "savulionis";
-            request.Email = "eivinasgrigaitis@gmail.com";
-            request.Username = "Eivinas";
+            request.Password = "zygimantas";
+            request.Email = "emailas@gil.se";
+            request.Username = "zygimantas";
 
             var response = createUserHandler.Handle(request);
 
@@ -202,6 +205,31 @@ namespace Dashboardify.Sandbox
             else
             {
                 Console.WriteLine("User created");
+            }
+        }
+
+        private void TestGetDashById()
+        {
+            var getDashHandler = new GetDashboardsHandler(_connectionString);
+            
+            var request = new GetDashboardsRequest();
+
+            request.UserId = 7;
+            request.SessionId =
+                "a04ef843509f45f68d1c204dec83181f37aca563515646c89f70cbd457b9b0fdadbb6114c1e543248b4392efa504ffd6f27e63b14f5e4d25814c09812989aacc";
+
+
+            var response = getDashHandler.Handle(request);
+            if (response.HasErrors)
+            {
+                foreach (var msg in response.Errors)
+                {
+                    Console.WriteLine(msg.Code);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Session is valid");
             }
         }
     }

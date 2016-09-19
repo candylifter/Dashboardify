@@ -60,16 +60,10 @@ namespace Dashboardify.Repositories
 
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                try
-                {
+                
                     db.Execute(query, user);
 
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    throw;
-                }
+                
             }
 
         }
@@ -86,30 +80,17 @@ namespace Dashboardify.Repositories
 
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                try
-                {
+                
                     db.Execute(query, isActive);
 
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    throw;
-                }
+               
             }
 
         }
 
         public User Get(int id)
         {
-            //var userTest = Get(id);
-            //if (userTest == null)
-            //{
-            //   throw new Exception("User was not found in database");
-            //}
-
-            try
-            {
+           
                 using (IDbConnection db = new SqlConnection(_connectionString))
                 {
                     return db.Query<User>(@"
@@ -127,12 +108,7 @@ namespace Dashboardify.Repositories
                                 Id = @Id", new { id }).SingleOrDefault();
 
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw;
-            }
+           
 
 
 
@@ -154,45 +130,27 @@ namespace Dashboardify.Repositories
                                 @IsActive,
                                 @DateRegistered,
                                 @Datemodified)";
-            try
-            {
+            
                 using (IDbConnection db = new SqlConnection(_connectionString))
                 {
                     var result = db.Execute(query, user);
                     return true;
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw;
-            }
+            
+          
         }
 
         public void DeleteUser(int userId)
         {
-            //var user = Get(userId);
-
-            //if (user == null)
-            //{
-            //    throw new Exception("User not found in data base!");
-            //}
-
+            
             string query = $"DELETE FROM Users WHERE Id = {userId}";
 
 
-            try
-            {
                 using (IDbConnection db = new SqlConnection(_connectionString))
                 {
                     db.Execute(query, userId);
                 }
-            }
-            catch (Exception eex)
-            {
-                Console.WriteLine(eex.Message);
-                throw;
-            }
+            
 
         }
 

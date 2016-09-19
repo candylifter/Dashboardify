@@ -33,22 +33,16 @@ namespace Dashboardify.Repositories
                                  DateCreated,
                                  DateModified 
                                  FROM DashBoards";
-            try
+            
+            
+            using (IDbConnection db = new
+        SqlConnection(_connectionString))
             {
-                using (IDbConnection db = new
-            SqlConnection(_connectionString))
-                {
-                    return db.Query<DashBoard>
-                    (queryString).ToList();
+                return db.Query<DashBoard>
+                (queryString).ToList();
 
-                }
             }
-            catch (Exception ex)
-            {
-                //Console.WriteLine("MAESTRO SAUNA DAR VIENA EXCEPTIONA");
-                Console.WriteLine(ex.Message);
-                throw;
-            }
+            
         }
 
         /// <summary>
@@ -58,13 +52,9 @@ namespace Dashboardify.Repositories
         /// <returns></returns>
         public DashBoard Get(int DashId)
         {
-            //if (DashId < 1)
-            //{
-            //    throw new Exception("Id must be greater or equl to 1");
-            //}
+           
 
-            try
-            {
+            
                 using (IDbConnection db = new SqlConnection(_connectionString))
                 {
                     var query = @"SELECT
@@ -77,25 +67,20 @@ namespace Dashboardify.Repositories
                           FROM 
                                  DashBoards 
                           WHERE 
-                                 Id = " + DashId.ToString();
+                                 Id = " + DashId;
 
                     return db.Query<DashBoard>(query).SingleOrDefault();
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Sekems Irmantai :))))))))");
-                Console.WriteLine(ex.Message);
-                throw;
-            }
+            
 
-        }
+        
 
         /// <summary>
         /// Updates dashboard in dashboard table
         /// </summary>
         /// <param name="dash">Dashboard Object</param>
-        public int Update(DashBoard dash)
+        public void Update(DashBoard dash)
         {
             //if (dash == null)
             //{
@@ -106,22 +91,15 @@ namespace Dashboardify.Repositories
                                 SET IsActive=@IsActive,
                                 Name=@Name,
                                 DateModified=@Datemodified";
-            try
-            {
+            
                 using (IDbConnection db = new SqlConnection(_connectionString))
                 {
                     int rowsAffected = db.Execute(query, dash);
-                    return rowsAffected;
                 }
 
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Sekems Irmantai :))))))))");
-                Console.WriteLine(ex.Message);
-                throw;
-            }
-        } 
+           
+         
 
         /// <summary>
         /// Creates new dashboard
@@ -148,16 +126,10 @@ namespace Dashboardify.Repositories
                                 @DateModified)";
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                try
-                {
+                
                     var result = db.Execute(query, dash);
                     return true;
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine(new Exception().Message);
-                    throw;
-                }
+               
                 
             }
         }
@@ -172,18 +144,13 @@ namespace Dashboardify.Repositories
             string deleteQuery = "DELETE FROM DashBoards";
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                try
-                {
+                
                     var result = db.Execute(deleteQuery);
                     return true;
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    throw;
-                }
+               
             }
-        }
+        
 
         /// <summary>
         /// Gets 

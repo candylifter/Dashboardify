@@ -83,13 +83,13 @@ namespace Dashboardify.Handlers.Users
             return sb.ToString();
         }
 
-        private void SendEmail(CreateUserRequest request)
+        private void SendEmail(CreateUserRequest request)//TODO refactor to mailsender in service layer
         {
             var fromAddress = new MailAddress("dashboardifyacademy@gmail.com", "Dashboardify");
             var toAddress = new MailAddress(request.Email, request.Username);
             const string fromPassword = "desbordas";
             const string subject = "Welcome";
-            string body = "Dear "+ request.Username.ToString() +"\n We are happy that you are using our dashboardify app. (ITERPTI MAESTRO TRUMPA)";
+            string body = "Dear "+ request.Username +"\n We are happy that you are using our dashboardify app. (ITERPTI MAESTRO TRUMPA)";
 
             var smtp = new SmtpClient
             {

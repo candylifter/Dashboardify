@@ -10,9 +10,14 @@ namespace Dashboardify.Handlers.Dashboards
     {
         private DashRepository _dashboardsRepository;
 
+        private UserSessionRepository _userSessionRepository;
+
         public GetDashboardsHandler(string connectionString)
         {
             _dashboardsRepository = new DashRepository(connectionString);
+
+            _userSessionRepository = new UserSessionRepository(connectionString);
+
         }
 
         public GetDashboardsResponse Handle(GetDashboardsRequest request)
@@ -49,6 +54,23 @@ namespace Dashboardify.Handlers.Dashboards
             {
                 errors.Add(new ErrorStatus("USERID_NOT_DEFINED"));
             }
+
+            if (_userSessionRepository.GetExpireDate(request.SessionId,request.UserId) == DateTime.MinValue)
+            {
+                errors.Add(new ErrorStatus("SESSION_NULL_VALUE"));
+                return errors;
+            }
+
+            if (_userSessionRepository.GetExpireDate(request.SessionId,request.UserId) < DateTime.Now)
+            {
+                errors.Add(new ErrorStatus("SESSION_EXPIRED"));
+            }
+
+            if (_userSessionRepository.GetExpireDate(request.SessionId,request.UserId) >= DateTime.MaxValue)
+            {
+                errors.Add(new ErrorStatus("WRONG"));
+            }
+
 
             return errors;
         }
