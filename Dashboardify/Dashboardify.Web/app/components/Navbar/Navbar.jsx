@@ -1,52 +1,52 @@
-import React from 'react';
-import { hashHistory } from 'react-router';
+import React from 'react'
+import { hashHistory } from 'react-router'
 
-import AppBar from 'material-ui/AppBar';
-import IconButton from 'material-ui/IconButton';
-import Menu from 'material-ui/svg-icons/navigation/menu';
-import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
+import AppBar from 'material-ui/AppBar'
+import IconButton from 'material-ui/IconButton'
+import Menu from 'material-ui/svg-icons/navigation/menu'
+import Drawer from 'material-ui/Drawer'
+import MenuItem from 'material-ui/MenuItem'
 
 class Navbar extends React.Component {
-    constructor (props) {
-        super(props);
+  constructor (props) {
+    super(props)
 
-        this.state = {
-            open: false,
-        };
+    this.state = {
+      open: false
+    }
+  }
+
+  navigateTo (url) {
+    hashHistory.push(url)
+    this.setState({open: false})
+  }
+
+  render () {
+    const styles = {
+      title: {
+        cursor: 'pointer'
+      }
     }
 
-    navigateTo (url) {
-        hashHistory.push(url);
-        this.setState({open: false})
-    }
-
-    render () {
-        const styles = {
-          title: {
-            cursor: 'pointer',
-          },
-        };
-
-        return (
-            <div>
-                <AppBar
-                    title={<span style={styles.title}>Dashboardify</span>}
-                    onTitleTouchTap={() => this.navigateTo('/')}
-                    onLeftIconButtonTouchTap={() => this.setState({open: true})}
-                />
-                <Drawer
-                    docked={false}
-                    width={200}
-                    open={this.state.open}
-                    onRequestChange={(open) => this.setState({open})}
-                    >
-                    <MenuItem onTouchTap={() => this.navigateTo('/')}>Home</MenuItem>
-                    <MenuItem onTouchTap={() => this.navigateTo('/logout')}>Logout</MenuItem>
-                </Drawer>
-            </div>
-        )
-    }
+    return (
+      <div>
+        <AppBar
+          title={<span style={styles.title}>Dashboardify</span>}
+          onTitleTouchTap={() => this.navigateTo('/')}
+          onLeftIconButtonTouchTap={() => this.setState({open: true})}
+        />
+        <Drawer
+          docked={false}
+          width={200}
+          open={this.state.open}
+          onRequestChange={(open) => this.setState({open})}
+            >
+          <MenuItem onTouchTap={() => this.navigateTo('/')}>Home</MenuItem>
+          <MenuItem onTouchTap={() => this.navigateTo('/logout')}>Logout</MenuItem>
+        </Drawer>
+      </div>
+    )
+  }
 }
 
-export default Navbar;
+export default Navbar

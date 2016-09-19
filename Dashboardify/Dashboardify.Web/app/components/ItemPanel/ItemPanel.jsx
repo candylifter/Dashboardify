@@ -6,6 +6,8 @@ import Drawer from 'material-ui/Drawer'
 import AppBar from 'material-ui/AppBar'
 import IconButton from 'material-ui/IconButton'
 import NavigationClose from 'material-ui/svg-icons/navigation/close'
+import Toggle from 'material-ui/Toggle'
+import FlatButton from 'material-ui/FlatButton';
 
 import { ItemsActions, ItemPanelActions } from 'actions'
 import { CheckIntervalList } from 'components'
@@ -28,13 +30,46 @@ class ItemPanel extends React.Component {
   render () {
     let { item, open } = this.props
 
+    const style = {
+      padding: '0em 1em',
+      image: {
+        maxWidth: '100%',
+        margin: '1em 0',
+        img: {
+          width: '100%'
+        }
+      },
+      title: {
+
+      },
+      url: {
+        margin: '1em 0',
+        display: 'block',
+        button: {
+          width: '100%'
+        }
+      }
+
+    }
+
     return (
       <Drawer openSecondary width={300} open={open}>
         <AppBar
           iconElementLeft={<IconButton onClick={this.handleClose}><NavigationClose /></IconButton>}
-          title={item.name}
+          title={'item.name'}
         />
-        <img src={item.img} alt={`Screenshot of ${item.name}`} />
+        <div style={style}>
+          <div style={style.image}>
+            <img src={item.img} alt={`Screenshot of ${item.name}`} style={style.image.img} />
+          </div>
+          <div style={style.url}>
+            <FlatButton href={item.url} target='_blank' label="Visit website" style={style.url.button} />
+          </div>
+          <Toggle
+            label='Active'
+            toggled={item.isActive}
+          />
+        </div>
 
       </Drawer>
     )
