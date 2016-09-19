@@ -4,6 +4,8 @@ using System.Net;
 using System.Net.Http;
 using Dashboardify.Contracts.Users;
 using Dashboardify.Handlers.Users;
+using Dashboardify.Handlers.UserSession;
+using Dashboardify.Contracts.UserSession;
 
 namespace Dashboardify.WebApi.Controllers
 {
@@ -34,6 +36,18 @@ namespace Dashboardify.WebApi.Controllers
             var httpSatusCode = responnse.HasErrors ? HttpStatusCode.BadRequest : HttpStatusCode.OK;
 
             return Request.CreateResponse(httpSatusCode, responnse);
+        }
+
+        [HttpPost]
+        public HttpResponseMessage Auth(LoginUserRequest request)
+        {
+            var handler = new LoginUserHandler(connectionString);
+
+            var response = handler.Handle(request);
+
+            var httpSatusCode = response.HasErrors ? HttpStatusCode.BadRequest : HttpStatusCode.OK;
+
+            return Request.CreateResponse(httpSatusCode, response);
         }
     }
 }
