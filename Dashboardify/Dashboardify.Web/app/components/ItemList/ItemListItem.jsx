@@ -15,10 +15,10 @@ class ItemListItem extends React.Component {
   }
 
   handleSelect () {
-    const { id, dashboardId, img, name, url, isSelected, lastModified, dispatch } = this.props
+    const { id, dashboardId, img, name, url, isSelected, isActive, lastModified, dispatch } = this.props
 
     let item = {
-      id, dashboardId, img, name, url, isSelected, lastModified
+      id, dashboardId, img, name, url, isSelected, lastModified, isActive
     }
 
     dispatch(ItemsActions.selectItem(id, dashboardId))

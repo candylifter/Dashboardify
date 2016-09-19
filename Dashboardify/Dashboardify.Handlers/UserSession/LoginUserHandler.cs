@@ -43,11 +43,11 @@ namespace Dashboardify.Handlers.UserSession
         {
             var errors = new List<ErrorStatus>();
 
-            if (string.IsNullOrEmpty(request.User.Name) || string.IsNullOrEmpty(request.User.Password))
+            if (request.User.Email == "" || request.User.Password == "")
             {
                 errors.Add(new ErrorStatus("WRONG_INPUT"));
             }
-            if (_usersRepository.ReturnIfExsists(request.User.Name, request.User.Password) == null)//TODO pasiklausti zilvino
+            if (_usersRepository.ReturnIfExsists(request.User.Email, request.User.Password) == null)
             {
                 errors.Add(new ErrorStatus("INVALID_USERNAME_OR_PASSWORD"));
             }
@@ -57,7 +57,7 @@ namespace Dashboardify.Handlers.UserSession
 
         private void AddSession(LoginUserRequest request, LoginUserResponse response)
         {
-            var user = _usersRepository.ReturnIfExsists(request.User.Name, request.User.Password);
+            var user = _usersRepository.ReturnIfExsists(request.User.Email, request.User.Password);
 
             var session1 = Guid.NewGuid().ToString().Replace("-", "");
 
