@@ -212,7 +212,7 @@ namespace Dashboardify.Repositories
                             FROM
                                 Users
                             WHERE
-                                Name = '{username}' AND 
+                                Email = '{username}' AND 
                                 Password = '{password}'";
                                    
 

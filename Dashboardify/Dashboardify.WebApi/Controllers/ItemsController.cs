@@ -9,7 +9,7 @@ namespace Dashboardify.WebApi.Controllers
 {
     public class ItemsController : ApiController
     {
-        private static string connectionString = ConfigurationManager.ConnectionStrings["DBZygis"].ConnectionString;
+        private static string connectionString = ConfigurationManager.ConnectionStrings["DBIrmantas"].ConnectionString;
 
         [HttpGet]
         public HttpResponseMessage GetList(int dashboardId)

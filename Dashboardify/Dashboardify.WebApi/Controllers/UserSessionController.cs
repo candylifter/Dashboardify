@@ -11,7 +11,7 @@ namespace Dashboardify.WebApi.Controllers
 {
     public class UserSessionController : ApiController
     {
-        private static string connectionString = ConfigurationManager.ConnectionStrings["DBZygis"].ConnectionString;
+        private static string connectionString = ConfigurationManager.ConnectionStrings["DBIrmantas"].ConnectionString;
 
 
         //TODO Fails, neprisiskiria Name n Passowrd User modelyje
