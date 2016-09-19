@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-import { ItemsAPI } from 'api';
+import { ItemsAPI } from 'api'
 
 export default {
   addItems (items) {
@@ -12,13 +10,13 @@ export default {
 
   fetchItems (dashboardId) {
     return (dispatch) => {
-      dispatch(this.startItemsFetch());
+      dispatch(this.startItemsFetch())
 
       return ItemsAPI.fetchItems(dashboardId)
         .then(
           (res) => {
-            dispatch(this.addItems(ItemsAPI.mapBackendData(res.data)));
-            dispatch(this.completeItemsFetch());
+            dispatch(this.addItems(ItemsAPI.mapBackendData(res.data)))
+            dispatch(this.completeItemsFetch())
           },
           (err) => dispatch(this.failItemsFetch(err))
         )
@@ -27,21 +25,21 @@ export default {
 
   startItemsFetch () {
     return {
-      type: 'START_ITEMS_FETCH',
-    };
+      type: 'START_ITEMS_FETCH'
+    }
   },
 
   completeItemsFetch () {
     return {
-      type: 'COMPLETE_ITEMS_FETCH',
-    };
+      type: 'COMPLETE_ITEMS_FETCH'
+    }
   },
 
   failItemsFetch (err) {
     return {
       type: 'FAIL_ITEMS_FETCH',
-      err,
-    };
+      err
+    }
   },
 
   selectItem (id, dashboardId) {
@@ -65,5 +63,5 @@ export default {
       id,
       checkInterval
     }
-  },
+  }
 }

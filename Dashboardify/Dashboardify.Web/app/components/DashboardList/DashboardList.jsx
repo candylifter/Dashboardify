@@ -1,14 +1,22 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { PropTypes } from 'react'
+import { connect } from 'react-redux'
 
-import { DashboardListItem } from 'components';
+import { DashboardListItem } from 'components'
 
 class DashboardList extends React.Component {
-  render() {
-    let { dashboards } = this.props;
+  render () {
+    let { dashboards } = this.props
+
+    const style = {
+      display: 'flex',
+      maxWidth: 1200,
+      justifyContent: 'center',
+      flexWrap: 'wrap',
+      alignItems: 'center'
+    }
 
     let renderDashboards = () => {
-      if (dashboards.data.length === 0 ) {
+      if (dashboards.data.length === 0) {
         return (
           <p>Nothing to show</p>
         )
@@ -16,15 +24,19 @@ class DashboardList extends React.Component {
 
       return dashboards.data.map((dashboard) => {
         return <DashboardListItem key={dashboard.id} {...dashboard} />
-      });
-    };
+      })
+    }
 
     return (
-      <div>
+      <div style={style}>
         {renderDashboards()}
       </div>
     )
   }
+}
+
+DashboardList.propTypes = {
+  dashboards: PropTypes.object
 }
 
 export default connect(
@@ -33,4 +45,4 @@ export default connect(
       dashboards: state.dashboards
     }
   }
-)(DashboardList);
+)(DashboardList)

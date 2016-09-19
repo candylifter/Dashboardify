@@ -5,6 +5,6 @@ namespace Dashboardify.Contracts.UserSession
 {
     public class LoginUserRequest:BaseRequest
     {
-        public User user { get; set; }
+        public User User { get; set; }
     }
 }

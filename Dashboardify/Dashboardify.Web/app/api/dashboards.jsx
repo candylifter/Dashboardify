@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios from 'axios'
 
-const rootDomain = 'http://localhost/api';
+const rootDomain = `http://${window.location.hostname}/api`
 
 export default {
   mapBackendData (data) {
@@ -12,12 +12,12 @@ export default {
         name: dashboard.Name,
         dateCreated: dashboard.DateCreated,
         dateModified: dashboard.DateModified,
-        img: 'https://placeholdit.imgix.net/~text?txtsize=33&txt=Dashboard&w=200&h=200',
+        img: 'https://placeholdit.imgix.net/~text?txtsize=33&txt=Dashboard&w=200&h=200'
       }
-    });
+    })
   },
 
   fetchDashboards (userId) {
-    return axios.get(`${rootDomain}/Dashboards/GetList?userId=${userId}`);
+    return axios.get(`${rootDomain}/Dashboards/GetList?userId=${userId}`)
   }
 }

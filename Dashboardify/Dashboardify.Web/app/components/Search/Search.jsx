@@ -1,24 +1,29 @@
-import React from 'react'
+import React from 'react';
+
+import TextField from 'material-ui/TextField';
+
 import { SearchTextActions } from 'actions';
 import { connect } from 'react-redux';
 
 class Search extends React.Component {
   render () {
     let { dispatch, searchText } = this.props;
+
+    const style = {
+      margin: 'auto',
+    }
+
     return (
-      <div className="form-group">
-        <input
-          ref="search"
+        <TextField
           type="text"
-          className="form-control"
-          placeholder="Search"
+          hintText="Search"
+          style={style}
           value={searchText}
-          onChange={() => {
-            let text = this.refs.search.value.toLowerCase();
+          onChange={(e) => {
+            let text = e.target.value.toLowerCase();
             dispatch(SearchTextActions.setSearchText(text))
           }}
         />
-      </div>
     )
   }
 }

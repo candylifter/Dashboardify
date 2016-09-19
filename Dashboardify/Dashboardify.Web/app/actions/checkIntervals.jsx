@@ -4,5 +4,5 @@ export default {
       type: 'ADD_CHECK_INTERVALS',
       checkIntervals
     }
-  },
+  }
 }

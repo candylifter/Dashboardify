@@ -22,7 +22,7 @@ namespace Dashboardify.Sandbox
             //TestItemCreation();
             //TestDeleteItemHandler();
             //TestUpdateDash();
-            TestCreateUser();   //leidzia dubliuoti
+            //TestCreateUser();   //leidzia dubliuoti
             TestLoginUser();
            
         }
@@ -163,8 +163,8 @@ namespace Dashboardify.Sandbox
 
             request.user = new User()
             {
-                Name = "Irmantas",
-                Password = "maestro"
+                Name = "Eivinas",
+                Password = "savulionis"
             };
 
             var response = handler.Handle(request);
@@ -178,6 +178,7 @@ namespace Dashboardify.Sandbox
             else
             {
                 Console.WriteLine("Mission complete");
+                
             }
 
         }
@@ -188,9 +189,9 @@ namespace Dashboardify.Sandbox
 
             var request = new CreateUserRequest();
 
-            request.Password = "maestro";
-            request.Email = "ivanauskas96@gmail.com";
-            request.Username = "Irmantas";
+            request.Password = "savulionis";
+            request.Email = "eivinasgrigaitis@gmail.com";
+            request.Username = "Eivinas";
 
             var response = createUserHandler.Handle(request);
 

@@ -60,12 +60,14 @@ namespace Dashboardify.Handlers.Users
 
         public IList<ErrorStatus> Validate(CreateUserRequest request)
         {
+
             var errors = new List<ErrorStatus>();
-            if (request.Username == "" || request.Email == "" || request.Password == "")
+            if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
             {
-                errors.Add(new ErrorStatus("WRONG_INPUT"));    
+                errors.Add(new ErrorStatus("WRONG_INPUT"));
             }
             return errors;
+
         }
         private string HashPassword(string password)
         {
