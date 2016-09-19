@@ -1,29 +1,29 @@
 import React from 'react'
-import { Link } from 'react-router';
+import { Link } from 'react-router'
 
-import Paper from 'material-ui/Paper';
+import Paper from 'material-ui/Paper'
 
 const style = {
-  Link: {
+  link: {
     margin: 20,
     width: 300,
-    maxWidth: 'calc(100vw - 40px)',
+    maxWidth: 'calc(100vw - 40px)'
   },
   paper: {
     width: '100%',
     height: 300,
     textAlign: 'center',
-    display: 'inline-block',
+    display: 'inline-block'
   }
-};
+}
 
 const Dashboards = ({id, name, img}) => {
   return (
-      <Link to={"/dashboard/"+id} style={style.Link}>
-        <Paper style={style.paper} zDepth={1}>
-          <p>{name}</p>
-        </Paper>
-      </Link>
+    <Link to={'/dashboard/' + id} style={style.link}>
+      <Paper style={style.paper} zDepth={1}>
+        <p>{name}</p>
+      </Paper>
+    </Link>
   )
 }
 

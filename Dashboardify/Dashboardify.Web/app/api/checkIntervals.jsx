@@ -3,26 +3,26 @@ export default {
     let checkIntervals = [
       {
         id: 1,
-        checkInterval: 300000 //5 min
+        checkInterval: 300000 // 5 min
       },
       {
         id: 2,
-        checkInterval: 600000 //10 min
+        checkInterval: 600000 // 10 min
       },
       {
         id: 3,
-        checkInterval: 900000 //15 min
+        checkInterval: 900000 // 15 min
       },
       {
         id: 4,
-        checkInterval: 1800000 //30 min
+        checkInterval: 1800000 // 30 min
       },
       {
         id: 5,
-        checkInterval: 3600000 //1 hour
-      },
-    ];
+        checkInterval: 3600000 // 1 hour
+      }
+    ]
 
-    return checkIntervals;
-  },
+    return checkIntervals
+  }
 }

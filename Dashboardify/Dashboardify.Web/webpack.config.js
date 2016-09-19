@@ -1,5 +1,5 @@
-var webpack = require('webpack');
-var path = require('path');
+var webpack = require('webpack')
+var path = require('path')
 
 module.exports = {
   entry: [
@@ -13,10 +13,10 @@ module.exports = {
     new webpack.ProvidePlugin({
       '$': 'jquery',
       'jQuery': 'jquery'
-    }),
+    })
   ],
   output: {
-    path: __dirname+'/public',
+    path: path.join(__dirname, 'public'),
     filename: './bundle.js'
   },
   resolve: {
@@ -34,7 +34,7 @@ module.exports = {
       actions: 'app/actions/index.jsx',
       reducers: 'app/reducers/index.jsx',
       configureStore: 'app/store/configureStore.jsx',
-      routes: 'app/routes.jsx',
+      routes: 'app/routes.jsx'
     },
     extensions: ['', '.js', '.jsx']
   },
@@ -44,19 +44,19 @@ module.exports = {
         loader: 'babel-loader',
         query: {
           presets: ['react', 'es2015'],
-          plugins: ['transform-object-rest-spread'],
+          plugins: ['transform-object-rest-spread']
         },
         test: /\.jsx?$/,
         exclude: /(node_modules|bower_components)/
       },
       {
-  			test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-  			loader: "url-loader?limit=10000&mimetype=application/font-woff"
-  		},
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'url-loader?limit=10000&mimetype=application/font-woff'
+      },
       {
-  			test: /\.(ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-  			loader: "file-loader"
-  		}
+        test: /\.(ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'file-loader'
+      }
     ]
   },
   sassLoader: {
@@ -64,8 +64,8 @@ module.exports = {
       path.resolve(__dirname, './node_modules/bootstrap-sass/assets/stylesheets'),
       path.resolve(__dirname, './node_modules/bootstrap-sass'),
       path.resolve(__dirname, './node_modules/bourbon/app/assets/stylesheets/'),
-      path.resolve(__dirname, './node_modules/bourbon-neat/app/assets/stylesheets/'),
+      path.resolve(__dirname, './node_modules/bourbon-neat/app/assets/stylesheets/')
     ]
   },
-  devtool: 'cheap-module-eval-source-map'
-};
+  devtool: 'eval-source-map'
+}

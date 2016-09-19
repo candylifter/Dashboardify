@@ -1,22 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { Router, hashHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
+import { Router, hashHistory } from 'react-router'
+import { syncHistoryWithStore } from 'react-router-redux'
 
-import routes from 'routes';
+import routes from 'routes'
 
-import configureStore from 'configureStore';
+import configureStore from 'configureStore'
 
-const store = configureStore();
+const store = configureStore()
 
-const history = syncHistoryWithStore(hashHistory, store);
+const history = syncHistoryWithStore(hashHistory, store)
 
 store.subscribe(() => {
-  var state = store.getState();
+  var state = store.getState()
 
-  console.log(state);
-});
+  console.log(state)
+})
 
 ReactDOM.render(
   <Provider store={store}>
@@ -24,4 +24,4 @@ ReactDOM.render(
       {routes}
     </Router>
   </Provider>
-, document.getElementById('app'));
+, document.getElementById('app'))
