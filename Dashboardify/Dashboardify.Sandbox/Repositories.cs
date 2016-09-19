@@ -61,7 +61,9 @@ namespace Dashboardify.Sandbox
 
             //TestReturnIfValidSession(connectionString);
             
-            TestGetBySessionId(connectionString);
+            //TestGetBySessionId(connectionString);
+
+            TestDeleteSession(connectionString);
 
             
             Console.ReadKey();
@@ -420,6 +422,14 @@ namespace Dashboardify.Sandbox
 
             Console.WriteLine(userSesRepo.GetUserBySessionId(
                 "a04ef843509f45f68d1c204dec83181f37aca563515646c89f70cbd457b9b0fdadbb6114c1e543248b4392efa504ffd6f27e63b14f5e4d25814c09812989aacc").ToString());
+
+        }
+
+        private void TestDeleteSession(string connectionString)
+        {
+            var userSesRepo = new UserSessionRepository(connectionString);
+
+            userSesRepo.DeleteUserSession("maestro");
 
         }
 

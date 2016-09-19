@@ -26,8 +26,11 @@ namespace Dashboardify.Sandbox
             //TestCreateUser();   //leidzia dubliuoti
             //TestLoginUser();
 
-            TestGetDashById();
-           
+            //TestGetDashById();
+
+            TestDeleteSession();
+            
+
         }
 
         private void TestUserUpdateHandler()
@@ -232,5 +235,32 @@ namespace Dashboardify.Sandbox
                 Console.WriteLine("Session is valid");
             }
         }
+
+        private void TestDeleteSession()
+        {
+            var handler = new LogoutUserHandler(_connectionString);
+
+            var response = new LogoutUserResponse();
+
+            var request = new LogoutUserRequest();
+
+            request.SessionId = "maestro";
+
+            response = handler.Handle(request);
+
+            if (response.HasErrors)
+            {
+                foreach (var msg in response.Errors)
+                {
+                    Console.WriteLine(msg);
+                }
+            }
+            else
+            {
+                Console.Write("succesfully loged out :))))))");
+            }
+        }
+
+        
     }
 }

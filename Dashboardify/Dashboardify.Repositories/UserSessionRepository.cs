@@ -100,5 +100,20 @@ namespace Dashboardify.Repositories
                 return db.Query<User>(query).SingleOrDefault();
             }
         }
+
+        public void DeleteUserSession(string sessionId)
+        {
+            string query =
+                $@"DELETE FROM
+                                UserSession
+                            WHERE 
+                                SessionId = '{sessionId}'";
+
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                db.Execute(query);
+            }
+
+        }
     }
 }
