@@ -13,7 +13,7 @@ namespace Dashboardify.WebApi.Controllers
 
     public class UsersController : ApiController
     {
-        private static string connectionString = ConfigurationManager.ConnectionStrings["DBZygis"].ConnectionString;
+        private static string connectionString = ConfigurationManager.ConnectionStrings["DBIrmantas"].ConnectionString;
         
         [HttpPost]
         public HttpResponseMessage Update(UpdateUserRequest request)
@@ -30,7 +30,7 @@ namespace Dashboardify.WebApi.Controllers
         [HttpPost]
         public HttpResponseMessage Create(CreateUserRequest request)
         {
-            var handler =new CreateUserHandler(connectionString);
+            var handler = new CreateUserHandler(connectionString);
 
             var response = handler.Handle(request);
 
@@ -38,8 +38,5 @@ namespace Dashboardify.WebApi.Controllers
 
             return Request.CreateResponse(httpSatusCode, response);
         }
-
-        
-        
     }
 }

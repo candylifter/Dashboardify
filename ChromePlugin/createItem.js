@@ -13,9 +13,38 @@ function getXpath(str) {
 var url = window.location.href;
 var xpath = getXpath(url);
 var website = getWebsite(url);
+var form = document.getElementById('create-item-form')
 
 var websiteInput = document.getElementById("website");
 var xpathInput = document.getElementById("xpath");
 
 websiteInput.value = website;
 xpathInput.value = xpath;
+
+form.onsubmit = function (event) {
+  event.preventDefault()
+
+  var name = document.getElementById('item-name').value
+
+  $.ajax({
+    type: "POST",
+    url: "http://localhost/api/Items/createItem",
+    data: {
+      Item:{
+        DashBoardId: 1,
+        CheckInterval: 30000,
+        XPath: xpath,
+        CSS: "body",
+        Website: website,
+        Name: name
+      }
+    },
+    success: function(data){
+      console.log(data);
+      window.close();
+    },
+    error: function(data){
+      console.log(data)
+    }
+  })
+}

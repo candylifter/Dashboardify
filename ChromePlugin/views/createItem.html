@@ -10,8 +10,9 @@
 </head>
 
 <body>
+  <form class="form-horizontal" id="create-item-form">
     <div class="container create-item">
-      <input type="text" class="form-control item-name" placeholder="Item name:">
+      <input type="text" class="form-control item-name" id="item-name" placeholder="Item name:">
       <input class="form-control" id="website" type="text" placeholder="Website" disabled>
       <input class="form-control" id="xpath" type="text" placeholder="XPath" disabled>
       Check interval:
@@ -30,6 +31,7 @@
         </select>
         <input class="btn btn-default" type="submit" value="Create Item">
     </div>
+    </form>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/createItem.js"></script>

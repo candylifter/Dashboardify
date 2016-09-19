@@ -13,14 +13,18 @@ form.onsubmit = function (event) {
     type: "POST",
     url: "http://localhost/api/UserSession/login",
     data: {
-      Name: email,
-      Password: password
+      User:{
+        Email: email,
+        Password: password
+      }
     },
     success: function(data){
-      console.log(data)
+      console.log(data);
+      window.location = "popup.html"
     },
     error: function(data){
       console.log(data)
+      document.getElementById("login-error").innerHTML = "Nepavyko prisijungti."
     }
   })
 }
