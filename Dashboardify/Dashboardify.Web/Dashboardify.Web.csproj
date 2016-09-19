@@ -117,25 +117,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Global.asax" />
-    <Content Include="public\bundle.js" />
-    <Content Include="Web.config" />
     <Content Include="webpack.config.js" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\web.config" />
-    <Content Include="packages.config" />
     <Content Include="package.json" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="app\actions\actions.jsx" />
     <Content Include="app\api\DashboardifyAPI.jsx" />
     <Content Include="app\app.jsx" />
@@ -157,18 +146,9 @@
     <Content Include="app\styles\base\_bootstrap-variables.scss" />
     <Content Include="app\styles\base\_variables.scss" />
     <Content Include="app\styles\pages\login.scss" />
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\styles\components\" />
-    <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
-    <Folder Include="scripts\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
