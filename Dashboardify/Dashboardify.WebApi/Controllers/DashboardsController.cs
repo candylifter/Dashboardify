@@ -7,7 +7,6 @@ using Dashboardify.Handlers.Dashboards;
 
 namespace Dashboardify.WebApi.Controllers
 {
-
     public class DashboardsController : ApiController
     {
         private static string ConnectionString = ConfigurationManager.ConnectionStrings["DBIrmantas"].ConnectionString;
