@@ -33,30 +33,43 @@ class ItemListItem extends React.Component {
         margin: '1em',
         // padding: '1em',
         textAlign: 'left',
-        border: isSelected ? '.2em solid rgb(0, 188, 212)' : 'none',
         overflow: 'hidden'
       },
       header: {
         display: 'block',
+        borderBottom: '1px solid #ccc',
         text: {
           display: 'block',
           padding: 0
         }
       },
-      body: {},
-      footer: {},
+      body: {
+        height: '8.5em',
+        overflow: 'hidden'
+      },
+      footer: {
+        fontSize: '14px',
+        color: 'rgba(0, 0, 0, 0.541176)',
+        padding: '.5em 1em',
+        borderTop: '1px solid #ccc'
+      },
       image: {
         maxWidth: '100%',
         maxHeight: '100%'
       }
     }
 
+    let zDepth = isSelected ? 2 : 1
+
     return (
-      <Card style={style.card} onClick={this.handleSelect}>
+      <Card style={style.card} onClick={this.handleSelect} zDepth={zDepth}>
         <CardHeader title={name} subtitle={ItemsAPI.extractDomain(url)} style={style.header} textStyle={style.header.text} />
-        <CardMedia>
+        <CardMedia style={style.body}>
           <img src={img} />
         </CardMedia>
+        <div style={style.footer}>
+          <span>Last modified: {moment(lastModified).fromNow()}</span>
+        </div>
       </Card>
     )
   }
