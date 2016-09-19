@@ -2,12 +2,10 @@ import React, { PropTypes } from 'react'
 import moment from 'moment'
 import { connect } from 'react-redux'
 
-import Paper from 'material-ui/Paper'
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
-import FlatButton from 'material-ui/FlatButton'
+import { Card, CardHeader, CardMedia } from 'material-ui/Card'
 
 import { ItemsAPI } from 'api'
-import { ItemsActions } from 'actions'
+import { ItemsActions, ItemPanelActions } from 'actions'
 
 class ItemListItem extends React.Component {
   constructor () {
@@ -17,13 +15,19 @@ class ItemListItem extends React.Component {
   }
 
   handleSelect () {
-    const { id, dashboardId, dispatch } = this.props
+    const { id, dashboardId, img, name, url, isSelected, lastModified, dispatch } = this.props
+
+    let item = {
+      id, dashboardId, img, name, url, isSelected, lastModified
+    }
 
     dispatch(ItemsActions.selectItem(id, dashboardId))
+    dispatch(ItemPanelActions.set(item))
+    dispatch(ItemPanelActions.open())
   }
 
   render () {
-    let { img, name, url, isSelected, lastChecked, lastModified, dispatch } = this.props
+    let { img, name, url, isSelected, lastModified } = this.props
 
     const style = {
       card: {
