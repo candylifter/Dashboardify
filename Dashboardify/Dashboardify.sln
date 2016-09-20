@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dashboardify.Service", "Dashboardify.Service\Dashboardify.Service.csproj", "{101D0A67-F5F2-436D-8D45-60815E8828E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dashboardify.Web", "Dashboardify.Web\Dashboardify.Web.csproj", "{F544A5C5-425D-4D2B-AA04-915AAAF722C9}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dashboardify.WebApi", "Dashboardify.WebApi\Dashboardify.WebApi.csproj", "{23D81FFA-DE11-494F-8476-E229927C50D3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dashboardify.Repositories", "Dashboardify.Repositories\Dashboardify.Repositories.csproj", "{C46B3AE5-DBBB-4117-AB45-9F2FB4B16623}"
@@ -31,10 +29,6 @@ Global
 		{101D0A67-F5F2-436D-8D45-60815E8828E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{101D0A67-F5F2-436D-8D45-60815E8828E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{101D0A67-F5F2-436D-8D45-60815E8828E6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F544A5C5-425D-4D2B-AA04-915AAAF722C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F544A5C5-425D-4D2B-AA04-915AAAF722C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F544A5C5-425D-4D2B-AA04-915AAAF722C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F544A5C5-425D-4D2B-AA04-915AAAF722C9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{23D81FFA-DE11-494F-8476-E229927C50D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{23D81FFA-DE11-494F-8476-E229927C50D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23D81FFA-DE11-494F-8476-E229927C50D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
