@@ -1,4 +1,4 @@
-document.body.appendChild(div);
+
 
 function getWebsite(str) {
     theleft = str.indexOf("?website=") + 9;
@@ -15,10 +15,17 @@ function getXpath(str) {
 var url = window.location.href;
 var xpath = getXpath(url);
 var website = getWebsite(url);
+var userId = 1;
 var form = document.getElementById('create-item-form')
-
+var dashboard = document.getElementById("dashboard-selector");
+var dashboardId = dashboard.value;
+var interval = document.getElementById('timer');
+var intervalValue = interval.value;
 var websiteInput = document.getElementById("website");
 var xpathInput = document.getElementById("xpath");
+
+interval.onchange=function(){intervalValue = this.value};
+dashboard.onchange=function(){dashboardId = this.value};
 
 websiteInput.value = website;
 xpathInput.value = xpath;
@@ -27,14 +34,14 @@ form.onsubmit = function (event) {
   event.preventDefault()
 
   var name = document.getElementById('item-name').value
-
+  debugger
   $.ajax({
     type: "POST",
     url: "http://localhost/api/Items/createItem",
     data: {
       Item:{
-        DashBoardId: 1,
-        CheckInterval: 30000,
+        DashBoardId: dashboardId,
+        CheckInterval: intervalValue,
         XPath: xpath,
         CSS: "body",
         Website: website,
