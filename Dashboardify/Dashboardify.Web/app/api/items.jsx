@@ -26,6 +26,12 @@ export default {
     })
   },
 
+  getItemById (items, itemId) {
+    return items.filter((item) => {
+      return item.id === itemId
+    })[0]
+  },
+
   filterItems (items, dashboardId, searchText) {
     let filteredItems = items
 

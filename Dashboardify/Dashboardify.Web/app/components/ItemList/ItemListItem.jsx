@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import moment from 'moment'
 import { connect } from 'react-redux'
 
-import { Card, CardHeader, CardMedia } from 'material-ui/Card'
+import { Card, CardHeader } from 'material-ui/Card'
 
 import { ItemsAPI } from 'api'
 import { ItemsActions, ItemPanelActions } from 'actions'

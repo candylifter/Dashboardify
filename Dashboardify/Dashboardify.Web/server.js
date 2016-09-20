@@ -29,12 +29,14 @@ if (isDeveloping) {
 
   app.use(middleware)
   app.use(webpackHotMiddleware(compiler))
-  app.get('*', function response (req, res) {
+  app.use('*/static/', express.static(path.join(__dirname, 'static')))
+  app.get('/*', function response (req, res) {
     res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'dist/index.html')))
     res.end()
   })
 } else {
   app.use('*/dist/', express.static(path.join(__dirname, 'dist')))
+  app.use('*/static/', express.static(path.join(__dirname, 'static')))
   app.get('/*', function response (req, res) {
     res.sendFile(path.join(__dirname, 'dist/index.html'))
   })
