@@ -1,3 +1,5 @@
+document.body.appendChild(div);
+
 function getWebsite(str) {
     theleft = str.indexOf("?website=") + 9;
     theright = str.lastIndexOf("&xpath=");
