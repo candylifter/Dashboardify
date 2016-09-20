@@ -41,6 +41,12 @@ export default {
     return filteredItems
   },
 
+  getSelectedItemDashboardId (items, dashboardId) {
+    return items.filter((item) => {
+      return item.dashboardId === dashboardId && item.isSelected
+    })[0]
+  },
+
   extractDomain (url) {
     // find & remove protocol (http, ftp, etc.) and get domain
     let domain = url.indexOf('://') > -1 ? url.split('/')[2] : url.split('/')[0]

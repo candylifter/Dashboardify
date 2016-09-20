@@ -44,5 +44,5 @@ app.listen(port, host, function onStart (err) {
   if (err) {
     console.log(err)
   }
-  console.info('==> ðŸŒŽ Listening on port %s. Open up http://%s:%s/ in your browser.', port, host, port)
+  console.info('==> 🌎 Listening on port %s. Open up http://%s:%s/ in your browser.', port, host, port)
 })
