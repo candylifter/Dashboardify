@@ -82,7 +82,7 @@ class ItemPanel extends React.Component {
                 toggled={item.isActive}
                 onToggle={this.handleToggle}
                 />
-              <CheckIntervalList item={item} />
+              <CheckIntervalList itemId={item.id} />
             </div>
           </div>
         )
