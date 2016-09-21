@@ -1,5 +1,5 @@
 import React from 'react'
-import { hashHistory } from 'react-router'
+import { browserHistory } from 'react-router'
 
 import AppBar from 'material-ui/AppBar'
 import IconButton from 'material-ui/IconButton'
@@ -17,7 +17,7 @@ class Navbar extends React.Component {
   }
 
   navigateTo (url) {
-    hashHistory.push(url)
+    browserHistory.push(url)
     this.setState({open: false})
   }
 

@@ -1,86 +1,93 @@
 import React from 'react'
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 
-import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
-import Paper from 'material-ui/Paper';
+import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar'
+import Paper from 'material-ui/Paper'
 
-import { Breadcrumb, Search, ItemList, ItemPanel } from 'components';
-import { ItemsActions } from 'actions';
+import { Breadcrumb, Search, ItemList, ItemPanel } from 'components'
+import { ItemsActions, ItemPanelActions } from 'actions'
 
 class Dashboard extends React.Component {
-	componentWillMount() {
-		let { dashboardId } = this.props.routeParams;
-		let { dispatch } = this.props;
+  componentWillMount () {
+    let { dashboardId } = this.props.routeParams
+    let { dispatch } = this.props
 
-		dispatch(ItemsActions.fetchItems(parseInt(dashboardId)));
-	}
+    dispatch(ItemsActions.fetchItems(parseInt(dashboardId)))
+  }
 
-	render() {
-		let { isFetching, error } = this.props;
-		let { dashboardId } = this.props.routeParams;
+  componentWillUnmount() {
+    let { dispatch } = this.props
 
-		dashboardId = parseInt(dashboardId);
+    dispatch(ItemPanelActions.close())
+  }
 
-		let renderItemList = () => {
-			if (isFetching) {
-				return (
-					<div>
-						<p className="text-center">Loading...</p>
-					</div>
-				)
-			} else if (error === undefined) {
-				return (
-					<ItemList dashboardId={dashboardId}/>
-				)
-			} else {
-				return (
-					<p className="text-center">{error}</p>
-				)
-			}
-		};
+  render () {
+    let { isFetching, error, isPanelOpen } = this.props
+    let { dashboardId } = this.props.routeParams
 
-		const style = {
-			dashboard: {
-				maxWidth: 1200,
-				width: '100%',
-				margin: '40px auto 0',
-			},
-			ItemList: {
-				display: 'flex',
-				margin: '40px auto 0',
-			},
-			Toolbar: {
-				backgroundColor: 'transparent',
-			}
-		}
+    dashboardId = parseInt(dashboardId)
 
-		return (
-			<div style={style.dashboard}>
-				<Paper style={style} zDepth={1} rounded={false}>
-					<Toolbar style={style.Toolbar}>
-						<ToolbarGroup firstChild={true}>
-							<Breadcrumb dashboardId={dashboardId}/>
-						</ToolbarGroup>
-						<ToolbarGroup>
-							<Search/>
-						</ToolbarGroup>
-					</Toolbar>
-				</Paper>
+    let renderItemList = () => {
+      if (isFetching) {
+        return (
+          <div>
+            <p className='text-center'>Loading...</p>
+          </div>
+        )
+      } else if (error === undefined) {
+        return (
+          <ItemList dashboardId={dashboardId} />
+        )
+      } else {
+        return (
+          <p className='text-center'>{error}</p>
+        )
+      }
+    }
 
-				<div style={style.ItemList}>
-					{renderItemList()}
-				</div>
-				<ItemPanel dashboardId={dashboardId}/>
-			</div>
-		);
-	}
+    const style = {
+      dashboard: {
+        maxWidth: 1200,
+        width: '100%',
+        margin: '40px auto 0'
+      },
+      ItemList: {
+        display: 'flex',
+        margin: '40px auto 0'
+      },
+      Toolbar: {
+        backgroundColor: 'transparent'
+      }
+    }
+
+    return (
+      <div style={style.dashboard}>
+        <Paper style={style} zDepth={1} rounded={false}>
+          <Toolbar style={style.Toolbar}>
+            <ToolbarGroup firstChild>
+              <Breadcrumb dashboardId={dashboardId} />
+            </ToolbarGroup>
+            <ToolbarGroup>
+              <Search />
+            </ToolbarGroup>
+          </Toolbar>
+        </Paper>
+
+        <div style={style.ItemList}>
+          {renderItemList()}
+        </div>
+        <ItemPanel dashboardId={dashboardId} />
+      </div>
+    )
+  }
 }
 
 export default connect(
-	(state) => {
-		return {
-			isFetching: state.items.isFetching,
-			error: state.items.error,
-		}
-	}
-)(Dashboard);
+  (state) => {
+    return {
+      isFetching: state.items.isFetching,
+      error: state.items.error,
+      isPanelOpen: state.itemPanel.open
+    }
+  }
+)(Dashboard)

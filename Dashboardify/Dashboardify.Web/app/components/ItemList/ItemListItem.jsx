@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import moment from 'moment'
 import { connect } from 'react-redux'
 
-import { Card, CardHeader, CardMedia } from 'material-ui/Card'
+import { Card, CardHeader } from 'material-ui/Card'
 
 import { ItemsAPI } from 'api'
 import { ItemsActions, ItemPanelActions } from 'actions'
@@ -49,7 +49,16 @@ class ItemListItem extends React.Component {
       },
       body: {
         height: '8.5em',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        position: 'relative',
+        img: {
+          position: 'absolute',
+          // minWidth: '100%',
+          // width: '100%'
+          maxWidth: '100%',
+          maxHeight: '100%'
+          // transform: 'translate(-50%, 0%)'
+        }
       },
       footer: {
         fontSize: '14px',
@@ -68,9 +77,9 @@ class ItemListItem extends React.Component {
     return (
       <Card style={style.card} onClick={this.handleSelect} zDepth={zDepth}>
         <CardHeader title={name} subtitle={ItemsAPI.extractDomain(url)} style={style.header} textStyle={style.header.text} />
-        <CardMedia style={style.body}>
-          <img src={img} />
-        </CardMedia>
+        <div style={style.body}>
+          <img src={img} style={style.body.img} />
+        </div>
         <div style={style.footer}>
           <span>Last modified: {moment(lastModified).fromNow()}</span>
         </div>

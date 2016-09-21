@@ -26,6 +26,12 @@ export default {
     })
   },
 
+  getItemById (items, itemId) {
+    return items.filter((item) => {
+      return item.id === itemId
+    })[0]
+  },
+
   filterItems (items, dashboardId, searchText) {
     let filteredItems = items
 
@@ -39,6 +45,12 @@ export default {
     })
 
     return filteredItems
+  },
+
+  getSelectedItemDashboardId (items, dashboardId) {
+    return items.filter((item) => {
+      return item.dashboardId === dashboardId && item.isSelected
+    })[0]
   },
 
   extractDomain (url) {

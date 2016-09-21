@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>DASHBOARDIFY</title>
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/popup.css">
 
@@ -16,18 +16,16 @@
       <input class="form-control" id="website" type="text" placeholder="Website" disabled>
       <input class="form-control" id="xpath" type="text" placeholder="XPath" disabled>
       Check interval:
-        <select class="form-control timer">
-            <option>5 minutes</option>
-            <option>10 minutes</option>
-            <option>30 minutes</option>
-            <option>1 hour</option>
-            <option>6 hours</option>
+        <select class="form-control" id="timer">
+            <option value="300000">5 minutes</option>
+            <option value="600000">10 minutes</option>
+            <option value="1800000">30 minutes</option>
+            <option value="3600000">1 hour</option>
+            <option value="21600000">6 hours</option>
         </select>
         Dashboard:
-        <select class="form-control dasboard">
-            <option>Audinės</option>
-            <option>NeAudinės</option>
-            <option>Maestro prikolai</option>
+        <select class="form-control" id="dashboard-selector">
+            <option value="1">AUDINES</option>
         </select>
         <input class="btn btn-default" type="submit" value="Create Item">
     </div>

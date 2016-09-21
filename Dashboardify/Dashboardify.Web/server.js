@@ -29,12 +29,14 @@ if (isDeveloping) {
 
   app.use(middleware)
   app.use(webpackHotMiddleware(compiler))
-  app.get('*', function response (req, res) {
+  app.use('*/static/', express.static(path.join(__dirname, 'static')))
+  app.get('/*', function response (req, res) {
     res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'dist/index.html')))
     res.end()
   })
 } else {
   app.use('*/dist/', express.static(path.join(__dirname, 'dist')))
+  app.use('*/static/', express.static(path.join(__dirname, 'static')))
   app.get('/*', function response (req, res) {
     res.sendFile(path.join(__dirname, 'dist/index.html'))
   })
@@ -44,5 +46,5 @@ app.listen(port, host, function onStart (err) {
   if (err) {
     console.log(err)
   }
-  console.info('==> ðŸŒŽ Listening on port %s. Open up http://%s:%s/ in your browser.', port, host, port)
+  console.info('==> 🌎 Listening on port %s. Open up http://%s:%s/ in your browser.', port, host, port)
 })

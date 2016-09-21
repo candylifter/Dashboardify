@@ -13,7 +13,7 @@ namespace Dashboardify.WebApi.Controllers
 
     public class UsersController : ApiController
     {
-        private static string connectionString = ConfigurationManager.ConnectionStrings["DBIrmantas"].ConnectionString;
+        private static string connectionString = ConfigurationManager.ConnectionStrings["GCP"].ConnectionString;
         
         [HttpPost]
         public HttpResponseMessage Update(UpdateUserRequest request)

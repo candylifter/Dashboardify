@@ -10,6 +10,7 @@ import Toggle from 'material-ui/Toggle'
 import FlatButton from 'material-ui/FlatButton';
 
 import { ItemsActions, ItemPanelActions } from 'actions'
+import { ItemsAPI } from 'api'
 import { CheckIntervalList } from 'components'
 
 class ItemPanel extends React.Component {
@@ -19,6 +20,7 @@ class ItemPanel extends React.Component {
     this.state = {open: false}
 
     this.handleClose = this.handleClose.bind(this)
+    this.handleToggle = this.handleToggle.bind(this)
   }
 
   handleClose () {
@@ -27,9 +29,14 @@ class ItemPanel extends React.Component {
     dispatch(ItemPanelActions.close())
   }
 
-  render () {
-    let { item, open } = this.props
+  handleToggle () {
+    const { items, dashboardId, dispatch } = this.props
 
+    let item = ItemsAPI.getSelectedItemDashboardId(items, dashboardId)
+    dispatch(ItemsActions.toggleItem(item.id))
+  }
+
+  render () {
     const style = {
       padding: '0em 1em',
       image: {
@@ -51,33 +58,47 @@ class ItemPanel extends React.Component {
       }
 
     }
+    let { items, dashboardId, open } = this.props
+
+    let item = ItemsAPI.getSelectedItemDashboardId(items, dashboardId)
+
+    let renderPanel = () => {
+      if (item !== undefined) {
+        return (
+          <div>
+            <AppBar
+              iconElementLeft={<IconButton onClick={this.handleClose}><NavigationClose /></IconButton>}
+              title={item.name}
+              />
+            <div style={style}>
+              <div style={style.image}>
+                <img src={item.img} alt={`Screenshot of ${item.name}`} style={style.image.img} />
+              </div>
+              <div style={style.url}>
+                <FlatButton href={item.url} target='_blank' label='Visit website' style={style.url.button} />
+              </div>
+              <Toggle
+                label='Active'
+                toggled={item.isActive}
+                onToggle={this.handleToggle}
+                />
+              <CheckIntervalList itemId={item.id} />
+            </div>
+          </div>
+        )
+      }
+    }
 
     return (
       <Drawer openSecondary width={300} open={open}>
-        <AppBar
-          iconElementLeft={<IconButton onClick={this.handleClose}><NavigationClose /></IconButton>}
-          title={'item.name'}
-        />
-        <div style={style}>
-          <div style={style.image}>
-            <img src={item.img} alt={`Screenshot of ${item.name}`} style={style.image.img} />
-          </div>
-          <div style={style.url}>
-            <FlatButton href={item.url} target='_blank' label="Visit website" style={style.url.button} />
-          </div>
-          <Toggle
-            label='Active'
-            toggled={item.isActive}
-          />
-        </div>
-
+        {renderPanel()}
       </Drawer>
     )
   }
 }
 
 ItemPanel.propTypes = {
-  item: PropTypes.object,
+  items: PropTypes.array,
   dashboardId: PropTypes.number,
   open: PropTypes.bool,
   dispatch: PropTypes.func
@@ -85,6 +106,7 @@ ItemPanel.propTypes = {
 
 export default connect((state) => {
   return {
+    items: state.items.data,
     ...state.itemPanel
   }
 })(ItemPanel)
