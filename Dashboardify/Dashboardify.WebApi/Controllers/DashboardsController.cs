@@ -9,7 +9,7 @@ namespace Dashboardify.WebApi.Controllers
 {
     public class DashboardsController : ApiController
     {
-        private static string ConnectionString = ConfigurationManager.ConnectionStrings["DBIrmantas"].ConnectionString;
+        private static string ConnectionString = ConfigurationManager.ConnectionStrings["GCP"].ConnectionString;
         //private DashRepository deshai = new DashRepository(ConnectionString);
 
         [HttpGet]

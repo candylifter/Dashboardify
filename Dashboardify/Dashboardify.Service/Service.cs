@@ -9,7 +9,7 @@ namespace Dashboardify.Service
 {
     public class Service
     {
-        string connectionString = ConfigurationManager.ConnectionStrings["DBZygis"].ConnectionString;
+        string connectionString = ConfigurationManager.ConnectionStrings["GCP"].ConnectionString;
         private readonly Timer _timer;
         private readonly ItemsRepository _itemsRepository;
         private readonly ScreenshotRepository _screenshotRepository;
