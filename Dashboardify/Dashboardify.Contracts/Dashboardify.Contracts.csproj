@@ -60,6 +60,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserSession\LoginUserRequest.cs" />
     <Compile Include="UserSession\LoginUserResponse.cs" />
+    <Compile Include="UserSession\LogoutUserRequest.cs" />
+    <Compile Include="UserSession\LogoutUserResponse.cs" />
     <Compile Include="Users\CreateUserRequest.cs" />
     <Compile Include="Users\CreateUserResponse.cs" />
     <Compile Include="Users\DeleteUserRequest.cs" />

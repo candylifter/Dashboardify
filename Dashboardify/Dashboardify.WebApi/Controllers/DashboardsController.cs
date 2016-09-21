@@ -34,10 +34,6 @@ namespace Dashboardify.WebApi.Controllers
             return Request.CreateResponse(httpStatusCode, response);
         }
 
-        //[HttpGet]
-        //public IHttpActionResult GetDashboards()
-        //{
-        //    return Json(new { success = true, items = deshai.GetList() });
-        //}
+        
     }
 }

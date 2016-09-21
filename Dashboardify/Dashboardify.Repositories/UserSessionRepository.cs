@@ -14,7 +14,7 @@ namespace Dashboardify.Repositories
 
         public UserSessionRepository(string connectionString)
         {
-            this._connectionString = connectionString;
+            _connectionString = connectionString;
         }
 
         public bool AddSession(UserSession session)
@@ -28,18 +28,30 @@ namespace Dashboardify.Repositories
                                     @UserId,
                                     @Expires)";
 
-            try
-            {
+         
                 using (IDbConnection db = new SqlConnection(_connectionString))
                 {
                     db.Execute(query, session);
                 }
-                return true;
-            }
-            catch (Exception ex)
+                return true;  
+        }
+
+        public DateTime GetExpireDate(string sessionId)
+        {
+
+            string query =
+                $@"SELECT Expires
+                            FROM UserSession
+                            WHERE SessionId = '{sessionId}'";
+
+                            //AND 
+                            //UserId ='{userId}'"; bbz kam cia buvo
+
+            using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                return false;
+                return db.Query<DateTime>(query).SingleOrDefault();
             }
+            
         }
 
         public IList<UserSession> GetAll()
@@ -66,6 +78,43 @@ namespace Dashboardify.Repositories
                 throw;
             }
 
+
+        }
+
+        public User GetUserBySessionId(string sessionId)
+        {
+            string query =
+                $@"SELECT 
+		                Users.Id,
+		                Name,
+		                Password,
+		                Email,
+		                IsActive,
+		                DateRegistered,
+		                DateModified
+                FROM Users
+                JOIN UserSession
+	                ON UserSession.UserId = Users.Id
+	                WHERE SessionId = '{sessionId}'";
+
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                return db.Query<User>(query).SingleOrDefault();
+            }
+        }
+
+        public void DeleteUserSession(string sessionId)
+        {
+            string query =
+                $@"DELETE FROM
+                                UserSession
+                            WHERE 
+                                SessionId = '{sessionId}'";
+
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                db.Execute(query);
+            }
 
         }
     }

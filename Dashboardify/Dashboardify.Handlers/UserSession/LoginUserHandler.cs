@@ -29,11 +29,13 @@ namespace Dashboardify.Handlers.UserSession
             request.User.Password = HashPassword(request.User.Password);
 
             response.Errors = Validate(request);
+
             if (response.HasErrors)
             {
                 return response;
             }
-            AddSession(request);
+
+            AddSession(request,response);
 
             return response;
         }
@@ -43,19 +45,19 @@ namespace Dashboardify.Handlers.UserSession
         {
             var errors = new List<ErrorStatus>();
 
-            if (request.User.Email == "" || request.User.Password == "")
+            if (string.IsNullOrEmpty(request.User.Email) || string.IsNullOrEmpty(request.User.Password))
             {
                 errors.Add(new ErrorStatus("WRONG_INPUT"));
             }
             if (_usersRepository.ReturnIfExsists(request.User.Email, request.User.Password) == null)
             {
-                errors.Add(new ErrorStatus("USER_NOT_FOUND"));
+                errors.Add(new ErrorStatus("INVALID_USERNAME_OR_PASSWORD"));
             }
             return errors;
 
         }
 
-        private void AddSession(LoginUserRequest request)
+        private void AddSession(LoginUserRequest request, LoginUserResponse response)
         {
             var user = _usersRepository.ReturnIfExsists(request.User.Email, request.User.Password);
 
@@ -76,9 +78,8 @@ namespace Dashboardify.Handlers.UserSession
                 SessionId = sessionId
             };
             
-            
-
             _userSessionRepository.AddSession(session);
+            response.SessionId = sessionId;
         }
 
         private string HashPassword(string password)

@@ -4,9 +4,6 @@ namespace Dashboardify.Contracts.UserSession
 {
     public class LoginUserResponse:BaseResponse
     {
-        public bool Success()
-        {
-            return true;
-        }
+        public string SessionId { get; set; }
     }
 }

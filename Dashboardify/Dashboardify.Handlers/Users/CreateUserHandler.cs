@@ -61,11 +61,21 @@ namespace Dashboardify.Handlers.Users
         public IList<ErrorStatus> Validate(CreateUserRequest request)
         {
 
+          
+
             var errors = new List<ErrorStatus>();
             if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
             {
                 errors.Add(new ErrorStatus("WRONG_INPUT"));
             }
+            if (!string.IsNullOrEmpty(_userRepository.ReturnEmail(request.Email)))
+            {
+                errors.Add(new ErrorStatus("EMAIL_ALREADY_TAKEN"));
+            }
+
+            
+
+            //todo metodas kuris patikrina ar email neuzimtas ir name
             return errors;
 
         }
@@ -83,13 +93,13 @@ namespace Dashboardify.Handlers.Users
             return sb.ToString();
         }
 
-        private void SendEmail(CreateUserRequest request)
+        private void SendEmail(CreateUserRequest request)//TODO refactor to mailsender in service layer
         {
             var fromAddress = new MailAddress("dashboardifyacademy@gmail.com", "Dashboardify");
             var toAddress = new MailAddress(request.Email, request.Username);
             const string fromPassword = "desbordas";
             const string subject = "Welcome";
-            string body = "Dear "+ request.Username.ToString() +"\n We are happy that you are using our dashboardify app. (ITERPTI MAESTRO TRUMPA)";
+            string body = "Dear "+ request.Username +"\n We are happy that you are using our dashboardify app. (ITERPTI MAESTRO TRUMPA)";
 
             var smtp = new SmtpClient
             {
