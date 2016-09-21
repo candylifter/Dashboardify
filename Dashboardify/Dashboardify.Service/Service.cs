@@ -27,6 +27,7 @@ namespace Dashboardify.Service
             _screenshotRepository = new ScreenshotRepository(connectionString);
 
             UpdateItems();
+            Console.WriteLine("--> Completed updating items");
         }
 
 
