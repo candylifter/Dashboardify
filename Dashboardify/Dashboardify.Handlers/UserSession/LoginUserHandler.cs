@@ -29,10 +29,12 @@ namespace Dashboardify.Handlers.UserSession
             request.User.Password = HashPassword(request.User.Password);
 
             response.Errors = Validate(request);
+
             if (response.HasErrors)
             {
                 return response;
             }
+
             AddSession(request,response);
 
             return response;
@@ -43,7 +45,7 @@ namespace Dashboardify.Handlers.UserSession
         {
             var errors = new List<ErrorStatus>();
 
-            if (request.User.Email == "" || request.User.Password == "")
+            if (string.IsNullOrEmpty(request.User.Email) || string.IsNullOrEmpty(request.User.Password))
             {
                 errors.Add(new ErrorStatus("WRONG_INPUT"));
             }

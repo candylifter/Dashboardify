@@ -16,7 +16,7 @@ namespace Dashboardify.Repositories
 
         public DashRepository(string constring)
         {
-            this._connectionString = constring;
+            _connectionString = constring;
         }
 
         /// <summary>
@@ -173,6 +173,22 @@ namespace Dashboardify.Repositories
             {   
                     return db.Query<DashBoard>
                       (query).ToList();
+            }
+        }
+
+        public User GetUserByDashId(int id)
+        {
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                string query = $@"SELECT
+                                [Users].Id
+                            FROM
+                                Users
+                            LEFT JOIN DashBoards
+                                ON [DashBoards].UserId = [Users].Id
+                            WHERE [DashBoards].Id = '{id}'";
+
+                return db.Query<User>(query).SingleOrDefault();
             }
         }
     }

@@ -8,7 +8,7 @@ namespace Dashboardify.Sandbox
     {
         public void Do()
         {
-            string connectionString = "Data Source=DESKTOP-11VK3U9;Initial Catalog=DashBoardify;User id=DashboardifyUser;Password=123456;";
+            string connectionString = "Data Source=23.251.133.254;Initial Catalog=DashBoardify;User id=DashboardifyUser;Password=xc6AjzBx6QA2pKUU";
 
 
             // PrintUsers(connectionString);
@@ -63,7 +63,9 @@ namespace Dashboardify.Sandbox
             
             //TestGetBySessionId(connectionString);
 
-            TestDeleteSession(connectionString);
+            //TestDeleteSession(connectionString);
+
+            TestGetEmail(connectionString);
 
             
             Console.ReadKey();
@@ -389,7 +391,7 @@ namespace Dashboardify.Sandbox
             var usersrepo = new UsersRepository(connectionString);
             var user = new User()
             {
-                Name = "Laba diena",
+                Name = "4524534Laba diena",
                 Password = "asd56a+5d6asd"
             };
             if (!(usersrepo.ReturnIfExsists(user.Name, user.Password) == null))
@@ -408,7 +410,7 @@ namespace Dashboardify.Sandbox
         {
             var userSesRepo = new UserSessionRepository(connectionString);
 
-            var data = userSesRepo.GetExpireDate("ef11737342294a829253aefcf23d7cbb710d0e92f14443e48d229a8f8dfa9a2ec09c1511bb8e4512b1779b7937cc87f0cf22eb8c0e2a4f8dbf540af40a292715",1);
+            var data = userSesRepo.GetExpireDate("ef11737342294a829253aefcf23d7cbb710d0e92f14443e48d229a8f8dfa9a2ec09c1511bb8e4512b1779b7937cc87f0cf22eb8c0e2a4f8dbf540af40a292715");
 
             Console.WriteLine(data < DateTime.Now ? "Mazesne" : "Didesne");
             Console.WriteLine(data == DateTime.MinValue);
@@ -430,6 +432,24 @@ namespace Dashboardify.Sandbox
             var userSesRepo = new UserSessionRepository(connectionString);
 
             userSesRepo.DeleteUserSession("maestro");
+
+        }
+
+        private void TestGetEmail(string connectionString)
+        {
+            var userRepo = new UsersRepository(connectionString);
+
+            var anw = userRepo.ReturnEmail("mail@maestro.com");
+
+            if (string.IsNullOrEmpty(anw))
+            {
+                Console.WriteLine("Email is nto taken");
+            }
+            else
+            {
+                Console.WriteLine("Email is taken");
+            }
+
 
         }
 

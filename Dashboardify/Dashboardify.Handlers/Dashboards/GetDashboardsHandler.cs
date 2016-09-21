@@ -55,20 +55,24 @@ namespace Dashboardify.Handlers.Dashboards
                 errors.Add(new ErrorStatus("USERID_NOT_DEFINED"));
             }
 
-            if (_userSessionRepository.GetExpireDate(request.SessionId,request.UserId) == DateTime.MinValue)
+            if (_userSessionRepository.GetExpireDate(request.SessionId) == DateTime.MinValue)
             {
                 errors.Add(new ErrorStatus("SESSION_NULL_VALUE"));
                 return errors;
             }
 
-            if (_userSessionRepository.GetExpireDate(request.SessionId,request.UserId) < DateTime.Now)
+            if (_userSessionRepository.GetExpireDate(request.SessionId) < DateTime.Now)
             {
                 errors.Add(new ErrorStatus("SESSION_EXPIRED"));
             }
 
-            if (_userSessionRepository.GetExpireDate(request.SessionId,request.UserId) >= DateTime.MaxValue)
+            if (_userSessionRepository.GetExpireDate(request.SessionId) >= DateTime.MaxValue)
             {
-                errors.Add(new ErrorStatus("WRONG"));
+                errors.Add(new ErrorStatus("WRONG_DATETIME_FORMAT"));
+            }
+            if (_userSessionRepository.GetUserBySessionId(request.SessionId).Id != request.UserId)
+            {
+                errors.Add(new ErrorStatus("UNAUTHORIZED_ACCES"));
             }
 
 

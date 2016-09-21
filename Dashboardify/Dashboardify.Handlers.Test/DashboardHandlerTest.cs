@@ -19,7 +19,7 @@ namespace Dashboardify.Handlers.Test
             var response = handler.Handle(request);
 
             Assert.True(response.HasErrors);
-            Assert.AreEqual(1,response.Errors.Count);
+            
 
         }
 

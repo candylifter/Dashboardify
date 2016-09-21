@@ -10,5 +10,7 @@ namespace Dashboardify.Contracts
         }
 
         public IList<ErrorStatus> Errors { get; set; }
+
+        public string SessionId { get; set; }
     }
 }

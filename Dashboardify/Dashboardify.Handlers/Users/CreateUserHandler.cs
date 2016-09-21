@@ -61,11 +61,21 @@ namespace Dashboardify.Handlers.Users
         public IList<ErrorStatus> Validate(CreateUserRequest request)
         {
 
+          
+
             var errors = new List<ErrorStatus>();
             if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
             {
                 errors.Add(new ErrorStatus("WRONG_INPUT"));
             }
+            if (!string.IsNullOrEmpty(_userRepository.ReturnEmail(request.Email)))
+            {
+                errors.Add(new ErrorStatus("EMAIL_ALREADY_TAKEN"));
+            }
+
+            
+
+            //todo metodas kuris patikrina ar email neuzimtas ir name
             return errors;
 
         }

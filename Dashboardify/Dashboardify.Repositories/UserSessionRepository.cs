@@ -36,14 +36,16 @@ namespace Dashboardify.Repositories
                 return true;  
         }
 
-        public DateTime GetExpireDate(string sessionId, int userId)
+        public DateTime GetExpireDate(string sessionId)
         {
 
-            string query = $@"SELECT Expires
+            string query =
+                $@"SELECT Expires
                             FROM UserSession
-                            WHERE SessionId = '{sessionId}'
-                            AND 
-                            UserId ='{userId}'";
+                            WHERE SessionId = '{sessionId}'";
+
+                            //AND 
+                            //UserId ='{userId}'"; bbz kam cia buvo
 
             using (IDbConnection db = new SqlConnection(_connectionString))
             {

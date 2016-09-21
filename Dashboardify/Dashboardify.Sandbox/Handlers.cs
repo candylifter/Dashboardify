@@ -14,13 +14,13 @@ namespace Dashboardify.Sandbox
 {
     public class Handlers
     {
-        private string _connectionString = "Data Source=DESKTOP-11VK3U9;Initial Catalog = DashBoardify; User id = DashboardifyUser; Password=123456;";
+        private string _connectionString = "Data Source=23.251.133.254;Initial Catalog=DashBoardify;User id=DashboardifyUser;Password=xc6AjzBx6QA2pKUU";
 
         public void Do()
         {
             //TestItemUpdateHandler();
             //TestUserUpdateHandler();
-            //TestItemCreation();
+            TestItemCreation();
             //TestDeleteItemHandler();
             //TestUpdateDash();
             //TestCreateUser();   //leidzia dubliuoti
@@ -28,7 +28,9 @@ namespace Dashboardify.Sandbox
 
             //TestGetDashById();
 
-            TestDeleteSession();
+            //TestDeleteSession();
+
+            //TestCreateUserHandler();
             
 
         }
@@ -115,8 +117,14 @@ namespace Dashboardify.Sandbox
             {
                 DashBoardId = 1,
                 CheckInterval = 10001,
-                XPath = "fdsgdfgfd"
+                XPath = "fdsgdfgfd",
+                CSS = "blank",
+                Name = "mazutis",
+                Website = "www.google.com"
             };
+
+            request.SessionId =
+                "96d0bcc478e94faa8bbe62bf7af55f4c076489f5b98d44e79ad0c26bcabd9e142c84bf2f2c5b47b09e85e599c7ad11ded94391c070c34d6f8a4aa3f90976fdf2";
 
             var response = handler.Handle(request);
             foreach (var msg in response.Errors)
@@ -169,8 +177,8 @@ namespace Dashboardify.Sandbox
 
             request.User = new User()
             {
-                Name = "zygimantas",
-                Password = "zygimantas"
+                Email = "mail@maestro.com",
+                Password = "maestro"
             };
 
             var response = handler.Handle(request);
@@ -258,6 +266,30 @@ namespace Dashboardify.Sandbox
             else
             {
                 Console.Write("succesfully loged out :))))))");
+            }
+        }
+
+        private void TestCreateUserHandler()
+        {
+            var request = new CreateUserRequest();
+            request.Email = "test@maestro.lt";
+            request.Username ="maestro";
+            request.Password = "maestro";
+
+            var handler = new CreateUserHandler(_connectionString);
+
+            var response = handler.Handle(request);
+
+            if (response.HasErrors)
+            {
+                foreach (var error in response.Errors)
+                {
+                    Console.WriteLine(error.Code);
+                }
+            }
+            else
+            {
+                Console.Write("succes");
             }
         }
 

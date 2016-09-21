@@ -23,17 +23,17 @@ namespace Dashboardify.Repositories
                     using (IDbConnection db = new SqlConnection(_connectionString))
                     {
                         return db.Query<Screenshot>(@"SELECT
-	                                                TOP 1
-	                                                Id,
-	                                                ItemId,
-	                                                ScrnshtURL,
-	                                                DateTaken
-                                                FROM 
-	                                                ScreenShots 
-                                                WHERE 
-	                                                ItemId = @ItemId
-                                                ORDER BY 
-	                                                DateTaken DESC", new { ItemId }).SingleOrDefault();
+	                                                    TOP 1
+	                                                    Id,
+	                                                    ItemId,
+	                                                    ScrnshtURL,
+	                                                    DateTaken
+                                                    FROM 
+	                                                    ScreenShots 
+                                                    WHERE 
+	                                                    ItemId = @ItemId
+                                                    ORDER BY 
+	                                                    DateTaken DESC", new { ItemId }).SingleOrDefault();
                     }
                
             
