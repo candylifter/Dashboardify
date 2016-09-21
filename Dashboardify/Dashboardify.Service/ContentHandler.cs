@@ -1,8 +1,13 @@
 ﻿using Dashboardify.Repositories;
 using HtmlAgilityPack;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NReco.PhantomJS;
 using System;
+using System.Net.Http;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Dashboardify.Service
 {
@@ -60,6 +65,34 @@ namespace Dashboardify.Service
                 Console.WriteLine(ex.Message);
                 return null;
             }
+        }
+
+        public async Task<string> GetScreenshotAsync(Item item)
+        {
+            var json = JsonConvert.SerializeObject(new { Website = item.Website, XPath = item.XPath, CSS = item.CSS });
+
+            using (var client = new HttpClient())
+            {
+
+
+                client.BaseAddress = new Uri("http://localhost:3000");
+                Console.WriteLine("   Sending request to Phantom Node API...");
+                var response = await client.PostAsync("", new StringContent(json, Encoding.UTF8, "application/json"));
+                var contents = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("   Got response from Phantom Node API");
+
+                dynamic responseJson = JsonConvert.DeserializeObject(contents);
+
+                if (responseJson.success == true)
+                {
+                    return responseJson.filename;
+                } else
+                {
+                    return null;
+                }
+
+            }
+
         }
 
         public string GetScreenshot(Item item)

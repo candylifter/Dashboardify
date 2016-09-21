@@ -33,8 +33,9 @@ namespace Dashboardify.Service
 
         public void TimeElapsedEventHandler(object sender, ElapsedEventArgs e)
         {
-
+            var startTime = DateTime.Now;
             UpdateItems();
+            Console.WriteLine("\n Cycle completed in {0} miliseconds\n", (DateTime.Now - startTime).TotalMilliseconds.ToString());
             Console.WriteLine("--> Completed updating items");
             //Console.ReadLine();
             //_timer.Stop();
@@ -64,29 +65,44 @@ namespace Dashboardify.Service
 
             UpdateNonOutdatedItems(items, outdatedItems);
 
+            UpdateOutdatedItems(outdatedItems);
+        }
 
-            foreach (var item in outdatedItems)
+        public void UpdateOutdatedItems(IList<Item> items)
+        {
+            foreach (var item in items)
             {
-                string filename = _contentHandler.GetScreenshot(item);
 
-                var now = DateTime.Now;
+                var task = _contentHandler.GetScreenshotAsync(item);
 
-                item.LastChecked = now;
-                item.Modified = now;
+                string filename = task.Result;
 
-                _itemsRepository.Update(item);
+                if (filename != null)
+                {
+                    var now = DateTime.Now;
 
-                Models.Screenshot screenshot = new Models.Screenshot();
+                    item.LastChecked = now;
+                    item.Modified = now;
 
-                screenshot.ItemId = item.Id;
-                screenshot.ScrnshtURL = filename;
-                screenshot.DateTaken = now;
+                    _itemsRepository.Update(item);
 
-                _screenshotRepository.Create(screenshot);
+                    Models.Screenshot screenshot = new Models.Screenshot();
 
-                Console.WriteLine("Updated item: " + item.Name);
+                    screenshot.ItemId = item.Id;
+                    screenshot.ScrnshtURL = filename;
+                    screenshot.DateTaken = now;
+
+                    _screenshotRepository.Create(screenshot);
+
+                    Console.WriteLine("Updated item: " + item.Name);
+                }
+                else
+                {
+                    Console.WriteLine("Cannot get screenshot");
+                }
+
+          
             }
-
         }
 
         public void UpdateNonOutdatedItems(IList<Item> allItems, IList<Item> outdatedItems)
@@ -102,8 +118,6 @@ namespace Dashboardify.Service
 
                 _itemsRepository.Update(item);
             }
-
-            //List<Firm> results = Firms.Where(f => !TrackedFirms.Any(t => t.FirmId = f.FirmId)).ToList();
         }
 
         public void Start()
