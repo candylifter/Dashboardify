@@ -2,6 +2,6 @@
 {
     public class BaseRequest
     {
-        public string SessionId { get; set; }
+        public string Ticket { get; set; }
     }
 }

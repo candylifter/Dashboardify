@@ -20,11 +20,11 @@ namespace Dashboardify.Repositories
         public bool AddSession(UserSession session)
         {
             string query = @"INSERT INTO dbo.UserSession                               
-                                    (SessionId,
+                                    (Ticket,
                                     UserId,
                                     Expires) 
                                VALUES 
-                                    (@SessionId,
+                                    (@Ticket,
                                     @UserId,
                                     @Expires)";
 
@@ -42,15 +42,15 @@ namespace Dashboardify.Repositories
             {
                 string query = $@"SELECT
                            Id,
-                           SessionId,
+                           Ticket,
                            Expires
                         FROM UserSession
-                            WHERE SessionId = '{ticket}'";
+                            WHERE Ticket = '{ticket}'";
 
                 return db.Query<UserSession>(query).SingleOrDefault();
             }
         }
-
+        //
         public User GetUserBySessionId(string ticket)
         {
             string query =
@@ -79,7 +79,7 @@ namespace Dashboardify.Repositories
                 $@"DELETE FROM
                                 UserSession
                             WHERE 
-                                SessionId = '{ticket}'";
+                                Ticket = '{ticket}'";
 
             using (IDbConnection db = new SqlConnection(_connectionString))
             {

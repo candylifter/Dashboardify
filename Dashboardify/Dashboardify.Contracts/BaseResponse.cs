@@ -13,6 +13,6 @@ namespace Dashboardify.Contracts
 
 
         //TODO: Move only to response who use it to send this property to UI
-        public string SessionId { get; set; }
+         // tik i logina public string SessionId { get; set; }
     }
 }

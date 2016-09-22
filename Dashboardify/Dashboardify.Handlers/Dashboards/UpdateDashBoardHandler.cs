@@ -62,7 +62,7 @@ namespace Dashboardify.Handlers.Dashboards
                 errors.Add(new ErrorStatus("DASH_NOT_FOUND"));
                 return errors;
             }
-            if (_userSessionRepository.GetUserBySessionId(request.SessionId).Id != request.DashBoard.UserId)
+            if (_userSessionRepository.GetUserBySessionId(request.Ticket).Id != request.DashBoard.UserId)
             {
                 errors.Add(new ErrorStatus("UNAUTHORIZED_ACCES"));
             }
