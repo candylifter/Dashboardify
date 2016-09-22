@@ -1,5 +1,6 @@
 ﻿using Dashboardify.Repositories;
 using HtmlAgilityPack;
+using log4net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NReco.PhantomJS;
@@ -13,6 +14,8 @@ namespace Dashboardify.Service
 {
     public class ContentHandler
     {
+        private ILog logger = log4net.LogManager.GetLogger("Dashboardify.Service");
+
         public string GetContentByXPath(string url, string xpath)
         {
             HtmlWeb htmlWeb = new HtmlWeb();
@@ -36,7 +39,8 @@ namespace Dashboardify.Service
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                //Console.WriteLine(ex.Message);
+                logger.Info(ex.Message);
                 return null;
             }
         }
@@ -62,7 +66,9 @@ namespace Dashboardify.Service
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                //Console.WriteLine(ex.Message);
+                logger.Info(ex.Message);
+
                 return null;
             }
         }
@@ -76,10 +82,13 @@ namespace Dashboardify.Service
 
 
                 client.BaseAddress = new Uri("http://localhost:3000");
-                Console.WriteLine("   Sending request to Phantom Node API...");
+                //Console.WriteLine("   Sending request to Phantom Node API...");
+                logger.Info("   Sending request to Phantom Node API...");
+
                 var response = await client.PostAsync("", new StringContent(json, Encoding.UTF8, "application/json"));
                 var contents = await response.Content.ReadAsStringAsync();
-                Console.WriteLine("   Got response from Phantom Node API");
+                logger.Info("   Got response from Phantom Node API");
+                //Console.WriteLine("   Got response from Phantom Node API");
 
                 dynamic responseJson = JsonConvert.DeserializeObject(contents);
 

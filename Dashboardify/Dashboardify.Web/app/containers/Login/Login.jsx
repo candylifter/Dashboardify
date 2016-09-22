@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
+import Divider from 'material-ui/Divider'
 
 import { LoginForm } from 'components'
 
@@ -29,7 +30,8 @@ class Login extends React.Component {
             actAsExpander
             showExpandableButton
           />
-        <LoginForm/>
+          <LoginForm />
+          <Divider />
         </Card>
       </div>
     )
