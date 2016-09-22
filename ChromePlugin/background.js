@@ -13,7 +13,7 @@ chrome.runtime.onMessage.addListener(
                 break;
             case 'CREATE_ITEM':
             chrome.tabs.create({
-                url: 'views/createItem.html?website='+request.item.Website+'&xpath='+request.item.XPath
+                url: 'views/createItem.html?website='+request.item.Website+'&xpath='+request.item.XPath+'&css='+request.item.CSS
             });
             default:
                 return null;

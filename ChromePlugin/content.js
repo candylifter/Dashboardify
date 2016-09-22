@@ -10,6 +10,9 @@ function handleElementClick(e) {
 
   Item.Website = window.location.href;
   Item.XPath = getPathTo(this);
+  // Item.CSS = unique(this);
+
+  // console.log(Item.CSS)
 
   chrome.runtime.sendMessage({action: "CREATE_ITEM", item: Item}, null);
 }
