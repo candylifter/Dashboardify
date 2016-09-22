@@ -406,18 +406,6 @@ namespace Dashboardify.Sandbox
             }
         }
 
-        public void TestReturnIfValidSession(string connectionString)
-        {
-            var userSesRepo = new UserSessionRepository(connectionString);
-
-            var data = userSesRepo.GetExpireDate("ef11737342294a829253aefcf23d7cbb710d0e92f14443e48d229a8f8dfa9a2ec09c1511bb8e4512b1779b7937cc87f0cf22eb8c0e2a4f8dbf540af40a292715");
-
-            Console.WriteLine(data < DateTime.Now ? "Mazesne" : "Didesne");
-            Console.WriteLine(data == DateTime.MinValue);
-            Console.WriteLine(data);
-
-        }
-
         public void TestGetBySessionId(string connectionString)
         {
             var userSesRepo = new UserSessionRepository(connectionString);
@@ -439,7 +427,7 @@ namespace Dashboardify.Sandbox
         {
             var userRepo = new UsersRepository(connectionString);
 
-            var anw = userRepo.ReturnEmail("mail@maestro.com");
+            var anw = userRepo.ReturnEmail("mail@maestr o.com");
 
             if (string.IsNullOrEmpty(anw))
             {
@@ -449,6 +437,8 @@ namespace Dashboardify.Sandbox
             {
                 Console.WriteLine("Email is taken");
             }
+
+            //Console.WriteLine(anw);
 
 
         }

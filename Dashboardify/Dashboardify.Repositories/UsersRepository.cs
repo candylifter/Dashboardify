@@ -199,12 +199,35 @@ namespace Dashboardify.Repositories
                                 Email
                             FROM
                                 Users
-                            WHERE Email = '{email}'";
+                            WHERE 
+                                Email = '{email}'";
 
-                var result = db.Query<User>(query).SingleOrDefault();
+                var result = db.Query<string>(query).SingleOrDefault();
 
-                return result.Email;
+                return result;
             }
         }
+
+
+
+        public bool CheckIfEmailAvailable(string email)
+        {
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                string query =
+                $@"SELECT
+                                Email
+                            FROM
+                                Users
+                            WHERE 
+                                Email = '{email}'";
+
+                var result = db.Query<string>(query).SingleOrDefault();
+
+                return result == null;
+            }
+        }
+
+
     }
 }
