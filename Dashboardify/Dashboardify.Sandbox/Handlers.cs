@@ -123,7 +123,7 @@ namespace Dashboardify.Sandbox
                 Website = "www.google.com"
             };
 
-            request.SessionId =
+            request.Ticket =
                 "96d0bcc478e94faa8bbe62bf7af55f4c076489f5b98d44e79ad0c26bcabd9e142c84bf2f2c5b47b09e85e599c7ad11ded94391c070c34d6f8a4aa3f90976fdf2";
 
             var response = handler.Handle(request);

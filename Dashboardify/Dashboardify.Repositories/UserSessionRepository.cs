@@ -65,7 +65,7 @@ namespace Dashboardify.Repositories
                 FROM Users
                 JOIN UserSession
 	                ON UserSession.UserId = Users.Id
-	                WHERE SessionId = '{ticket}'";
+	                WHERE Ticket = '{ticket}'";
 
             using (IDbConnection db = new SqlConnection(_connectionString))
             {

@@ -92,14 +92,14 @@ namespace Dashboardify.Handlers.Items
             }
 
             var UserIdByDash = _dashRepository.GetUserByDashId(request.Item.DashBoardId);
-            var UserIdBySessionId = _userSessionRepository.GetUserBySessionId(request.SessionId);
+            var UserIdBySessionId = _userSessionRepository.GetUserBySessionId(request.Ticket);
 
             if (UserIdBySessionId != null && UserIdByDash != null && UserIdBySessionId.Id != UserIdByDash.Id) //TODO pasiklausti zilvino ar good practice
             {
                 errors.Add(new ErrorStatus("UNAUTHORIZED_ACCESS"));
             }
 
-            if (!IsSessionValid(request.SessionId))
+            if (!IsSessionValid(request.Ticket))
             {
                 errors.Add(new ErrorStatus("SESSION_EXPIRED"));
             }

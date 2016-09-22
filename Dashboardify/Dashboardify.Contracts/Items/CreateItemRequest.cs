@@ -6,6 +6,6 @@ namespace Dashboardify.Contracts.Items
     {
         public Item Item { get; set; }
 
-        public string SessionId;
+        public string Ticket { get; set; }
     }
 }
