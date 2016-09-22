@@ -18,6 +18,11 @@ export default {
   },
 
   fetchDashboards (userId) {
-    return axios.get(`${rootDomain}/Dashboards/GetList?userId=${userId}`)
+    // return axios.get(`${rootDomain}/Dashboards/GetList?userId=${userId}`)
+    let data = {
+      UserId: userId
+    }
+
+    return axios.post(`${rootDomain}/Dashboards/GetList`, data)
   }
 }
