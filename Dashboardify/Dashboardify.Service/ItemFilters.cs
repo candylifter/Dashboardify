@@ -46,6 +46,8 @@ namespace Dashboardify.Service
                 }
             }
 
+            logger.Info("Get outdated items");
+
             return outdatedItems;
         }
     }
