@@ -6,7 +6,7 @@ using Dashboardify.Contracts.Items;
 
 namespace Dashboardify.Handlers.Items
 {
-    public class CreateItemHandler
+    public class CreateItemHandler:BaseHandler
     {
         private ItemsRepository _itemRepository;
 
@@ -14,7 +14,8 @@ namespace Dashboardify.Handlers.Items
 
         private DashRepository _dashRepository;
 
-        public CreateItemHandler(String ConnectionString)
+        public CreateItemHandler(string connectionString): 
+            base (connectionString)
         {
             _itemRepository = new ItemsRepository(ConnectionString);
 
@@ -98,7 +99,7 @@ namespace Dashboardify.Handlers.Items
                 errors.Add(new ErrorStatus("UNAUTHORIZED_ACCESS"));
             }
 
-            if (_userSessionRepository.GetExpireDate(request.SessionId) < DateTime.Now)
+            if (!IsSessionValid(request.SessionId))
             {
                 errors.Add(new ErrorStatus("SESSION_EXPIRED"));
             }

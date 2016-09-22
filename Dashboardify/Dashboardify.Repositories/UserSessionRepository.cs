@@ -36,52 +36,22 @@ namespace Dashboardify.Repositories
                 return true;  
         }
 
-        public DateTime GetExpireDate(string sessionId)
+        public UserSession GetSession(string ticket)
         {
-
-            string query =
-                $@"SELECT Expires
-                            FROM UserSession
-                            WHERE SessionId = '{sessionId}'";
-
-                            //AND 
-                            //UserId ='{userId}'"; bbz kam cia buvo
-
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                return db.Query<DateTime>(query).SingleOrDefault();
+                string query = $@"SELECT
+                           Id,
+                           SessionId,
+                           Expires
+                        FROM UserSession
+                            WHERE SessionId = '{ticket}'";
+
+                return db.Query<UserSession>(query).SingleOrDefault();
             }
-            
         }
 
-        public IList<UserSession> GetAll()
-        {
-            string query = @"SELECT 
-                                Id,
-                                UserId,
-                                Expire
-                            FROM
-                                UserSession";
-
-            try
-            {
-                using (IDbConnection db = new SqlConnection(_connectionString))
-                {
-                    return db.Query<UserSession>
-                        (query).ToList();
-                }
-                
-            }
-            catch (Exception ex) 
-            {
-                
-                throw;
-            }
-
-
-        }
-
-        public User GetUserBySessionId(string sessionId)
+        public User GetUserBySessionId(string ticket)
         {
             string query =
                 $@"SELECT 
@@ -95,7 +65,7 @@ namespace Dashboardify.Repositories
                 FROM Users
                 JOIN UserSession
 	                ON UserSession.UserId = Users.Id
-	                WHERE SessionId = '{sessionId}'";
+	                WHERE SessionId = '{ticket}'";
 
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
@@ -103,13 +73,13 @@ namespace Dashboardify.Repositories
             }
         }
 
-        public void DeleteUserSession(string sessionId)
+        public void DeleteUserSession(string ticket)
         {
             string query =
                 $@"DELETE FROM
                                 UserSession
                             WHERE 
-                                SessionId = '{sessionId}'";
+                                SessionId = '{ticket}'";
 
             using (IDbConnection db = new SqlConnection(_connectionString))
             {

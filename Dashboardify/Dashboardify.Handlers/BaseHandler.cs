@@ -18,9 +18,11 @@ namespace Dashboardify.Handlers
             _userSessionRepository = new UserSessionRepository(ConnectionString);
         }
 
-        protected bool CheckIfSessionValid(string sessionId)
-        {   //TODO sudeti logika
-            return false;
+        protected bool IsSessionValid(string ticket)
+        {
+            var session = _userSessionRepository.GetSession(ticket); //parasyti po to metoda
+
+            return session != null && session.Expires > DateTime.Now; 
         }
     }
 }
