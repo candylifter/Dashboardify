@@ -1,9 +1,11 @@
 import React, { PropTypes } from 'react'
+import { connect } from 'react-redux'
 
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 
-import { AuthAPI } from 'api'
+// import { AuthAPI } from 'api'
+import { AuthActions } from 'actions'
 
 class LoginForm extends React.Component {
   constructor () {
@@ -15,10 +17,9 @@ class LoginForm extends React.Component {
   handleSubmit (e) {
     e.preventDefault()
     let { email, password } = this.refs
+    let { dispatch } = this.props
 
-    AuthAPI.login(email.input.value, password.input.value)
-
-    console.log(email.input.value, password.input.value)
+    dispatch(AuthActions.login(email.input.value, password.input.value))
   }
 
   render () {
@@ -53,4 +54,4 @@ class LoginForm extends React.Component {
   }
 }
 
-export default LoginForm
+export default connect()(LoginForm)
