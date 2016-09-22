@@ -20,10 +20,10 @@ namespace Dashboardify.Sandbox
         {
             //TestItemUpdateHandler();
             //TestUserUpdateHandler();
-            TestItemCreation();
+            //TestItemCreation();
             //TestDeleteItemHandler();
             //TestUpdateDash();
-            //TestCreateUser();   //leidzia dubliuoti
+            TestCreateUser();   //leidzia dubliuoti
             //TestLoginUser();
 
             //TestGetDashById();
@@ -203,9 +203,9 @@ namespace Dashboardify.Sandbox
 
             var request = new CreateUserRequest();
 
-            request.Password = "zygimantas";
-            request.Email = "emailas@gil.se";
-            request.Username = "zygimantas";
+            request.Password = "";
+            request.Email = "";
+            request.Username = "";
 
             var response = createUserHandler.Handle(request);
 

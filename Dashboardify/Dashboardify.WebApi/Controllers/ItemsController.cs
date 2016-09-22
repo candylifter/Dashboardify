@@ -7,22 +7,18 @@ using Dashboardify.Handlers.Items;
 
 namespace Dashboardify.WebApi.Controllers
 {
-    public class ItemsController : ApiController
+    public class ItemsController : BaseController
     {
         private static string connectionString = ConfigurationManager.ConnectionStrings["GCP"].ConnectionString;
 
         [HttpGet]
-        public HttpResponseMessage GetList(int dashboardId)
+        public HttpResponseMessage GetList(GetItemsListRequest request)
         {
-            var request = new GetItemsListRequest();
-
-            request.DashboarId = dashboardId;
-
             var handler = new GetItemsListHandler(connectionString);
 
             var response = handler.Handle(request);
 
-            var httpStatusCode = response.HasErrors ? HttpStatusCode.BadRequest : HttpStatusCode.OK;
+            var httpStatusCode = ResolveStatusCode(response);
 
             return Request.CreateResponse(httpStatusCode, response);
         }

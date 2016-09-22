@@ -12,11 +12,11 @@ namespace Dashboardify.Sandbox
         static void Main(string[] args)
 
         {
-            _repositories = new Repositories();
-            _repositories.Do();
+            //_repositories = new Repositories();
+            //_repositories.Do();
 
-            //_handlers = new Handlers();
-            //_handlers.Do();
+            _handlers = new Handlers();
+            _handlers.Do();
 
             ////_email = new Email();
             ////_email.Do();

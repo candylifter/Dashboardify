@@ -8,26 +8,26 @@ using Dashboardify.Handlers.Users;
 namespace Dashboardify.WebApi.Controllers
 {
 
-    public class UsersController : ApiController
+    public class UsersController : BaseController
     {
-        private static string connectionString = ConfigurationManager.ConnectionStrings["GCP"].ConnectionString;
+        private static string _connectionString = ConfigurationManager.ConnectionStrings["GCP"].ConnectionString;
         
         [HttpPost]
         public HttpResponseMessage Update(UpdateUserRequest request)
         {
-            var handler = new UpdateUserHandler(connectionString);
+            var handler = new UpdateUserHandler(_connectionString);
 
             var response = handler.Handle(request);
 
-            var httpStatusCode = response.HasErrors ? HttpStatusCode.BadRequest : HttpStatusCode.OK;
+            var statusCode = ResolveStatusCode(response);
 
-            return Request.CreateResponse(httpStatusCode, response);
+            return Request.CreateResponse(statusCode, response);
         }
 
         [HttpPost]
         public HttpResponseMessage Create(CreateUserRequest request)
         {
-            var handler = new CreateUserHandler(connectionString);
+            var handler = new CreateUserHandler(_connectionString);
 
             var response = handler.Handle(request);
 
