@@ -2,21 +2,17 @@
 using System.Configuration;
 using System.Net;
 using System.Net.Http;
-using Dashboardify.Contracts.Users;
 using Dashboardify.Contracts.UserSession;
-using Dashboardify.Handlers.Users;
 using Dashboardify.Handlers.UserSession;
 
 namespace Dashboardify.WebApi.Controllers
 {
-    public class UserSessionController : ApiController
+    public class LoginController : ApiController
     {
         private static string connectionString = ConfigurationManager.ConnectionStrings["GCP"].ConnectionString;
 
-
-        //TODO Fails, neprisiskiria Name n Passowrd User modelyje
         [HttpPost]
-        public HttpResponseMessage Login(LoginUserRequest request)
+        public HttpResponseMessage Index(LoginUserRequest request)
         {
             var handler = new LoginUserHandler(connectionString);
 

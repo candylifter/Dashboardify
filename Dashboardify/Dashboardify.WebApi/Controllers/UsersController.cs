@@ -3,10 +3,7 @@ using System.Configuration;
 using System.Net;
 using System.Net.Http;
 using Dashboardify.Contracts.Users;
-using Dashboardify.Contracts.UserSession;
 using Dashboardify.Handlers.Users;
-using Dashboardify.Handlers.UserSession;
-using Dashboardify.Contracts.UserSession;
 
 namespace Dashboardify.WebApi.Controllers
 {

@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Dashboardify.Contracts;
 using Dashboardify.Contracts.Users;
+using Dashboardify.Handlers.Helpers;
 using Dashboardify.Models;
 using Dashboardify.Repositories;
 
@@ -32,7 +33,7 @@ namespace Dashboardify.Handlers.Users
             }
             try
             {
-                request.Password = HashPassword(request.Password);
+                request.Password = PasswordsHelper.HashPassword(request.Password);
 
                 _userRepository.CreateUser(new User()
                 {
@@ -42,7 +43,6 @@ namespace Dashboardify.Handlers.Users
                     Password = request.Password,
                     Email = request.Email,
                     IsActive = true
-
                 });
 
                 SendEmail(request);
@@ -60,9 +60,6 @@ namespace Dashboardify.Handlers.Users
 
         public IList<ErrorStatus> Validate(CreateUserRequest request)
         {
-
-          
-
             var errors = new List<ErrorStatus>();
             if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
             {
@@ -79,19 +76,7 @@ namespace Dashboardify.Handlers.Users
             return errors;
 
         }
-        private string HashPassword(string password)
-        {
-            MD5 md5 = MD5.Create();
-            byte[] inputBytes = Encoding.ASCII.GetBytes(password);
-            byte[] hash = md5.ComputeHash(inputBytes);
-
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < hash.Length; i++)
-            {
-                sb.Append(hash[i].ToString("X2"));
-            }
-            return sb.ToString();
-        }
+        
 
         private void SendEmail(CreateUserRequest request)//TODO refactor to mailsender in service layer
         {

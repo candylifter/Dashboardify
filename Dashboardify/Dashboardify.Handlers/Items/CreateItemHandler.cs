@@ -23,7 +23,7 @@ namespace Dashboardify.Handlers.Items
             _dashRepository = new DashRepository(ConnectionString);
         }
 
-        public CreateItemResponse Handle (CreateItemRequest request) //todo prachekinti per postman
+        public CreateItemResponse Handle(CreateItemRequest request) //todo prachekinti per postman
         {
             var response = new CreateItemResponse();
 
@@ -53,7 +53,7 @@ namespace Dashboardify.Handlers.Items
                 response.Errors.Add(new ErrorStatus(ex.Message));
                 return response;
             }
-            
+
         }
 
         private IList<ErrorStatus> Validate(CreateItemRequest request)
@@ -89,11 +89,15 @@ namespace Dashboardify.Handlers.Items
             {
                 errors.Add(new ErrorStatus("NAME_NOT_DEFINED"));
             }
-            if (_dashRepository.GetUserByDashId(request.Item.DashBoardId).Id !=
-                _userSessionRepository.GetUserBySessionId(request.SessionId).Id) //TODO pasiklausti zilvino ar good practice
+
+            var UserIdByDash = _dashRepository.GetUserByDashId(request.Item.DashBoardId);
+            var UserIdBySessionId = _userSessionRepository.GetUserBySessionId(request.SessionId);
+
+            if (UserIdBySessionId != null && UserIdByDash != null && UserIdBySessionId.Id != UserIdByDash.Id) //TODO pasiklausti zilvino ar good practice
             {
                 errors.Add(new ErrorStatus("UNAUTHORIZED_ACCESS"));
             }
+
             if (_userSessionRepository.GetExpireDate(request.SessionId) < DateTime.Now)
             {
                 errors.Add(new ErrorStatus("SESSION_EXPIRED"));

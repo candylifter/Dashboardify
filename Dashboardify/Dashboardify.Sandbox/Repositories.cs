@@ -439,7 +439,7 @@ namespace Dashboardify.Sandbox
         {
             var userRepo = new UsersRepository(connectionString);
 
-            var anw = userRepo.ReturnEmail("mail@maestro.com");
+            var anw = userRepo.ReturnEmail("mail@maestr o.com");
 
             if (string.IsNullOrEmpty(anw))
             {
@@ -449,6 +449,8 @@ namespace Dashboardify.Sandbox
             {
                 Console.WriteLine("Email is taken");
             }
+
+            //Console.WriteLine(anw);
 
 
         }

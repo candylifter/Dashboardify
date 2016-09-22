@@ -41,8 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseHandler.cs" />
     <Compile Include="Dashboards\GetDashboardsHandler.cs" />
     <Compile Include="Dashboards\UpdateDashBoardHandler.cs" />
+    <Compile Include="Helpers\PasswordsHelper.cs" />
     <Compile Include="Items\CreateItemHandler.cs" />
     <Compile Include="Items\DeleteItemHandler.cs" />
     <Compile Include="Items\GetItemHandler.cs" />

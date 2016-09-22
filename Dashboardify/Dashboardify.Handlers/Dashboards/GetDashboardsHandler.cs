@@ -6,18 +6,18 @@ using Dashboardify.Contracts.Dashboards;
 
 namespace Dashboardify.Handlers.Dashboards
 {
-    public class GetDashboardsHandler
+    public class GetDashboardsHandler : BaseHandler
     {
         private DashRepository _dashboardsRepository;
 
         private UserSessionRepository _userSessionRepository;
 
         public GetDashboardsHandler(string connectionString)
+            : base(connectionString)
         {
             _dashboardsRepository = new DashRepository(connectionString);
 
             _userSessionRepository = new UserSessionRepository(connectionString);
-
         }
 
         public GetDashboardsResponse Handle(GetDashboardsRequest request)
@@ -30,6 +30,7 @@ namespace Dashboardify.Handlers.Dashboards
             {
                 return response;
             }
+
             try
             {
                 var dashboards = _dashboardsRepository.GetByUserId(request.UserId);
@@ -40,15 +41,22 @@ namespace Dashboardify.Handlers.Dashboards
             }
             catch (Exception ex)
             {
-                response.Errors.Add(new ErrorStatus(ex.Message));
+                response.Errors.Add(new ErrorStatus("SYSTEM_ERROR"));
+
+                // LOG TO FILE ex.Message
+
                 return response;
             }
-            
         }
 
         private IList<ErrorStatus> Validate(GetDashboardsRequest request)
         {
             var errors = new List<ErrorStatus>();
+
+            if (!CheckIfSessionValid(request.SessionId))
+            {
+                errors.Add(new ErrorStatus("SESSION_NOT_VALID"));
+            }
 
             if (request.UserId == 0)
             {
@@ -74,7 +82,6 @@ namespace Dashboardify.Handlers.Dashboards
             {
                 errors.Add(new ErrorStatus("UNAUTHORIZED_ACCES"));
             }
-
 
             return errors;
         }
