@@ -53,7 +53,7 @@ namespace Dashboardify.Handlers.Dashboards
         {
             var errors = new List<ErrorStatus>();
 
-            if (!IsSessionValid(request.SessionId))
+            if (!IsSessionValid(request.Ticket))
             {
                 errors.Add(new ErrorStatus("SESSION_NOT_VALID"));
             }
@@ -63,7 +63,7 @@ namespace Dashboardify.Handlers.Dashboards
                 errors.Add(new ErrorStatus("USERID_NOT_DEFINED"));
             }
             
-            if (_userSessionRepository.GetUserBySessionId(request.SessionId).Id != request.UserId)
+            if (_userSessionRepository.GetUserBySessionId(request.Ticket).Id != request.UserId)
             {
                 errors.Add(new ErrorStatus("UNAUTHORIZED_ACCES"));
             }

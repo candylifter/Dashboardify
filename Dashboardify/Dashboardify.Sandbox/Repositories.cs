@@ -369,7 +369,7 @@ namespace Dashboardify.Sandbox
 
             var sesija = new UserSession()
             {
-                SessionId = "g1dsf56g1df65g1fd56gdfs",
+                Ticket = "g1dsf56g1df65g1fd56gdfs",
                 UserId = 1,
                 Expires = DateTime.Now
             };

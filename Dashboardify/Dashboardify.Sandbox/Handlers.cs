@@ -226,7 +226,7 @@ namespace Dashboardify.Sandbox
             var request = new GetDashboardsRequest();
 
             request.UserId = 7;
-            request.SessionId =
+            request.Ticket =
                 "a04ef843509f45f68d1c204dec83181f37aca563515646c89f70cbd457b9b0fdadbb6114c1e543248b4392efa504ffd6f27e63b14f5e4d25814c09812989aacc";
 
 
@@ -252,7 +252,7 @@ namespace Dashboardify.Sandbox
 
             var request = new LogoutUserRequest();
 
-            request.SessionId = "maestro";
+            request.Ticket = "maestro";
 
             response = handler.Handle(request);
 
