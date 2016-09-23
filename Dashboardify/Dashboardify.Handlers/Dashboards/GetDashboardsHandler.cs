@@ -33,9 +33,19 @@ namespace Dashboardify.Handlers.Dashboards
 
             try
             {
-                var dashboards = _dashboardsRepository.GetByUserId(request.UserId);
+                var ticket = request.Ticket;
+
+                var userId = _userSessionRepository.GetUserBySessionId(ticket).Id;
+
+                var dashboards = _dashboardsRepository.GetByUserId(userId);
 
                 response.Dashboards = dashboards;
+
+                if (response.Dashboards == null)
+                {
+                    response.Errors.Add(new ErrorStatus("You dont have any dashboards")); //sita mes jeigu ir unauthorized
+                    return response;
+                }
 
                 return response;
             }
@@ -56,18 +66,9 @@ namespace Dashboardify.Handlers.Dashboards
             if (!IsSessionValid(request.Ticket))
             {
                 errors.Add(new ErrorStatus("SESSION_NOT_VALID"));
-            }
-
-            if (request.UserId == 0)
-            {
-                errors.Add(new ErrorStatus("USERID_NOT_DEFINED"));
+                return errors;
             }
             
-            if (_userSessionRepository.GetUserBySessionId(request.Ticket).Id != request.UserId)
-            {
-                errors.Add(new ErrorStatus("UNAUTHORIZED_ACCES"));
-            }
-
             return errors;
         }
     }

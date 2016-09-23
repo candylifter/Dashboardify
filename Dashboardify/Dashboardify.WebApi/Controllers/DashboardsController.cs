@@ -10,7 +10,7 @@ namespace Dashboardify.WebApi.Controllers
     public class DashboardsController : BaseController
     {
         private static string _connectionString = ConfigurationManager.ConnectionStrings["GCP"].ConnectionString;
-        //private DashRepository deshai = new DashRepository(ConnectionString);
+        
 
         [HttpGet]
         public IHttpActionResult Index()
