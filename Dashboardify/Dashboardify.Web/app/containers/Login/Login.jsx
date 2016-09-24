@@ -1,4 +1,5 @@
 import React from 'react'
+import { browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 
 import { Card, CardTitle, CardActions } from 'material-ui/Card'
@@ -39,6 +40,10 @@ class Login extends React.Component {
     }
 
     let { isPosting, isAuthenticated } = this.props
+
+    if (isAuthenticated) {
+      browserHistory.push('/')
+    }
 
     let renderLoginForm = () => {
       if (isPosting || isAuthenticated) {

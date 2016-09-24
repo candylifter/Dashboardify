@@ -10,8 +10,7 @@ export default {
   },
 
   completeLogin (res) {
-    Cookies.set('ticket', res.SessionId)
-    console.log('Logged in with ticket:', res.SessionId)
+    Cookies.set('ticket', res.SessionId) // TODO: add expiration date and replace SessionId with Ticket
     return {
       type: 'COMPLETE_LOGIN'
     }
@@ -34,6 +33,19 @@ export default {
           (res) => dispatch(this.completeLogin(res.data)),
           (err) => dispatch(this.failLogin(err))
         )
+    }
+  },
+
+  logout () {
+    let ticket = Cookies.get('ticket')
+
+    if (ticket !== undefined) {
+      AuthAPI.logout(ticket)
+      Cookies.remove('ticket')
+    }
+
+    return {
+      type: 'LOGOUT'
     }
   }
 }

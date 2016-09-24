@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Cookies from 'js-cookie'
 
 const rootDomain = `http://${window.location.hostname}/api`
 
@@ -14,6 +15,14 @@ export default {
     return axios.post(
       `${rootDomain}/login/index`, Data
     )
+  },
+
+  logout (ticket) {
+    // TODO: send ticket to webapi to delete session
+  },
+
+  isLoggedIn () {
+    return !!Cookies.get('ticket')
   },
 
   register () {
