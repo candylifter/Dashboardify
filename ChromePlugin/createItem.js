@@ -23,6 +23,11 @@ var interval = document.getElementById('timer');
 var intervalValue = interval.value;
 var websiteInput = document.getElementById("website");
 var xpathInput = document.getElementById("xpath");
+var createDashboard = document.getElementById("new-dashboard");
+
+createDashboard.onClick = function newBoard (){
+  location("www.google.lt");
+}
 
 interval.onchange=function(){intervalValue = this.value};
 dashboard.onchange=function(){dashboardId = this.value};
@@ -34,7 +39,6 @@ form.onsubmit = function (event) {
   event.preventDefault()
 
   var name = document.getElementById('item-name').value
-  debugger
   $.ajax({
     type: "POST",
     url: "http://localhost/api/Items/createItem",
