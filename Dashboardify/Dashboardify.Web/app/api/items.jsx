@@ -13,7 +13,7 @@ export default {
         id: item.Id,
         dashboardId: item.DashBoardId,
         name: item.Name,
-        img: item.Screenshots.length >= 1 ? 'http://' + window.location.hostname + '/screenshot/' + item.Screenshots[0].ScrnshtURL : '',
+        img: item.Screenshots.length >= 1 ? 'http://' + '23.251.133.254' + '/screenshots/' + item.Screenshots[0].ScrnshtURL : '',
         url: item.Website,
         isActive: item.IsActive,
         isSelected: false,

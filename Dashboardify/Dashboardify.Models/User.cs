@@ -18,20 +18,6 @@ namespace Dashboardify.Models
 
         public DateTime DateModified { get; set; }
 
-        //private string HashPassword(string pass)
-        //{
-        //    MD5 md5 = MD5.Create();
-        //    byte[] inputBytes = Encoding.ASCII.GetBytes(pass);
-        //    byte[] hash = md5.ComputeHash(inputBytes);
-
-        //    StringBuilder sb = new StringBuilder();
-        //    for (int i = 0; i < hash.Length; i++)
-        //    {
-        //        sb.Append(hash[i].ToString("X2"));
-        //    }
-        //    return sb.ToString();
-        //}
-
         public override string ToString()
         {
             return

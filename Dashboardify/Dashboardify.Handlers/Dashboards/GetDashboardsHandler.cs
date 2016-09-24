@@ -6,13 +6,18 @@ using Dashboardify.Contracts.Dashboards;
 
 namespace Dashboardify.Handlers.Dashboards
 {
-    public class GetDashboardsHandler
+    public class GetDashboardsHandler : BaseHandler
     {
         private DashRepository _dashboardsRepository;
 
+        private UserSessionRepository _userSessionRepository;
+
         public GetDashboardsHandler(string connectionString)
+            : base(connectionString)
         {
             _dashboardsRepository = new DashRepository(connectionString);
+
+            _userSessionRepository = new UserSessionRepository(connectionString);
         }
 
         public GetDashboardsResponse Handle(GetDashboardsRequest request)
@@ -25,31 +30,45 @@ namespace Dashboardify.Handlers.Dashboards
             {
                 return response;
             }
+
             try
             {
-                var dashboards = _dashboardsRepository.GetByUserId(request.UserId);
+                var ticket = request.Ticket;
+
+                var userId = _userSessionRepository.GetUserBySessionId(ticket).Id;
+
+                var dashboards = _dashboardsRepository.GetByUserId(userId);
 
                 response.Dashboards = dashboards;
+
+                if (response.Dashboards == null)
+                {
+                    response.Errors.Add(new ErrorStatus("You dont have any dashboards")); //sita mes jeigu ir unauthorized
+                    return response;
+                }
 
                 return response;
             }
             catch (Exception ex)
             {
-                response.Errors.Add(new ErrorStatus(ex.Message));
+                response.Errors.Add(new ErrorStatus("SYSTEM_ERROR"));
+
+                // LOG TO FILE ex.Message
+
                 return response;
             }
-            
         }
 
         private IList<ErrorStatus> Validate(GetDashboardsRequest request)
         {
             var errors = new List<ErrorStatus>();
 
-            if (request.UserId == 0)
+            if (!IsSessionValid(request.Ticket))
             {
-                errors.Add(new ErrorStatus("USERID_NOT_DEFINED"));
+                errors.Add(new ErrorStatus("SESSION_NOT_VALID"));
+                return errors;
             }
-
+            
             return errors;
         }
     }

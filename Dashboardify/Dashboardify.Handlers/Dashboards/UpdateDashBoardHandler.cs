@@ -11,9 +11,12 @@ namespace Dashboardify.Handlers.Dashboards
     {
         private DashRepository _dashRepository;
 
+        private UserSessionRepository _userSessionRepository;
+
         public UpdateDashBoardHandler(string connectionString)
         {
             _dashRepository = new DashRepository(connectionString);
+            _userSessionRepository = new UserSessionRepository(connectionString);
         }
 
         public UpdateDashboardResponse Handle(UpdateDashboardRequest request)
@@ -59,6 +62,11 @@ namespace Dashboardify.Handlers.Dashboards
                 errors.Add(new ErrorStatus("DASH_NOT_FOUND"));
                 return errors;
             }
+            if (_userSessionRepository.GetUserBySessionId(request.Ticket).Id != request.DashBoard.UserId)
+            {
+                errors.Add(new ErrorStatus("UNAUTHORIZED_ACCES"));
+            }
+            
             return errors;
         }
     }

@@ -4,18 +4,19 @@ using System.Timers;
 using Dashboardify.Repositories;
 using System.Collections.Generic;
 using System.Linq;
+using log4net;
 
 namespace Dashboardify.Service
 {
     public class Service
     {
-        string connectionString = ConfigurationManager.ConnectionStrings["DBZygis"].ConnectionString;
+        string connectionString = ConfigurationManager.ConnectionStrings["GCP"].ConnectionString;
         private readonly Timer _timer;
         private readonly ItemsRepository _itemsRepository;
         private readonly ScreenshotRepository _screenshotRepository;
         private readonly ItemFilters _itemFilters = new ItemFilters();
         private readonly ContentHandler _contentHandler = new ContentHandler();
-
+        private ILog logger = log4net.LogManager.GetLogger("Dashboardify.Service");
 
         public Service()
         {
@@ -27,72 +28,96 @@ namespace Dashboardify.Service
             _screenshotRepository = new ScreenshotRepository(connectionString);
 
             UpdateItems();
+            //Console.WriteLine("--> Completed updating items");
+            logger.Info("--> Completed updating items");
+
         }
 
 
         public void TimeElapsedEventHandler(object sender, ElapsedEventArgs e)
         {
-
+            //var startTime = DateTime.Now;
             UpdateItems();
-            Console.WriteLine("--> Completed updating items");
-            //Console.ReadLine();
-            //_timer.Stop();
+            //Console.WriteLine("\n Cycle completed in {0} miliseconds\n", (DateTime.Now - startTime).TotalMilliseconds.ToString());
+            //Console.WriteLine("--> Completed updating items");
+            logger.Info("--> Completed updating items");
         }
 
         public void UpdateItems()
         {
-            Console.WriteLine("\n->  Updating\n");
+            //Console.WriteLine("\n->  Updating\n");
+            logger.Info("\n->  Updating\n");
 
+            //Console.WriteLine("\n\nItems from db:\n");
+            logger.Info("\n\nItems from db:\n");
 
-
-            Console.WriteLine("\n\nItems from db:\n");
             var items = _itemsRepository.GetList();
             foreach (var item in items)
                 Console.WriteLine(item.Name);
 
 
-            Console.WriteLine("\n\nScheduled items:\n");
+            logger.Info("\n\nScheduled items:\n");
+            //Console.WriteLine("\n\nScheduled items:\n");
             var scheduledItems = _itemFilters.GetScheduledList(items);
             foreach (var item in scheduledItems)
                 Console.WriteLine(item.Name);
 
-            Console.WriteLine("\n\nOutdated items:\n");
+            logger.Info("\n\nOutdated items:\n");
+            //Console.WriteLine("\n\nOutdated items:\n");
             var outdatedItems = _itemFilters.GetOutdatedList(scheduledItems);
             foreach (var item in outdatedItems)
                 Console.WriteLine(item.Name);
 
             UpdateNonOutdatedItems(items, outdatedItems);
 
+            UpdateOutdatedItems(outdatedItems);
+        }
 
-            foreach (var item in outdatedItems)
+        public void UpdateOutdatedItems(IList<Item> items)
+        {
+            foreach (var item in items)
             {
-                string filename = _contentHandler.GetScreenshot(item);
 
-                var now = DateTime.Now;
+                var task = _contentHandler.GetScreenshotAsync(item);
 
-                item.LastChecked = now;
-                item.Modified = now;
+                string filename = task.Result;
 
-                _itemsRepository.Update(item);
+                if (filename != null)
+                {
+                    var now = DateTime.Now;
 
-                Models.Screenshot screenshot = new Models.Screenshot();
+                    item.LastChecked = now;
+                    item.Modified = now;
 
-                screenshot.ItemId = item.Id;
-                screenshot.ScrnshtURL = filename;
-                screenshot.DateTaken = now;
+                    _itemsRepository.Update(item);
 
-                _screenshotRepository.Create(screenshot);
+                    Models.Screenshot screenshot = new Models.Screenshot();
 
-                Console.WriteLine("Updated item: " + item.Name);
+                    screenshot.ItemId = item.Id;
+                    screenshot.ScrnshtURL = filename;
+                    screenshot.DateTaken = now;
+
+                    _screenshotRepository.Create(screenshot);
+
+                    logger.Info("Updated item: " + item.Name);
+                    //Console.WriteLine("Updated item: " + item.Name);
+                }
+                else
+                {
+                    logger.Info("Cannot get screenshot");
+                    //Console.WriteLine("Cannot get screenshot");
+                }
+
+          
             }
-
         }
 
         public void UpdateNonOutdatedItems(IList<Item> allItems, IList<Item> outdatedItems)
         {
             var items = allItems.Where(a => !outdatedItems.Any(o => o.Id == a.Id)).ToList();
 
-            Console.WriteLine("\n\nNot outdated items:");
+            logger.Info("\n\nNot outdated items:");
+            //Console.WriteLine("\n\nNot outdated items:");
             foreach(var item in items)
             {
                 Console.WriteLine(item.Name);
@@ -101,8 +126,6 @@ namespace Dashboardify.Service
 
                 _itemsRepository.Update(item);
             }
-
-            //List<Firm> results = Firms.Where(f => !TrackedFirms.Any(t => t.FirmId = f.FirmId)).ToList();
         }
 
         public void Start()

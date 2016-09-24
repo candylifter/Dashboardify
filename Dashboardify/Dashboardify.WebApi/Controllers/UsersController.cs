@@ -3,34 +3,31 @@ using System.Configuration;
 using System.Net;
 using System.Net.Http;
 using Dashboardify.Contracts.Users;
-using Dashboardify.Contracts.UserSession;
 using Dashboardify.Handlers.Users;
-using Dashboardify.Handlers.UserSession;
-using Dashboardify.Contracts.UserSession;
 
 namespace Dashboardify.WebApi.Controllers
 {
 
-    public class UsersController : ApiController
+    public class UsersController : BaseController
     {
-        private static string connectionString = ConfigurationManager.ConnectionStrings["DBIrmantas"].ConnectionString;
+        private static string _connectionString = ConfigurationManager.ConnectionStrings["GCP"].ConnectionString;
         
         [HttpPost]
         public HttpResponseMessage Update(UpdateUserRequest request)
         {
-            var handler = new UpdateUserHandler(connectionString);
+            var handler = new UpdateUserHandler(_connectionString);
 
             var response = handler.Handle(request);
 
-            var httpStatusCode = response.HasErrors ? HttpStatusCode.BadRequest : HttpStatusCode.OK;
+            var statusCode = ResolveStatusCode(response);
 
-            return Request.CreateResponse(httpStatusCode, response);
+            return Request.CreateResponse(statusCode, response);
         }
 
         [HttpPost]
         public HttpResponseMessage Create(CreateUserRequest request)
         {
-            var handler = new CreateUserHandler(connectionString);
+            var handler = new CreateUserHandler(_connectionString);
 
             var response = handler.Handle(request);
 

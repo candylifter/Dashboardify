@@ -14,58 +14,77 @@ namespace Dashboardify.Repositories
 
         public UserSessionRepository(string connectionString)
         {
-            this._connectionString = connectionString;
+            _connectionString = connectionString;
         }
 
         public bool AddSession(UserSession session)
         {
             string query = @"INSERT INTO dbo.UserSession                               
-                                    (SessionId,
+                                    (Ticket,
                                     UserId,
                                     Expires) 
                                VALUES 
-                                    (@SessionId,
+                                    (@Ticket,
                                     @UserId,
                                     @Expires)";
 
-            try
-            {
+         
                 using (IDbConnection db = new SqlConnection(_connectionString))
                 {
                     db.Execute(query, session);
                 }
-                return true;
-            }
-            catch (Exception ex)
+                return true;  
+        }
+
+        public UserSession GetSession(string ticket)
+        {
+            using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                return false;
+                string query = $@"SELECT
+                           Id,
+                           Ticket,
+                           Expires
+                        FROM UserSession
+                            WHERE Ticket = '{ticket}'";
+
+                return db.Query<UserSession>(query).SingleOrDefault();
+            }
+        }
+        //
+        public User GetUserBySessionId(string ticket)
+        {
+            string query =
+                $@"SELECT 
+		                Users.Id,
+		                Name,
+		                Password,
+		                Email,
+		                IsActive,
+		                DateRegistered,
+		                DateModified
+                FROM Users
+                JOIN UserSession
+	                ON UserSession.UserId = Users.Id
+	                WHERE Ticket = '{ticket}'";
+
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                return db.Query<User>(query).SingleOrDefault();
             }
         }
 
-        public IList<UserSession> GetAll()
+        public void DeleteUserSession(string ticket)
         {
-            string query = @"SELECT 
-                                Id,
-                                UserId,
-                                Expire
-                            FROM
-                                UserSession";
+            string query =
+                $@"DELETE FROM
+                                UserSession
+                            WHERE 
+                                Ticket = '{ticket}'";
 
-            try
+            using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                using (IDbConnection db = new SqlConnection(_connectionString))
-                {
-                    return db.Query<UserSession>
-                        (query).ToList();
-                }
-                
+                db.Execute(query);
             }
-            catch (Exception ex) 
-            {
-                
-                throw;
-            }
-
 
         }
     }

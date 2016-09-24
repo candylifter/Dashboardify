@@ -1,13 +1,21 @@
 ﻿using Dashboardify.Repositories;
 using HtmlAgilityPack;
+using log4net;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NReco.PhantomJS;
 using System;
+using System.Net.Http;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Dashboardify.Service
 {
     public class ContentHandler
     {
+        private ILog logger = log4net.LogManager.GetLogger("Dashboardify.Service");
+
         public string GetContentByXPath(string url, string xpath)
         {
             HtmlWeb htmlWeb = new HtmlWeb();
@@ -31,7 +39,8 @@ namespace Dashboardify.Service
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                //Console.WriteLine(ex.Message);
+                logger.Info(ex.Message);
                 return null;
             }
         }
@@ -57,9 +66,42 @@ namespace Dashboardify.Service
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                //Console.WriteLine(ex.Message);
+                logger.Info(ex.Message);
+
                 return null;
             }
+        }
+
+        public async Task<string> GetScreenshotAsync(Item item)
+        {
+            var json = JsonConvert.SerializeObject(new { Website = item.Website, XPath = item.XPath, CSS = item.CSS });
+
+            using (var client = new HttpClient())
+            {
+
+
+                client.BaseAddress = new Uri("http://localhost:3000");
+                //Console.WriteLine("   Sending request to Phantom Node API...");
+                logger.Info("   Sending request to Phantom Node API...");
+
+                var response = await client.PostAsync("", new StringContent(json, Encoding.UTF8, "application/json"));
+                var contents = await response.Content.ReadAsStringAsync();
+                logger.Info("   Got response from Phantom Node API");
+                //Console.WriteLine("   Got response from Phantom Node API");
+
+                dynamic responseJson = JsonConvert.DeserializeObject(contents);
+
+                if (responseJson.success == true)
+                {
+                    return responseJson.filename;
+                } else
+                {
+                    return null;
+                }
+
+            }
+
         }
 
         public string GetScreenshot(Item item)

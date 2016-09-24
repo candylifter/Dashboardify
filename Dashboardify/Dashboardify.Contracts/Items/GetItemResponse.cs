@@ -4,6 +4,6 @@ namespace Dashboardify.Contracts.Items
 {
     public class GetItemResponse : BaseResponse
     {
-        public Item Itemas { get; set; }
+        public Item Item { get; set; }
     }
 }

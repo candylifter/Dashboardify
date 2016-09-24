@@ -1,105 +1,103 @@
-import React from 'react'
-import { findDOMNode } from 'react-dom'
-import { withRouter } from 'react-router'
+import React, { PropTypes } from 'react'
+import { connect } from 'react-redux'
+import debounce from 'debounce'
+
+import TextField from 'material-ui/TextField'
+import RaisedButton from 'material-ui/RaisedButton'
+
+import { AuthAPI } from 'api'
+import { AuthActions } from 'actions'
 
 class LoginForm extends React.Component {
-  constructor (props, context) {
-    super(props, context)
+  constructor () {
+    super()
 
     this.state = {
-      loginFailed: false,
-      loginFailedMessage: 'Unexpected error occured.',
-      submitButtonText: 'Sign in'
+      emailError: '',
+      passwordError: ''
     }
+
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleEmailChange = debounce(this.handleEmailChange.bind(this), 1000)
+    this.handlePasswordChange = this.handlePasswordChange.bind(this)
   }
 
-  componentDidMount () {
-    let {email} = this.refs
+  handleEmailChange () {
+    let { email } = this.refs
 
-    findDOMNode(email).focus()
+    this.setState({
+      emailError: AuthAPI.validateEmail(email.input.value)
+    })
   }
 
-  toggleInputs () {
-    let {email, password, submit} = this.refs
+  handlePasswordChange () {
+    let { password } = this.refs
 
-    email.disabled = !email.disabled
-    password.disabled = !password.disabled
-    submit.disabled = !submit.disabled
+    this.setState({
+      passwordError: AuthAPI.validatePassword(password.input.value)
+    })
   }
 
-  handleFormSubmit (e) {
+  handleSubmit (e) {
     e.preventDefault()
-    let {email, password, submit} = this.refs
+    let { email, password } = this.refs
 
-    if (email.value.length > 0 && password.value.length > 0) {
-      this.toggleInputs()
+    let validation = AuthAPI.validateLoginForm(email.input.value, password.input.value)
+
+    if (validation.hasErrors) {
+      console.log(validation)
       this.setState({
-        submitButtonText: 'Signing in...'
+        emailError: validation.emailError,
+        passwordError: validation.passwordError
       })
-
-      let that = this
-
-      setTimeout(() => {
-        if (email.value === 'maestro@maestro.lt' && password.value === '123') {
-          that.props.router.push('/dashboards')
-        } else {
-          this.toggleInputs()
-
-          password.value = ''
-          findDOMNode(password).focus()
-
-          this.setState({
-            loginFailed: true,
-            loginFailedMessage: 'Incorrect email or password.',
-            submitButtonText: 'Sign in'
-          })
-        }
-      }, 1000)
+    } else {
+      let { dispatch } = this.props
+      dispatch(AuthActions.login(email.input.value, password.input.value))
     }
   }
 
   render () {
-    let renderErrorMessage = () => {
-      if (this.state.loginFailed) {
-        return (
-          <div className='panel-heading'>
-            <strong>Oh snap! </strong>
-            {this.state.loginFailedMessage}
-          </div>
-        )
+    const style = {
+      padding: '0 1em 1em 1em',
+      button: {
+        margin: '2em 0 1em'
       }
     }
 
     return (
-      <div className={'panel ' + (this.state.loginFailed ? 'panel-danger' : 'panel-default')}>
-        {renderErrorMessage()}
-        <div className='panel-body'>
-          <form onSubmit={this.handleFormSubmit.bind(this)}>
-            <div className='form-group'>
-              <label htmlFor='login-email'>Email address</label>
-              <input type='email' id='login-email' ref='email' className='form-control' placeholder='darth.vader@empire.gov' required />
-            </div>
-            <div className='form-group'>
-              <label htmlFor='login-password'>Password</label>
-              <input type='password' id='login-password' ref='password' className='form-control' placeholder='IFeelTheForce123' required />
-            </div>
-            <button type='submit' ref='submit' className='btn btn-primary'>{this.state.submitButtonText}</button>
-          </form>
-          <hr />
-          <p><a href=''>Forgot password</a></p>
-          <p>Not a user yet?            <a href=''>Register</a></p>
-        </div>
-      </div>
+      <form style={style} onSubmit={this.handleSubmit}>
+        <TextField
+          floatingLabelText='Email'
+          hintText='darth.vader@empire.gov'
+          fullWidth
+          type='text'
+          ref='email'
+          errorText={this.state.emailError}
+          onChange={this.handleEmailChange}
+        />
+        <TextField
+          floatingLabelText='Password'
+          hintText='IFeelTheForce'
+          fullWidth
+          type='password'
+          ref='password'
+          errorText={this.state.passwordError}
+          onChange={this.handlePasswordChange}
+        />
+        <RaisedButton
+          style={style.button}
+          label='Sign in'
+          type='submit'
+          primary
+          fullWidth
+        />
+      </form>
     )
   }
 }
 
-var DecoratedLoginForm = withRouter(LoginForm)
-
 LoginForm.propTypes = {
-  router: React.PropTypes.shape({
-    push: React.PropTypes.func.isRequired
-  }).isRequired
+  dispatch: PropTypes.func
 }
 
-export default DecoratedLoginForm
+export default connect()(LoginForm)

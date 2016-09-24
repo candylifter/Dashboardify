@@ -8,56 +8,64 @@ namespace Dashboardify.Sandbox
     {
         public void Do()
         {
-            string connectionString = "Data Source=DESKTOP-11VK3U9;Initial Catalog=DashBoardify;User id=DashboardifyUser;Password=123456;";
+            string connectionString = "Data Source=23.251.133.254;Initial Catalog=DashBoardify;User id=DashboardifyUser;Password=xc6AjzBx6QA2pKUU";
 
 
-            // Works finePrintUsers(connectionString);
+            // PrintUsers(connectionString);
 
-            // Works Fine CreateUser(connectionString);
+            //  CreateUser(connectionString);
 
-            // Works fine PrintItems(connectionString);
+            //PrintItems(connectionString);
 
-            // Works fine UpdateItem(connectionString);
+            //UpdateItem(connectionString);
 
-            // Works fine GetItem(connectionString);
+            //GetItem(connectionString);
 
-            // Works fine GetByDashId(connectionString);
+            //GetByDashId(connectionString);
 
-            // Works fine CreateItem(connectionString);
+            //CreateItem(connectionString);
 
             //UpdateUser(connectionString);
 
-            // Works fine GetDashList(connectionString);
+            //GetDashList(connectionString);
 
-            // Works fine GetDash(connectionString);
+            //GetDash(connectionString);
 
-            // Works fine UpdateDash(connectionString);
+            //UpdateDash(connectionString);
 
-            // Works fine CreateDash(connectionString);
+            //CreateDash(connectionString);
 
-            // Works fine GetDashByUserId(connectionString);
+            //GetDashByUserId(connectionString);
 
-            // Works fine PrintAllScreens(connectionString);
+            //PrintAllScreens(connectionString);
 
-            // Works fine GetScreen(connectionString);
+            //GetScreen(connectionString);
 
-            // Works fine CreateScreenShoot(connectionString);
+            //CreateScreenShoot(connectionString);
 
-            // Works fine DeleteScren(connectionString);
+            //DeleteScren(connectionString);
 
-            // Works finePrinScreen(connectionString);
+            //PrinScreen(connectionString);
 
-            // Works fine DeleteUser(connectionString);
+            //DeleteUser(connectionString);
 
-            // Works fine DeleteUser(connectionString);
+            //DeleteUser(connectionString);
 
-            // Works fine DeleteDash(connectionString);
+            //DeleteDash(connectionString);
+
+            //DeleteItem(connectionString);
+
+            // TestAddSession(connectionString);
+
+            //TestReturnIfExsists(connectionString);
+
+            //TestReturnIfValidSession(connectionString);
             
-            // DeleteItem(connectionString);
+            //TestGetBySessionId(connectionString);
 
-             //TestAddSession(connectionString);
+            //TestDeleteSession(connectionString);
 
-            TestReturnIfExsists(connectionString);
+            TestGetEmail(connectionString);
 
             
             Console.ReadKey();
@@ -86,7 +94,8 @@ namespace Dashboardify.Sandbox
             var user = new User();
             user.Name = "Maestro";
             user.Password = "Slaptazodis";
-            user.DateRegistered = DateTime.Parse(sqlFormat);
+            user.DateRegistered = DateTime.Now;
+            user.DateModified = DateTime.Now;
             user.Email = "trumpas@maestro.lt";
 
             //Console.WriteLine(user.DateRegistered.ToString());
@@ -101,7 +110,7 @@ namespace Dashboardify.Sandbox
         {
 
             PrintUsers(connectionString);
-            
+
             var repo = new UsersRepository(connectionString);
             var user = repo.Get(1);
             Console.WriteLine(user.Id);
@@ -148,6 +157,7 @@ namespace Dashboardify.Sandbox
             itemNew.LastChecked = DateTime.Now.AddMinutes(-itemNew.CheckInterval);
             itemNew.Modified = DateTime.Now;
             itemNew.Content = "Trumpas";
+            itemNew.CSS = "default";
 
             Console.WriteLine(itemNew.ToString());
             Console.WriteLine(itemOrigin.ToString());
@@ -359,7 +369,7 @@ namespace Dashboardify.Sandbox
 
             var sesija = new UserSession()
             {
-                SessionId = "g1dsf56g1df65g1fd56gdfs",
+                Ticket = "g1dsf56g1df65g1fd56gdfs",
                 UserId = 1,
                 Expires = DateTime.Now
             };
@@ -381,7 +391,7 @@ namespace Dashboardify.Sandbox
             var usersrepo = new UsersRepository(connectionString);
             var user = new User()
             {
-                Name = "Laba diena",
+                Name = "4524534Laba diena",
                 Password = "asd56a+5d6asd"
             };
             if (!(usersrepo.ReturnIfExsists(user.Name, user.Password) == null))
@@ -396,20 +406,43 @@ namespace Dashboardify.Sandbox
             }
         }
 
-        //public void TestAddSession(string connectionString)
-        //{
-        //    var userSesRepo = new UserSessionRepository(connectionString);
+        public void TestGetBySessionId(string connectionString)
+        {
+            var userSesRepo = new UserSessionRepository(connectionString);
 
-        //    var userSes = new UserSession()
-        //    {
-        //        Expires = DateTime.Now.AddMinutes(20),
-        //        Id = "156156165156151871891",
-        //        UserId = 4
-        //    };
-        //    userSesRepo.AddSession(userSes);
+            Console.WriteLine(userSesRepo.GetUserBySessionId(
+                "a04ef843509f45f68d1c204dec83181f37aca563515646c89f70cbd457b9b0fdadbb6114c1e543248b4392efa504ffd6f27e63b14f5e4d25814c09812989aacc").ToString());
 
-        //}
+        }
 
-        
+        private void TestDeleteSession(string connectionString)
+        {
+            var userSesRepo = new UserSessionRepository(connectionString);
+
+            userSesRepo.DeleteUserSession("maestro");
+
+        }
+
+        private void TestGetEmail(string connectionString)
+        {
+            var userRepo = new UsersRepository(connectionString);
+
+            var anw = userRepo.ReturnEmail("mail@maestr o.com");
+
+            if (string.IsNullOrEmpty(anw))
+            {
+                Console.WriteLine("Email is nto taken");
+            }
+            else
+            {
+                Console.WriteLine("Email is taken");
+            }
+
+            //Console.WriteLine(anw);
+
+
+        }
+
+
     }
 }

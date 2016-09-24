@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Dashboardify.Contracts;
 using Dashboardify.Contracts.UserSession;
+using Dashboardify.Handlers.Helpers;
 using Dashboardify.Repositories;
 
 namespace Dashboardify.Handlers.UserSession
@@ -26,14 +27,16 @@ namespace Dashboardify.Handlers.UserSession
         {
             var response = new LoginUserResponse();
 
-            request.User.Password = HashPassword(request.User.Password);
+            request.User.Password = PasswordsHelper.HashPassword(request.User.Password);
 
             response.Errors = Validate(request);
+
             if (response.HasErrors)
             {
                 return response;
             }
-            AddSession(request);
+
+            AddSession(request,response);
 
             return response;
         }
@@ -43,56 +46,43 @@ namespace Dashboardify.Handlers.UserSession
         {
             var errors = new List<ErrorStatus>();
 
-            if (request.User.Email == "" || request.User.Password == "")
+            if (string.IsNullOrEmpty(request.User.Email) || string.IsNullOrEmpty(request.User.Password))
             {
                 errors.Add(new ErrorStatus("WRONG_INPUT"));
             }
             if (_usersRepository.ReturnIfExsists(request.User.Email, request.User.Password) == null)
             {
-                errors.Add(new ErrorStatus("USER_NOT_FOUND"));
+                errors.Add(new ErrorStatus("INVALID_USERNAME_OR_PASSWORD"));
             }
             return errors;
-
         }
 
-        private void AddSession(LoginUserRequest request)
+
+        private string CreateSessionId()
+        {
+            var sessionId = $"{Guid.NewGuid()}{Guid.NewGuid()}{Guid.NewGuid()}{Guid.NewGuid()}";
+            sessionId = sessionId.Replace("-", "");
+
+            return sessionId;
+        }
+
+        private void AddSession(LoginUserRequest request, LoginUserResponse response)
         {
             var user = _usersRepository.ReturnIfExsists(request.User.Email, request.User.Password);
 
-            var session1 = Guid.NewGuid().ToString().Replace("-", "");
-
-            var session2 =  Guid.NewGuid().ToString().Replace("-", "");
-            
-            var session3 =  Guid.NewGuid().ToString().Replace("-", "");
-
-            var session4 = Guid.NewGuid().ToString().Replace("-", "");
-
-            var sessionId = session1 + session2 + session3 + session4;
+            var sessionId = CreateSessionId();
 
             var session = new Models.UserSession()
             {
                 Expires = DateTime.Now.AddMinutes(20),
                 UserId = user.Id,
-                SessionId = sessionId
+                Ticket = sessionId
             };
             
-            
-
             _userSessionRepository.AddSession(session);
+            response.SessionId = sessionId;
         }
 
-        private string HashPassword(string password)
-        {
-            MD5 md5 = MD5.Create();
-            byte[] inputBytes = Encoding.ASCII.GetBytes(password);
-            byte[] hash = md5.ComputeHash(inputBytes);
-
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < hash.Length; i++)
-            {
-                sb.Append(hash[i].ToString("X2"));
-            }
-            return sb.ToString();
-        }
+        
     }
 }

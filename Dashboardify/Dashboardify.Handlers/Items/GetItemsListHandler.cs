@@ -5,12 +5,13 @@ using Dashboardify.Repositories;
 
 namespace Dashboardify.Handlers.Items
 {
-    public class GetItemsListHandler
+    public class GetItemsListHandler:BaseHandler
     {
         private ItemsRepository _itemsRepository;
         private ScreenshotRepository _screenshotRepository;
 
-        public GetItemsListHandler(string connectionString)
+        public GetItemsListHandler(string connectionString):
+            base (connectionString)
         {
             _itemsRepository = new ItemsRepository(connectionString);
             _screenshotRepository = new ScreenshotRepository(connectionString);

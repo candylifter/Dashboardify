@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Dashboardify.Contracts;
 using Dashboardify.Contracts.Users;
+using Dashboardify.Handlers.Helpers;
 using Dashboardify.Models;
 using Dashboardify.Repositories;
 
@@ -32,7 +33,7 @@ namespace Dashboardify.Handlers.Users
             }
             try
             {
-                request.Password = HashPassword(request.Password);
+                request.Password = PasswordsHelper.HashPassword(request.Password);
 
                 _userRepository.CreateUser(new User()
                 {
@@ -42,7 +43,6 @@ namespace Dashboardify.Handlers.Users
                     Password = request.Password,
                     Email = request.Email,
                     IsActive = true
-
                 });
 
                 SendEmail(request);
@@ -60,36 +60,31 @@ namespace Dashboardify.Handlers.Users
 
         public IList<ErrorStatus> Validate(CreateUserRequest request)
         {
-
             var errors = new List<ErrorStatus>();
             if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
             {
                 errors.Add(new ErrorStatus("WRONG_INPUT"));
             }
+            if (!string.IsNullOrEmpty(_userRepository.ReturnEmail(request.Email)))
+            {
+                errors.Add(new ErrorStatus("EMAIL_ALREADY_TAKEN"));
+            }
+
+            
+
+            //todo metodas kuris patikrina ar email neuzimtas ir name
             return errors;
 
         }
-        private string HashPassword(string password)
-        {
-            MD5 md5 = MD5.Create();
-            byte[] inputBytes = Encoding.ASCII.GetBytes(password);
-            byte[] hash = md5.ComputeHash(inputBytes);
+        
 
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < hash.Length; i++)
-            {
-                sb.Append(hash[i].ToString("X2"));
-            }
-            return sb.ToString();
-        }
-
-        private void SendEmail(CreateUserRequest request)
+        private void SendEmail(CreateUserRequest request)//TODO refactor to mailsender in service layer
         {
             var fromAddress = new MailAddress("dashboardifyacademy@gmail.com", "Dashboardify");
             var toAddress = new MailAddress(request.Email, request.Username);
             const string fromPassword = "desbordas";
             const string subject = "Welcome";
-            string body = "Dear "+ request.Username.ToString() +"\n We are happy that you are using our dashboardify app. (ITERPTI MAESTRO TRUMPA)";
+            string body = "Dear "+ request.Username +"\n We are happy that you are using our dashboardify app. (ITERPTI MAESTRO TRUMPA)";
 
             var smtp = new SmtpClient
             {

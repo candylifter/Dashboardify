@@ -7,10 +7,10 @@ using Dashboardify.Handlers.Dashboards;
 
 namespace Dashboardify.WebApi.Controllers
 {
-    public class DashboardsController : ApiController
+    public class DashboardsController : BaseController
     {
-        private static string ConnectionString = ConfigurationManager.ConnectionStrings["DBIrmantas"].ConnectionString;
-        //private DashRepository deshai = new DashRepository(ConnectionString);
+        private static string _connectionString = ConfigurationManager.ConnectionStrings["GCP"].ConnectionString;
+        
 
         [HttpGet]
         public IHttpActionResult Index()
@@ -18,26 +18,16 @@ namespace Dashboardify.WebApi.Controllers
             return Json(true);
         }
 
-        [HttpGet]
-        public HttpResponseMessage GetList(int userId)
+        [HttpPost]
+        public HttpResponseMessage GetList(GetDashboardsRequest request)
         {
-            var request = new GetDashboardsRequest();
-
-            request.UserId = userId;
-
-            var handler = new GetDashboardsHandler(ConnectionString);
+            var handler = new GetDashboardsHandler(_connectionString);
 
             var response = handler.Handle(request);
 
-            var httpStatusCode = response.HasErrors ? HttpStatusCode.BadRequest : HttpStatusCode.OK;
+            var statusCode = ResolveStatusCode(response);
 
-            return Request.CreateResponse(httpStatusCode, response);
+            return Request.CreateResponse(statusCode, response);
         }
-
-        //[HttpGet]
-        //public IHttpActionResult GetDashboards()
-        //{
-        //    return Json(new { success = true, items = deshai.GetList() });
-        //}
     }
 }

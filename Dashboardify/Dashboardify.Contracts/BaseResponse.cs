@@ -10,5 +10,9 @@ namespace Dashboardify.Contracts
         }
 
         public IList<ErrorStatus> Errors { get; set; }
+
+
+        //TODO: Move only to response who use it to send this property to UI
+         // tik i logina public string SessionId { get; set; }
     }
 }

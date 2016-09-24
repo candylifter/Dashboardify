@@ -19,34 +19,23 @@ namespace Dashboardify.Repositories
 
         public Screenshot GetLastByItemId(int ItemId)
         {
-            //if (ItemId < 1)
-            //{
-            //    throw new Exception("Id must be greater than 1 integer");
-            //}
             
-                try
-                {
                     using (IDbConnection db = new SqlConnection(_connectionString))
                     {
                         return db.Query<Screenshot>(@"SELECT
-	                                                TOP 1
-	                                                Id,
-	                                                ItemId,
-	                                                ScrnshtURL,
-	                                                DateTaken
-                                                FROM 
-	                                                ScreenShots 
-                                                WHERE 
-	                                                ItemId = @ItemId
-                                                ORDER BY 
-	                                                DateTaken DESC", new { ItemId }).SingleOrDefault();
+	                                                    TOP 1
+	                                                    Id,
+	                                                    ItemId,
+	                                                    ScrnshtURL,
+	                                                    DateTaken
+                                                    FROM 
+	                                                    ScreenShots 
+                                                    WHERE 
+	                                                    ItemId = @ItemId
+                                                    ORDER BY 
+	                                                    DateTaken DESC", new { ItemId }).SingleOrDefault();
                     }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    throw;
-                }
+               
             
 
            
@@ -65,16 +54,10 @@ namespace Dashboardify.Repositories
 
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                try
-                {
+                
                     return db.Query<Screenshot>
                         (query).ToList();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    throw;
-                }
+               
             }
 
         }//Done Debuged
@@ -94,45 +77,30 @@ namespace Dashboardify.Repositories
                                     (@ItemId,
                                     @ScrnshtURL,
                                     @DateTaken)";
-                try
-                {
+                
                     using (IDbConnection db = new SqlConnection(_connectionString))
                     {
                         var result = db.Execute(query, screen);
                         return true;
                     }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    throw;
-                }
+               
             
         } //Done
 
         public bool Delete(int screenId)
         {
-            //if (screenId < 1)
-            //{
-            //    throw new Exception("Id must be greater than 0");
-            //}
+           
             
                 
                 string query = @"DELETE FROM ScreenShots
                                 WHERE Id =" + screenId.ToString();
-                try
-                {
+               
                     using (IDbConnection db = new SqlConnection(_connectionString))
                     {
                         db.Execute(query, screenId);
                     }
                     return true;
-                }
-                catch (Exception)
-                {                 
-                    Console.WriteLine(new Exception().Message);
-                    throw;
-                }
+                
                 
             
             
@@ -140,10 +108,7 @@ namespace Dashboardify.Repositories
 
         public Screenshot Get(int id)
         {
-            //if (id < 1)
-            //{
-            //    throw new Exception("Id must be greater than 0");
-            //}
+           
             
                 string query = @"SELECT
                                    Id,
@@ -154,18 +119,12 @@ namespace Dashboardify.Repositories
                                     ScreenShots
                                 WHERE Id = " + id.ToString();
 
-                try
-                {
+                
                     using (IDbConnection db = new SqlConnection(_connectionString))
                     {
                         return db.Query<Screenshot>(query, id).SingleOrDefault();
                     }
-                }
-                catch (Exception)
-                {
-                    
-                    throw;
-                }                 
+                              
                 
             
             

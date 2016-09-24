@@ -6,7 +6,7 @@ namespace Dashboardify.Models
     {
         public int Id { get; set; }
 
-        public string SessionId { get; set; }
+        public string Ticket { get; set; }
         
         public int UserId { get; set; }
 
