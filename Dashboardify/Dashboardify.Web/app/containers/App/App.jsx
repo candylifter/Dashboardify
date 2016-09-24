@@ -1,37 +1,45 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import injectTapEventPlugin from 'react-tap-event-plugin';
+import React from 'react'
+import { connect } from 'react-redux'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import injectTapEventPlugin from 'react-tap-event-plugin'
 
-import { ItemsAPI, DashboardsAPI, CheckIntervalsAPI } from 'api';
-import { DashboardsActions, ItemsActions, CheckIntervalsActions } from 'actions';
+import { CheckIntervalsAPI } from 'api'
+import { DashboardsActions, CheckIntervalsActions } from 'actions'
 
-import { Navbar } from 'components';
+import { Navbar } from 'components'
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
-injectTapEventPlugin();
+injectTapEventPlugin()
 
-import 'style!css!sass!applicationStyles';
+import 'style!css!sass!applicationStyles'
 // import 'script!bootstrap-sass/assets/javascripts/bootstrap.min.js';
 
 class App extends React.Component {
-  componentWillMount() {
-    const { dispatch } = this.props;
+  componentWillMount () {
+    const { dispatch } = this.props
 
-    dispatch(DashboardsActions.fetchDashboards(1));
-    dispatch(CheckIntervalsActions.addCheckIntervals(CheckIntervalsAPI.getCheckIntervals()));
+    dispatch(DashboardsActions.fetchDashboards(1)) // TODO: Add user session
+    dispatch(CheckIntervalsActions.addCheckIntervals(CheckIntervalsAPI.getCheckIntervals()))
   }
 
-  render() {
+  render () {
     const style = {
-      minHeight: '100vh',
-    };
+      minHeight: '100vh'
+    }
+
+    let { isAuthenticated } = this.props
+
+    let renderNavbar = () => {
+      if (isAuthenticated) {
+        return <Navbar />
+      }
+    }
 
     return (
       <MuiThemeProvider>
         <div style={style}>
-          <Navbar/>
+          {renderNavbar()}
           {this.props.children}
         </div>
       </MuiThemeProvider>
@@ -39,4 +47,6 @@ class App extends React.Component {
   }
 }
 
-export default connect()(App);
+export default connect(
+  (state) => state.auth
+)(App)

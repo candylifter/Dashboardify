@@ -1,7 +1,7 @@
 import { combineReducers, createStore, compose, applyMiddleware } from 'redux'
 import { routerReducer } from 'react-router-redux'
 import thunk from 'redux-thunk'
-import { dashboardsReducer, itemsReducer, searchTextReducer, checkIntervalsReducer, itemPanelReducer } from 'reducers'
+import { dashboardsReducer, itemsReducer, searchTextReducer, checkIntervalsReducer, itemPanelReducer, authReducer } from 'reducers'
 
 const configureStore = (initialState) => {
   const reducer = combineReducers({
@@ -10,6 +10,7 @@ const configureStore = (initialState) => {
     itemPanel: itemPanelReducer,
     searchText: searchTextReducer,
     checkIntervals: checkIntervalsReducer,
+    auth: authReducer,
     routing: routerReducer
   })
 
