@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
 
-import { App, Dashboards, Dashboard, Login } from 'containers'
+import { App, Dashboards, Dashboard, Login, Register } from 'containers'
 import { AuthAPI } from 'api'
 
 const requireAuth = (nextState, replace) => {
@@ -14,9 +14,10 @@ const requireAuth = (nextState, replace) => {
 }
 
 export default (
-  <Route path='/' component={App}>
-    <IndexRoute component={Dashboards} onEnter={requireAuth} />
-    <Route path='dashboard/:dashboardId' component={Dashboard} onEnter={requireAuth} />
-    <Route path='login' component={Login} />
+  <Route name='app' path='/' component={App}>
+    <IndexRoute name='dashboards' component={Dashboards} onEnter={requireAuth} />
+    <Route name='items' path='dashboard/:dashboardId' component={Dashboard} onEnter={requireAuth} />
+    <Route name='login' path='login' component={Login} />
+    <Route name='register' path='register' component={Register} />
   </Route>
 )

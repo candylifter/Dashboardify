@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import { browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 
@@ -10,6 +10,20 @@ import FlatButton from 'material-ui/FlatButton'
 import { LoginForm } from 'components'
 
 class Login extends React.Component {
+  componentWillMount () {
+    let { isAuthenticated } = this.props
+
+    if (isAuthenticated) {
+      browserHistory.push('/')
+    }
+  }
+
+  componentWillUpdate (props) {
+    if (props.isAuthenticated) {
+      browserHistory.push('/')
+    }
+  }
+
   render () {
     const style = {
       width: '100%',
@@ -39,14 +53,10 @@ class Login extends React.Component {
       }
     }
 
-    let { isPosting, isAuthenticated } = this.props
-
-    if (isAuthenticated) {
-      browserHistory.push('/')
-    }
+    let { isPosting } = this.props
 
     let renderLoginForm = () => {
-      if (isPosting || isAuthenticated) {
+      if (isPosting) {
         return (
           <div style={style.spinnerContainer}>
             <div className='text-center'>
@@ -73,11 +83,13 @@ class Login extends React.Component {
             <FlatButton
               label='Forgot password'
               style={style.card.footer.button}
+              onClick={() => browserHistory.push('/forgot')}
               disabled={isPosting}
             />
             <FlatButton
               label='Sign up'
               style={style.card.footer.button}
+              onClick={() => browserHistory.push('/register')}
               disabled={isPosting}
             />
           </CardActions>
@@ -85,6 +97,11 @@ class Login extends React.Component {
       </div>
     )
   }
+}
+
+Login.propTypes = {
+  isPosting: PropTypes.bool,
+  isAuthenticated: PropTypes.bool
 }
 
 export default connect(

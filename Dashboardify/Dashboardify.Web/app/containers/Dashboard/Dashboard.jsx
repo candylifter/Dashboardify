@@ -1,21 +1,23 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar'
+import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar'
 import Paper from 'material-ui/Paper'
 
+import { CheckIntervalsAPI } from 'api'
 import { Breadcrumb, Search, ItemList, ItemPanel } from 'components'
-import { ItemsActions, ItemPanelActions } from 'actions'
+import { ItemsActions, ItemPanelActions, CheckIntervalsActions } from 'actions'
 
 class Dashboard extends React.Component {
   componentWillMount () {
     let { dashboardId } = this.props.routeParams
     let { dispatch } = this.props
 
+    dispatch(CheckIntervalsActions.addCheckIntervals(CheckIntervalsAPI.getCheckIntervals()))
     dispatch(ItemsActions.fetchItems(parseInt(dashboardId)))
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     let { dispatch } = this.props
 
     dispatch(ItemPanelActions.close())
