@@ -72,12 +72,16 @@ namespace Dashboardify.Handlers.UserSession
 
             var sessionId = CreateSessionId();
 
+            var expires = DateTime.Now.AddMinutes(20);
+
             var session = new Models.UserSession()
             {
-                Expires = DateTime.Now.AddMinutes(20),
+                Expires = expires,
                 UserId = user.Id,
                 Ticket = sessionId
             };
+
+            response.ExpireDate = expires;
             
             _userSessionRepository.AddSession(session);
             response.SessionId = sessionId;

@@ -2,7 +2,7 @@
 {
     public class GetItemsListRequest : BaseRequest
     {
-        public int DashboarId { get; set; }
+        public int DashboardId { get; set; }
 
         public string Ticket { get; set; }
     }

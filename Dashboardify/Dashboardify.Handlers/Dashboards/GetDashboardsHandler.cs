@@ -63,11 +63,25 @@ namespace Dashboardify.Handlers.Dashboards
         {
             var errors = new List<ErrorStatus>();
 
+            if (IsRequestNull(request))
+            {
+                errors.Add(new ErrorStatus("TICKET_WAS_NOT_DEFINED"));
+                return errors;
+            }
+
+            if (string.IsNullOrEmpty(request.Ticket))
+            {
+                errors.Add(new ErrorStatus("TICKET_WAS_NOT_DEFINED"));
+                return errors;
+            }
+
+
             if (!IsSessionValid(request.Ticket))
             {
                 errors.Add(new ErrorStatus("SESSION_NOT_VALID"));
                 return errors;
             }
+            
             
             return errors;
         }

@@ -181,7 +181,10 @@ namespace Dashboardify.Repositories
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
                 string query = $@"SELECT
-                                [Users].Id
+                                [Users].Id,
+                                [Users].Name,
+                                [Users].Password,
+                                [Users].Email  
                             FROM
                                 Users
                             LEFT JOIN DashBoards

@@ -24,7 +24,7 @@ namespace Dashboardify.Handlers.Items
             _dashRepository = new DashRepository(ConnectionString);
         }
 
-        public CreateItemResponse Handle(CreateItemRequest request) //todo prachekinti per postman
+        public CreateItemResponse Handle(CreateItemRequest request) 
         {
             var response = new CreateItemResponse();
 
@@ -60,6 +60,18 @@ namespace Dashboardify.Handlers.Items
         private IList<ErrorStatus> Validate(CreateItemRequest request)
         {
             var errors = new List<ErrorStatus>();
+
+            if (IsRequestNull(request))
+            {
+                errors.Add(new ErrorStatus("WRONG_REQUEST"));
+                return errors;
+            }
+
+            if (IsRequestNull(request.Item))
+            {
+                errors.Add(new ErrorStatus("ITEM_NOT_DEFINED"));
+                return errors;
+            }
 
             if (request.Item.DashBoardId == 0)
             {

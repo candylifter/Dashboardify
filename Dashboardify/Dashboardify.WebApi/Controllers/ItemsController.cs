@@ -11,7 +11,7 @@ namespace Dashboardify.WebApi.Controllers
     {
         private static string connectionString = ConfigurationManager.ConnectionStrings["GCP"].ConnectionString;
 
-        [HttpGet]
+        [HttpPost]
         public HttpResponseMessage GetList(GetItemsListRequest request)
         {
             var handler = new GetItemsListHandler(connectionString);
@@ -30,7 +30,7 @@ namespace Dashboardify.WebApi.Controllers
 
             var response = handler.Handle(request);
 
-            var httpStatusCode = response.HasErrors ? HttpStatusCode.BadRequest : HttpStatusCode.OK;
+            var httpStatusCode = ResolveStatusCode(response);
 
             return Request.CreateResponse(httpStatusCode, response);
         }

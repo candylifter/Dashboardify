@@ -9,11 +9,11 @@ using Dashboardify.Repositories;
 
 namespace Dashboardify.Handlers.UserSession
 {
-    public class LogoutUserHandler
+    public class LogoutUserHandler:BaseHandler
     {
         public UserSessionRepository _userSessionRepository;
 
-        public LogoutUserHandler(string connectionString)
+        public LogoutUserHandler(string connectionString):base (connectionString)
         {
             _userSessionRepository = new UserSessionRepository(connectionString);
         }
@@ -44,6 +44,12 @@ namespace Dashboardify.Handlers.UserSession
         private IList<ErrorStatus> Validate(LogoutUserRequest request)
         {
             var errors = new List<ErrorStatus>();
+
+            if (IsRequestNull(request))
+            {
+                errors.Add(new ErrorStatus("WRONG_REQUEST"));
+                return errors;
+            }
 
             if (string.IsNullOrEmpty(request.Ticket))
             {

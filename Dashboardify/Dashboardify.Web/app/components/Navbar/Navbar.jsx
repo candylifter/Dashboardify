@@ -5,6 +5,8 @@ import AppBar from 'material-ui/AppBar'
 import Drawer from 'material-ui/Drawer'
 import MenuItem from 'material-ui/MenuItem'
 
+import { AuthActions } from 'actions'
+
 class Navbar extends React.Component {
   constructor (props) {
     super(props)
@@ -12,6 +14,13 @@ class Navbar extends React.Component {
     this.state = {
       open: false
     }
+
+    this.handleLogout = this.handleLogout.bind(this)
+  }
+
+  handleLogout () {
+    AuthActions.logout()
+    this.setState({open: false})
   }
 
   navigateTo (url) {
