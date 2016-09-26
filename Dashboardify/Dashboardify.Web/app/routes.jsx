@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
 
-import { App, Dashboards, Dashboard, Login, Register } from 'containers'
+import { App, Dashboards, Dashboard, Login, Register, NoMatch } from 'containers'
 import { AuthAPI } from 'api'
 
 const requireAuth = (nextState, replace) => {
@@ -19,5 +19,6 @@ export default (
     <Route name='items' path='dashboard/:dashboardId' component={Dashboard} onEnter={requireAuth} />
     <Route name='login' path='login' component={Login} />
     <Route name='register' path='register' component={Register} />
+    <Route name='noMatch' path='*' component={NoMatch} />
   </Route>
 )

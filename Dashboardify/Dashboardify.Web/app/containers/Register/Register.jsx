@@ -1,17 +1,33 @@
 import React, { PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
 
 import { Card, CardTitle, CardActions } from 'material-ui/Card'
 import Divider from 'material-ui/Divider'
-import CircularProgress from 'material-ui/CircularProgress'
 import FlatButton from 'material-ui/FlatButton'
-import TextField from 'material-ui/TextField'
-import RaisedButton from 'material-ui/RaisedButton'
+import CircularProgress from 'material-ui/CircularProgress'
+
+import { RegisterForm } from 'components'
 
 class Register extends React.Component {
+  componentWillMount () {
+    let { isAuthenticated } = this.props
+
+    if (isAuthenticated) {
+      browserHistory.push('/')
+    }
+  }
+
+  componentWillUpdate (props) {
+    if (props.isAuthenticated) {
+      browserHistory.push('/')
+    }
+  }
+
   render () {
     const style = {
       width: '100%',
-      height: '100vh',
+      minHeight: '100vh',
       backgroundImage: 'url("https://source.unsplash.com/random/1920x1080")',
       backgroundPosition: 'center',
       backgroundSize: 'cover',
@@ -34,12 +50,6 @@ class Register extends React.Component {
       },
       spinnerContainer: {
         padding: '2em'
-      },
-      form: {
-        padding: '0 1em 1em 1em',
-        button: {
-          margin: '2em 0 1em'
-        }
       }
     }
 
@@ -51,41 +61,12 @@ class Register extends React.Component {
             title='Sign up'
           />
           <Divider />
-          <form style={style.form}>
-            <TextField
-              floatingLabelText='Name'
-              hintText='E. g. Darth Vader'
-              type='text'
-              fullWidth
-            />
-            <TextField
-              floatingLabelText='Email'
-              hintText='E. g. darth.vader@empire.gov'
-              type='email'
-              fullWidth
-            />
-            <TextField
-              floatingLabelText='Password'
-              type='password'
-              fullWidth
-            />
-            <TextField
-              floatingLabelText='Repeat password'
-              type='password'
-              fullWidth
-            />
-            <RaisedButton
-              style={style.form.button}
-              label='Sign up'
-              type='submit'
-              primary
-              fullWidth
-            />
-          </form>
+          <RegisterForm />
           <Divider />
           <CardActions style={style.card.footer}>
             <FlatButton
               label='Sign in'
+              onClick={() => browserHistory.push('/login')}
               style={style.card.footer.button}
             />
           </CardActions>
@@ -96,6 +77,9 @@ class Register extends React.Component {
 }
 
 Register.propTypes = {
+  isAuthenticated: PropTypes.bool
 }
 
-export default Register
+export default connect(
+  (state) => state.auth
+)(Register)

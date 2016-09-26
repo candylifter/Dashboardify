@@ -27,7 +27,7 @@ class Login extends React.Component {
   render () {
     const style = {
       width: '100%',
-      height: '100vh',
+      minHeight: '100vh',
       backgroundImage: 'url("https://source.unsplash.com/random/1920x1080")',
       backgroundPosition: 'center',
       backgroundSize: 'cover',
