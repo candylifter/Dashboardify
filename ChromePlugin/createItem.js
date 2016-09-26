@@ -1,5 +1,3 @@
-
-
 function getWebsite(str) {
     theleft = str.indexOf("?website=") + 9;
     theright = str.lastIndexOf("&xpath=");
@@ -7,15 +5,15 @@ function getWebsite(str) {
 }
 
 function getXpath(str) {
-  theleft = str.indexOf("&xpath=") + 7;
-  theright = str.lastIndexOf("&css=");
-  return (str.substring(theleft, theright));
+    theleft = str.indexOf("&xpath=") + 7;
+    theright = str.lastIndexOf("&css=");
+    return (str.substring(theleft, theright));
 }
 
 function getCSS(str) {
-  theleft = str.indexOf("&css=") + 5;
-  theright = str.length;
-  return (str.substring(theleft, theright));
+    theleft = str.indexOf("&css=") + 5;
+    theright = str.length;
+    return (str.substring(theleft, theright));
 }
 
 var url = window.location.href;
@@ -25,52 +23,92 @@ var website = getWebsite(url);
 var userId = 1;
 var form = document.getElementById('create-item-form')
 var dashboard = document.getElementById("dashboard-selector");
-var dashboardId = dashboard.value;
 var interval = document.getElementById('timer');
-var intervalValue = interval.value;
+var intervalValue = parseInt(interval.value);
 var websiteInput = document.getElementById("website");
 var xpathInput = document.getElementById("xpath");
-<<<<<<< HEAD
-var createDashboard = document.getElementById("new-dashboard");
-
-createDashboard.onClick = function newBoard (){
-  location("www.google.lt");
-}
-=======
 var cssInput = document.getElementById("css");
->>>>>>> 1c59f47e6e2ba3186aff014bfc1104d6644aeebf
+var ticketas;
 
-interval.onchange=function(){intervalValue = this.value};
-dashboard.onchange=function(){dashboardId = this.value};
-
+var createDashboard = document.getElementById("new-dashboard");
 websiteInput.value = website;
 xpathInput.value = xpath;
 cssInput.value = css;
 
+chrome.cookies.get({
+        url: "http://localhost:3000",
+        name: "ticket",
+    },
+    function(cookie) {
+        if (cookie === null) {
+            window.location = "login.html";
+        } else {
+            ticketas = cookie.value;
+        }
 
-form.onsubmit = function (event) {
-  event.preventDefault()
+    })
 
-  var name = document.getElementById('item-name').value
-  $.ajax({
+interval.onchange = function() {
+    intervalValue = parseInt(this.value)
+};
+dashboard.onchange = function() {
+    dashboardId = parseInt(this.value)
+};
+
+var x = document.getElementById("dashboard-selector");
+
+$.ajax({
     type: "POST",
-    url: "http://localhost/api/Items/createItem",
+    url: "http://localhost/api/Dashboards/GetList",
     data: {
-      Item:{
-        DashBoardId: dashboardId,
-        CheckInterval: intervalValue,
-        XPath: xpath,
-        CSS: css,
-        Website: website,
-        Name: name
-      }
+        "Ticket": "maestro"
     },
-    success: function(data){
-      console.log(data);
-      window.close();
-    },
-    error: function(data){
-      console.log(data)
+    success: handleSuccess,
+    error: function(data) {
+        console.log("klaida!!!!!" + data)
     }
+})
+
+function handleSuccess(data){
+  data.Dashboards.map((dashboard)=>{
+    var option = document.createElement("option");
+    option.text = dashboard.Name;
+    option.value = dashboard.Id;
+    x.add(option);
   })
+
+
+}
+
+form.onsubmit = function(event) {
+    event.preventDefault()
+
+    var dashboardId = parseInt(document.getElementById("dashboard-selector").value);
+    var intervalValue = parseInt(document.getElementById('timer').value);
+    var name = document.getElementById('item-name').value
+
+    var data = {
+      Item: {
+          DashBoardId: dashboardId,
+          CheckInterval: intervalValue,
+          XPath: xpath,
+          CSS: css,
+          Website: website,
+          Name: name
+      },
+      Ticket: "maestro"
+    }
+    console.log(data);
+    $.ajax({
+        type: "POST",
+        url: "http://localhost/api/Items/createItem",
+        data: data,
+        success: function(data) {
+            console.log(data);
+            window.close();
+        },
+        error: function(data) {
+            console.log(data)
+        }
+    })
 }
