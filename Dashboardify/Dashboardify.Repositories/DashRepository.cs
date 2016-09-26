@@ -176,7 +176,7 @@ namespace Dashboardify.Repositories
             }
         }
 
-        public User GetUserIdByDashId(int id)
+        public User GetUserByDashId(int id)
         {
             using (IDbConnection db = new SqlConnection(_connectionString))
             {

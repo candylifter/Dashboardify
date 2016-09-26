@@ -34,7 +34,7 @@ namespace Dashboardify.Handlers.Items
                 return response;
             }
 
-            var items = _itemsRepository.GetByDashboardId(request.DashboarId);
+            var items = _itemsRepository.GetByDashboardId(request.DashboardId);
 
             var itemsWithScreenshots = new List<Item>();
 
@@ -72,7 +72,7 @@ namespace Dashboardify.Handlers.Items
 
             var requestUser = _userSessionRepository.GetUserBySessionId(request.Ticket);
 
-            var ownerUser = _dashRepository.GetUserIdByDashId(request.DashboardId);
+            var ownerUser = _dashRepository.GetUserByDashId(request.DashboardId);
 
             if (requestUser == null || ownerUser == null )
             {

@@ -103,7 +103,7 @@ namespace Dashboardify.Handlers.Items
                 errors.Add(new ErrorStatus("NAME_NOT_DEFINED"));
             }
 
-            var UserIdByDash = _dashRepository.GetUserIdByDashId(request.Item.DashBoardId);
+            var UserIdByDash = _dashRepository.GetUserByDashId(request.Item.DashBoardId);
             var UserIdBySessionId = _userSessionRepository.GetUserBySessionId(request.Ticket);
 
             if (UserIdBySessionId != null && UserIdByDash != null && UserIdBySessionId.Id != UserIdByDash.Id) //TODO pasiklausti zilvino ar good practice
