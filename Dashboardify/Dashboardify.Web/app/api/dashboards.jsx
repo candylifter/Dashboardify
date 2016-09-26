@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie'
+
 import axios from 'axios'
 
 const rootDomain = `http://${window.location.hostname}/api`
@@ -17,10 +19,9 @@ export default {
     })
   },
 
-  fetchDashboards (userId) {
-    // return axios.get(`${rootDomain}/Dashboards/GetList?userId=${userId}`)
+  fetchDashboards () {
     let data = {
-      UserId: userId
+      Ticket: Cookies.get('ticket')
     }
 
     return axios.post(`${rootDomain}/Dashboards/GetList`, data)

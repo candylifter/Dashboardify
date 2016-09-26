@@ -9,16 +9,13 @@ export default {
     }
   },
 
-  completeLogin (res) {
-    Cookies.set('ticket', res.SessionId)
-    console.log('Logged in with ticket:', res.SessionId)
+  completeLogin () {
     return {
       type: 'COMPLETE_LOGIN'
     }
   },
 
   failLogin (err) {
-    console.error('Failed to logged:', err.message)
     return {
       type: 'FAIL_LOGIN',
       err
@@ -31,9 +28,28 @@ export default {
 
       return AuthAPI.login(email, password)
         .then(
-          (res) => dispatch(this.completeLogin(res.data)),
-          (err) => dispatch(this.failLogin(err))
+          (res) => {
+            Cookies.set('ticket', res.data.SessionId) // TODO: add expiration date and replace SessionId with Ticket
+            dispatch(this.completeLogin(res.data))
+          },
+          (err) => {
+            console.error('Failed to logged:', err.message)
+            dispatch(this.failLogin(err))
+          }
         )
+    }
+  },
+
+  logout () {
+    let ticket = Cookies.get('ticket')
+
+    if (ticket !== undefined) {
+      AuthAPI.logout(ticket)
+      Cookies.remove('ticket')
+    }
+
+    return {
+      type: 'LOGOUT'
     }
   }
 }

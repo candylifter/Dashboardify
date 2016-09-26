@@ -8,11 +8,11 @@ export default {
     }
   },
 
-  fetchDashboards (userId) {
+  fetchDashboards () {
     return (dispatch) => {
       dispatch(this.startDashboardsFetch())
 
-      return DashboardsAPI.fetchDashboards(userId)
+      return DashboardsAPI.fetchDashboards()
         .then(
           (res) => {
             dispatch(this.addDashboards(DashboardsAPI.mapBackendData(res.data)))

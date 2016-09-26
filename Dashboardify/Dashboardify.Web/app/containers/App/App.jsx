@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 
-import { CheckIntervalsAPI } from 'api'
+import { AuthAPI, CheckIntervalsAPI } from 'api'
 import { DashboardsActions, CheckIntervalsActions } from 'actions'
 
 import { Navbar } from 'components'
@@ -13,14 +13,15 @@ import { Navbar } from 'components'
 injectTapEventPlugin()
 
 import 'style!css!sass!applicationStyles'
-// import 'script!bootstrap-sass/assets/javascripts/bootstrap.min.js';
 
 class App extends React.Component {
   componentWillMount () {
-    const { dispatch } = this.props
+    const { dispatch, isAuthenticated } = this.props
 
-    dispatch(DashboardsActions.fetchDashboards(1)) // TODO: Add user session
-    dispatch(CheckIntervalsActions.addCheckIntervals(CheckIntervalsAPI.getCheckIntervals()))
+    if (isAuthenticated) {
+      dispatch(DashboardsActions.fetchDashboards()) // TODO: Add user session
+      dispatch(CheckIntervalsActions.addCheckIntervals(CheckIntervalsAPI.getCheckIntervals()))
+    }
   }
 
   render () {
@@ -28,7 +29,7 @@ class App extends React.Component {
       minHeight: '100vh'
     }
 
-    let { isAuthenticated } = this.props
+    let { children, isAuthenticated } = this.props
 
     let renderNavbar = () => {
       if (isAuthenticated) {
@@ -40,11 +41,17 @@ class App extends React.Component {
       <MuiThemeProvider>
         <div style={style}>
           {renderNavbar()}
-          {this.props.children}
+          {children}
         </div>
       </MuiThemeProvider>
     )
   }
+}
+
+App.propTypes = {
+  isAuthenticated: PropTypes.bool,
+  children: PropTypes.node,
+  dispatch: PropTypes.func
 }
 
 export default connect(

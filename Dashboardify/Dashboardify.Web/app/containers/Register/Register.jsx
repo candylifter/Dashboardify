@@ -1,15 +1,15 @@
 import React, { PropTypes } from 'react'
-import { browserHistory } from 'react-router'
 import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
 
 import { Card, CardTitle, CardActions } from 'material-ui/Card'
 import Divider from 'material-ui/Divider'
-import CircularProgress from 'material-ui/CircularProgress'
 import FlatButton from 'material-ui/FlatButton'
+import CircularProgress from 'material-ui/CircularProgress'
 
-import { LoginForm } from 'components'
+import { RegisterForm } from 'components'
 
-class Login extends React.Component {
+class Register extends React.Component {
   componentWillMount () {
     let { isAuthenticated } = this.props
 
@@ -53,44 +53,21 @@ class Login extends React.Component {
       }
     }
 
-    let { isPosting } = this.props
-
-    let renderLoginForm = () => {
-      if (isPosting) {
-        return (
-          <div style={style.spinnerContainer}>
-            <div className='text-center'>
-              <CircularProgress size={1.5} />
-            </div>
-          </div>
-        )
-      } else {
-        return <LoginForm />
-      }
-    }
-
     return (
       <div style={style}>
         <Card style={style.card}>
           <CardTitle
             style={style.card.title}
-            title='Sign in to Dashboardify'
+            title='Sign up'
           />
           <Divider />
-          {renderLoginForm()}
+          <RegisterForm />
           <Divider />
           <CardActions style={style.card.footer}>
             <FlatButton
-              label='Forgot password'
+              label='Sign in'
+              onClick={() => browserHistory.push('/login')}
               style={style.card.footer.button}
-              onClick={() => browserHistory.push('/forgot')}
-              disabled={isPosting}
-            />
-            <FlatButton
-              label='Sign up'
-              style={style.card.footer.button}
-              onClick={() => browserHistory.push('/register')}
-              disabled={isPosting}
             />
           </CardActions>
         </Card>
@@ -99,13 +76,10 @@ class Login extends React.Component {
   }
 }
 
-Login.propTypes = {
-  isPosting: PropTypes.bool,
+Register.propTypes = {
   isAuthenticated: PropTypes.bool
 }
 
 export default connect(
-  (state) => {
-    return state.auth
-  }
-)(Login)
+  (state) => state.auth
+)(Register)
