@@ -30,7 +30,7 @@ namespace Dashboardify.WebApi.Controllers
 
             var response = handler.Handle(request);
 
-            var httpStatusCode = response.HasErrors ? HttpStatusCode.BadRequest : HttpStatusCode.OK;
+            var httpStatusCode = ResolveStatusCode(response);
 
             return Request.CreateResponse(httpStatusCode, response);
         }

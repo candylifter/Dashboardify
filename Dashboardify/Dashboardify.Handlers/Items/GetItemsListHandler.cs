@@ -64,7 +64,7 @@ namespace Dashboardify.Handlers.Items
                 errors.Add(new ErrorStatus("TICKET_NOT_DEFINED"));
                 return errors;
             }
-            if (request.DashboarId == 0 || request.DashboarId < 1)
+            if (request.DashboardId < 1)
             {
                 errors.Add(new ErrorStatus("CORRUPTED_ID"));
                 return errors;
@@ -72,7 +72,7 @@ namespace Dashboardify.Handlers.Items
 
             var requestUser = _userSessionRepository.GetUserBySessionId(request.Ticket);
 
-            var ownerUser = _dashRepository.GetUserIdByDashId(request.DashboarId);
+            var ownerUser = _dashRepository.GetUserIdByDashId(request.DashboardId);
 
             if (requestUser == null || ownerUser == null )
             {
@@ -80,7 +80,7 @@ namespace Dashboardify.Handlers.Items
                 return errors;
             }
 
-            if (IsSessionValid(request.Ticket))
+            if (!IsSessionValid(request.Ticket))
             {
                 errors.Add(new ErrorStatus("SESSION_TIMEOUT"));
             }
