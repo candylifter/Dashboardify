@@ -78,7 +78,7 @@ namespace Dashboardify.Handlers.Items
                 errors.Add(new ErrorStatus("DASHBOARDID_NOT_DEFINED"));
             }
 
-            if (request.Item.CheckInterval > 30000) //neigiamas irgi negali buti
+            if (request.Item.CheckInterval < 30000) //neigiamas irgi negali buti
             {
                 errors.Add(new ErrorStatus("CHECKINTERVAL_WRONG"));
             }

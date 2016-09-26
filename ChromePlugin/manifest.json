@@ -24,6 +24,8 @@
 
   "permissions": [
     "activeTab",
-    "tabs"
+    "tabs",
+    "http://localhost:3000/",
+    "cookies"
   ]
 }

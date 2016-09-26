@@ -4,6 +4,16 @@ import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 
 class RegisterForm extends React.Component {
+  constructor () {
+    super()
+
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  handleSubmit () {
+
+  }
+
   render () {
     const style = {
       padding: '0 1em 1em 1em',
