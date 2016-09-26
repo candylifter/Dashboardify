@@ -24,5 +24,14 @@ namespace Dashboardify.Handlers
 
             return session != null && session.Expires > DateTime.Now; 
         }
+
+        protected bool IsRequestNull(object request)
+        {
+            if (request == null)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

@@ -24,7 +24,7 @@ namespace Dashboardify.Handlers.Items
             _dashRepository = new DashRepository(ConnectionString);
         }
 
-        public CreateItemResponse Handle(CreateItemRequest request) //todo prachekinti per postman
+        public CreateItemResponse Handle(CreateItemRequest request) 
         {
             var response = new CreateItemResponse();
 
@@ -61,6 +61,18 @@ namespace Dashboardify.Handlers.Items
         {
             var errors = new List<ErrorStatus>();
 
+            if (IsRequestNull(request))
+            {
+                errors.Add(new ErrorStatus("WRONG_REQUEST"));
+                return errors;
+            }
+
+            if (IsRequestNull(request.Item))
+            {
+                errors.Add(new ErrorStatus("ITEM_NOT_DEFINED"));
+                return errors;
+            }
+
             if (request.Item.DashBoardId == 0)
             {
                 errors.Add(new ErrorStatus("DASHBOARDID_NOT_DEFINED"));
@@ -91,7 +103,7 @@ namespace Dashboardify.Handlers.Items
                 errors.Add(new ErrorStatus("NAME_NOT_DEFINED"));
             }
 
-            var UserIdByDash = _dashRepository.GetUserByDashId(request.Item.DashBoardId);
+            var UserIdByDash = _dashRepository.GetUserIdByDashId(request.Item.DashBoardId);
             var UserIdBySessionId = _userSessionRepository.GetUserBySessionId(request.Ticket);
 
             if (UserIdBySessionId != null && UserIdByDash != null && UserIdBySessionId.Id != UserIdByDash.Id) //TODO pasiklausti zilvino ar good practice
