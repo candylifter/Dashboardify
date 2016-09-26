@@ -1,13 +1,16 @@
 import React, { PropTypes } from 'react'
+import { connect } from 'react-redux'
 
 class NoMatch extends React.Component {
   render () {
     const randomInt = (Math.floor(Math.random() * (15 - 1 + 1)) + 1) + 256
     const backgroundUrl = `https://www.placecage.com/gif/${randomInt}/${randomInt}`
 
+    let { isAuthenticated } = this.props
+
     const style = {
-      minHeight: '100vh',
-      width: '100vw',
+      minHeight: isAuthenticated ? 'calc(100vh - 64px)' : '100vh',
+      width: '100%',
       background: `url("${backgroundUrl}")`,
       backgroundPosition: 'center',
       backgroundSize: 'cover',
@@ -16,7 +19,7 @@ class NoMatch extends React.Component {
       alignItems: 'center',
       flexDirection: 'column',
       color: 'white',
-      textShadow: '2px 2px 2px rgba(0, 0, 0, 1)',
+      textShadow: '2px 2px 5px rgba(0, 0, 0, 1)',
       header: {
         fontSize: '7em'
       },
@@ -35,4 +38,6 @@ class NoMatch extends React.Component {
   }
 }
 
-export default NoMatch
+export default connect(
+  (state) => state.auth
+)(NoMatch)
