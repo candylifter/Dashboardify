@@ -18,33 +18,7 @@ namespace Dashboardify.Repositories
         {
             _connectionString = constring;
         }
-
-        /// <summary>
-        /// Gets all data from DashBoards table in a list<>
-        /// </summary>
-        /// <returns>List of all items</returns>
-        public IList<DashBoard> GetList()
-        {
-            string queryString = @"SELECT
-                                 Id,
-                                 UserId,
-                                 IsActive,
-                                 Name,
-                                 DateCreated,
-                                 DateModified 
-                                 FROM DashBoards";
-            
-            
-            using (IDbConnection db = new
-        SqlConnection(_connectionString))
-            {
-                return db.Query<DashBoard>
-                (queryString).ToList();
-
-            }
-            
-        }
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -82,19 +56,16 @@ namespace Dashboardify.Repositories
         /// <param name="dash">Dashboard Object</param>
         public void Update(DashBoard dash)
         {
-            //if (dash == null)
-            //{
-            //    throw new Exception("User not found");
-            //}
-
-            string query = @"UPDATE DashBoards
+          
+            string query = $@"UPDATE DashBoards
                                 SET IsActive=@IsActive,
                                 Name=@Name,
-                                DateModified=@Datemodified";
+                                DateModified=@Datemodified
+                            WHERE Id = {dash.Id}";
             
                 using (IDbConnection db = new SqlConnection(_connectionString))
                 {
-                    int rowsAffected = db.Execute(query, dash);
+                    db.Execute(query, dash);
                 }
 
             }

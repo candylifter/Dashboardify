@@ -11,13 +11,7 @@ namespace Dashboardify.WebApi.Controllers
     {
         private static string _connectionString = ConfigurationManager.ConnectionStrings["GCP"].ConnectionString;
         
-
-        [HttpGet]
-        public IHttpActionResult Index()
-        {
-            return Json(true);
-        }
-
+        
         [HttpPost]
         public HttpResponseMessage GetList(GetDashboardsRequest request)
         {

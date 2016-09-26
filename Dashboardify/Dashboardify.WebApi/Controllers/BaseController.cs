@@ -20,6 +20,15 @@ namespace Dashboardify.WebApi.Controllers
             {
                 return HttpStatusCode.Unauthorized;
             }
+
+            if (response.Errors.Any(e => e.Code == "BAD_REQUEST"))
+            {
+                return HttpStatusCode.BadRequest;
+            }
+            if (response.Errors.Any(e => e.Code == "UNAUTHORIZED_ACCESS" || e.Code == "UNAUTHORIZED_ACCES" || e.Code == "UNAUTHORIZED_ACESS"))
+            {
+                return HttpStatusCode.Unauthorized;
+            }
             //TODO prideti kitus kodus
 
             if (response.HasErrors)

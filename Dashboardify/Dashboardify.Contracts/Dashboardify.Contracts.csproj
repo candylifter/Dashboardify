@@ -66,6 +66,8 @@
     <Compile Include="Users\CreateUserResponse.cs" />
     <Compile Include="Users\DeleteUserRequest.cs" />
     <Compile Include="Users\DeleteUserResponse.cs" />
+    <Compile Include="Users\ForgotPasswordRequest.cs" />
+    <Compile Include="Users\ForgotPasswordResponse.cs" />
     <Compile Include="Users\UpdateUserRequest.cs" />
     <Compile Include="Users\UpdateUserResponse.cs" />
   </ItemGroup>

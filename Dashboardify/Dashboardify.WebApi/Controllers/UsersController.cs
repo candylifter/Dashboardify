@@ -31,9 +31,21 @@ namespace Dashboardify.WebApi.Controllers
 
             var response = handler.Handle(request);
 
-            var httpSatusCode = response.HasErrors ? HttpStatusCode.BadRequest : HttpStatusCode.OK;
+            var httpStatusCode = ResolveStatusCode(response);
 
-            return Request.CreateResponse(httpSatusCode, response);
+            return Request.CreateResponse(httpStatusCode, response);
+        }
+
+        [HttpPost]
+        public HttpResponseMessage Delete(DeleteUserRequest request)
+        {
+            var handler = new DeleteUserHandler(_connectionString);
+
+            var response = handler.Handle(request);
+
+            var httpStatusCode = ResolveStatusCode(response);
+
+            return Request.CreateResponse(httpStatusCode, response);
         }
     }
 }

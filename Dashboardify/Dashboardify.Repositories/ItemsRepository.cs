@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Net.Http.Headers;
 using Dapper;
+using Dashboardify.Models;
 
 
 namespace Dashboardify.Repositories
@@ -102,19 +103,21 @@ namespace Dashboardify.Repositories
                 using (IDbConnection db = new SqlConnection(_connectionString))
                 {
                     return db.Query<Item>(@"SELECT
-                                          Id,
-                                          DashBoardId,
-                                          Name, 
-                                          Website,
-                                          CheckInterval, 
-                                          IsActive, 
-                                          XPath, 
-                                          CSS,
-                                          LastChecked, 
-                                          Created, 
-                                          Modified,  
-                                          Content 
-                                          FROM Items WHERE Id = " + itemId.ToString()).SingleOrDefault(); //item.id
+                                                  Id,
+                                                  DashBoardId,
+                                                  Name, 
+                                                  Website,
+                                                  CheckInterval, 
+                                                  IsActive, 
+                                                  XPath, 
+                                                  CSS,
+                                                  LastChecked, 
+                                                  Created, 
+                                                  Modified,  
+                                                  Content 
+                                          FROM 
+                                                  Items 
+                                          WHERE Id = " + itemId).SingleOrDefault(); //item.id
                 }
          
             
@@ -195,16 +198,31 @@ namespace Dashboardify.Repositories
         /// </summary>
         /// <param name="itemId">ItemId</param>
         /// <returns>Number of rows affected</returns>
-        public int Delete(int itemId)
+        public void Delete(int itemId)
         { 
                 using (IDbConnection db = new SqlConnection(_connectionString))
                 {
                     string query = "DELETE FROM Items WHERE Id= " + itemId.ToString();
-                    int rowsAffected = db.Execute(query);
-                    return rowsAffected;
+                    db.Execute(query);
+                   
                 }
 
         }
 
+        public User GetByUserItemId(int itemId)
+        {
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                string query =$@"SELECT
+                                    Users.Id
+                                FROM Users
+                                    JOIN DashBoards
+                                    ON DashBoards.UserId = Users.Id
+                                        JOIN Items
+                                        ON Items.DashBoardId = DashBoards.Id
+                                WHERE Items.Id = {itemId}";
+                return db.Query<User>(query).SingleOrDefault();
+            }
+        }
     }
 }

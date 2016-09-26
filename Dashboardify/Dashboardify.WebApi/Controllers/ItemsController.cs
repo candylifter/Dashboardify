@@ -9,12 +9,12 @@ namespace Dashboardify.WebApi.Controllers
 {
     public class ItemsController : BaseController
     {
-        private static string connectionString = ConfigurationManager.ConnectionStrings["GCP"].ConnectionString;
+        private static string _connectionString = ConfigurationManager.ConnectionStrings["GCP"].ConnectionString;
 
         [HttpPost]
         public HttpResponseMessage GetList(GetItemsListRequest request)
         {
-            var handler = new GetItemsListHandler(connectionString);
+            var handler = new GetItemsListHandler(_connectionString);
 
             var response = handler.Handle(request);
 
@@ -26,7 +26,7 @@ namespace Dashboardify.WebApi.Controllers
         [HttpPost]
         public HttpResponseMessage CreateItem(CreateItemRequest request)
         {
-            var handler = new CreateItemHandler(connectionString);
+            var handler = new CreateItemHandler(_connectionString);
 
             var response = handler.Handle(request);
 
@@ -38,11 +38,23 @@ namespace Dashboardify.WebApi.Controllers
         [HttpPost]
         public HttpResponseMessage Update(UpdateItemRequest request)
         {
-            var handler = new UpdateItemHandler(connectionString);
+            var handler = new UpdateItemHandler(_connectionString);
 
             var response = handler.Handle(request);
 
-            var httpStatusCode = response.HasErrors ? HttpStatusCode.BadRequest : HttpStatusCode.OK;
+            var httpStatusCode = ResolveStatusCode(response);
+
+            return Request.CreateResponse(httpStatusCode, response);
+        }
+
+        [HttpPost]
+        public HttpResponseMessage Delete(DeleteItemRequest request)
+        {
+            var handler = new DeleteItemHandler(_connectionString);
+
+            var response = handler.Handle(request);
+
+            var httpStatusCode = ResolveStatusCode(response);
 
             return Request.CreateResponse(httpStatusCode, response);
         }

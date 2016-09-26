@@ -91,6 +91,7 @@ namespace Dashboardify.Handlers.Dashboards
             if (requestUser.Id != ownerUser.Id)
             {
                 errors.Add(new ErrorStatus("UNAUTHORIZED_ACCES"));
+                return errors;
             }
             
             return errors;
