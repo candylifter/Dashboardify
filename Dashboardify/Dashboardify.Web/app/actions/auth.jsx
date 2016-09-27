@@ -51,5 +51,36 @@ export default {
     return {
       type: 'LOGOUT'
     }
+  },
+
+  startRegister () {
+    return {
+      type: 'START_REGISTER'
+    }
+  },
+
+  completeRegister () {
+    return {
+      type: 'COMPLETE_REGISTER'
+    }
+  },
+
+  failRegister (err) {
+    return {
+      type: 'FAIL_REGISTER',
+      err
+    }
+  },
+
+  register (name, email, password, invitationCode) {
+    return (dispatch) => {
+      dispatch(this.startRegister())
+
+      return AuthAPI.register(name, email, password, invitationCode)
+        .then(
+          (res) => dispatch(this.completeLogin()),
+          (err) => dispatch(this.failLogin(err))
+        )
+    }
   }
 }

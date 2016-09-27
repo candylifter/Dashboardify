@@ -1,9 +1,10 @@
 import React, { PropTypes } from 'react'
+import debounce from 'debounce'
 
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 
-import { AuthAPI } from 'api'
+import { ValidationAPI } from 'api'
 
 class RegisterForm extends React.Component {
   constructor () {
@@ -18,6 +19,11 @@ class RegisterForm extends React.Component {
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleNameChange = this.handleNameChange.bind(this)
+    this.handleEmailChange = debounce(this.handleEmailChange.bind(this), 1000)
+    this.handlePasswordChange = this.handlePasswordChange.bind(this)
+    this.handleRepeatPasswordChange = debounce(this.handleRepeatPasswordChange.bind(this), 1000)
+    this.handleInvitationCodeChange = this.handleInvitationCodeChange.bind(this)
   }
 
   handleSubmit (e) {
@@ -25,9 +31,54 @@ class RegisterForm extends React.Component {
 
     let { name, email, password, repeatPassword, invitationCode } = this.refs
 
-    let validation = AuthAPI.validateRegisterForm(name.input.value, email.input.value, password.input.value, repeatPassword.input.value, invitationCode.input.value)
+    let validation = ValidationAPI.validateRegisterForm(name.input.value, email.input.value, password.input.value, repeatPassword.input.value, invitationCode.input.value)
+    let { nameError, emailError, passwordError, repeatPasswordError, invitationCodeError } = validation
 
-    console.log(validation)
+    if (validation.hasErrors) {
+      this.setState({nameError, emailError, passwordError, repeatPasswordError, invitationCodeError})
+    } else {
+      let { dispatch } = this.props
+    }
+  }
+
+  handleNameChange () {
+    let { name } = this.refs
+
+    this.setState({
+      nameError: ValidationAPI.validateName(name.input.value)
+    })
+  }
+
+  handleEmailChange () {
+    let { email } = this.refs
+
+    this.setState({
+      emailError: ValidationAPI.validateEmail(email.input.value)
+    })
+  }
+
+  handlePasswordChange () {
+    let { password } = this.refs
+
+    this.setState({
+      passwordError: ValidationAPI.validatePassword(password.input.value)
+    })
+  }
+
+  handleRepeatPasswordChange () {
+    let { password, repeatPassword } = this.refs
+
+    this.setState({
+      repeatPasswordError: ValidationAPI.validateRepeatPassword(password.input.value, repeatPassword.input.value)
+    })
+  }
+
+  handleInvitationCodeChange () {
+    let { invitationCode } = this.refs
+
+    this.setState({
+      invitationCodeError: ValidationAPI.validateInvitationCode(invitationCode.input.value)
+    })
   }
 
   render () {
@@ -43,6 +94,7 @@ class RegisterForm extends React.Component {
         <TextField
           floatingLabelText='Name'
           hintText='E. g. Darth Vader'
+          onChange={this.handleNameChange}
           errorText={this.state.nameError}
           type='text'
           ref='name'
@@ -51,6 +103,7 @@ class RegisterForm extends React.Component {
         <TextField
           floatingLabelText='Email'
           hintText='E. g. darth.vader@empire.gov'
+          onChange={this.handleEmailChange}
           errorText={this.state.emailError}
           type='email'
           ref='email'
@@ -58,6 +111,7 @@ class RegisterForm extends React.Component {
         />
         <TextField
           floatingLabelText='Password'
+          onChange={this.handlePasswordChange}
           errorText={this.state.passwordError}
           type='password'
           ref='password'
@@ -65,6 +119,7 @@ class RegisterForm extends React.Component {
         />
         <TextField
           floatingLabelText='Repeat password'
+          onChange={this.handleRepeatPasswordChange}
           errorText={this.state.repeatPasswordError}
           type='password'
           ref='repeatPassword'
@@ -72,6 +127,7 @@ class RegisterForm extends React.Component {
         />
         <TextField
           floatingLabelText='Invitation code'
+          onChange={this.handleInvitationCodeChange}
           errorText={this.state.invitationCodeError}
           type='text'
           ref='invitationCode'
