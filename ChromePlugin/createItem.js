@@ -35,18 +35,41 @@ websiteInput.value = website;
 xpathInput.value = xpath;
 cssInput.value = css;
 
-chrome.cookies.get({
-        url: "http://localhost:3000",
-        name: "ticket",
-    },
-    function(cookie) {
-        if (cookie === null) {
-            window.location = "login.html";
-        } else {
-            ticketas = cookie.value;
-        }
 
+
+function getCookie() {
+    chrome.cookies.get({
+            url: "http://localhost:3000",
+            name: "ticket"
+        },
+        function(cookie) {
+            if (cookie === null) {
+                window.location = "login.html";
+            } else {
+                console.log(cookie);
+                ticketas = cookie.value;
+                getDashes(ticketas);
+            }
+        }
+    )
+}
+
+function getDashes(ticket) {
+    $.ajax({
+        type: "POST",
+        url: "http://localhost/api/Dashboards/GetList",
+        data: {
+            "Ticket": ticket
+        },
+        success: handleSuccess,
+        error: function(data) {
+          document.getElementById("errors").innerHTML = "We couldn't get your dashboards list."
+            console.log("Įvyko klaida. ", data)
+        }
     })
+}
+
+getCookie();
 
 interval.onchange = function() {
     intervalValue = parseInt(this.value)
@@ -56,28 +79,15 @@ dashboard.onchange = function() {
 };
 
 var x = document.getElementById("dashboard-selector");
+console.log(ticketas);
 
-$.ajax({
-    type: "POST",
-    url: "http://localhost/api/Dashboards/GetList",
-    data: {
-        "Ticket": "maestro"
-    },
-    success: handleSuccess,
-    error: function(data) {
-        console.log("klaida!!!!!" + data)
-    }
-})
-
-function handleSuccess(data){
-  data.Dashboards.map((dashboard)=>{
-    var option = document.createElement("option");
-    option.text = dashboard.Name;
-    option.value = dashboard.Id;
-    x.add(option);
-  })
-
-
+function handleSuccess(data) {
+    data.Dashboards.map((dashboard) => {
+        var option = document.createElement("option");
+        option.text = dashboard.Name;
+        option.value = dashboard.Id;
+        x.add(option);
+    })
 }
 
 form.onsubmit = function(event) {
@@ -88,15 +98,15 @@ form.onsubmit = function(event) {
     var name = document.getElementById('item-name').value
 
     var data = {
-      Item: {
-          DashBoardId: dashboardId,
-          CheckInterval: intervalValue,
-          XPath: xpath,
-          CSS: css,
-          Website: website,
-          Name: name
-      },
-      Ticket: "maestro"
+        Item: {
+            DashBoardId: dashboardId,
+            CheckInterval: intervalValue,
+            XPath: xpath,
+            CSS: css,
+            Website: website,
+            Name: name
+        },
+        Ticket: "maestro"
     }
     console.log(data);
     $.ajax({
@@ -109,6 +119,7 @@ form.onsubmit = function(event) {
         },
         error: function(data) {
             console.log(data)
+            document.getElementById("errors").innerHTML = "Error occured."
         }
     })
 }

@@ -1,4 +1,11 @@
-var form = document.getElementById('login-form')
+// var form = document.getElementById('login-form')
+
+var loginButton = document.getElementById('login-button')
+loginButton.onclick= function (){
+  var newTab = {url : "http://localhost:3000"}
+  chrome.tabs.create(newTab);
+}
+
 
 chrome.cookies.get({
         url: "http://localhost:3000",
@@ -13,32 +20,34 @@ chrome.cookies.get({
 
     })
 
-form.onsubmit = function(event) {
-    event.preventDefault()
 
-    var email = document.getElementById('email').value
-    var password = document.getElementById('password').value
 
-    console.log(email)
-    console.log(password)
-
-    $.ajax({
-        type: "POST",
-        url: "http://localhost/api/Login/index",
-        data: {
-            User: {
-                Email: email,
-                Password: password
-            }
-        },
-        success: function(data) {
-            console.log(data);
-            window.location = "popup.html";
-            console.log = "sessionId=" + SessionId;
-        },
-        error: function(data) {
-            console.log(data)
-            document.getElementById("login-error").innerHTML = "Nepavyko prisijungti."
-        }
-    })
-}
+// form.onsubmit = function(event) {
+//     event.preventDefault()
+//
+//     var email = document.getElementById('email').value
+//     var password = document.getElementById('password').value
+//
+//     console.log(email)
+//     console.log(password)
+//
+//     $.ajax({
+//         type: "POST",
+//         url: "http://localhost/api/Login/index",
+//         data: {
+//             User: {
+//                 Email: email,
+//                 Password: password
+//             }
+//         },
+//         success: function(data) {
+//             console.log(data);
+//             window.location = "popup.html";
+//             console.log = "sessionId=" + SessionId;
+//         },
+//         error: function(data) {
+//             console.log(data)
+//             document.getElementById("login-error").innerHTML = "Nepavyko prisijungti."
+//         }
+//     })
+// }

@@ -1,15 +1,31 @@
-.login-form {
-  width: 200px;
+.popup{
+  text-align: center;
+  width: 15em;
 }
-.timer {
-  width: 150px;
-}
-.create-item {
-  position: absolute;
-  top: 30%;
-  left: 40%;
-}
-.form-control{
-  width: 150px;
+
+.popup-button{
+  margin-top: 3px;
   margin-bottom: 5px;
+  width: 12em;
+}
+
+.popup-button-logged{
+  margin-top: 3px;
+  margin-bottom: 5px;
+  width: 14em;
+}
+
+.create-item-div{
+  margin-top: 20px;
+  margin-left: 32em;
+}
+
+.form-items{
+  width: 25em;
+  margin-bottom: 6px;
+}
+
+.form-buttons{
+  width: 15em;
+  margin-left: 5em;
 }

@@ -5,34 +5,54 @@
     <meta charset="UTF-8">
     <title>DASHBOARDIFY</title>
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/node_modules/material-design-lite/material.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/popup.css">
 
 </head>
 
-<body>
-  <form class="form-horizontal" id="create-item-form">
-    <div class="container create-item">
-      <input type="text" class="form-control item-name" id="item-name" placeholder="Item name:">
-      <input class="form-control" id="website" type="text" placeholder="Website" disabled>
-      <input class="form-control" id="xpath" type="text" placeholder="XPath" disabled>
-      <input class="form-control" id="css" type="text" placeholder="CSS" disabled>
-      Check interval:
-        <select class="form-control" id="timer">
-            <option value="300000">5 minutes</option>
-            <option value="600000">10 minutes</option>
-            <option value="1800000">30 minutes</option>
-            <option value="3600000">1 hour</option>
-            <option value="21600000">6 hours</option>
-        </select>
-        Dashboard:
-        <select class="form-control" id="dashboard-selector">
-        </select>
-        <p></p>
-        <input class="btn btn-default" type="submit" value="Create Item">
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <header class="mdl-layout__header">
+    <div class="mdl-layout__header-row">
+      <!-- Title -->
+      <span class="mdl-layout-title">DASHBOARDIFY - create new item</span>
+      <!-- Add spacer, to align navigation to the right -->
+      <div class="mdl-layout-spacer"></div>
+      <!-- Navigation. We hide it in small screens. -->
     </div>
-    </form>
+  </header>
+  <main class="mdl-layout__content">
+    <div class="page-content">
+      <body>
+        <form class="form-horizontal create-item-div" id="create-item-form">
+          <div class="container create-item">
+            <input type="text" class="form-control item-name form-items" id="item-name" placeholder="Item name:">
+            <input class="form-control form-items" id="website" type="text" placeholder="Website" disabled>
+            <input class="form-control form-items" id="xpath" type="text" placeholder="XPath" disabled>
+            <input class="form-control form-items" id="css" type="text" placeholder="CSS" disabled>
+            Check interval:
+              <select class="form-control form-items" id="timer">
+                  <option value="300000">5 minutes</option>
+                  <option value="600000">10 minutes</option>
+                  <option value="1800000">30 minutes</option>
+                  <option value="3600000">1 hour</option>
+                  <option value="21600000">6 hours</option>
+              </select>
+              Dashboard:
+              <select class="form-control form-items" id="dashboard-selector">
+              </select>
+              <p id="errors"></p>
+              <input class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored form-buttons" type="submit" value="Create Item">
+          </div>
+          </form>
+          <!-- Your content goes here --></div>
+  </main>
+</div>
+
+
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="/node_modules/material-design-lite/material.min.js"></script>
+    <!-- <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script> -->
     <script src="/createItem.js"></script>
 </body>
 </html>

@@ -12,6 +12,7 @@
     "axios": "^0.14.0",
     "bootstrap": "^3.3.6",
     "css-selector-generator": "^1.0.2",
+    "material-design-lite": "^1.2.1",
     "unique-selector": "0.1.0",
     "xpath-dom": "^0.2.2"
   },
