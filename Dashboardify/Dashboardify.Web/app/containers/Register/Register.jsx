@@ -53,7 +53,7 @@ class Register extends React.Component {
       }
     }
 
-    let { isRegistering } = this.props
+    let { isRegistering, registerSuccess } = this.props
 
     let renderRegisterForm = () => {
       if (isRegistering) {
@@ -62,6 +62,12 @@ class Register extends React.Component {
             <div className='text-center'>
               <CircularProgress size={1.5} />
             </div>
+          </div>
+        )
+      } else if (registerSuccess) {
+        return (
+          <div className='text-center'>
+            <p style={{fontSize: '1.1em', padding: '1em'}}>You can now sign in to Dashboardify</p>
           </div>
         )
       } else {
@@ -74,7 +80,7 @@ class Register extends React.Component {
         <Card style={style.card}>
           <CardTitle
             style={style.card.title}
-            title='Sign up'
+            title={isRegistering ? 'Signing up' : registerSuccess ? 'Congratulations!' : 'Sign up'}
           />
           <Divider />
           {renderRegisterForm()}
@@ -82,6 +88,7 @@ class Register extends React.Component {
           <CardActions style={style.card.footer}>
             <FlatButton
               label='Sign in'
+              disabled={isRegistering}
               onClick={() => browserHistory.push('/login')}
               style={style.card.footer.button}
             />
@@ -94,7 +101,8 @@ class Register extends React.Component {
 
 Register.propTypes = {
   isAuthenticated: PropTypes.bool,
-  isRegistering: PropTypes.bool
+  isRegistering: PropTypes.bool,
+  registerSuccess: PropTypes.bool
 }
 
 export default connect(
