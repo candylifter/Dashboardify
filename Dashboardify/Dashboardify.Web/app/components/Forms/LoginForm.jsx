@@ -5,7 +5,7 @@ import debounce from 'debounce'
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 
-import { AuthAPI } from 'api'
+import { ValidationAPI } from 'api'
 import { AuthActions } from 'actions'
 
 class LoginForm extends React.Component {
@@ -26,7 +26,7 @@ class LoginForm extends React.Component {
     let { email } = this.refs
 
     this.setState({
-      emailError: AuthAPI.validateEmail(email.input.value)
+      emailError: ValidationAPI.validateEmail(email.input.value)
     })
   }
 
@@ -34,7 +34,7 @@ class LoginForm extends React.Component {
     let { password } = this.refs
 
     this.setState({
-      passwordError: AuthAPI.validatePassword(password.input.value)
+      passwordError: ValidationAPI.validatePassword(password.input.value)
     })
   }
 
@@ -42,10 +42,9 @@ class LoginForm extends React.Component {
     e.preventDefault()
     let { email, password } = this.refs
 
-    let validation = AuthAPI.validateLoginForm(email.input.value, password.input.value)
+    let validation = ValidationAPI.validateLoginForm(email.input.value, password.input.value)
 
     if (validation.hasErrors) {
-      console.log(validation)
       this.setState({
         emailError: validation.emailError,
         passwordError: validation.passwordError

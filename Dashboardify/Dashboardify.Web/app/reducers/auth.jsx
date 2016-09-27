@@ -1,7 +1,8 @@
 const initialState = {
   isPosting: false,
   isAuthenticated: false,
-  error: undefined
+  error: undefined,
+  registerError: undefined
 }
 
 const authReducer = (state = initialState, action) => {
@@ -29,6 +30,23 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         isAuthenticated: false
+      }
+    case 'START_REGISTER':
+      return {
+        ...state,
+        isPosting: true
+      }
+    case 'COMPLETE_REGISTER':
+      return {
+        ...state,
+        isPosting: false,
+        registerError: undefined
+      }
+    case 'FAIL_REGISTER':
+      return {
+        ...state,
+        isPosting: false,
+        registerError: action.err
       }
     default:
       return state
