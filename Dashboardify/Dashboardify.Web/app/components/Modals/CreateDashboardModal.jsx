@@ -36,8 +36,6 @@ class CreateDashboardModal extends React.Component {
 
     let { open } = this.props
 
-    console.log(this.props)
-
     return (
       <Dialog
         title='Create a new dashboard'

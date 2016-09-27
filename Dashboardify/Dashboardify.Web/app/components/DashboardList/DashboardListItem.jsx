@@ -17,6 +17,7 @@ const style = {
   }
 }
 
+// eslint-disable-next-line react/prop-types
 const Dashboards = ({id, name, img}) => {
   return (
     <Link to={'/dashboard/' + id} style={style.link}>
@@ -28,14 +29,3 @@ const Dashboards = ({id, name, img}) => {
 }
 
 export default Dashboards
-
-// <div className="col-xs-6 col-md-4 col-lg-2">
-//   <Link to={"/dashboard/"+id}>
-//     <div className="panel panel-default">
-//       <div className="panel-heading">{name}</div>
-//       <div className="panel-body">
-//         <img src={img} alt={"Screenshot of " + name} className="img-responsive"></img>
-//       </div>
-//     </div>
-//   </Link>
-// </div>

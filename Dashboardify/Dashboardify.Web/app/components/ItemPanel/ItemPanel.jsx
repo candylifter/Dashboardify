@@ -1,13 +1,12 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import moment from 'moment'
 
 import Drawer from 'material-ui/Drawer'
 import AppBar from 'material-ui/AppBar'
 import IconButton from 'material-ui/IconButton'
 import NavigationClose from 'material-ui/svg-icons/navigation/close'
 import Toggle from 'material-ui/Toggle'
-import FlatButton from 'material-ui/FlatButton';
+import FlatButton from 'material-ui/FlatButton'
 
 import { ItemsActions, ItemPanelActions } from 'actions'
 import { ItemsAPI } from 'api'

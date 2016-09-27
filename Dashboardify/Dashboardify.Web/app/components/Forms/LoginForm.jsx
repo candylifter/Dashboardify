@@ -67,16 +67,16 @@ class LoginForm extends React.Component {
       <form style={style} onSubmit={this.handleSubmit}>
         <TextField
           floatingLabelText='Email'
-          hintText='darth.vader@empire.gov'
+          hintText='E. g. darth.vader@empire.gov'
           fullWidth
           type='text'
           ref='email'
           errorText={this.state.emailError}
           onChange={this.handleEmailChange}
+          autoFocus
         />
         <TextField
           floatingLabelText='Password'
-          hintText='IFeelTheForce'
           fullWidth
           type='password'
           ref='password'

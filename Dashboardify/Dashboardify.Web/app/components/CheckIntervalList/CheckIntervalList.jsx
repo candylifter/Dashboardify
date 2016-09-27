@@ -8,6 +8,7 @@ import MenuItem from 'material-ui/MenuItem'
 import { ItemsActions } from 'actions'
 import { ItemsAPI } from 'api'
 
+// eslint-disable-next-line react/prop-types
 const CheckIntervalList = ({ checkIntervals, itemId, items, dispatch }) => {
   const renderIntervals = () => {
     return checkIntervals.map((interval) => {

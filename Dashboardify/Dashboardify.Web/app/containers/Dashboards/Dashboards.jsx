@@ -41,9 +41,26 @@ class Dashboards extends React.Component {
         alignItems: 'center'
       },
       fab: {
+        display: isFetching ? 'none' : 'block',
         position: 'fixed',
-        bottom: '3em',
-        right: '3em'
+        bottom: '1.5em',
+        right: '2.25em'
+      },
+      error: {
+        width: '100%',
+        minHeight: 'calc(100vh - 64px)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        color: '#9E9E9E',
+        icon: {
+          fontSize: '8em'
+        },
+        text: {
+          fontSize: '2em'
+        }
       }
     }
 
@@ -60,7 +77,10 @@ class Dashboards extends React.Component {
         )
       } else {
         return (
-          <p>{error}</p>
+          <div style={style.error}>
+            <i className='material-icons' style={style.error.icon}>&#xE000;</i>
+            <p style={style.error.text}>{error}</p>
+          </div>
         )
       }
     }

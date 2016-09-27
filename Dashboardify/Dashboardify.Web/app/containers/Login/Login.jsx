@@ -28,7 +28,7 @@ class Login extends React.Component {
     const style = {
       width: '100%',
       minHeight: '100vh',
-      backgroundImage: 'url("https://source.unsplash.com/random/1920x1080")',
+      backgroundImage: 'url("https://source.unsplash.com/collection/183254/1920x1080")',
       backgroundPosition: 'center',
       backgroundSize: 'cover',
       display: 'flex',
@@ -80,12 +80,12 @@ class Login extends React.Component {
           {renderLoginForm()}
           <Divider />
           <CardActions style={style.card.footer}>
-            <FlatButton
+            {/* <FlatButton
               label='Forgot password'
               style={style.card.footer.button}
               onClick={() => browserHistory.push('/forgot')}
               disabled={isLoggingIn}
-            />
+            /> */}
             <FlatButton
               label='Sign up'
               style={style.card.footer.button}

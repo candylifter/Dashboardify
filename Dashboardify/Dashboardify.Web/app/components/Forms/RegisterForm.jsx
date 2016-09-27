@@ -102,6 +102,7 @@ class RegisterForm extends React.Component {
           type='text'
           ref='name'
           fullWidth
+          autoFocus
         />
         <TextField
           floatingLabelText='Email'

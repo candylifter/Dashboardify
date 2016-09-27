@@ -1,5 +1,4 @@
-import React from 'react'
-import moment from 'moment'
+import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 import { ItemListItem } from 'components'
@@ -36,6 +35,12 @@ class ItemList extends React.Component {
       </div>
     )
   }
+}
+
+ItemList.propTypes = {
+  items: PropTypes.array,
+  searchText: PropTypes.string,
+  dashboardId: PropTypes.number
 }
 
 export default connect(
