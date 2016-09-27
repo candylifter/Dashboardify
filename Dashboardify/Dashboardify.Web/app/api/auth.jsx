@@ -18,7 +18,11 @@ export default {
   },
 
   logout (ticket) {
-    // TODO: send ticket to webapi to delete session
+    let data = {
+      Ticket: ticket
+    }
+
+    return axios.post(`${rootDomain}/login/LogOut`, data)
   },
 
   isLoggedIn () {

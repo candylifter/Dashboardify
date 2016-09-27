@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
+import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
 
 import AppBar from 'material-ui/AppBar'
@@ -19,8 +20,10 @@ class Navbar extends React.Component {
   }
 
   handleLogout () {
-    AuthActions.logout()
-    this.setState({open: false})
+    let { dispatch } = this.props
+
+    dispatch(AuthActions.logout())
+    this.navigateTo('/login')
   }
 
   navigateTo (url) {
@@ -49,11 +52,15 @@ class Navbar extends React.Component {
           onRequestChange={(open) => this.setState({open})}
             >
           <MenuItem onTouchTap={() => this.navigateTo('/')}>Home</MenuItem>
-          <MenuItem onTouchTap={() => this.navigateTo('/logout')}>Logout</MenuItem>
+          <MenuItem onTouchTap={this.handleLogout}>Logout</MenuItem>
         </Drawer>
       </div>
     )
   }
 }
 
-export default Navbar
+Navbar.propTypes = {
+  dispatch: PropTypes.func
+}
+
+export default connect()(Navbar)
