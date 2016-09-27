@@ -75,5 +75,41 @@ export default {
     }
 
     return validation
+  },
+
+  validateRegisterForm (name, email, password, repeatPassword, invitationCode) {
+    let validation = {
+      hasErrors: false,
+      nameError: '',
+      emailError: '',
+      passwordError: '',
+      repeatPasswordError: '',
+      invitationCodeError: ''
+    }
+
+    if (name.length < 1) {
+      validation.nameError = 'Please enter your name'
+    }
+
+    validation.emailError = this.validateEmail(email)
+    validation.passwordError = this.validatePassword(password)
+
+    if (repeatPassword !== password) {
+      validation.repeatPasswordError = 'Passwords have to match'
+    }
+
+    if (repeatPassword.length < 1) {
+      validation.repeatPasswordError = 'Please repeat your password'
+    }
+
+    if (invitationCode.length < 1) {
+      validation.invitationCodeError = 'Please enter invitation code'
+    }
+
+    if (!!validation.nameError || !!validation.emailError || !!validation.passwordError || !!validation.repeatPasswordError || !!validation.invitationCodeError) {
+      validation.hasErrors = true
+    }
+
+    return validation
   }
 }
