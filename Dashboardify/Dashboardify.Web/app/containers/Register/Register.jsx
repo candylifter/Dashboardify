@@ -53,6 +53,22 @@ class Register extends React.Component {
       }
     }
 
+    let { isRegistering } = this.props
+
+    let renderRegisterForm = () => {
+      if (isRegistering) {
+        return (
+          <div style={style.spinnerContainer}>
+            <div className='text-center'>
+              <CircularProgress size={1.5} />
+            </div>
+          </div>
+        )
+      } else {
+        return <RegisterForm />
+      }
+    }
+
     return (
       <div style={style}>
         <Card style={style.card}>
@@ -61,7 +77,7 @@ class Register extends React.Component {
             title='Sign up'
           />
           <Divider />
-          <RegisterForm />
+          {renderRegisterForm()}
           <Divider />
           <CardActions style={style.card.footer}>
             <FlatButton
@@ -77,7 +93,8 @@ class Register extends React.Component {
 }
 
 Register.propTypes = {
-  isAuthenticated: PropTypes.bool
+  isAuthenticated: PropTypes.bool,
+  isRegistering: PropTypes.bool
 }
 
 export default connect(

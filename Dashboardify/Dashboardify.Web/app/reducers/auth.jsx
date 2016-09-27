@@ -1,7 +1,8 @@
 const initialState = {
-  isPosting: false,
+  isLoggingIn: false,
   isAuthenticated: false,
   error: undefined,
+  isRegistering: false,
   registerError: undefined
 }
 
@@ -10,19 +11,19 @@ const authReducer = (state = initialState, action) => {
     case 'START_LOGIN':
       return {
         ...state,
-        isPosting: true
+        isLoggingIn: true
       }
     case 'COMPLETE_LOGIN':
       return {
         ...state,
-        isPosting: false,
+        isLoggingIn: false,
         isAuthenticated: true,
         error: undefined
       }
     case 'FAIL_LOGIN':
       return {
         ...state,
-        isPosting: false,
+        isLoggingIn: false,
         isAuthenticated: false,
         error: action.err.message
       }
@@ -34,18 +35,18 @@ const authReducer = (state = initialState, action) => {
     case 'START_REGISTER':
       return {
         ...state,
-        isPosting: true
+        isRegistering: true
       }
     case 'COMPLETE_REGISTER':
       return {
         ...state,
-        isPosting: false,
+        isRegistering: false,
         registerError: undefined
       }
     case 'FAIL_REGISTER':
       return {
         ...state,
-        isPosting: false,
+        isRegistering: false,
         registerError: action.err
       }
     default:

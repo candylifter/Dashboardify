@@ -78,8 +78,8 @@ export default {
 
       return AuthAPI.register(name, email, password, invitationCode)
         .then(
-          (res) => dispatch(this.completeLogin()),
-          (err) => dispatch(this.failLogin(err))
+          (res) => dispatch(this.completeRegister()),
+          (err) => dispatch(this.failRegister(err))
         )
     }
   }

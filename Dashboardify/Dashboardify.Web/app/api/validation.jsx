@@ -35,12 +35,12 @@ export default {
   },
 
   validateRepeatPassword (password, repeatPassword) {
-    if (repeatPassword !== password) {
-      return 'Passwords have to match'
-    }
-
     if (repeatPassword.length < 1) {
       return 'Please repeat your password'
+    }
+
+    if (repeatPassword !== password) {
+      return 'Passwords have to match'
     }
 
     return ''

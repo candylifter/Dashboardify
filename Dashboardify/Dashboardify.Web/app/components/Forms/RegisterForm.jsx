@@ -1,10 +1,12 @@
 import React, { PropTypes } from 'react'
+import { connect } from 'react-redux'
 import debounce from 'debounce'
 
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 
 import { ValidationAPI } from 'api'
+import { AuthActions } from 'actions'
 
 class RegisterForm extends React.Component {
   constructor () {
@@ -38,6 +40,7 @@ class RegisterForm extends React.Component {
       this.setState({nameError, emailError, passwordError, repeatPasswordError, invitationCodeError})
     } else {
       let { dispatch } = this.props
+      dispatch(AuthActions.register(name.input.value, email.input.value, repeatPassword.input.value, invitationCode.input.value))
     }
   }
 
@@ -145,6 +148,8 @@ class RegisterForm extends React.Component {
   }
 }
 
-RegisterForm.propTypes = {}
+RegisterForm.propTypes = {
+  dispatch: PropTypes.func
+}
 
-export default RegisterForm
+export default connect()(RegisterForm)

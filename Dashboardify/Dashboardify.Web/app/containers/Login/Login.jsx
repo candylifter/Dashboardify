@@ -53,10 +53,10 @@ class Login extends React.Component {
       }
     }
 
-    let { isPosting } = this.props
+    let { isLoggingIn } = this.props
 
     let renderLoginForm = () => {
-      if (isPosting) {
+      if (isLoggingIn) {
         return (
           <div style={style.spinnerContainer}>
             <div className='text-center'>
@@ -84,13 +84,13 @@ class Login extends React.Component {
               label='Forgot password'
               style={style.card.footer.button}
               onClick={() => browserHistory.push('/forgot')}
-              disabled={isPosting}
+              disabled={isLoggingIn}
             />
             <FlatButton
               label='Sign up'
               style={style.card.footer.button}
               onClick={() => browserHistory.push('/register')}
-              disabled={isPosting}
+              disabled={isLoggingIn}
             />
           </CardActions>
         </Card>
@@ -100,7 +100,7 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  isPosting: PropTypes.bool,
+  isLoggingIn: PropTypes.bool,
   isAuthenticated: PropTypes.bool
 }
 
