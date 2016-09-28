@@ -6,13 +6,18 @@ using Dashboardify.Contracts.Items;
 
 namespace Dashboardify.Handlers.Items
 {
-    class GetItemHandler
+    class GetItemHandler:BaseHandler
     {
         private ItemsRepository _itemRepository;
 
-        public GetItemHandler(string connectionString)
+        private UserSessionRepository _userSessionRepository;
+
+
+        public GetItemHandler(string connectionString):base(connectionString)
         {
             _itemRepository = new ItemsRepository(connectionString);
+
+            _userSessionRepository = new UserSessionRepository(connectionString);
         }
 
         public GetItemResponse Handle(GetItemRequest request)
@@ -23,14 +28,7 @@ namespace Dashboardify.Handlers.Items
             {
                 return response;
             }
-
-            var item = _itemRepository.Get(request.ItemId);
-
-            if (item == null)
-            {
-                throw new Exception("ITEM_NOT_FOUND");
-            }
-
+            
             _itemRepository.Get(request.ItemId);
 
             return response;
@@ -42,10 +40,37 @@ namespace Dashboardify.Handlers.Items
         {
             var errors = new List<ErrorStatus>();
 
-            if (request.ItemId == null || request.ItemId == 0)
+            if (IsRequestNull(request))
             {
                 errors.Add(new ErrorStatus("BAD_REQUEST"));
                 return errors;
+            }
+
+            if (string.IsNullOrEmpty(request.Ticket))
+            {
+                errors.Add(new ErrorStatus("INVALID_TICKET"));
+                return errors;
+            }
+
+            if (request.ItemId == null || request.ItemId <= 0)
+            {
+                errors.Add(new ErrorStatus("BAD_REQUEST"));
+                return errors;
+            }
+
+            var user = _userSessionRepository.GetUserBySessionId(request.Ticket);
+
+            var userOwner = _itemRepository.GetUserByItemId(request.ItemId);
+
+            if (user == null || userOwner == null)
+            {
+                errors.Add(new ErrorStatus("USER_NOT_FOUND"));
+                return errors;
+            }
+
+            if (user.Id != userOwner.Id)
+            {
+                errors.Add(new ErrorStatus("UNAUTHORIZED_ACESS"));
             }
 
             return errors;

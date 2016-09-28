@@ -7,13 +7,17 @@ using Dashboardify.Repositories;
 
 namespace Dashboardify.Handlers.Users
 {
-    public class UpdateUserHandler
+    public class UpdateUserHandler:BaseHandler
     {
         private UsersRepository _usersRepository;
 
-        public UpdateUserHandler(string connectionString)
+        private UserSessionRepository _userSessionRepository;
+
+        public UpdateUserHandler(string connectionString):base(connectionString)
         {
             _usersRepository = new UsersRepository(connectionString);
+
+            _userSessionRepository = new UserSessionRepository(connectionString);
         }
 
         public UpdateUserResponse Handle(UpdateUserRequest request)
@@ -27,12 +31,9 @@ namespace Dashboardify.Handlers.Users
                 return response;
             }
 
-            var OriginUser = _usersRepository.Get(request.User.Id);
+            var OriginUser = _userSessionRepository.GetUserBySessionId(request.Ticket);
 
-            if (OriginUser == null)
-            {
-                response.Errors.Add(new ErrorStatus("USER_NOT_FOUND"));
-            }
+            
             try
             {
                 UpdateUserObject(OriginUser, request.User);
@@ -73,12 +74,25 @@ namespace Dashboardify.Handlers.Users
         {
             var errors = new List<ErrorStatus>();
 
+            if (IsRequestNull(request))
+            {
+                errors.Add(new ErrorStatus("BAD_REQUEST"));
+                return errors;
+            }
+
             if (request.User == null) 
             {
                 errors.Add(new ErrorStatus("BAD_REQUEST"));
 
                 return errors;
             }
+
+            if (string.IsNullOrEmpty(request.Ticket))
+            {
+                errors.Add(new ErrorStatus("INVALID_TICKET"));
+                return errors;
+            }
+
             if (request.User.Id < 1)
             {
                 errors.Add(new ErrorStatus("USER_NOT_FOUND"));
@@ -88,6 +102,15 @@ namespace Dashboardify.Handlers.Users
             if (!string.IsNullOrEmpty(request.User.Email) && request.User.Email.Contains("one.lt"))
             {
                 errors.Add(new ErrorStatus("EMAIL_WRONG_FORMAT"));
+                return errors;
+            }
+
+            var user = _userSessionRepository.GetUserBySessionId(request.Ticket);
+
+            if (user == null)
+            {
+                errors.Add(new ErrorStatus("USER_NOT_FOUND"));
+                return errors;
             }
 
             return errors;
