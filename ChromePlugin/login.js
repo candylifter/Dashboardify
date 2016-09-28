@@ -6,6 +6,12 @@ loginButton.onclick= function (){
   chrome.tabs.create(newTab);
 }
 
+var registerButton = document.getElementById('register-button')
+registerButton.onclick= function (){
+  var newTab = {url : "http://localhost:3000/register"}
+  chrome.tabs.create(newTab);
+}
+
 
 chrome.cookies.get({
         url: "http://localhost:3000",

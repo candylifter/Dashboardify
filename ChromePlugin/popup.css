@@ -16,8 +16,8 @@
 }
 
 .create-item-div{
-  margin-top: 20px;
-  margin-left: 32em;
+  margin-top: 20em;
+  margin-left: 50em;
 }
 
 .form-items{
@@ -28,4 +28,13 @@
 .form-buttons{
   width: 15em;
   margin-left: 5em;
+}
+
+.tekstas{
+  color: rgb(255,255,255);
+  font-size: 24px;
+}
+
+.side-menu{
+  font-size: 20px;
 }
