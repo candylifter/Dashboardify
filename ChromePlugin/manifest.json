@@ -21,6 +21,11 @@
   "background": {
     "scripts": ["background.js"]
   },
+  
+  
+  "icons": { "16": "logo16.png",
+           
+          "128": "logo128.png" },
 
   "permissions": [
     "activeTab",
