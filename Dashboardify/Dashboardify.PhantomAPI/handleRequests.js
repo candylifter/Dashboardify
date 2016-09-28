@@ -32,7 +32,9 @@ var handleRequests = (req) => {
       (err) => {
         response.success = false
         response.hasErrors = true
-        response.errors.push('Failed to take screenshot: ' + err)
+        response.errors.push(err.message)
+
+        return response
       }
     ))
   )

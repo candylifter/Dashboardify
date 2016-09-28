@@ -53,20 +53,23 @@ namespace Dashboardify.Service
 
             var items = _itemsRepository.GetList();
             foreach (var item in items)
-                Console.WriteLine(item.Name);
+                logger.Info(item.Name);
+                //Console.WriteLine(item.Name);
 
 
             logger.Info("\n\nScheduled items:\n");
             //Console.WriteLine("\n\nScheduled items:\n");
             var scheduledItems = _itemFilters.GetScheduledList(items);
             foreach (var item in scheduledItems)
-                Console.WriteLine(item.Name);
+                logger.Info(item.Name);
+                //Console.WriteLine(item.Name);
 
             logger.Info("\n\nOutdated items:\n");
             //Console.WriteLine("\n\nOutdated items:\n");
             var outdatedItems = _itemFilters.GetOutdatedList(scheduledItems);
             foreach (var item in outdatedItems)
-                Console.WriteLine(item.Name);
+                logger.Info(item.Name);
+                //Console.WriteLine(item.Name);
 
             UpdateNonOutdatedItems(items, outdatedItems);
 
@@ -120,7 +123,9 @@ namespace Dashboardify.Service
             //Console.WriteLine("\n\nNot outdated items:");
             foreach(var item in items)
             {
-                Console.WriteLine(item.Name);
+                //Console.WriteLine(item.Name);
+                logger.Info(item.Name);
+
 
                 item.LastChecked = DateTime.Now;
 

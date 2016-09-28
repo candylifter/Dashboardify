@@ -17,7 +17,8 @@ var validate = (req) => {
   }
 
   if (req.body.CSS === undefined) {
-    res.errors.push('CSS not defined')
+    // res.errors.push('CSS not defined')
+    req.body.CSS = null
   } else if (typeof (req.body.CSS) !== 'string') {
     res.errors.push('CSS has to be string')
   }
