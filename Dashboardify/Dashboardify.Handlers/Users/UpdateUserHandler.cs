@@ -33,13 +33,15 @@ namespace Dashboardify.Handlers.Users
 
             var OriginUser = _userSessionRepository.GetUserBySessionId(request.Ticket);
 
-            
+            if (!string.IsNullOrEmpty(request.Password)) //nes gali ir nepaduoti
+            {
+                request.Password = Helpers.PasswordsHelper.HashPassword(request.Password);
+            }
+
             try
             {
-                UpdateUserObject(OriginUser, request.User);
-
-                OriginUser.Name = request.User.Name;
-
+                UpdateUserObject(OriginUser, request.Username,request.Password,request.Email);
+                
                 _usersRepository.Update(OriginUser);
 
                 return response;
@@ -53,22 +55,23 @@ namespace Dashboardify.Handlers.Users
             
         }
 
-        private void UpdateUserObject(User origin, User updated)
+        private void UpdateUserObject(User origin, string name, string password, string email)
         {
-            if (!string.IsNullOrEmpty(updated.Name)) { 
-                origin.Name = updated.Name;
+            
+            if (!string.IsNullOrEmpty(name)) { 
+                origin.Name = name;
             }
 
-            if (!string.IsNullOrEmpty(updated.Email))
+            if (!string.IsNullOrEmpty(email))
             {
-                origin.Email = updated.Email;
+                origin.Email = email;
             }
 
-            if (!string.IsNullOrEmpty(updated.Password))
+            if (!string.IsNullOrEmpty(password))
             {
-                origin.Password = updated.Password;
+                origin.Password = password;
             }
-        } 
+        }
 
         private IList<ErrorStatus> Validate(UpdateUserRequest request)
         {
@@ -79,40 +82,22 @@ namespace Dashboardify.Handlers.Users
                 errors.Add(new ErrorStatus("BAD_REQUEST"));
                 return errors;
             }
-
-            if (request.User == null) 
-            {
-                errors.Add(new ErrorStatus("BAD_REQUEST"));
-
-                return errors;
-            }
-
+            
             if (string.IsNullOrEmpty(request.Ticket))
             {
                 errors.Add(new ErrorStatus("INVALID_TICKET"));
                 return errors;
             }
 
-            if (request.User.Id < 1)
-            {
-                errors.Add(new ErrorStatus("USER_NOT_FOUND"));
-  
-            }            
-
-            if (!string.IsNullOrEmpty(request.User.Email) && request.User.Email.Contains("one.lt"))
-            {
-                errors.Add(new ErrorStatus("EMAIL_WRONG_FORMAT"));
-                return errors;
-            }
-
             var user = _userSessionRepository.GetUserBySessionId(request.Ticket);
 
-            if (user == null)
+            if (user==null) 
             {
                 errors.Add(new ErrorStatus("USER_NOT_FOUND"));
                 return errors;
-            }
-
+            }            
+            
+            
             return errors;
         }
     }

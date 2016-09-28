@@ -21,7 +21,7 @@ namespace Dashboardify.Handlers.Items
             _dashRepository = new DashRepository(connectionString);
         }
 
-        public GetItemsListResponse Handle(GetItemsListRequest request)
+        public GetItemsListResponse Handle(GetItemsListRequest request) //TODO recheck all items handlers
         {
             var response = new GetItemsListResponse();
 

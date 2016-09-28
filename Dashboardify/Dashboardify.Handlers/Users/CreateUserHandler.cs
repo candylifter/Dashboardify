@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Mail;
-using System.Security.Cryptography;
-using System.Text;
+using System.Configuration;
 using Dashboardify.Contracts;
 using Dashboardify.Contracts.Users;
 using Dashboardify.Handlers.Helpers;
@@ -76,7 +73,15 @@ namespace Dashboardify.Handlers.Users
             if (!string.IsNullOrEmpty(_userRepository.ReturnEmail(request.Email)))
             {
                 errors.Add(new ErrorStatus("EMAIL_ALREADY_TAKEN"));
+                return errors;
             }
+            if (string.IsNullOrEmpty(request.InvitationCode))
+            {
+                errors.Add(new ErrorStatus("NO_INVITATION_CODE"));
+                return errors;
+            }
+            
+            
 
             
 

@@ -110,13 +110,17 @@ namespace Dashboardify.Repositories
         /// </summary>
         /// <param name="dashId">DashboardId</param>
         /// <returns>bool</returns>
-        public bool DeleteDashboard(int dashId)
+        public bool DeleteDashboard(int userId, string dashName)
         {
-            string deleteQuery = "DELETE FROM DashBoards";
+            string deleteQuery =
+                $@"DELETE
+                   FROM 
+                        DashBoards
+                   WHERE UserId ={userId} AND Name ='{dashName}'";
+                            
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                
-                    var result = db.Execute(deleteQuery);
+                    db.Execute(deleteQuery);
                     return true;
                 }
                
@@ -165,7 +169,12 @@ namespace Dashboardify.Repositories
                 return db.Query<User>(query).SingleOrDefault();
             }
         }
-
+        /// <summary>
+        /// Checks if dash exsists
+        /// </summary>
+        /// <param name="id">userId</param>
+        /// <param name="name">DashName</param>
+        /// <returns>true ir name not taken, false exsists</returns>
         public bool CheckIfNameAvailable(int id, string name)
         {
             using (IDbConnection db = new SqlConnection(_connectionString))

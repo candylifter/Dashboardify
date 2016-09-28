@@ -47,5 +47,17 @@ namespace Dashboardify.WebApi.Controllers
 
             return Request.CreateResponse(statusCode, response);
         }
+
+        [HttpPost]
+        public HttpResponseMessage Delete(DeleteDashRequest request)
+        {
+            var handler = new DeleteDashHandler(_connectionString);
+
+            var response = handler.Handle(request);
+
+            var statusCode = ResolveStatusCode(response);
+
+            return Request.CreateResponse(statusCode, response);
+        }
     }
 }

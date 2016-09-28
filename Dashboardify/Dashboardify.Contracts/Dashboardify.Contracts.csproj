@@ -44,6 +44,8 @@
     <Compile Include="BaseResponse.cs" />
     <Compile Include="Dashboards\CreateDashboardRequest.cs" />
     <Compile Include="Dashboards\CreateDashboardResponse.cs" />
+    <Compile Include="Dashboards\DeletDashResponse.cs" />
+    <Compile Include="Dashboards\DeleteDashRequest.cs" />
     <Compile Include="Dashboards\GetDashboardsRequest.cs" />
     <Compile Include="Dashboards\GetDashboardsResponse.cs" />
     <Compile Include="Dashboards\UpdateDashboardRequest.cs" />
