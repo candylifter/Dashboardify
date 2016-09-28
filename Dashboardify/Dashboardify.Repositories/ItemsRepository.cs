@@ -71,6 +71,7 @@ namespace Dashboardify.Repositories
             string query = @"UPDATE dbo.Items
                             SET Content=@Content,
                             LastChecked=@LastChecked,
+                            Modified=@Modified,
                             DashBoardId=@DashBoardId,
                             Name=@Name,
                             CheckInterval=@CheckInterval,
