@@ -16,7 +16,7 @@ namespace Dashboardify.Service
         private readonly ScreenshotRepository _screenshotRepository;
         private readonly ItemFilters _itemFilters = new ItemFilters();
         private readonly ContentHandler _contentHandler = new ContentHandler();
-        private ILog logger = log4net.LogManager.GetLogger("Dashboardify.Service");
+        private ILog logger = LogManager.GetLogger("Dashboardify.Service");
 
         public Service()
         {

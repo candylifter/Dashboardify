@@ -17,7 +17,7 @@ namespace Dashboardify.Service
 
             var scheduledItems = items.Where(item =>
                 item.LastChecked.AddMilliseconds(item.CheckInterval) <= now 
-                && item.IsActive == true
+                && item.IsActive
             ).ToList();
 
             logger.Info("Get schedules list up");

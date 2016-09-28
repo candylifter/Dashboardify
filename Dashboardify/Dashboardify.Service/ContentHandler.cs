@@ -2,7 +2,6 @@
 using HtmlAgilityPack;
 using log4net;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using NReco.PhantomJS;
 using System;
 using System.Net.Http;
@@ -14,7 +13,7 @@ namespace Dashboardify.Service
 {
     public class ContentHandler
     {
-        private ILog logger = log4net.LogManager.GetLogger("Dashboardify.Service");
+        private ILog logger = LogManager.GetLogger("Dashboardify.Service");
 
         public string GetContentByXPath(string url, string xpath)
         {
