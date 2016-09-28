@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization.Formatters;
+﻿using System.Collections.Generic;
 using Dashboardify.Contracts;
 using Dashboardify.Contracts.Items;
 using Dashboardify.Repositories;
@@ -59,6 +57,12 @@ namespace Dashboardify.Handlers.Items
         {
             var errors = new List<ErrorStatus>();
 
+            if (IsRequestNull(request))
+            {
+                errors.Add(new ErrorStatus("BAD_REQUEST"));
+                return errors;
+            }
+            
             if (string.IsNullOrEmpty(request.Ticket))
             {
                 errors.Add(new ErrorStatus("TICKET_NOT_DEFINED"));

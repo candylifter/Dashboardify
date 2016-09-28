@@ -61,7 +61,7 @@ namespace Dashboardify.Handlers.Items
 
             var RequestUser = _userSessionRepository.GetUserBySessionId(request.Ticket);
 
-            var OwnerUser = _itemsRepository.GetByUserItemId(request.Item.Id);
+            var OwnerUser = _itemsRepository.GetUserByItemId(request.Item.Id);
 
             if (RequestUser == null || OwnerUser == null)
             {

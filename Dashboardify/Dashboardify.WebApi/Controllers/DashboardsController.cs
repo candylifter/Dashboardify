@@ -35,5 +35,17 @@ namespace Dashboardify.WebApi.Controllers
 
             return Request.CreateResponse(statusCode, response);
         }
+
+        [HttpPost]
+        public HttpResponseMessage Create(CreateDashboardRequest request)
+        {
+            var handler = new CreateDashboardHandler(_connectionString);
+
+            var response = handler.Handle(request);
+
+            var statusCode = ResolveStatusCode(response);
+
+            return Request.CreateResponse(statusCode, response);
+        }
     }
 }

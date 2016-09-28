@@ -12,11 +12,11 @@ using Dashboardify.Repositories;
 
 namespace Dashboardify.Handlers.Users
 {
-    public class CreateUserHandler
+    public class CreateUserHandler:BaseHandler
     {
         private UsersRepository _userRepository;
 
-        public CreateUserHandler(string connectionString)
+        public CreateUserHandler(string connectionString):base(connectionString)
         {
             _userRepository = new UsersRepository(connectionString);
         }
@@ -61,9 +61,17 @@ namespace Dashboardify.Handlers.Users
         public IList<ErrorStatus> Validate(CreateUserRequest request)
         {
             var errors = new List<ErrorStatus>();
+
+            if (IsRequestNull(request))
+            {
+                errors.Add(new ErrorStatus("BAD_REQUEST"));
+                return errors;
+            }
+
             if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
             {
                 errors.Add(new ErrorStatus("WRONG_INPUT"));
+                return errors;
             }
             if (!string.IsNullOrEmpty(_userRepository.ReturnEmail(request.Email)))
             {

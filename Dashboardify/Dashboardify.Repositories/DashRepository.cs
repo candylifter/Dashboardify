@@ -165,5 +165,22 @@ namespace Dashboardify.Repositories
                 return db.Query<User>(query).SingleOrDefault();
             }
         }
+
+        public bool CheckIfNameAvailable(int id, string name)
+        {
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                string query =
+                    $@"SELECT
+	                                DashBoards.Name
+                                FROM DashBoards
+                                WHERE UserId = {id} AND DashBoards.Name = '{name}'";
+
+
+                var result = db.Query<string>(query).SingleOrDefault();
+
+                return result == null;
+            }
+        }
     }
 }

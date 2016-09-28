@@ -9,6 +9,12 @@ namespace Dashboardify.WebApi.Controllers
     {
         protected HttpStatusCode ResolveStatusCode(BaseResponse response)
         {
+            if (response.Errors == null)
+            {
+                return HttpStatusCode.InternalServerError;
+            }
+
+
             var httpStatusCode = HttpStatusCode.OK;
 
             if (response.Errors.Any(e => e.Code == "SYSTEM_ERROR"))

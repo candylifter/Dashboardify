@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Net.Http.Headers;
 using Dapper;
 using Dashboardify.Models;
 
@@ -210,7 +208,7 @@ namespace Dashboardify.Repositories
 
         }
 
-        public User GetByUserItemId(int itemId)
+        public User GetUserByItemId(int itemId)
         {
             using (IDbConnection db = new SqlConnection(_connectionString))
             {

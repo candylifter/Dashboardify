@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
 using Dashboardify.Contracts;
 using Dashboardify.Contracts.UserSession;
 using Dashboardify.Handlers.Helpers;
@@ -9,14 +7,14 @@ using Dashboardify.Repositories;
 
 namespace Dashboardify.Handlers.UserSession
 {
-    public class LoginUserHandler
+    public class LoginUserHandler:BaseHandler
     {
 
         private UsersRepository _usersRepository;
 
         private UserSessionRepository _userSessionRepository;
 
-        public LoginUserHandler(string connectionString)
+        public LoginUserHandler(string connectionString):base(connectionString)
         {
             _usersRepository = new UsersRepository(connectionString);
             _userSessionRepository = new UserSessionRepository(connectionString);
@@ -26,6 +24,17 @@ namespace Dashboardify.Handlers.UserSession
         public LoginUserResponse Handle(LoginUserRequest request)
         {
             var response = new LoginUserResponse();
+
+            if (IsRequestNull(request))
+            {
+                var errors = new List<ErrorStatus>();
+
+                errors.Add(new ErrorStatus("BAD_REQUEST")); //nes pasworda suhashinus iesko
+
+                response.Errors = errors;
+
+                return response;
+            }
 
             request.User.Password = PasswordsHelper.HashPassword(request.User.Password);
 
@@ -45,6 +54,18 @@ namespace Dashboardify.Handlers.UserSession
         private IList<ErrorStatus> Validate(LoginUserRequest request)
         {
             var errors = new List<ErrorStatus>();
+
+            if (IsRequestNull(request))
+            {
+                errors.Add(new ErrorStatus("BAD_REQUEST"));
+                return errors;
+            }
+
+            if (request.User == null)
+            {
+                errors.Add(new ErrorStatus("BAD_REQUEST"));
+                return errors;
+            }
 
             if (string.IsNullOrEmpty(request.User.Email) || string.IsNullOrEmpty(request.User.Password))
             {

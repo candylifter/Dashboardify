@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Dashboardify.Contracts;
 using Dashboardify.Contracts.Users;
-using Dashboardify.Models;
 using Dashboardify.Repositories;
 
 namespace Dashboardify.Handlers.Users

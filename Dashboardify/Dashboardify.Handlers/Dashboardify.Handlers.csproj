@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseHandler.cs" />
+    <Compile Include="Dashboards\CreateDashboardHandler.cs" />
     <Compile Include="Dashboards\GetDashboardsHandler.cs" />
     <Compile Include="Dashboards\UpdateDashBoardHandler.cs" />
     <Compile Include="Helpers\EmailHelper.cs" />
