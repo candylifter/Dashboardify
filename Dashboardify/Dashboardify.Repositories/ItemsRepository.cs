@@ -34,6 +34,8 @@ namespace Dashboardify.Repositories
                                           IsActive, 
                                           XPath, 
                                           CSS,
+                                          NotifyByEmail,
+                                          Failed,
                                           LastChecked, 
                                           Created, 
                                           Modified, 
@@ -60,22 +62,20 @@ namespace Dashboardify.Repositories
         /// <returns>returns number of lines affected</returns>
         public int Update(Item item)
         {
-
-            //if (item.Id < 1)
-            //{
-            //    throw new Exception("Invalid item Id error");
-            //}
-
+        
             string query = @"UPDATE dbo.Items
-                            SET Content=@Content,
-                            LastChecked=@LastChecked,
-                            Modified=@Modified,
-                            DashBoardId=@DashBoardId,
-                            Name=@Name,
-                            CheckInterval=@CheckInterval,
-                            XPath=@XPath,
-                            CSS=@CSS,
-                            IsActive=@IsActive
+                            SET 
+                                Content=@Content,
+                                LastChecked=@LastChecked,
+                                Modified=@Modified,
+                                DashBoardId=@DashBoardId,
+                                Name=@Name,
+                                CheckInterval=@CheckInterval,
+                                XPath=@XPath,
+                                CSS=@CSS,
+                                NotifyByEmail = @NotifyByEmail,
+                                Failed = @Failed,
+                                IsActive=@IsActive
                             WHERE Id=@Id";
            
                 using (IDbConnection db = new SqlConnection(_connectionString))
@@ -83,12 +83,6 @@ namespace Dashboardify.Repositories
                     int rowsAffected = db.Execute(query, item);
                     return rowsAffected;
                 }
-
-            
-            
-
-
-
         }
 
         /// <summary>
@@ -110,6 +104,8 @@ namespace Dashboardify.Repositories
                                                   IsActive, 
                                                   XPath, 
                                                   CSS,
+                                                  NotifyByEmail,
+                                                  Failed,
                                                   LastChecked, 
                                                   Created, 
                                                   Modified,  
@@ -138,6 +134,8 @@ namespace Dashboardify.Repositories
                                 IsActive, 
                                 XPath, 
                                 CSS,
+                                NotifyByEmail,
+                                Failed,
                                 LastChecked, 
                                 Created, 
                                 Modified, 
@@ -170,6 +168,8 @@ namespace Dashboardify.Repositories
                                          IsActive,
                                          XPath,
                                          CSS,
+                                         NotifyByEmail,
+                                         Failed,
                                          LastChecked,
                                          Created,
                                          Modified,
@@ -182,11 +182,13 @@ namespace Dashboardify.Repositories
                                          @IsActive,
                                          @XPath,
                                          @CSS,
+                                         @NotifyByEmail,
+                                         @Failed,
                                          @LastChecked,
                                          @Created,
                                          @Modified,
                                          @Content)";
-                    var result = db.Execute(query, item);
+                                   db.Execute(query, item);
                 }
             
            
@@ -203,7 +205,6 @@ namespace Dashboardify.Repositories
                 {
                     string query = "DELETE FROM Items WHERE Id= " + itemId.ToString();
                     db.Execute(query);
-                   
                 }
 
         }

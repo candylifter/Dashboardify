@@ -22,6 +22,10 @@ namespace Dashboardify.Repositories
 
         public string CSS { get; set; }
 
+        public bool NotifyByEmail { get; set; }
+
+        public int Failed { get; set; }
+
         public DateTime LastChecked { get; set; }
 
         public DateTime Created { get; set; }

@@ -104,7 +104,10 @@ namespace Dashboardify.Handlers.Items
                 errors.Add(new ErrorStatus("SESSION_TIME_OUT"));
                 return errors;
             }
-
+            if (request.Item.Failed > 3)
+            {
+                errors.Add(new ErrorStatus("ITEM_"));//kuriam layeri ir kaip vyks update susirasti
+            }
 
 
 
