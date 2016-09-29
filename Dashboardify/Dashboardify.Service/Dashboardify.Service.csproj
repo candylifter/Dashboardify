@@ -77,7 +77,6 @@
   <ItemGroup>
     <Compile Include="ContentHandler.cs" />
     <Compile Include="ItemFilters.cs" />
-    <Compile Include="ItemsUpdater.cs" />
     <Compile Include="MailSender.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
