@@ -1,10 +1,10 @@
-﻿
-using Dashboardify.Models;
-
-namespace Dashboardify.Contracts.UserSession
+﻿namespace Dashboardify.Contracts.UserSession
 {
     public class LoginUserRequest:BaseRequest
     {
-        public User User { get; set; }
+
+        public string Email { get; set; }
+
+        public string Password { get; set; }
     }
 }
