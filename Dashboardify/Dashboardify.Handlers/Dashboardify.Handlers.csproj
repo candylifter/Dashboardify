@@ -49,6 +49,7 @@
     <Compile Include="Dashboards\UpdateDashBoardHandler.cs" />
     <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\PasswordsHelper.cs" />
+    <Compile Include="Helpers\SymbolHelper.cs" />
     <Compile Include="Items\CreateItemHandler.cs" />
     <Compile Include="Items\DeleteItemHandler.cs" />
     <Compile Include="Items\GetItemHandler.cs" />

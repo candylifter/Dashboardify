@@ -9,7 +9,7 @@ namespace Dashboardify.Service
     public class ItemFilters
     {
         private readonly ContentHandler _contentHandler = new ContentHandler();
-        private ILog logger = log4net.LogManager.GetLogger("Dashboardify.Service");
+        private ILog logger = LogManager.GetLogger("Dashboardify.Service");
 
         public IList<Item> GetScheduledList(IList<Item> items)
         {

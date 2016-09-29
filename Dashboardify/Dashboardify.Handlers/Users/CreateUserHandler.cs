@@ -49,7 +49,8 @@ namespace Dashboardify.Handlers.Users
             }
             catch (Exception ex)
             {
-                response.Errors.Add(new ErrorStatus(ex.Message));
+                response.Errors.Add(new ErrorStatus("BAD_REQUEST"));
+
                 return response;
             }
             
@@ -80,9 +81,12 @@ namespace Dashboardify.Handlers.Users
                 errors.Add(new ErrorStatus("NO_INVITATION_CODE"));
                 return errors;
             }
+            if (request.InvitationCode != ConfigurationManager.AppSettings["InvitationCode"])
+            {
+                errors.Add(new ErrorStatus("INVITATION_CODE_DONT_MATCH"));
+                return errors;
+            }
             
-            
-
             
 
             //todo metodas kuris patikrina ar email neuzimtas ir name

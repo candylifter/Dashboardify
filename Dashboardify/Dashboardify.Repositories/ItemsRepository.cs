@@ -203,7 +203,7 @@ namespace Dashboardify.Repositories
         { 
                 using (IDbConnection db = new SqlConnection(_connectionString))
                 {
-                    string query = "DELETE FROM Items WHERE Id= " + itemId.ToString();
+                    string query = "DELETE FROM Items WHERE Id= " + itemId;
                     db.Execute(query);
                 }
 

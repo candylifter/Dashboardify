@@ -33,31 +33,60 @@ namespace Dashboardify.Handlers.Items
             {
                 return response;
             }
-
-            var item = _itemRepository.Get(request.Item.Id);
-
-            if (item == null)
+            try
             {
-                throw new Exception("ITEM_NOT_FOUND");
+                var item = _itemRepository.Get(request.Item.Id);
+
+                if (item == null)
+                {
+                    throw new Exception("ITEM_NOT_FOUND");
+                }
+
+                UpdateItemObject(item, request.Item);
+
+                _itemRepository.Update(item);
+
+                return response;
+            }
+            catch (Exception)
+            {
+                
+                response.Errors.Add(new ErrorStatus("BAD_REQUEST"));
+
+                return response;
             }
 
-            UpdateItemObject(item,request.Item);
-
-            _itemRepository.Update(item);
-
-            return response;
+            
      
 
         }
 
         private void UpdateItemObject(Item origin, Item updated)
         {
-            origin.LastChecked = updated.LastChecked;
-            origin.CheckInterval = updated.CheckInterval;
-            origin.Modified = updated.Modified;
-            origin.XPath = updated.XPath;
-            origin.CSS = updated.CSS;
-            origin.Content = updated.Content;
+            if (updated.LastChecked != DateTime.MinValue)
+            {
+                origin.LastChecked = updated.LastChecked;
+            }
+            if (!(origin.CheckInterval < 30000))
+            {
+                origin.LastChecked = updated.LastChecked;
+            }
+            if (updated.LastChecked != DateTime.MinValue)
+            {
+                origin.Modified = updated.Modified;
+            }
+            if (!string.IsNullOrEmpty(updated.XPath))
+            {
+                origin.XPath = updated.XPath;
+            }
+            if (!string.IsNullOrEmpty(updated.CSS))
+            {
+                origin.CSS = updated.CSS;
+            }
+            if (!string.IsNullOrEmpty(updated.CSS))
+            {
+                origin.Content = updated.Content;
+            }
         }
 
         private IList<ErrorStatus> Validate(UpdateItemRequest request)
@@ -87,6 +116,8 @@ namespace Dashboardify.Handlers.Items
                 errors.Add(new ErrorStatus("USER_NOT_FOUND"));
                 return errors;
             }
+            
+
             int ownerUserId = _dashRepository.Get(request.Item.DashBoardId).UserId;
 
             if (ownerUserId < 0)

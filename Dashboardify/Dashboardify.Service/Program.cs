@@ -7,7 +7,7 @@ namespace Dashboardify.Service
     {
         static void Main(string[] args)
         {
-            var logger = log4net.LogManager.GetLogger("Dashboardify.Service");
+            log4net.LogManager.GetLogger("Dashboardify.Service");
 
             HostFactory.Run(x =>                                 
             {

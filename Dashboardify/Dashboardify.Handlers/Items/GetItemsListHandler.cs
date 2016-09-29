@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Dashboardify.Contracts;
 using Dashboardify.Contracts.Items;
 using Dashboardify.Repositories;
@@ -31,26 +32,33 @@ namespace Dashboardify.Handlers.Items
             {
                 return response;
             }
-
-            var items = _itemsRepository.GetByDashboardId(request.DashboardId);
-
-            var itemsWithScreenshots = new List<Item>();
-
-            foreach (var item in items)
+            try
             {
-                var screenshot = _screenshotRepository.GetLastByItemId(item.Id);
+                var items = _itemsRepository.GetByDashboardId(request.DashboardId);
 
-                if (screenshot != null)
+                var itemsWithScreenshots = new List<Item>();
+
+                foreach (var item in items)
                 {
-                    item.Screenshots.Add(screenshot);
+                    var screenshot = _screenshotRepository.GetLastByItemId(item.Id);
+
+                    if (screenshot != null)
+                    {
+                        item.Screenshots.Add(screenshot);
+                    }
+
+                    itemsWithScreenshots.Add(item);
                 }
 
-                itemsWithScreenshots.Add(item);
+                response.Items = itemsWithScreenshots;
+
+                return response;
             }
-
-            response.Items = itemsWithScreenshots;
-
-            return response;
+            catch (Exception)
+            {
+                response.Errors.Add(new ErrorStatus("BAD_REQUEST"));
+                return response;
+            }
         }
 
         private IList<ErrorStatus> Validate(GetItemsListRequest request)

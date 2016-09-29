@@ -28,10 +28,20 @@ namespace Dashboardify.Handlers.Items
             {
                 return response;
             }
-            
-            _itemRepository.Get(request.ItemId);
 
-            return response;
+            try
+            {
+                _itemRepository.Get(request.ItemId);
+
+                return response;
+            }
+            catch (Exception)
+            {
+
+                response.Errors.Add(new ErrorStatus("BAD_REQUEST"));
+                return response;
+            }
+            
 
 
         }

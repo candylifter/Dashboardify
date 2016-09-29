@@ -35,9 +35,9 @@ namespace Dashboardify.Handlers.Items
 
                 return response;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                response.Errors.Add(new ErrorStatus(ex.Message));
+                response.Errors.Add(new ErrorStatus("BAD_REQUEST"));
 
                 return response;
             }
