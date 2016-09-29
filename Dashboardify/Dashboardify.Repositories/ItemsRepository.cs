@@ -17,7 +17,7 @@ namespace Dashboardify.Repositories
         /// <param name="connString">ConnectionString to DB</param>
         public ItemsRepository(string connString)
         {
-            this._connectionString = connString;
+            _connectionString = connString;
         }
 
         /// <summary>
@@ -224,5 +224,7 @@ namespace Dashboardify.Repositories
                 return db.Query<User>(query).SingleOrDefault();
             }
         }
+
+        
     }
 }

@@ -1,10 +1,8 @@
-﻿using Dashboardify.Repositories;
-
-namespace Dashboardify.Contracts.Items
+﻿namespace Dashboardify.Contracts.Items
 {
     public class DeleteItemRequest: BaseRequest
     {
-        public Item Item { get; set; }
+        public int ItemId { get; set; }
 
         public string Ticket { get; set; }
     }

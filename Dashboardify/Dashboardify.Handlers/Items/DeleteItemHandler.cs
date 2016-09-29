@@ -31,7 +31,7 @@ namespace Dashboardify.Handlers.Items
             }
             try
             {
-                _itemsRepository.Delete(request.Item.Id);
+                _itemsRepository.Delete(request.ItemId);
 
                 return response;
             }
@@ -54,14 +54,26 @@ namespace Dashboardify.Handlers.Items
                 errors.Add(new ErrorStatus("BAD_REQUEST"));
                 return errors;
             }
-            if (request.Item == null || request.Item.Id < 1)
+            if (request.ItemId < 1)
             {
                 errors.Add(new ErrorStatus("ITEM_NOT_DEFINED"));
             }
 
+            if (string.IsNullOrEmpty(request.Ticket))
+            {
+                errors.Add(new ErrorStatus("NO_TICKET"));
+                return errors;
+            }
+
+            if (!IsSessionValid(request.Ticket))
+            {
+                errors.Add(new ErrorStatus("SESSION_NOT_VALID"));
+                return errors;
+            }
+
             var RequestUser = _userSessionRepository.GetUserBySessionId(request.Ticket);
 
-            var OwnerUser = _itemsRepository.GetUserByItemId(request.Item.Id);
+            var OwnerUser = _itemsRepository.GetUserByItemId(request.ItemId);
 
             if (RequestUser == null || OwnerUser == null)
             {
@@ -69,9 +81,7 @@ namespace Dashboardify.Handlers.Items
                 return errors;
             }
 
-    if (
-
-        RequestUser.Id != OwnerUser.Id)
+            if (RequestUser.Id != OwnerUser.Id)
             {
                 errors.Add(new ErrorStatus("UNAUTHORIZED_ACESS"));
                 return errors;
@@ -82,7 +92,7 @@ namespace Dashboardify.Handlers.Items
             }
 
             
-            if (request.Item.Id < 1)
+            if (request.ItemId < 1)
             {
                 errors.Add(new ErrorStatus("USER_NOT_FOUND"));
             }

@@ -35,14 +35,14 @@ namespace Dashboardify.Handlers.Items
             }
             try
             {
-                var item = _itemRepository.Get(request.Item.Id);
+                var item = _itemRepository.Get(request.ItemId);
 
                 if (item == null)
                 {
                     throw new Exception("ITEM_NOT_FOUND");
                 }
 
-                UpdateItemObject(item, request.Item);
+                UpdateItemObject(item,request.Name,request.CheckInterval,request.IsActive,request.NotifyByEmail);
 
                 _itemRepository.Update(item);
 
@@ -57,36 +57,41 @@ namespace Dashboardify.Handlers.Items
             }
 
             
-     
-
         }
 
-        private void UpdateItemObject(Item origin, Item updated)
+        private void UpdateItemObject(Item origin, string requestName, int requestInterval, bool requestIsActive, bool requestNotifyByEmail)
         {
-            if (updated.LastChecked != DateTime.MinValue)
+            
+            if (!(requestInterval < 30000 && requestInterval > 86400000))
             {
-                origin.LastChecked = updated.LastChecked;
+                origin.CheckInterval = requestInterval;
             }
-            if (!(origin.CheckInterval < 30000))
+
+            if (!string.IsNullOrEmpty(requestName))
             {
-                origin.LastChecked = updated.LastChecked;
+                origin.Name = requestName;
             }
-            if (updated.LastChecked != DateTime.MinValue)
+
+            if (requestIsActive)
             {
-                origin.Modified = updated.Modified;
+                origin.IsActive = requestIsActive;
             }
-            if (!string.IsNullOrEmpty(updated.XPath))
+            else
             {
-                origin.XPath = updated.XPath;
+                origin.IsActive = false;
             }
-            if (!string.IsNullOrEmpty(updated.CSS))
+
+            if (requestNotifyByEmail)
             {
-                origin.CSS = updated.CSS;
+                origin.NotifyByEmail = requestNotifyByEmail;
             }
-            if (!string.IsNullOrEmpty(updated.CSS))
+            else
             {
-                origin.Content = updated.Content;
+                origin.NotifyByEmail = false;
             }
+            
+            origin.Modified = DateTime.Now;
+          
         }
 
         private IList<ErrorStatus> Validate(UpdateItemRequest request)
@@ -99,17 +104,29 @@ namespace Dashboardify.Handlers.Items
                 return errors;
             }
 
-            if (request.Item == null)
+            if (request.ItemId < 1)
             {
                 errors.Add(new ErrorStatus("BAD_REQUEST"));
                 return errors;
             }
-            if (string.IsNullOrEmpty(request.Item.DashBoardId.ToString()))
+            if (string.IsNullOrEmpty(request.Name))
             {
                 errors.Add(new ErrorStatus("NO_DASHBOARDS_FOUND_ON_THIS_USER")); 
             }
-
+            if (string.IsNullOrEmpty(request.Ticket))
+            {
+                errors.Add(new ErrorStatus("INVALID_TICKET"));
+                return errors;
+            }
+            if (request.CheckInterval < 30000 && request.CheckInterval > 86400000)
+            {
+                errors.Add(new ErrorStatus("INVALID_CHECK_INTERVAL"));
+                return errors;
+            }
+            
             var user = _userSessionRepository.GetUserBySessionId(request.Ticket);
+
+            var ownerUser = _itemRepository.GetUserByItemId(request.ItemId);
 
             if (user == null)
             {
@@ -117,15 +134,19 @@ namespace Dashboardify.Handlers.Items
                 return errors;
             }
             
-
-            int ownerUserId = _dashRepository.Get(request.Item.DashBoardId).UserId;
-
-            if (ownerUserId < 0)
+            if (ownerUser == null)
             {
-                errors.Add(new ErrorStatus("ITEM_NOT_FOUND"));
+                errors.Add(new ErrorStatus("BAD_REQUEST"));
+                return errors;
             }
 
-            if (user.Id != ownerUserId)
+            if (ownerUser.Id < 1)
+            {
+                errors.Add(new ErrorStatus("BAD_REQUEST"));
+                return errors;
+            }
+
+            if (user.Id != ownerUser.Id)
             {
                 errors.Add(new ErrorStatus("UNAUTHORIZED_ACCES"));
                 return errors;
@@ -135,13 +156,7 @@ namespace Dashboardify.Handlers.Items
                 errors.Add(new ErrorStatus("SESSION_TIME_OUT"));
                 return errors;
             }
-            if (request.Item.Failed > 3)
-            {
-                errors.Add(new ErrorStatus("ITEM_"));//kuriam layeri ir kaip vyks update susirasti
-            }
-
-
-
+            
             return errors;
         }
         
