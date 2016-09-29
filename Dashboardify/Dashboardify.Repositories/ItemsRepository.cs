@@ -35,6 +35,7 @@ namespace Dashboardify.Repositories
                                           XPath, 
                                           CSS,
                                           NotifyByEmail,
+                                          UserNotified,
                                           Failed,
                                           LastChecked, 
                                           Created, 
@@ -74,6 +75,7 @@ namespace Dashboardify.Repositories
                                 XPath=@XPath,
                                 CSS=@CSS,
                                 NotifyByEmail = @NotifyByEmail,
+                                UserNotified = @UserNotified,
                                 Failed = @Failed,
                                 IsActive=@IsActive
                             WHERE Id=@Id";

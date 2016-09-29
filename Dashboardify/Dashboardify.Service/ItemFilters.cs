@@ -2,7 +2,9 @@
 using log4net;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using Dashboardify.Models;
 
 namespace Dashboardify.Service
 {
@@ -10,6 +12,7 @@ namespace Dashboardify.Service
     {
         private readonly ContentHandler _contentHandler = new ContentHandler();
         private ILog logger = LogManager.GetLogger("Dashboardify.Service");
+        private ItemsRepository _itemsRepository = new ItemsRepository("SS");
 
         public IList<Item> GetScheduledList(IList<Item> items)
         {
@@ -49,6 +52,24 @@ namespace Dashboardify.Service
             logger.Info("Get outdated items");
 
             return outdatedItems;
+        }
+
+        public List<User> GetEmailContacts(IList<Item> items)
+        {
+            List<User> emails = new List<User>();
+
+            foreach (var item in items)
+            {
+                if (!item.UserNotified)
+                {
+                    emails.Add(_itemsRepository.GetUserByItemId(item.Id));
+                }
+                //prisideti db kur user notified
+                //po atsirinkimo suupdatinti kad notifiinta
+            }
+
+
+            return emails;
         }
     }
 }
