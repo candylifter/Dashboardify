@@ -1,36 +1,37 @@
 {
-  "manifest_version": 2,
+    "manifest_version": 2,
 
-  "name": "Dashboardify Chrome Plugin",
-  "description": "This extension allows user to watch selected area of any website",
-  "version": "0.0.0",
+    "name": "Dashboardify Chrome Plugin",
+    "description": "This extension allows user to watch selected area of any website",
+    "version": "0.0.0",
 
-  "browser_action": {
-    "default_icon": "icon.png",
-    "default_popup": "views/login.html"
-  },
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_popup": "views/login.html"
+    },
 
-  "content_scripts": [
-      {
+    "content_scripts": [{
         "matches": ["<all_urls>"],
         "css": ["content.css"],
-        "js": ["./node_modules/jquery/dist/jquery.min.js" ,"content.js"]
-      }
-    ],
+        "js": ["./node_modules/jquery/dist/jquery.min.js", "content.js"]
+    }],
 
-  "background": {
-    "scripts": ["background.js"]
-  },
-  
-  
-  "icons": { "16": "logo16.png",
-           
-          "128": "logo128.png" },
+    "background": {
+        "scripts": ["background.js"]
+    },
 
-  "permissions": [
-    "activeTab",
-    "tabs",
-    "http://localhost:3000/",
-    "cookies"
-  ]
+
+    "icons": {
+        "16": "logo16.png",
+
+        "128": "logo128.png"
+    },
+
+    "permissions": [
+        "activeTab",
+        "tabs",
+        "http://localhost:3000/",
+        "http://23.251.133.254/",
+        "cookies"
+    ]
 }

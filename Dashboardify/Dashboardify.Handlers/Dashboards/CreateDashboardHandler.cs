@@ -71,26 +71,26 @@ namespace Dashboardify.Handlers.Dashboards
             }
             if (string.IsNullOrEmpty(request.Ticket))
             {
-                errors.Add(new ErrorStatus("TICKET_NOT_RECIEVED"));
+                errors.Add(new ErrorStatus("TICKET_NOT_DEFINED"));
                 return errors;
             }
 
             if (string.IsNullOrEmpty(request.DashName))
             {
-                errors.Add(new ErrorStatus("DASHBOARD_MUST_HAVE_NAME"));
+                errors.Add(new ErrorStatus("DASHBOARD_NOT_DEFINED"));
                 return errors;
             }
             var user = _userSessionRepository.GetUserBySessionId(request.Ticket);
 
             if (user == null)
             {
-                errors.Add(new ErrorStatus("USER_NOT_FOUND"));
+                errors.Add(new ErrorStatus("USER_NOT_DEFINED"));
                 return errors;
             }
 
             if (!_dashRepository.CheckIfNameAvailable(user.Id, request.DashName))
             {
-                errors.Add(new ErrorStatus("NAME_ALREADY_EXSISTS"));
+                errors.Add(new ErrorStatus("NAME_ALREADY_EXISTS"));
             }
 
             //TODO method who checks ir name exsists

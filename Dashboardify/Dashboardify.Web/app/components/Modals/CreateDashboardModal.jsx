@@ -5,13 +5,22 @@ import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import TextField from 'material-ui/TextField'
 
-import { ModalsActions } from 'actions'
+import { ModalsActions, DashboardsActions } from 'actions'
 
 class CreateDashboardModal extends React.Component {
   constructor () {
     super()
 
     this.handleClose = this.handleClose.bind(this)
+    this.handleCreateDashboard = this.handleCreateDashboard.bind(this)
+  }
+
+  handleCreateDashboard () {
+    let { dispatch } = this.props
+    let { value: name } = this.refs.name.input
+
+    dispatch(DashboardsActions.createDashboard(name))
+    this.handleClose()
   }
 
   handleClose () {
@@ -30,7 +39,7 @@ class CreateDashboardModal extends React.Component {
       <FlatButton
         label='Create'
         primary
-        onTouchTap={this.handleClose}
+        onTouchTap={this.handleCreateDashboard}
       />
     ]
 
@@ -44,13 +53,12 @@ class CreateDashboardModal extends React.Component {
         open={open}
         onRequestClose={this.handleClose}
       >
-        <form>
-          <TextField
-            floatingLabelText='Dashboard name'
-            hintText='E. g. Rebel news'
-            fullWidth
-          />
-        </form>
+        <TextField
+          floatingLabelText='Dashboard name'
+          hintText='E. g. Rebel news'
+          ref='name'
+          fullWidth
+        />
       </Dialog>
     )
   }

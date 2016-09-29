@@ -5,8 +5,9 @@ import CircularProgress from 'material-ui/CircularProgress'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 
+import { ErrorsAPI } from 'api'
 import { DashboardsActions, ModalsActions } from 'actions'
-import { DashboardList, CreateDashboardModal } from 'components'
+import { DashboardList, CreateDashboardModal, LoadingIndicator, ErrorSnackbar } from 'components'
 
 class Dashboards extends React.Component {
   constructor () {
@@ -28,7 +29,7 @@ class Dashboards extends React.Component {
   }
 
   render () {
-    let { isFetching, error } = this.props
+    let { isFetching, isCreating, error, createError } = this.props
 
     const style = {
       display: 'flex',
@@ -41,7 +42,7 @@ class Dashboards extends React.Component {
         alignItems: 'center'
       },
       fab: {
-        display: isFetching ? 'none' : 'block',
+        display: isFetching || error ? 'none' : 'block',
         position: 'fixed',
         bottom: '1.5em',
         right: '2.25em'
@@ -79,14 +80,25 @@ class Dashboards extends React.Component {
         return (
           <div style={style.error}>
             <i className='material-icons' style={style.error.icon}>&#xE000;</i>
-            <p style={style.error.text}>{error}</p>
+            <p style={style.error.text}>{error.status}</p>
           </div>
+        )
+      }
+    }
+
+    let renderErrorSnackbar = () => {
+      if (createError) {
+        return (
+          createError.data.Errors.map((resError, index) => {
+            return <ErrorSnackbar key={index} open message={ErrorsAPI.translate(resError.Code)} />
+          })
         )
       }
     }
 
     return (
       <div style={style}>
+        <LoadingIndicator show={isCreating} />
         {renderDashboardList()}
         <FloatingActionButton
           style={style.fab}
@@ -96,6 +108,7 @@ class Dashboards extends React.Component {
           <ContentAdd />
         </FloatingActionButton>
         <CreateDashboardModal />
+        {renderErrorSnackbar()}
       </div>
     )
   }
@@ -104,13 +117,17 @@ class Dashboards extends React.Component {
 Dashboards.propTypes = {
   dispatch: PropTypes.func,
   isFetching: PropTypes.bool,
-  error: PropTypes.string
+  isCreating: PropTypes.bool,
+  createError: PropTypes.object,
+  error: PropTypes.object
 }
 
 export default connect(
   (state) => {
     return {
+      isCreating: state.dashboards.isCreating,
       isFetching: state.dashboards.isFetching,
+      createError: state.dashboards.createError,
       error: state.dashboards.error
     }
   }

@@ -1,5 +1,7 @@
 const initialState = {
   isFetching: false,
+  isCreating: false,
+  createError: undefined,
   data: [],
   error: undefined
 }
@@ -11,10 +13,19 @@ const dashboardsReducer = (state = initialState, action) => {
         ...state,
         data: action.dashboards
       }
+    case 'ADD_DASHBOARD':
+      return {
+        ...state,
+        data: [
+          ...state.data,
+          action.dashboard
+        ]
+      }
     case 'START_DASHBOARDS_FETCH':
       return {
         ...state,
-        isFetching: true
+        isFetching: true,
+        error: undefined
       }
     case 'COMPLETE_DASHBOARDS_FETCH':
       return {
@@ -26,7 +37,25 @@ const dashboardsReducer = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-        error: action.err.message
+        error: action.err.response
+      }
+    case 'START_CREATE_DASHBOARD':
+      return {
+        ...state,
+        isCreating: true,
+        createError: undefined
+      }
+    case 'COMPLETE_CREATE_DASHBOARD':
+      return {
+        ...state,
+        isCreating: false,
+        createError: undefined
+      }
+    case 'FAIL_CREATE_DASHBOARD':
+      return {
+        ...state,
+        isCreating: false,
+        createError: action.err.response
       }
     default:
       return state

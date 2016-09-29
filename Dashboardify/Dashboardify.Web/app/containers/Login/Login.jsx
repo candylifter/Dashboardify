@@ -7,6 +7,7 @@ import Divider from 'material-ui/Divider'
 import CircularProgress from 'material-ui/CircularProgress'
 import FlatButton from 'material-ui/FlatButton'
 
+import { ErrorsAPI } from 'api'
 import { LoginForm } from 'components'
 
 class Login extends React.Component {
@@ -53,7 +54,21 @@ class Login extends React.Component {
       }
     }
 
-    let { isLoggingIn } = this.props
+    let { isLoggingIn, error } = this.props
+
+    let renderErrors = () => {
+      if (error && !isLoggingIn) {
+        return (
+          <div className='text-center'>
+            {error.data.Errors.map((err, index) => {
+              return (
+                <p key={index}>{ErrorsAPI.translate(err.Code)}</p>
+              )
+            })}
+          </div>
+        )
+      }
+    }
 
     let renderLoginForm = () => {
       if (isLoggingIn) {
@@ -77,15 +92,10 @@ class Login extends React.Component {
             title='Sign in to Dashboardify'
           />
           <Divider />
+          {renderErrors()}
           {renderLoginForm()}
           <Divider />
           <CardActions style={style.card.footer}>
-            {/* <FlatButton
-              label='Forgot password'
-              style={style.card.footer.button}
-              onClick={() => browserHistory.push('/forgot')}
-              disabled={isLoggingIn}
-            /> */}
             <FlatButton
               label='Sign up'
               style={style.card.footer.button}
@@ -101,7 +111,8 @@ class Login extends React.Component {
 
 Login.propTypes = {
   isLoggingIn: PropTypes.bool,
-  isAuthenticated: PropTypes.bool
+  isAuthenticated: PropTypes.bool,
+  error: PropTypes.object
 }
 
 export default connect(
