@@ -5,6 +5,7 @@ import CircularProgress from 'material-ui/CircularProgress'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 
+import { ErrorsAPI } from 'api'
 import { DashboardsActions, ModalsActions } from 'actions'
 import { DashboardList, CreateDashboardModal, LoadingIndicator, ErrorSnackbar } from 'components'
 
@@ -89,7 +90,7 @@ class Dashboards extends React.Component {
       if (createError) {
         return (
           createError.data.Errors.map((resError, index) => {
-            return <ErrorSnackbar key={index} open message={resError.Code} />
+            return <ErrorSnackbar key={index} open message={ErrorsAPI.translate(resError.Code)} />
           })
         )
       }

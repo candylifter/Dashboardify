@@ -24,7 +24,8 @@ const dashboardsReducer = (state = initialState, action) => {
     case 'START_DASHBOARDS_FETCH':
       return {
         ...state,
-        isFetching: true
+        isFetching: true,
+        error: undefined
       }
     case 'COMPLETE_DASHBOARDS_FETCH':
       return {
@@ -41,7 +42,8 @@ const dashboardsReducer = (state = initialState, action) => {
     case 'START_CREATE_DASHBOARD':
       return {
         ...state,
-        isCreating: true
+        isCreating: true,
+        createError: undefined
       }
     case 'COMPLETE_CREATE_DASHBOARD':
       return {
