@@ -12,13 +12,37 @@ class DashboardList extends React.Component {
       maxWidth: 1200,
       justifyContent: 'center',
       flexWrap: 'wrap',
-      alignItems: 'center'
+      alignItems: 'center',
+      error: {
+        width: '100%',
+        minHeight: 'calc(100vh - 64px)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        color: '#9E9E9E',
+        icon: {
+          fontSize: '8em'
+        },
+        text: {
+          fontSize: '2em'
+        },
+        subtext: {
+          margin: 0,
+          fontSize: '1.5em'
+        }
+      }
     }
 
     let renderDashboards = () => {
       if (dashboards.data.length === 0) {
         return (
-          <p>Nothing to show</p>
+          <div style={style.error}>
+            <i className='material-icons' style={style.error.icon}>dashboard</i>
+            <p style={style.error.text}>No dashboards yet</p>
+            <p style={style.error.subtext}>Click the button in the bottom right to add one</p>
+          </div>
         )
       }
 

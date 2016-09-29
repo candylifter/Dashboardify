@@ -33,7 +33,6 @@ export default {
             dispatch(this.completeLogin(res.data))
           },
           (err) => {
-            console.error('Failed to logged:', err.message)
             dispatch(this.failLogin(err))
           }
         )

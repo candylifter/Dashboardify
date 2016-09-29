@@ -53,7 +53,22 @@ class Login extends React.Component {
       }
     }
 
-    let { isLoggingIn } = this.props
+    let { isLoggingIn, error } = this.props
+
+    let renderErrors = () => {
+      if (error && !isLoggingIn) {
+        return (
+          <div className='text-center'>
+            <p>Status: {error.status}</p>
+            {error.data.Errors.map((err, index) => {
+              return (
+                <p key={index}>{err.Code}</p>
+              )
+            })}
+          </div>
+        )
+      }
+    }
 
     let renderLoginForm = () => {
       if (isLoggingIn) {
@@ -77,15 +92,10 @@ class Login extends React.Component {
             title='Sign in to Dashboardify'
           />
           <Divider />
+          {renderErrors()}
           {renderLoginForm()}
           <Divider />
           <CardActions style={style.card.footer}>
-            {/* <FlatButton
-              label='Forgot password'
-              style={style.card.footer.button}
-              onClick={() => browserHistory.push('/forgot')}
-              disabled={isLoggingIn}
-            /> */}
             <FlatButton
               label='Sign up'
               style={style.card.footer.button}
@@ -101,7 +111,8 @@ class Login extends React.Component {
 
 Login.propTypes = {
   isLoggingIn: PropTypes.bool,
-  isAuthenticated: PropTypes.bool
+  isAuthenticated: PropTypes.bool,
+  error: PropTypes.object
 }
 
 export default connect(
