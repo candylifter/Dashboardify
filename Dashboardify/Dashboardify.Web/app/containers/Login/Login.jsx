@@ -7,6 +7,7 @@ import Divider from 'material-ui/Divider'
 import CircularProgress from 'material-ui/CircularProgress'
 import FlatButton from 'material-ui/FlatButton'
 
+import { ErrorsAPI } from 'api'
 import { LoginForm } from 'components'
 
 class Login extends React.Component {
@@ -59,10 +60,9 @@ class Login extends React.Component {
       if (error && !isLoggingIn) {
         return (
           <div className='text-center'>
-            <p>Status: {error.status}</p>
             {error.data.Errors.map((err, index) => {
               return (
-                <p key={index}>{err.Code}</p>
+                <p key={index}>{ErrorsAPI.translate(err.Code)}</p>
               )
             })}
           </div>

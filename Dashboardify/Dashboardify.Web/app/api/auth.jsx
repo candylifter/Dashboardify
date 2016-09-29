@@ -6,10 +6,8 @@ const rootDomain = `http://${window.location.hostname}/api`
 export default {
   login (email, password) {
     let data = {
-      User: {
-        Email: email,
-        Password: password
-      }
+      Email: email,
+      Password: password
     }
 
     return axios.post(
