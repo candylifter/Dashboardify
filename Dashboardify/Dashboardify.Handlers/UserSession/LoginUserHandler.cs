@@ -25,29 +25,33 @@ namespace Dashboardify.Handlers.UserSession
         {
             var response = new LoginUserResponse();
 
-            if (IsRequestNull(request))
-            {
-                var errors = new List<ErrorStatus>();
-
-                errors.Add(new ErrorStatus("BAD_REQUEST")); //nes pasworda suhashinus iesko
-
-                response.Errors = errors;
-
-                return response;
-            }
-
-            request.Password = PasswordsHelper.HashPassword(request.Password);
-
             response.Errors = Validate(request);
 
             if (response.HasErrors)
             {
                 return response;
             }
+            try
+            {
+                request.Password = PasswordsHelper.HashPassword(request.Password);
 
-            AddSession(request,response);
+                response.Errors = Validate(request);
 
-            return response;
+                if (response.HasErrors)
+                {
+                    return response;
+                }
+
+                AddSession(request, response);
+
+                return response;
+            }
+            catch (Exception)
+            {
+                response.Errors.Add(new ErrorStatus("BAD_REQUEST"));
+                throw;
+            }
+            
         }
 
 
@@ -64,6 +68,7 @@ namespace Dashboardify.Handlers.UserSession
             if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
             {
                 errors.Add(new ErrorStatus("WRONG_INPUT"));
+                return errors;
             }
             if (_usersRepository.ReturnIfExsists(request.Email, request.Password) == null)
             {
