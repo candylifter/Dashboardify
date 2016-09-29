@@ -18,7 +18,7 @@ namespace Dashboardify.Repositories
         {
             _connectionString = constring;
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -26,12 +26,9 @@ namespace Dashboardify.Repositories
         /// <returns></returns>
         public DashBoard Get(int DashId)
         {
-           
-
-            
-                using (IDbConnection db = new SqlConnection(_connectionString))
-                {
-                    var query = @"SELECT
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                var query = @"SELECT
                                  Id,
                                  UserId,
                                  IsActive,
@@ -43,12 +40,30 @@ namespace Dashboardify.Repositories
                           WHERE 
                                  Id = " + DashId;
 
-                    return db.Query<DashBoard>(query).SingleOrDefault();
-                }
+                return db.Query<DashBoard>(query).SingleOrDefault();
             }
-            
+        }
 
-        
+    public DashBoard GetByNameAndUserId(string name, int id)
+        {
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                var query = $@"SELECT
+                                 Id,
+                                 UserId,
+                                 IsActive,
+                                 Name,
+                                 DateCreated,
+                                 DateModified 
+                          FROM 
+                                 DashBoards 
+                          WHERE 
+                                 UserId = {id} AND Name ='{name}'";
+
+                return db.Query<DashBoard>(query).SingleOrDefault();
+            }
+        }
+    
 
         /// <summary>
         /// Updates dashboard in dashboard table

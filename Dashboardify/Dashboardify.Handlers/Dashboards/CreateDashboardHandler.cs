@@ -40,7 +40,14 @@ namespace Dashboardify.Handlers.Dashboards
                     DateModified = DateTime.Now,
                     IsActive = true
                 });
-                
+
+                int userId = _userSessionRepository.GetUserBySessionId(request.Ticket).Id;
+
+                var responseDash = _dashRepository.GetByNameAndUserId(request.DashName, userId);
+
+                response.Dashboard = responseDash;
+
+
             }
             catch (Exception)
             {

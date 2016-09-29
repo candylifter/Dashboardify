@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Dashboardify.Service
 {
-    public class ItemsUpdater
+    public static class ItemsUpdater
     {
+        public static void UpdateItems()
+        {
+            
+        }
     }
 }
