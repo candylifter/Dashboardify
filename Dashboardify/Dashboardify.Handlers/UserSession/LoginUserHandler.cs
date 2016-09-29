@@ -25,6 +25,7 @@ namespace Dashboardify.Handlers.UserSession
         {
             var response = new LoginUserResponse();
 
+            request.Password = PasswordsHelper.HashPassword(request.Password);
             response.Errors = Validate(request);
 
             if (response.HasErrors)
@@ -33,15 +34,7 @@ namespace Dashboardify.Handlers.UserSession
             }
             try
             {
-                request.Password = PasswordsHelper.HashPassword(request.Password);
-
-                response.Errors = Validate(request);
-
-                if (response.HasErrors)
-                {
-                    return response;
-                }
-
+                
                 AddSession(request, response);
 
                 return response;

@@ -4,6 +4,7 @@ export default {
       case 'BAD_REQUEST':
       case 'TICKET_NOT_DEFINED':
       case 'DASHBOARD_NOT_DEFINED':
+        return 'Dashboard was not defined'
       case 'USER_NOT_DEFINED':
       case 'NAME_ALREADY_EXISTS':
         return 'Can\'t create dashboard with the same name'
