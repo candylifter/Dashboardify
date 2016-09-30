@@ -5,14 +5,18 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using Dashboardify.Models;
+using Dashboardify.Service.Helpers;
 
 namespace Dashboardify.Service
 {
     public class ItemFilters
     {
+
+        
         private readonly ContentHandler _contentHandler = new ContentHandler();
         private ILog logger = LogManager.GetLogger("Dashboardify.Service");
-        private ItemsRepository _itemsRepository = new ItemsRepository("SS");
+        private ItemsRepository _itemsRepository = new ItemsRepository(ConfigurationManager.ConnectionStrings["GCP"].ConnectionString);
+    
 
         public IList<Item> GetScheduledList(IList<Item> items)
         {
@@ -54,22 +58,38 @@ namespace Dashboardify.Service
             return outdatedItems;
         }
 
-        public List<User> GetEmailContacts(IList<Item> items)
+        public List<UsernameItemEmailHelper> GetEmailContacts(IList<Item> items)
         {
-            List<User> emails = new List<User>();
+            List<UsernameItemEmailHelper> contactsToSendEmail = new List<UsernameItemEmailHelper>();
 
             foreach (var item in items)
             {
-                if (!item.UserNotified)
+                if (!item.UserNotified && item.IsActive) //default true in DB
                 {
-                    emails.Add(_itemsRepository.GetUserByItemId(item.Id));
+                    var user = _itemsRepository.GetUserByItemId(item.Id);
+
+                    var contactInfo = new UsernameItemEmailHelper();
+                    
+                    contactInfo.Email = user.Email;
+
+                    contactInfo.ItemName = item.Name;
+
+                    contactInfo.Username = user.Name;
+
+                    contactsToSendEmail.Add(contactInfo);
+
+                    item.UserNotified = true;
+
+                    _itemsRepository.Update(item);
                 }
                 //prisideti db kur user notified
                 //po atsirinkimo suupdatinti kad notifiinta
             }
 
 
-            return emails;
+            return contactsToSendEmail;
         }
+        
+        
     }
 }

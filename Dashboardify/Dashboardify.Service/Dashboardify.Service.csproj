@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContentHandler.cs" />
+    <Compile Include="Helpers\UsernameItemEmailHelper.cs" />
     <Compile Include="ItemFilters.cs" />
     <Compile Include="MailSender.cs" />
     <Compile Include="Program.cs" />
