@@ -13,6 +13,13 @@ class CreateDashboardModal extends React.Component {
 
     this.handleClose = this.handleClose.bind(this)
     this.handleCreateDashboard = this.handleCreateDashboard.bind(this)
+    this.handleKeyPress = this.handleKeyPress.bind(this)
+  }
+
+  handleKeyPress (e) {
+    if (e.key === 'Enter') {
+      this.handleCreateDashboard()
+    }
   }
 
   handleCreateDashboard () {
@@ -58,6 +65,7 @@ class CreateDashboardModal extends React.Component {
           hintText='E. g. Rebel news'
           ref='name'
           fullWidth
+          onKeyPress={this.handleKeyPress}
         />
       </Dialog>
     )
