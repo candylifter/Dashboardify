@@ -106,7 +106,7 @@ form.onsubmit = function(event) {
             Website: website,
             Name: name
         },
-        Ticket: "maestro"
+        Ticket: ticketas
     }
     console.log(data);
     $.ajax({

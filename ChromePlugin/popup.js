@@ -49,3 +49,11 @@ chrome.runtime.onMessage.addListener(
                 });
         }
     });
+
+
+    var homeButton = document.getElementById('home-button');
+
+    homeButton.onclick = function() {
+      var newTab = {url : "http://localhost:3000/register"}
+      chrome.tabs.create(newTab);
+    }
