@@ -24,6 +24,8 @@ namespace Dashboardify.Repositories
 
         public bool NotifyByEmail { get; set; }
 
+        public bool UserNotified { get; set; }
+
         public int Failed { get; set; }
 
         public DateTime LastChecked { get; set; }

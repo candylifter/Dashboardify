@@ -63,7 +63,10 @@ namespace Dashboardify.Handlers.UserSession
                 errors.Add(new ErrorStatus("WRONG_INPUT"));
                 return errors;
             }
-            if (_usersRepository.ReturnIfExsists(request.Email, request.Password) == null)
+            
+            var user = _usersRepository.ReturnIfExsists(request.Email, request.Password);
+
+            if (user == null)
             {
                 errors.Add(new ErrorStatus("INVALID_USERNAME_OR_PASSWORD"));
             }
@@ -86,11 +89,12 @@ namespace Dashboardify.Handlers.UserSession
             var sessionId = CreateSessionId();
 
             var expires = DateTime.Now.AddMinutes(20);
+            
 
             var session = new Models.UserSession()
             {
                 Expires = expires,
-                UserId = user.Id,
+                UserId = user.Id, //TODO fix
                 Ticket = sessionId
             };
 

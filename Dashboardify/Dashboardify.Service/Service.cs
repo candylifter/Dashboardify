@@ -53,35 +53,52 @@ namespace Dashboardify.Service
 
             var items = _itemsRepository.GetList();
             foreach (var item in items)
+            {
                 logger.Info(item.Name);
-                //Console.WriteLine(item.Name);
+            }
+            //Console.WriteLine(item.Name);
 
 
             logger.Info("\n\nScheduled items:\n");
             //Console.WriteLine("\n\nScheduled items:\n");
             var scheduledItems = _itemFilters.GetScheduledList(items);
             foreach (var item in scheduledItems)
+            {
                 logger.Info(item.Name);
-                //Console.WriteLine(item.Name);
+            }
+            //Console.WriteLine(item.Name);
 
             logger.Info("\n\nOutdated items:\n");
             //Console.WriteLine("\n\nOutdated items:\n");
+
             var outdatedItems = _itemFilters.GetOutdatedList(scheduledItems);
+
             foreach (var item in outdatedItems)
+            {
                 logger.Info(item.Name);
-                //Console.WriteLine(item.Name);
+            }
+            var emailRecievers = _itemFilters.GetEmailContacts(outdatedItems);
+            
+            //Console.WriteLine(item.Name);
 
             UpdateNonOutdatedItems(items, outdatedItems);
 
             UpdateOutdatedItems(outdatedItems);
+
+            MailSender.SendMailContentChanged(emailRecievers);
+
+            
         }
 
         public void UpdateOutdatedItems(IList<Item> items)
         {
+            
             foreach (var item in items)
             {
 
                 var task = _contentHandler.GetScreenshotAsync(item);
+
+
 
                 string filename = task.Result;
 
