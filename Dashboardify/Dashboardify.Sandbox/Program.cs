@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 
 namespace Dashboardify.Sandbox
@@ -8,10 +9,17 @@ namespace Dashboardify.Sandbox
 
         static void Main(string[] args)
         {
-            var css = new CSS();
+            //var css = new CSS();
 
-            css.GetContentByCSS();
+            //css.GetContentByCSS();
             
+            var service = new Service();
+
+            Task work = new Task(() =>
+            {
+                service.Do();
+            });
+            work.Start();
 
          
             Console.ReadKey();

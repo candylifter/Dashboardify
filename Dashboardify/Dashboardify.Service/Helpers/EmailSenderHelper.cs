@@ -1,33 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using System.Net.Mail;
-using Dashboardify.Service.Helpers;
+using Dashboardify.Service.Classes;
 
-namespace Dashboardify.Service
+namespace Dashboardify.Service.Helpers
 {
-    public static class MailSender
+    public static class EmailSenderHelper
     {
-       
-        public static void SendMailContentChanged(List<UsernameItemEmailHelper> items)
-        {
-            foreach (var contact in items)
-            {
-                if (contact == null)
-                {
-                    continue;
-                }
-                if (string.IsNullOrEmpty(contact.Email) || string.IsNullOrEmpty(contact.ItemName) ||
-                    string.IsNullOrEmpty(contact.Username))
-                {
-                    continue;
-                }
-
-                SendMessage(contact);
-
-            }
-        }
-
-        private static void SendMessage(UsernameItemEmailHelper contact)
+        public static void SendMessage(UsernameEmailItem contact)
         {
             var fromAddress = new MailAddress("dashboardifyacademy@gmail.com", "Dashboardify");
             var toAddress = new MailAddress(contact.Email, contact.Username);

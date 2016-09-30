@@ -50,7 +50,7 @@ namespace Dashboardify.Repositories
         public override string ToString()
         {
             return
-                String.Format(
+                string.Format(
                     "Id: {0}, DashBoardId: {1}, Name: {2},Website: {3}, Checkinterval: {4}, IsActive: {5}, XPath: {6}, LastChecked: {7}, Created: {8}, Modified:{9}, Content: {10}",
                     Id, DashBoardId, Name, Website, CheckInterval, IsActive, XPath, LastChecked, Created, Modified,
                     Content);

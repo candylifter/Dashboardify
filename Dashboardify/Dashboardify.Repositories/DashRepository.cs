@@ -44,7 +44,7 @@ namespace Dashboardify.Repositories
             }
         }
 
-    public DashBoard GetByNameAndUserId(string name, int id)
+    public DashBoard GetByNameAndUserId(string name, int id) //change to email
         {
             using (IDbConnection db = new SqlConnection(_connectionString))
             {

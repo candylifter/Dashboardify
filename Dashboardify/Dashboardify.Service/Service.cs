@@ -1,162 +1,63 @@
 ﻿using System;
 using System.Configuration;
 using System.Timers;
-using Dashboardify.Repositories;
-using System.Collections.Generic;
-using System.Linq;
+using Dashboardify.Service.Workers;
 using log4net;
 
 namespace Dashboardify.Service
 {
     public class Service
     {
-        string connectionString = ConfigurationManager.ConnectionStrings["GCP"].ConnectionString;
         private readonly Timer _timer;
-        private readonly ItemsRepository _itemsRepository;
-        private readonly ScreenshotRepository _screenshotRepository;
-        private readonly ItemFilters _itemFilters = new ItemFilters();
-        private readonly ContentHandler _contentHandler = new ContentHandler();
-        private ILog logger = LogManager.GetLogger("Dashboardify.Service");
+        private string _connectionString;
+        private ILog _logger;
+
+        private ItemContentWorker _itemContentWorker;
+        private EmailNotificationWorker _emailNotificationWorker;
 
         public Service()
         {
-            Console.WriteLine(connectionString);
+            _connectionString = ConfigurationManager.ConnectionStrings["GCP"].ConnectionString;
+            _logger = LogManager.GetLogger("Dashboardify.Service");
+
+            _itemContentWorker = new ItemContentWorker(_connectionString, _logger);
+            _emailNotificationWorker = new EmailNotificationWorker(_connectionString, _logger);
+
             _timer = new Timer(Int32.Parse(ConfigurationManager.AppSettings["interval"])) { AutoReset = true };
             _timer.Elapsed += TimeElapsedEventHandler;
-
-            _itemsRepository = new ItemsRepository(connectionString);
-            _screenshotRepository = new ScreenshotRepository(connectionString);
-
-            //UpdateItems();
-            //Console.WriteLine("--> Completed updating items");
-            //logger.Info("--> Completed updating items");
-
         }
-
 
         public void TimeElapsedEventHandler(object sender, ElapsedEventArgs e)
         {
-            //var startTime = DateTime.Now;
-            UpdateItems();
-            //Console.WriteLine("\n Cycle completed in {0} miliseconds\n", (DateTime.Now - startTime).TotalMilliseconds.ToString());
-            //Console.WriteLine("--> Completed updating items");
-            logger.Info("--> Completed updating items");
+            DoAction();
         }
 
-        public void UpdateItems()
+        public void DoAction()
         {
-            //Console.WriteLine("\n->  Updating\n");
-            logger.Info("\n->  Updating\n");
+            _logger.Info("Check started.");
 
-            //Console.WriteLine("\n\nItems from db:\n");
-            logger.Info("\n\nItems from db:\n");
+            _logger.Info("Item content worker started.");
 
-            var items = _itemsRepository.GetList();
-            foreach (var item in items)
-            {
-                logger.Info(item.Name);
-            }
-            //Console.WriteLine(item.Name);
+            var items = _itemContentWorker.Do();
 
+            _logger.Info("Items Updated, starting to send emails");
 
-            logger.Info("\n\nScheduled items:\n");
-            //Console.WriteLine("\n\nScheduled items:\n");
-            var scheduledItems = _itemFilters.GetScheduledList(items);
-            foreach (var item in scheduledItems)
-            {
-                logger.Info(item.Name);
-            }
-            //Console.WriteLine(item.Name);
+            _logger.Info("Email notification worker started.");
 
-            logger.Info("\n\nOutdated items:\n");
-            //Console.WriteLine("\n\nOutdated items:\n");
+            _emailNotificationWorker.Do(items);
 
-            var outdatedItems = _itemFilters.GetOutdatedList(scheduledItems);
-
-            foreach (var item in outdatedItems)
-            {
-                logger.Info(item.Name);
-            }
-            var emailRecievers = _itemFilters.GetEmailContacts(outdatedItems);
-            
-            //Console.WriteLine(item.Name);
-
-            UpdateNonOutdatedItems(items, outdatedItems);
-
-            UpdateOutdatedItems(outdatedItems);
-
-            MailSender.SendMailContentChanged(emailRecievers);
-
-            
-        }
-
-        public void UpdateOutdatedItems(IList<Item> items)
-        {
-            
-            foreach (var item in items)
-            {
-
-                var task = _contentHandler.GetScreenshotAsync(item);
-
-
-
-                string filename = task.Result;
-
-                if (filename != null)
-                {
-                    var now = DateTime.Now;
-
-                    item.LastChecked = now;
-                    item.Modified = now;
-
-                    _itemsRepository.Update(item);
-
-                    Models.Screenshot screenshot = new Models.Screenshot();
-
-                    screenshot.ItemId = item.Id;
-                    screenshot.ScrnshtURL = filename;
-                    screenshot.DateTaken = now;
-
-                    _screenshotRepository.Create(screenshot);
-
-                    logger.Info("Updated item: " + item.Name);
-                    //Console.WriteLine("Updated item: " + item.Name);
-                }
-                else
-                {
-                    logger.Info("Cannot get screenshot");
-                    //Console.WriteLine("Cannot get screenshot");
-                }
-
-          
-            }
-        }
-
-        public void UpdateNonOutdatedItems(IList<Item> allItems, IList<Item> outdatedItems)
-        {
-            var items = allItems.Where(a => !outdatedItems.Any(o => o.Id == a.Id)).ToList();
-
-            logger.Info("\n\nNot outdated items:");
-            //Console.WriteLine("\n\nNot outdated items:");
-            foreach(var item in items)
-            {
-                //Console.WriteLine(item.Name);
-                logger.Info(item.Name);
-
-
-                item.LastChecked = DateTime.Now;
-
-                _itemsRepository.Update(item);
-            }
+            _logger.Info("Check ended.");
         }
 
         public void Start()
         {
+            _logger.Info("Service started.");
             _timer.Start();
         }
 
         public void Stop()
         {
+            _logger.Info("Service stoped.");
             _timer.Stop();
         }
     }

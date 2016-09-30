@@ -4,8 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using Dashboardify.Models;
-using Dashboardify.Service.Helpers;
+using Dashboardify.Service.Classes;
 
 namespace Dashboardify.Service
 {
@@ -58,9 +57,9 @@ namespace Dashboardify.Service
             return outdatedItems;
         }
 
-        public List<UsernameItemEmailHelper> GetEmailContacts(IList<Item> items)
+        public List<UsernameEmailItem> GetEmailContacts(IList<Item> items)
         {
-            List<UsernameItemEmailHelper> contactsToSendEmail = new List<UsernameItemEmailHelper>();
+            List<UsernameEmailItem> contactsToSendEmail = new List<UsernameEmailItem>();
 
             foreach (var item in items)
             {
@@ -68,7 +67,7 @@ namespace Dashboardify.Service
                 {
                     var user = _itemsRepository.GetUserByItemId(item.Id);
 
-                    var contactInfo = new UsernameItemEmailHelper();
+                    var contactInfo = new UsernameEmailItem();
                     
                     contactInfo.Email = user.Email;
 
