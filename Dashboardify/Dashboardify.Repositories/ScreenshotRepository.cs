@@ -130,5 +130,22 @@ namespace Dashboardify.Repositories
             
         } //Done
 
+        public IList<Screenshot> GetLastsByItemId(int itemId, int count)
+        {
+            string query = @"SELECT TOP " + count + @" Id,ItemId,ScrnshtUrl,DateTaken 
+                            FROM 
+                                ScreenShots 
+                            WHERE 
+                                ItemId = "+ itemId +@" 
+                            ORDER BY 
+                                DateTaken DESC";
+
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                var result = db.Query<Screenshot>(query, itemId).ToList();
+                return result;
+            }
+        }
+
     }
 }
