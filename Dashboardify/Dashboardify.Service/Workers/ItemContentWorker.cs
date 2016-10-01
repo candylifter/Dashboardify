@@ -84,14 +84,13 @@ namespace Dashboardify.Service.Workers
             foreach (var item in items)
             {
 
-                var task = _contentHandler.GetScreenshotAsync(item);
-
-
+                var task = _contentHandler.GetScreenshot(item);
 
                 string filename = task.Result;
 
                 if (filename != null)
                 {
+                    _logger.Info($"Got screenshot of: {item.Name}");
                     var now = DateTime.Now;
 
                     item.LastChecked = now;
@@ -108,12 +107,19 @@ namespace Dashboardify.Service.Workers
                     _screenshotRepository.Create(screenshot);
 
                     _logger.Info("Updated item: " + item.Name);
-                    //Console.WriteLine("Updated item: " + item.Name);
                 }
                 else
                 {
-                    _logger.Info("Cannot get screenshot");
-                    //Console.WriteLine("Cannot get screenshot");
+                    if (item.Failed >= 3)  {
+                        item.IsActive = false;
+                    }
+                    else
+                    {
+                        item.Failed++;
+                    }
+
+                    _itemsRepository.Update(item);
+                    _logger.Info($"Failed to get screenshot of item: {item.Name}");
                 }
 
 
@@ -125,17 +131,25 @@ namespace Dashboardify.Service.Workers
             var items = allItems.Where(a => !outdatedItems.Any(o => o.Id == a.Id)).ToList();
 
             _logger.Info("\n\nNot outdated items:");
-            //Console.WriteLine("\n\nNot outdated items:");
             foreach (var item in items)
             {
-                //Console.WriteLine(item.Name);
                 _logger.Info(item.Name);
 
+                if (item.Failed >= 3)
+                {
+                    item.IsActive = false;
+                }
+
+                if (item.Content.Length == 0)
+                {
+                    item.Failed++;
+                }
 
                 item.LastChecked = DateTime.Now;
 
                 _itemsRepository.Update(item);
             }
+            _logger.Info("Updated not outdated items");
         }
     }
 }

@@ -4,6 +4,7 @@ using log4net;
 using Newtonsoft.Json;
 using NReco.PhantomJS;
 using System;
+using System.Configuration;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -38,7 +39,6 @@ namespace Dashboardify.Service
             }
             catch (Exception ex)
             {
-                //Console.WriteLine(ex.Message);
                 logger.Info(ex.Message);
                 return null;
             }
@@ -65,29 +65,24 @@ namespace Dashboardify.Service
             }
             catch (Exception ex)
             {
-                //Console.WriteLine(ex.Message);
                 logger.Info(ex.Message);
 
                 return null;
             }
         }
 
-        public async Task<string> GetScreenshotAsync(Item item)
+        public async Task<string> GetScreenshot(Item item)
         {
             var json = JsonConvert.SerializeObject(new { Website = item.Website, XPath = item.XPath, CSS = item.CSS });
 
             using (var client = new HttpClient())
             {
-
-
-                client.BaseAddress = new Uri("http://localhost:3000");
-                //Console.WriteLine("   Sending request to Phantom Node API...");
-                logger.Info("   Sending request to Phantom Node API...");
+                client.BaseAddress = new Uri(ConfigurationManager.AppSettings["phantom-api-url"]);
+                logger.Info("Sending request to Phantom Node API...");
 
                 var response = await client.PostAsync("", new StringContent(json, Encoding.UTF8, "application/json"));
                 var contents = await response.Content.ReadAsStringAsync();
-                logger.Info("   Got response from Phantom Node API");
-                //Console.WriteLine("   Got response from Phantom Node API");
+                logger.Info("Got response from Phantom Node API");
 
                 dynamic responseJson = JsonConvert.DeserializeObject(contents);
 
@@ -102,82 +97,5 @@ namespace Dashboardify.Service
             }
 
         }
-
-        public string GetScreenshot(Item item)
-        {
-            // generate guid for filename without dashes
-            Guid guid = Guid.NewGuid();
-            string filename = Regex.Replace(guid.ToString(), @"-", "");
-
-            // create phantomjs instance
-            // adjust viewport size
-            // open webpage
-            // return null if not found or timeout
-            // try to find element
-            // return null if not found
-                // OR
-                // try to find it by CSS
-                // if not found by CSS, return null
-            // clip viewport by element dimensions
-            // set background color to white if element's background is transparent
-            // save screenshot as jpg to Dashboardify.Screenshots (adjust quality if necessary)
-            // exit phantomjs
-            var phantomJS = new PhantomJS();
-
-            phantomJS.OutputReceived += (sender, e) => {
-                Console.WriteLine("    PhantomJS output: {0}", e.Data);
-            };
-            phantomJS.RunScript(@"var page = require('webpage').create();
-
-                page.viewportSize = {
-                    width: 1920,
-                    height: 1080
-                };
-
-                page.open('" + item.Website + @"', function() {
-                    var clipRect = page.evaluate(function() {
-
-                        var element;
-
-                        try {
-                            element = document
-                                            .evaluate( 
-                                                '" + item.XPath + @"' ,
-                                                document, 
-                                                null, 
-                                                XPathResult.FIRST_ORDERED_NODE_TYPE,
-                                                null
-                                            )
-                                            .singleNodeValue; " + /* Often throws exception here*/ @"
-
-                        } catch(err) {
-                            console.error(err.message);
-                            element = document.body;
-                        }
-                        
-                        document.body.bgColor = 'white';
-                                                                  
-
-                        return element.getBoundingClientRect();
-                    });
-
-                    page.clipRect = {
-                        top: clipRect.top,
-                        left: clipRect.left,
-                        width: clipRect.width,
-                        height: clipRect.height
-                    };
-                
-
-                    page.render('../../../Dashboardify.Screenshots/" + filename + @".jpg');
-                    phantom.exit();
-                });", null);
-
-
-            
-            // return filename
-            return filename + ".jpg";
-        }
-
     }
 }
