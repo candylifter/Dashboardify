@@ -1,5 +1,5 @@
 .dashboard {
-  padding: 1em 0;
+  padding: 1em;
 
   @include media($breakpoint-mobile-small) {
     @include span-columns(12);

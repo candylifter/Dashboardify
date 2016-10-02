@@ -1,3 +1,4 @@
 .dashboard-list {
   @include outer-container();
+  overflow: hidden;
 }
