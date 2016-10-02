@@ -29,38 +29,25 @@ class Dashboards extends React.Component {
   }
 
   render () {
-    let { isFetching, isCreating, error, createError } = this.props
+    let { isFetching, isPosting, error, postError } = this.props
 
     const style = {
-      display: 'flex',
-      justifyContent: 'center',
-      spinner: {
-        width: '100%',
-        minHeight: 'calc(100vh - 64px)',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-      },
-      fab: {
-        display: isFetching || error ? 'none' : 'block',
-        position: 'fixed',
-        bottom: '1.5em',
-        right: '2.25em'
-      },
+      // display: 'flex',
+      // justifyContent: 'center',
       error: {
-        width: '100%',
-        minHeight: 'calc(100vh - 64px)',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center',
-        color: '#9E9E9E',
+        // width: '100%',
+        // minHeight: 'calc(100vh - 64px)',
+        // display: 'flex',
+        // flexDirection: 'column',
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        // textAlign: 'center',
+        // color: '#9E9E9E',
         icon: {
-          fontSize: '8em'
+          // fontSize: '8em'
         },
         text: {
-          fontSize: '2em'
+          // fontSize: '2em'
         }
       }
     }
@@ -68,7 +55,7 @@ class Dashboards extends React.Component {
     let renderDashboardList = () => {
       if (isFetching) {
         return (
-          <div style={style.spinner}>
+          <div className='spinner'>
             <CircularProgress size={1.5} />
           </div>
         )
@@ -87,9 +74,9 @@ class Dashboards extends React.Component {
     }
 
     let renderErrorSnackbar = () => {
-      if (createError) {
+      if (postError) {
         return (
-          createError.data.Errors.map((resError, index) => {
+          postError.data.Errors.map((resError, index) => {
             return <ErrorSnackbar key={index} open message={ErrorsAPI.translate(resError.Code)} />
           })
         )
@@ -97,11 +84,11 @@ class Dashboards extends React.Component {
     }
 
     return (
-      <div style={style}>
-        <LoadingIndicator show={isCreating} />
+      <div style={style} className='dashboards-container'>
+        <LoadingIndicator show={isPosting} />
         {renderDashboardList()}
         <FloatingActionButton
-          style={style.fab}
+          className='fab'
           onClick={this.handleFabClick}
           secondary
         >
@@ -117,17 +104,17 @@ class Dashboards extends React.Component {
 Dashboards.propTypes = {
   dispatch: PropTypes.func,
   isFetching: PropTypes.bool,
-  isCreating: PropTypes.bool,
-  createError: PropTypes.object,
+  isPosting: PropTypes.bool,
+  postError: PropTypes.object,
   error: PropTypes.object
 }
 
 export default connect(
   (state) => {
     return {
-      isCreating: state.dashboards.isCreating,
+      isPosting: state.dashboards.isPosting,
       isFetching: state.dashboards.isFetching,
-      createError: state.dashboards.createError,
+      postError: state.dashboards.postError,
       error: state.dashboards.error
     }
   }

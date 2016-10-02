@@ -1,0 +1,50 @@
+.dashboard {
+  padding: 1em;
+
+  @include media($breakpoint-mobile-small) {
+    @include span-columns(12);
+  }
+
+  @include media(min-width $breakpoint-mobile-large max-width $breakpoint-tablet - 1) {
+    @include span-columns(6);
+    @include omega(2n);
+  }
+
+  @include media(min-width $breakpoint-tablet) {
+    @include span-columns(4);
+    @include omega(3n);
+  }
+
+  a {
+    text-decoration: none;
+  }
+}
+
+.dashboard__paper:hover {
+  background-color: #F5F5F5 !important;
+}
+
+.dashboard__paper__heading {
+  padding: 1em;
+  display: block;
+  span {
+    font-size: 1.2em;
+  }
+}
+
+.dashboard__paper__footer {
+  padding: 0 0 0 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &__left {
+    color: #757575;
+    font-size: .9em;
+
+  }
+
+  &__right {
+
+  }
+}

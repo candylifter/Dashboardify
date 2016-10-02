@@ -8,29 +8,29 @@ class DashboardList extends React.Component {
     let { dashboards } = this.props
 
     const style = {
-      display: 'flex',
-      maxWidth: 1200,
-      justifyContent: 'center',
-      flexWrap: 'wrap',
-      alignItems: 'center',
+      // display: 'flex',
+      // maxWidth: 1200,
+      // justifyContent: 'center',
+      // flexWrap: 'wrap',
+      // alignItems: 'center',
       error: {
-        width: '100%',
-        minHeight: 'calc(100vh - 64px)',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center',
-        color: '#9E9E9E',
+        // width: '100%',
+        // minHeight: 'calc(100vh - 64px)',
+        // display: 'flex',
+        // flexDirection: 'column',
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        // textAlign: 'center',
+        // color: '#9E9E9E',
         icon: {
-          fontSize: '8em'
+          // fontSize: '8em'
         },
         text: {
-          fontSize: '2em'
+          // fontSize: '2em'
         },
         subtext: {
-          margin: 0,
-          fontSize: '1.5em'
+          // margin: 0,
+          // fontSize: '1.5em'
         }
       }
     }
@@ -52,7 +52,7 @@ class DashboardList extends React.Component {
     }
 
     return (
-      <div style={style}>
+      <div style={style} className='dashboard-list'>
         {renderDashboards()}
       </div>
     )
