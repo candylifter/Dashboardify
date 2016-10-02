@@ -1,12 +1,10 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import moment from 'moment'
 
 import Paper from 'material-ui/Paper'
-import FlatButton from 'material-ui/FlatButton'
-import FontIcon from 'material-ui/FontIcon'
 import IconButton from 'material-ui/IconButton'
-import ActionHome from 'material-ui/svg-icons/action/home'
 
 import { DashboardsActions } from 'actions'
 
@@ -26,21 +24,7 @@ class Dashboards extends React.Component {
   }
 
   render () {
-    let { id, name, img } = this.props
-
-    const style = {
-      link: {
-        // margin: 20,
-        // width: 300,
-        // maxWidth: 'calc(100vw - 40px)'
-      },
-      paper: {
-        // width: '100%',
-        // height: 300,
-        // textAlign: 'center',
-        // display: 'inline-block'
-      }
-    }
+    let { id, name, dateCreated } = this.props
 
     return (
       <div className='dashboard'>
@@ -51,7 +35,7 @@ class Dashboards extends React.Component {
             </div>
             <div className='dashboard__paper__footer'>
               <div className='dashboard__paper__footer__left'>
-                <span>Created: last month</span>
+                <span>Created {moment(dateCreated).fromNow()}</span>
               </div>
               <div className='dashboard__paper__footer__right'>
                 <IconButton
@@ -74,7 +58,7 @@ class Dashboards extends React.Component {
 Dashboards.propTypes = {
   id: PropTypes.number,
   name: PropTypes.string,
-  img: PropTypes.string,
+  dateCreated: PropTypes.string,
   dispatch: PropTypes.func
 }
 
