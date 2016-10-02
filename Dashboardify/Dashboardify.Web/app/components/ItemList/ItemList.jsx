@@ -9,10 +9,10 @@ class ItemList extends React.Component {
     let { items, searchText, dashboardId } = this.props
 
     const style = {
-      display: 'flex',
-      justifyContent: 'space-between',
-      flexWrap: 'wrap',
-      margin: '0 -1em',
+      // display: 'flex',
+      // justifyContent: 'space-between',
+      // flexWrap: 'wrap',
+      // margin: '0 -1em',
       error: {
         width: '100%',
         minHeight: 'calc(100vh - 64px)',
@@ -38,10 +38,12 @@ class ItemList extends React.Component {
     let renderItems = () => {
       if (items.length === 0) {
         return (
-          <div style={style.error}>
-            <i className='material-icons' style={style.error.icon}>dashboard</i>
-            <p style={style.error.text}>No dashboards yet</p>
-            <p style={style.error.subtext}>Click the button in the bottom right to add one</p>
+          <div className='flex-container flex-container--toolbar'>
+            <div className='error'>
+              <i className='error__icon material-icons'>dashboard</i>
+              <p className='error__text'>No items yet</p>
+              <p className='error__subtext'>Select some items with Dashboardify Chrome plugin to watch items here</p>
+            </div>
           </div>
         )
       } else {

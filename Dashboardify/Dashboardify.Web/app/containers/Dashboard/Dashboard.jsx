@@ -1,12 +1,10 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar'
-import Paper from 'material-ui/Paper'
 import CircularProgress from 'material-ui/CircularProgress'
 
 import { CheckIntervalsAPI } from 'api'
-import { Breadcrumb, Search, ItemList, ItemPanel } from 'components'
+import { ItemList, ItemPanel, Toolbar } from 'components'
 import { ItemsActions, ItemPanelActions, CheckIntervalsActions } from 'actions'
 
 class Dashboard extends React.Component {
@@ -28,28 +26,6 @@ class Dashboard extends React.Component {
     let { isFetching, error, routeParams: { dashboardId } } = this.props
 
     const style = {
-      dashboard: {
-        maxWidth: 1200,
-        width: '100%',
-        margin: '0 auto'
-      },
-      ItemList: {
-        display: 'flex',
-        margin: '0 auto'
-      },
-      ToolbarContainer: {
-        margin: '2em 0'
-      },
-      Toolbar: {
-        backgroundColor: 'transparent'
-      },
-      spinner: {
-        width: '100%',
-        minHeight: 'calc(100vh - 64px)',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-      },
       error: {
         width: '100%',
         minHeight: 'calc(100vh - 64px)',
@@ -73,7 +49,7 @@ class Dashboard extends React.Component {
     let renderItemList = () => {
       if (isFetching) {
         return (
-          <div style={style.spinner}>
+          <div className='spinner'>
             <CircularProgress size={1.5} />
           </div>
         )
@@ -83,9 +59,11 @@ class Dashboard extends React.Component {
         )
       } else {
         return (
-          <div style={style.error}>
-            <i className='material-icons' style={style.error.icon}>&#xE000;</i>
-            <p style={style.error.text}>{error}</p>
+          <div className='flex-container flex-container--toolbar'>
+            <div className='error'>
+              <i className='error__icon material-icons'>&#xE000;</i>
+              <p className='error__text'>{error}</p>
+            </div>
           </div>
         )
       }
@@ -94,26 +72,15 @@ class Dashboard extends React.Component {
     let renderToolbar = () => {
       if (!isFetching && error === undefined) {
         return (
-          <Paper style={style.ToolbarContainer} zDepth={1} rounded={false}>
-            <Toolbar style={style.Toolbar}>
-              <ToolbarGroup firstChild>
-                <Breadcrumb dashboardId={dashboardId} />
-              </ToolbarGroup>
-              <ToolbarGroup>
-                <Search />
-              </ToolbarGroup>
-            </Toolbar>
-          </Paper>
+          <Toolbar dashboardId={dashboardId} />
         )
       }
     }
 
     return (
-      <div style={style.dashboard}>
+      <div className='dashboard-container'>
         {renderToolbar()}
-        <div style={style.ItemList}>
-          {renderItemList()}
-        </div>
+        {renderItemList()}
         <ItemPanel dashboardId={dashboardId} />
       </div>
     )

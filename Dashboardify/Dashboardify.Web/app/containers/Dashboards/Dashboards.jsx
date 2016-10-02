@@ -31,27 +31,6 @@ class Dashboards extends React.Component {
   render () {
     let { isFetching, isPosting, error, postError } = this.props
 
-    const style = {
-      // display: 'flex',
-      // justifyContent: 'center',
-      error: {
-        // width: '100%',
-        // minHeight: 'calc(100vh - 64px)',
-        // display: 'flex',
-        // flexDirection: 'column',
-        // justifyContent: 'center',
-        // alignItems: 'center',
-        // textAlign: 'center',
-        // color: '#9E9E9E',
-        icon: {
-          // fontSize: '8em'
-        },
-        text: {
-          // fontSize: '2em'
-        }
-      }
-    }
-
     let renderDashboardList = () => {
       if (isFetching) {
         return (
@@ -65,9 +44,11 @@ class Dashboards extends React.Component {
         )
       } else {
         return (
-          <div style={style.error}>
-            <i className='material-icons' style={style.error.icon}>&#xE000;</i>
-            <p style={style.error.text}>{error.status}</p>
+          <div className='flex-container'>
+            <div className='error'>
+              <i className='error__icon material-icons'>&#xE000;</i>
+              <p className='error__text'>{error.status}</p>
+            </div>
           </div>
         )
       }
@@ -84,7 +65,7 @@ class Dashboards extends React.Component {
     }
 
     return (
-      <div style={style} className='dashboards-container'>
+      <div className='dashboards-container'>
         <LoadingIndicator show={isPosting} />
         {renderDashboardList()}
         <FloatingActionButton

@@ -2,7 +2,8 @@ import React, { PropTypes } from 'react'
 import moment from 'moment'
 import { connect } from 'react-redux'
 
-import { Card, CardHeader } from 'material-ui/Card'
+import { CardHeader } from 'material-ui/Card'
+import Paper from 'material-ui/Paper'
 
 import { ItemsAPI } from 'api'
 import { ItemsActions, ItemPanelActions } from 'actions'
@@ -29,58 +30,18 @@ class ItemListItem extends React.Component {
   render () {
     let { img, name, url, isSelected, lastModified } = this.props
 
-    const style = {
-      card: {
-        display: 'inline-block',
-        width: '15em',
-        height: '15em',
-        margin: '1em',
-        // padding: '1em',
-        textAlign: 'left',
-        overflow: 'hidden'
-      },
-      header: {
-        display: 'block',
-        borderBottom: '1px solid #ccc',
-        text: {
-          display: 'block',
-          padding: 0
-        }
-      },
-      body: {
-        height: '8.5em',
-        overflow: 'hidden',
-        position: 'relative',
-        img: {
-          position: 'absolute',
-          maxWidth: '100%',
-          maxHeight: '100%'
-        }
-      },
-      footer: {
-        fontSize: '14px',
-        color: 'rgba(0, 0, 0, 0.541176)',
-        padding: '.5em 1em',
-        borderTop: '1px solid #ccc'
-      },
-      image: {
-        maxWidth: '100%',
-        maxHeight: '100%'
-      }
-    }
-
-    let zDepth = isSelected ? 2 : 1
+    let itemClassName = isSelected ? 'item item--selected' : 'item'
 
     return (
-      <Card style={style.card} onClick={this.handleSelect} zDepth={zDepth}>
-        <CardHeader title={name} subtitle={ItemsAPI.extractDomain(url)} style={style.header} textStyle={style.header.text} />
-        <div style={style.body}>
-          <img src={img} style={style.body.img} />
+      <Paper className={itemClassName} onClick={this.handleSelect} zDepth={1}>
+        <CardHeader className='item__header' title={name} subtitle={ItemsAPI.extractDomain(url)} />
+        <div className='item__media'>
+          <img src={img} />
         </div>
-        <div style={style.footer}>
+        <div className='item__footer'>
           <span>Last modified: {moment(lastModified).fromNow()}</span>
         </div>
-      </Card>
+      </Paper>
     )
   }
 }
@@ -99,6 +60,16 @@ ItemListItem.propTypes = {
 }
 
 export default connect()(ItemListItem)
+
+// <Card className='item' onClick={this.handleSelect} zDepth={zDepth}>
+//   <CardHeader title={name} subtitle={ItemsAPI.extractDomain(url)} style={style.header} textStyle={style.header.text} />
+//   <div style={style.body}>
+//     <img src={img} style={style.body.img} />
+//   </div>
+//   <div style={style.footer}>
+//     <span>Last modified: {moment(lastModified).fromNow()}</span>
+//   </div>
+// </Card>
 
 // <div className='col-xs-6 col-md-4 col-lg-3' onClick={() => dispatch(ItemsActions.selectItem(id, dashboardId))}>
 //   <div className={panelClass}>

@@ -10,6 +10,10 @@ body {
   align-items: center;
 }
 
+.flex-container--toolbar {
+  min-height: calc(100vh - 64px - 56px - 64px);
+}
+
 .text-center {
   text-align: center;
 }
