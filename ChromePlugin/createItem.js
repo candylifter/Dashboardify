@@ -15,7 +15,7 @@ function getCSS(str) {
     theright = str.length;
     return (str.substring(theleft, theright));
 }
-
+var buttonDissable = document.getElementById("form-submit")
 var url = window.location.href;
 var xpath = getXpath(url);
 var css = getCSS(url);
@@ -29,6 +29,7 @@ var websiteInput = document.getElementById("website");
 var xpathInput = document.getElementById("xpath");
 var cssInput = document.getElementById("css");
 var ticketas;
+var errorMessage = document.getElementById("error-message");
 
 var createDashboard = document.getElementById("new-dashboard");
 websiteInput.value = website;
@@ -63,7 +64,7 @@ function getDashes(ticket) {
         },
         success: handleSuccess,
         error: function(data) {
-          document.getElementById("errors").innerHTML = "We couldn't get your dashboards list."
+            document.getElementById("errors").innerHTML = "We couldn't get your dashboards list."
             console.log("Įvyko klaida. ", data)
         }
     })
@@ -114,12 +115,14 @@ form.onsubmit = function(event) {
         url: "http://localhost/api/Items/createItem",
         data: data,
         success: function(data) {
+            buttonDissable.disabled = true;
             console.log(data);
             window.close();
         },
         error: function(data) {
+            document.getElementById("error-occured").className = "has-error"
+            errorMessage.innerHTML = "Please enter name of item"
             console.log(data)
-            document.getElementById("errors").innerHTML = "Error occured."
         }
     })
 }
