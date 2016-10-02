@@ -82,5 +82,41 @@ export default {
       type: 'FAIL_CREATE_DASHBOARD',
       err
     }
+  },
+
+  deleteDashboard (id) {
+    return (dispatch) => {
+      dispatch(this.startDeleteDashboard())
+
+      return DashboardsAPI.deleteDashboard(id)
+        .then(
+          (res) => {
+            dispatch(this.completeDeleteDashboard(id))
+          },
+          (err) => {
+            dispatch(this.failDeleteDashboard(err))
+          }
+        )
+    }
+  },
+
+  startDeleteDashboard () {
+    return {
+      type: 'START_DELETE_DASHBOARD'
+    }
+  },
+
+  completeDeleteDashboard (id) {
+    return {
+      type: 'COMPLETE_DELETE_DASHBOARD',
+      id
+    }
+  },
+
+  failDeleteDashboard (err) {
+    return {
+      type: 'FAIL_DELETE_DASHBOARD',
+      err
+    }
   }
 }

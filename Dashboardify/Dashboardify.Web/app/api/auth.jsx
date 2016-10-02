@@ -10,9 +10,7 @@ export default {
       Password: password
     }
 
-    return axios.post(
-      `${rootDomain}/login/index`, data
-    )
+    return axios.post(`${rootDomain}/login/index`, data)
   },
 
   logout (ticket) {

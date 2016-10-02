@@ -4,6 +4,7 @@
     {
         public string Ticket { get; set; }
 
-        public string DashName { get; set; }
+        //public string DashName { get; set; }
+        public int DashboardId { get; set; }
     }
 }

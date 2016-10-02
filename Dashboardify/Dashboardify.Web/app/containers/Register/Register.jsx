@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { browserHistory } from 'react-router'
+import { hashHistory } from 'react-router'
 
 import { Card, CardTitle, CardActions } from 'material-ui/Card'
 import Divider from 'material-ui/Divider'
@@ -14,13 +14,13 @@ class Register extends React.Component {
     let { isAuthenticated } = this.props
 
     if (isAuthenticated) {
-      browserHistory.push('/')
+      hashHistory.push('/')
     }
   }
 
   componentWillUpdate (props) {
     if (props.isAuthenticated) {
-      browserHistory.push('/')
+      hashHistory.push('/')
     }
   }
 
@@ -96,7 +96,7 @@ class Register extends React.Component {
             <FlatButton
               label='Sign in'
               disabled={isRegistering}
-              onClick={() => browserHistory.push('/login')}
+              onClick={() => hashHistory.push('/login')}
               style={style.card.footer.button}
             />
           </CardActions>

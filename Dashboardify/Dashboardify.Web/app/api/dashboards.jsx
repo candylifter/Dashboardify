@@ -50,5 +50,14 @@ export default {
     }
 
     return axios.post(`${rootDomain}/Dashboards/Create`, data)
+  },
+
+  deleteDashboard (id) {
+    let data = {
+      Ticket: Cookies.get('ticket'),
+      DashboardId: id
+    }
+
+    return axios.post(`${rootDomain}/Dashboards/Delete`, data)
   }
 }

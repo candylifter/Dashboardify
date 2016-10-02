@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { browserHistory } from 'react-router'
+import { hashHistory } from 'react-router'
 
 import AppBar from 'material-ui/AppBar'
 import Drawer from 'material-ui/Drawer'
@@ -27,7 +27,7 @@ class Navbar extends React.Component {
   }
 
   navigateTo (url) {
-    browserHistory.push(url)
+    hashHistory.push(url)
     this.setState({open: false})
   }
 

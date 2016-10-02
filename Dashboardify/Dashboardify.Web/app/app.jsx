@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { Router, browserHistory } from 'react-router'
+import { Router, hashHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 
 import routes from 'routes'
@@ -10,7 +10,7 @@ import { AuthAPI } from 'api'
 import { AuthActions } from 'actions'
 
 const store = configureStore()
-const history = syncHistoryWithStore(browserHistory, store)
+const history = syncHistoryWithStore(hashHistory, store)
 
 if (AuthAPI.isLoggedIn()) {
   store.dispatch(AuthActions.completeLogin())

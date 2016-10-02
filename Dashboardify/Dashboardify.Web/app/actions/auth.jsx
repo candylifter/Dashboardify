@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie'
+import moment from 'moment'
 
 import { AuthAPI } from 'api'
 
@@ -29,7 +30,8 @@ export default {
       return AuthAPI.login(email, password)
         .then(
           (res) => {
-            Cookies.set('ticket', res.data.SessionId) // TODO: add expiration date and replace SessionId with Ticket
+            Cookies.set('ticket', res.data.SessionId, { expires: moment(res.data.ExpireDate).toDate() })
+
             dispatch(this.completeLogin(res.data))
           },
           (err) => {

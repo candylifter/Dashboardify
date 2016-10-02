@@ -2,6 +2,7 @@ const initialState = {
   isFetching: false,
   isCreating: false,
   createError: undefined,
+  userNotified: false,
   data: [],
   error: undefined
 }
@@ -52,6 +53,28 @@ const dashboardsReducer = (state = initialState, action) => {
         createError: undefined
       }
     case 'FAIL_CREATE_DASHBOARD':
+      return {
+        ...state,
+        isCreating: false,
+        userNotified: false,
+        createError: action.err.response
+      }
+    case 'START_DELETE_DASHBOARD':
+      return {
+        ...state,
+        isCreating: true,
+        createError: undefined
+      }
+    case 'COMPLETE_DELETE_DASHBOARD':
+      return {
+        ...state,
+        isCreating: false,
+        createError: undefined,
+        data: state.data.filter((dashboard) => {
+          return dashboard.id !== action.id
+        })
+      }
+    case 'FAIL_DELETE_DASHBOARD':
       return {
         ...state,
         isCreating: false,

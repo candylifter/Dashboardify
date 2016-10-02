@@ -36,7 +36,7 @@ namespace Dashboardify.Handlers.Dashboards
             {
                 int userId = _userSessionRepository.GetUserBySessionId(request.Ticket).Id;
 
-                _dashRepository.DeleteDashboard(userId, request.DashName);
+                _dashRepository.DeleteDashboard(userId, request.DashboardId);
 
             }
             catch (Exception ex)
@@ -58,7 +58,7 @@ namespace Dashboardify.Handlers.Dashboards
                 return errors;
             }
 
-            if (string.IsNullOrEmpty(request.Ticket)|| string.IsNullOrEmpty(request.DashName))
+            if (string.IsNullOrEmpty(request.Ticket) || request.DashboardId == 0)
             {
                 errors.Add(new ErrorStatus("BAD_REQUEST"));
                 return errors;
@@ -72,9 +72,15 @@ namespace Dashboardify.Handlers.Dashboards
                 return errors;
             }
 
-            if(_dashRepository.CheckIfNameAvailable(user.Id,request.DashName))
+            //if(_dashRepository.CheckIfNameAvailable(user.Id,request.DashName))
+            //{
+            //    errors.Add(new ErrorStatus("SUCH_DASH_NOT_EXSIST"));
+            //    return errors;
+            //}
+
+            if (_dashRepository.CheckIfExistsByUserId(request.DashboardId, user.Id))
             {
-                errors.Add(new ErrorStatus("SUCH_DASH_NOT_EXSIST"));
+                errors.Add(new ErrorStatus("DASHBOARD_DOES_NOT_EXIST"));
                 return errors;
             }
 

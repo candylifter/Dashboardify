@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import { browserHistory } from 'react-router'
+import { hashHistory } from 'react-router'
 import { connect } from 'react-redux'
 
 import { Card, CardTitle, CardActions } from 'material-ui/Card'
@@ -15,13 +15,13 @@ class Login extends React.Component {
     let { isAuthenticated } = this.props
 
     if (isAuthenticated) {
-      browserHistory.push('/')
+      hashHistory.push('/')
     }
   }
 
   componentWillUpdate (props) {
     if (props.isAuthenticated) {
-      browserHistory.push('/')
+      hashHistory.push('/')
     }
   }
 
@@ -99,7 +99,7 @@ class Login extends React.Component {
             <FlatButton
               label='Sign up'
               style={style.card.footer.button}
-              onClick={() => browserHistory.push('/register')}
+              onClick={() => hashHistory.push('/register')}
               disabled={isLoggingIn}
             />
           </CardActions>
