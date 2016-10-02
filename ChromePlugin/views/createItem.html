@@ -12,53 +12,56 @@
 </head>
 
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-  <header class="mdl-layout__header">
-    <div class="mdl-layout__header-row">
-      <!-- Title -->
-      <a class="mdl-layout-title tekstas" href="http://localhost:3000">Dashboardify</a>
-      <!-- Add spacer, to align navigation to the right -->
-      <div class="mdl-layout-spacer"></div>
-      <!-- Navigation. We hide it in small screens. -->
+    <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+            <!-- Title -->
+            <a class="mdl-layout-title tekstas" href="http://localhost:3000">Dashboardify</a>
+            <!-- Add spacer, to align navigation to the right -->
+            <div class="mdl-layout-spacer"></div>
+            <!-- Navigation. We hide it in small screens. -->
+        </div>
+    </header>
+    <div class="mdl-layout__drawer">
+        <nav class="mdl-navigation">
+            <a class="mdl-navigation__link side-menu" href="http://localhost:3000">Home</a>
+        </nav>
     </div>
-  </header>
-  <div class="mdl-layout__drawer">
-   <nav class="mdl-navigation">
-     <a class="mdl-navigation__link side-menu" href="http://localhost:3000">Home</a>
-   </nav>
- </div>
-  <main class="mdl-layout__content">
-    <div class="page-content">
-      <body>
-        <form class="form-horizontal create-item-div" id="create-item-form">
-          <div class="container create-item">
-            <h3>Create your item</h3>
-            <input type="text" class="form-control item-name form-items" id="item-name" placeholder="Item name:">
-            <input class="form-control form-items" id="website" type="text" placeholder="Website" disabled>
-            <input class="form-control form-items" id="xpath" type="text" placeholder="XPath" disabled>
-            <input class="form-control form-items" id="css" type="text" placeholder="CSS" disabled>
-            Check interval:
-              <select class="form-control form-items" id="timer">
+    <main class="mdl-layout__content">
+        <div class="page-content">
+
+            <body>
+                <form class="form-horizontal create-item-div" id="create-item-form">
+                    <div class="container create-item">
+                        <h3>Create your item</h3>
+                        <div id="error-occured">
+                            <label class="control-label" id="error-message" for="inputWarning1"></label>
+                            <input type="text" class="form-control item-name form-items has-error" id="item-name" placeholder="Item name:">
+                        </div>
+                        <input class="form-control form-items hidden" id="website" type="text" placeholder="Website" disabled>
+                        <input class="form-control form-items hidden" id="xpath" type="text" placeholder="XPath" disabled>
+                        <input class="form-control form-items hidden" id="css" type="text" placeholder="CSS" disabled> Check interval:
+                        <select class="form-control form-items" id="timer">
                   <option value="300000">5 minutes</option>
                   <option value="600000">10 minutes</option>
                   <option value="1800000">30 minutes</option>
                   <option value="3600000">1 hour</option>
                   <option value="21600000">6 hours</option>
+              </select> Dashboard:
+                        <select class="form-control form-items" id="dashboard-selector">
               </select>
-              Dashboard:
-              <select class="form-control form-items" id="dashboard-selector">
-              </select>
-              <p id="errors"></p>
-              <input class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored form-buttons" type="submit" value="Create Item">
-          </div>
-          </form>
-          <!-- Your content goes here --></div>
-  </main>
+                        <input class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored form-buttons" id="form-submit" type="submit" value="Create Item">
+                    </div>
+                </form>
+                <!-- Your content goes here -->
+        </div>
+    </main>
 </div>
 
 
-    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
-        <script src="/node_modules/material-design-lite/material.min.js"></script>
-    <!-- <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script> -->
-    <script src="/createItem.js"></script>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/material-design-lite/material.min.js"></script>
+<!-- <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script> -->
+<script src="/createItem.js"></script>
 </body>
+
 </html>
