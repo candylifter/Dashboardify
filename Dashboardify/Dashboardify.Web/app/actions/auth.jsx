@@ -30,7 +30,8 @@ export default {
       return AuthAPI.login(email, password)
         .then(
           (res) => {
-            Cookies.set('ticket', res.data.SessionId, { expires: moment(res.data.ExpireDate).toDate() })
+            Cookies.set('ticket', res.data.SessionId)
+            // Cookies.set('ticket', res.data.SessionId, { expires: moment(res.data.ExpireDate).toDate() })
 
             dispatch(this.completeLogin(res.data))
           },
