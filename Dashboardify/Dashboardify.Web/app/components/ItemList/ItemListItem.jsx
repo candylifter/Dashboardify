@@ -53,11 +53,8 @@ class ItemListItem extends React.Component {
         position: 'relative',
         img: {
           position: 'absolute',
-          // minWidth: '100%',
-          // width: '100%'
           maxWidth: '100%',
           maxHeight: '100%'
-          // transform: 'translate(-50%, 0%)'
         }
       },
       footer: {
@@ -102,23 +99,6 @@ ItemListItem.propTypes = {
 }
 
 export default connect()(ItemListItem)
-
-// <Paper style={style.card} zDepth={1} onClick={this.handleSelect}>
-//   <div style={style.header}>
-//     <div style={style.header.name}>
-//       <span>{name}</span>
-//     </div>
-//     <div style={style.header.url}>
-//       <span>{url}</span>
-//     </div>
-//   </div>
-//   <div style={style.body}>
-//     <img style={style.image} src={img} alt={`Image of ${name}`} />
-//   </div>
-//   <div style={style.footer}>
-//     <span>{lastChecked}</span>
-//   </div>
-// </Paper>
 
 // <div className='col-xs-6 col-md-4 col-lg-3' onClick={() => dispatch(ItemsActions.selectItem(id, dashboardId))}>
 //   <div className={panelClass}>

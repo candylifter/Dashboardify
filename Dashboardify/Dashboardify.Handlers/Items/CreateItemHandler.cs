@@ -40,7 +40,7 @@ namespace Dashboardify.Handlers.Items
                 request.Item.IsActive = true;
                 request.Item.Created = DateTime.Now;
                 request.Item.Modified = DateTime.Now;
-                request.Item.LastChecked = DateTime.MinValue;
+                request.Item.LastChecked = DateTime.Now.AddMonths(-1);
                 request.Item.Content = "";
 
                 _itemRepository.Create(request.Item);

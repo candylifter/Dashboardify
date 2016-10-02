@@ -4,6 +4,12 @@ body {
   background-color: #EEEEEE;
 }
 
+.flex-container {
+  display: flex;
+  min-height: calc(100vh - 64px);
+  align-items: center;
+}
+
 .text-center {
   text-align: center;
 }
