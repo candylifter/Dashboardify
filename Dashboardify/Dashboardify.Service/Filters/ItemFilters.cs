@@ -89,13 +89,13 @@ namespace Dashboardify.Service
                 {
                     var user = _itemsRepository.GetUserByItemId(item.Id);
 
-                    var contactInfo = new UsernameEmailItem();
-                    
-                    contactInfo.Email = user.Email;
+                    var contactInfo = new UsernameEmailItem
+                    {
+                        Email = user.Email,
+                        ItemName = item.Name,
+                        Username = user.Name
+                    };
 
-                    contactInfo.ItemName = item.Name;
-
-                    contactInfo.Username = user.Name;
 
                     contactsToSendEmail.Add(contactInfo);
 

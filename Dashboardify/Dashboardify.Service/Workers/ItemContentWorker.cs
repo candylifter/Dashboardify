@@ -66,7 +66,7 @@ namespace Dashboardify.Service.Workers
             //UPDATING ITEMS
             _logger.Info("\n --> UPDATING ITEMS");
 
-            UpdateNonOutdatedItems(items,outdatedItems);
+            UpdateNonOutdatedItems(items, outdatedItems);
 
             UpdateOutdatedItems(outdatedItems);
             
@@ -138,9 +138,7 @@ namespace Dashboardify.Service.Workers
                 if (item.Failed >= 3)
                 {
                     item.IsActive = false;
-                }
-
-                if (item.Content.Length == 0)
+                } else if (item.Content.Length == 0)
                 {
                     item.Failed++;
                 }
