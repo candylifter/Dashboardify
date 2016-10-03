@@ -3,8 +3,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Moq;
 
 namespace Dashboardify.Service.Test
 {
@@ -41,6 +40,8 @@ namespace Dashboardify.Service.Test
                     CheckInterval = 300000,
                     IsActive = true
                 }
+
+                
             };
 
             var expectedItems = items.Where(x => x.Id != 2).ToList();
