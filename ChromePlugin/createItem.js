@@ -136,4 +136,6 @@ form.onsubmit = function(event) {
 }
 
 var forWebsite = document.getElementById("for-website");
-forWebsite.innerHTML = "for website " + onlyUrl(website);
+forWebsite.innerHTML = " " + onlyUrl(website);
+forWebsite.title=website;
+forWebsite.href=website;
