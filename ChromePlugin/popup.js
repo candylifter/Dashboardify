@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function postItem(item) {
     $.post(
-            "http://localhost/api/Items/CreateItem", {
+            "http://23.251.133.254/app/api/Items/CreateItem", {
                 Item: item
             }
         )
@@ -33,7 +33,7 @@ chrome.runtime.onMessage.addListener(
 
         if (request.action == 'POST_ITEM') {
             $.post(
-                    "http://localhost/api/Items/CreateItem", {
+                    "http://23.251.133.254/app/api/Items/CreateItem", {
                         Item: request.item
                     }
                 )
@@ -54,6 +54,6 @@ chrome.runtime.onMessage.addListener(
     var homeButton = document.getElementById('home-button');
 
     homeButton.onclick = function() {
-      var newTab = {url : "http://localhost:3000/register"}
+      var newTab = {url : "http://23.251.133.254/app#/register?_k=0tskup"}
       chrome.tabs.create(newTab);
     }
