@@ -2,19 +2,19 @@
 
 var loginButton = document.getElementById('login-button')
 loginButton.onclick= function (){
-  var newTab = {url : "http://localhost:3000"}
+  var newTab = {url : "http://23.251.133.254/app"}
   chrome.tabs.create(newTab);
 }
 
 var registerButton = document.getElementById('register-button')
 registerButton.onclick= function (){
-  var newTab = {url : "http://localhost:3000/register"}
+  var newTab = {url : "http://23.251.133.254/app#/register?_k=r6iex7"}
   chrome.tabs.create(newTab);
 }
 
 
 chrome.cookies.get({
-        url: "http://localhost:3000",
+        url: "http://23.251.133.254/",
         name: "ticket",
     },
     function(cookie) {
