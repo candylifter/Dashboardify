@@ -15,6 +15,13 @@ function getCSS(str) {
     theright = str.length;
     return (str.substring(theleft, theright));
 }
+
+function onlyUrl(str){
+  theleft = str.indexOf("://") + 3;
+  theright = str.indexOf("/", 10);;
+  return (str.substring(theleft, theright));
+}
+
 var buttonDissable = document.getElementById("form-submit")
 var url = window.location.href;
 var xpath = getXpath(url);
@@ -127,3 +134,6 @@ form.onsubmit = function(event) {
         }
     })
 }
+
+var forWebsite = document.getElementById("for-website");
+forWebsite.innerHTML = "for website " + onlyUrl(website);
