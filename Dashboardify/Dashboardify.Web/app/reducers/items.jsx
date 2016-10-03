@@ -1,5 +1,7 @@
 const initialState = {
   isFetching: false,
+  isPosting: false,
+  postError: undefined,
   data: [],
   error: undefined
 }
@@ -39,9 +41,17 @@ const itemsReducer = (state = initialState, action) => {
           return item
         })
       }
-    case 'TOGGLE_ITEM':
+    case 'START_TOGGLE_ITEM':
       return {
         ...state,
+        isPosting: true,
+        postError: undefined
+      }
+    case 'COMPLETE_TOGGLE_ITEM':
+      return {
+        ...state,
+        isPosting: false,
+        postError: undefined,
         data: state.data.map((item) => {
           if (item.id === action.id) {
             item.isActive = !item.isActive
@@ -49,6 +59,12 @@ const itemsReducer = (state = initialState, action) => {
 
           return item
         })
+      }
+    case 'FAIL_TOGGLE_ITEM':
+      return {
+        ...state,
+        isPosting: false,
+        postError: action.err.response
       }
     case 'SET_ITEM_CHECK_INTERVAL':
       return {
