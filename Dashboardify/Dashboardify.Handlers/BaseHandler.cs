@@ -27,11 +27,7 @@ namespace Dashboardify.Handlers
 
         protected bool IsRequestNull(object request)
         {
-            if (request == null)
-            {
-                return true;
-            }
-            return false;
+            return request == null;
         }
     }
 }

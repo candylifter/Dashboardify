@@ -49,8 +49,12 @@ namespace Dashboardify.Handlers.Dashboards
 
         private void UpdateDashObject(DashBoard origin, DashBoard request)
         {
+            if (!string.IsNullOrEmpty(request.Name))
+            {
+                origin.Name = request.Name;
+            }
             origin.DateModified = DateTime.Now;
-            origin.Name = request.Name;
+            
         }
 
         public IList<ErrorStatus> Validate(UpdateDashboardRequest request)
@@ -72,10 +76,12 @@ namespace Dashboardify.Handlers.Dashboards
             if (string.IsNullOrEmpty(request.Ticket))
             {
                 errors.Add(new ErrorStatus("BAD_REQUEST"));
+                return errors;
             }
             if (request.DashBoard.Id < 1)
             {
                 errors.Add(new ErrorStatus("CORRUPTED_ID"));
+                return errors;
             }
 
             var requestUser = _userSessionRepository.GetUserBySessionId(request.Ticket);
@@ -91,6 +97,12 @@ namespace Dashboardify.Handlers.Dashboards
             if (requestUser.Id != ownerUser.Id)
             {
                 errors.Add(new ErrorStatus("UNAUTHORIZED_ACCES"));
+                return errors;
+            }
+
+            if (!IsSessionValid(request.Ticket))
+            {
+                errors.Add(new ErrorStatus("SESSION_TIME_OUT"));
                 return errors;
             }
             

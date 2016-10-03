@@ -12,15 +12,12 @@ namespace Dashboardify.Handlers.Items
 
         private UserSessionRepository _userSessionRepository;
 
-        private DashRepository _dashRepository;
-
         public UpdateItemHandler(string connectionString):base (connectionString)
         {
             _itemRepository = new ItemsRepository(connectionString);
 
             _userSessionRepository = new UserSessionRepository(connectionString);
 
-            _dashRepository = new DashRepository(connectionString);
         }
 
         public UpdateItemResponse Handle(UpdateItemRequest request)
@@ -151,7 +148,7 @@ namespace Dashboardify.Handlers.Items
                 errors.Add(new ErrorStatus("UNAUTHORIZED_ACCES"));
                 return errors;
             }
-            if (IsSessionValid(request.Ticket))
+            if (!IsSessionValid(request.Ticket))
             {
                 errors.Add(new ErrorStatus("SESSION_TIME_OUT"));
                 return errors;

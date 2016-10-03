@@ -75,6 +75,12 @@ namespace Dashboardify.Handlers.Dashboards
                 return errors;
             }
 
+            if (IsSessionValid(request.Ticket))
+            {
+                errors.Add(new ErrorStatus("SESSION_TIME_OUT"));
+                return errors;
+            }
+
             if (string.IsNullOrEmpty(request.DashName))
             {
                 errors.Add(new ErrorStatus("DASHBOARD_NOT_DEFINED"));
