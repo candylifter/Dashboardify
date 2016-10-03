@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dashboardify.Contracts", "D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dashboardify.Sandbox", "Dashboardify.Sandbox\Dashboardify.Sandbox.csproj", "{23FD00DD-1B38-4FA6-8F03-5532DDC686E6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dashboardify.Service.Test", "Dashboardify.Service.Test\Dashboardify.Service.Test.csproj", "{451CDF52-AD7C-494C-A251-29B1A206837C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{23FD00DD-1B38-4FA6-8F03-5532DDC686E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23FD00DD-1B38-4FA6-8F03-5532DDC686E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23FD00DD-1B38-4FA6-8F03-5532DDC686E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{451CDF52-AD7C-494C-A251-29B1A206837C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{451CDF52-AD7C-494C-A251-29B1A206837C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{451CDF52-AD7C-494C-A251-29B1A206837C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{451CDF52-AD7C-494C-A251-29B1A206837C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

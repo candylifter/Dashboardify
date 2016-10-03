@@ -70,6 +70,12 @@ var config = {
       routes: 'app/routes.jsx'
     },
     extensions: ['', '.js', '.jsx']
+  },
+  sassLoader: {
+    includePaths: [
+      path.resolve(__dirname, './node_modules/bourbon/app/assets/stylesheets/'),
+      path.resolve(__dirname, './node_modules/bourbon-neat/app/assets/stylesheets/')
+    ]
   }
 }
 

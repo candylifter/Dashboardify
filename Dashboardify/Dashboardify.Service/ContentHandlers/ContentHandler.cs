@@ -16,6 +16,55 @@ namespace Dashboardify.Service
     {
         private ILog logger = LogManager.GetLogger("Dashboardify.Service");
 
+        public HtmlDocument GetHtmlDocument(string url)
+        {
+            var htmlWeb = new HtmlWeb();
+
+            try
+            {
+                var doc = htmlWeb.Load(url);
+                return doc;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Message);
+                return null;
+            }
+        }
+
+        public string GetContentByXPath(HtmlDocument doc, string xpath)
+        {
+            var node = doc.DocumentNode.SelectSingleNode(xpath);
+
+            if (node == null)
+            {
+                const string ex = "Cannot find element by XPath";
+                logger.Error(ex);
+                throw new Exception(ex);
+            }
+
+            var content = node.InnerText;
+
+            return content;
+        }
+
+        public string GetContentByCSS(HtmlDocument doc, string css)
+        {
+            var node = doc.QuerySelector(css);
+
+            if (node == null)
+            {
+                const string ex = "Cannot find element by CSS";
+                logger.Error(ex);
+                throw new Exception(ex);
+            }
+
+            var content = node.InnerText;
+
+            return content;
+
+        }
+
         public string GetContentByXPath(string url, string xpath)
         {
             HtmlWeb htmlWeb = new HtmlWeb();
