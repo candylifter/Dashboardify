@@ -40,7 +40,7 @@ cssInput.value = css;
 
 function getCookie() {
     chrome.cookies.get({
-            url: "http://localhost:3000",
+            url: "http://23.251.133.254",
             name: "ticket"
         },
         function(cookie) {
@@ -58,7 +58,7 @@ function getCookie() {
 function getDashes(ticket) {
     $.ajax({
         type: "POST",
-        url: "http://localhost/api/Dashboards/GetList",
+        url: "http://23.251.133.254/api/Dashboards/GetList",
         data: {
             "Ticket": ticket
         },
@@ -97,6 +97,7 @@ form.onsubmit = function(event) {
     var dashboardId = parseInt(document.getElementById("dashboard-selector").value);
     var intervalValue = parseInt(document.getElementById('timer').value);
     var name = document.getElementById('item-name').value
+    buttonDissable.disabled = true;
 
     var data = {
         Item: {
@@ -115,13 +116,13 @@ form.onsubmit = function(event) {
         url: "http://localhost/api/Items/createItem",
         data: data,
         success: function(data) {
-            buttonDissable.disabled = true;
             console.log(data);
             window.close();
         },
         error: function(data) {
             document.getElementById("error-occured").className = "has-error"
             errorMessage.innerHTML = "Please enter name of item"
+            buttonDissable.disabled = false;
             console.log(data)
         }
     })
