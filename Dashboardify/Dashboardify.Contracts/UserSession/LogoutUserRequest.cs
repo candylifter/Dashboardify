@@ -8,6 +8,6 @@ namespace Dashboardify.Contracts.UserSession
 {
     public class LogoutUserRequest:BaseRequest
     {
-        public string Ticket { get; set; }
+        
     }
 }

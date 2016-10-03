@@ -5,7 +5,5 @@ namespace Dashboardify.Contracts.Dashboards
     public class UpdateDashboardRequest:BaseRequest
     {
         public DashBoard DashBoard { get; set; }
-
-        public string Ticket { get; set; }
     }
 }

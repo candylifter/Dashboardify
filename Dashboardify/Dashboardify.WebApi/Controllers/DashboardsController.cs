@@ -2,8 +2,10 @@
 using System.Net.Http;
 using System.Web.Http;
 using System.Configuration;
+using System.Net.Http.Formatting;
 using Dashboardify.Contracts.Dashboards;
 using Dashboardify.Handlers.Dashboards;
+
 
 namespace Dashboardify.WebApi.Controllers
 {
@@ -15,6 +17,17 @@ namespace Dashboardify.WebApi.Controllers
         [HttpPost]
         public HttpResponseMessage GetList(GetDashboardsRequest request)
         {
+            //var securityProvider = new SecurityProvider.SecurityProvider(request);
+
+            //securityProvider.DoValidation();
+
+            //var errors = securityProvider.ReturnErrors();
+
+            //if (errors.Count > 0)
+            //{
+                
+            //}
+
             var handler = new GetDashboardsHandler(_connectionString);
 
             var response = handler.Handle(request);

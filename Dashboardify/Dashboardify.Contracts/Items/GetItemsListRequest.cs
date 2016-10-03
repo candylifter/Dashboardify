@@ -4,6 +4,5 @@
     {
         public int DashboardId { get; set; }
 
-        public string Ticket { get; set; }
     }
 }

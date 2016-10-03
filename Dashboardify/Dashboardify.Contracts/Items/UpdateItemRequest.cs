@@ -15,6 +15,6 @@ namespace Dashboardify.Contracts.Items
 
         public bool NotifyByEmail { get; set; }
 
-        public string Ticket { get; set; }
+       
     }
 }
