@@ -38,6 +38,16 @@ export default {
     })[0]
   },
 
+  toggleItem (id, state) {
+    let data = {
+      ItemId: id,
+      IsActive: state,
+      Ticket: Cookies.get('ticket')
+    }
+
+    return axios.post(`${rootDomain}/Items/Update`, data)
+  },
+
   filterItems (items, dashboardId, searchText) {
     let filteredItems = items
 

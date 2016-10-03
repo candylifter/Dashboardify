@@ -50,10 +50,35 @@ export default {
     }
   },
 
-  toggleItem (id) {
+  toggleItem (id, state) {
+    return (dispatch) => {
+      dispatch(this.startToggleItem())
+
+      return ItemsAPI.toggleItem(id, state)
+        .then(
+          (res) => dispatch(this.completeToggleItem(id)),
+          (err) => dispatch(this.failToggleItem(err))
+        )
+    }
+  },
+
+  startToggleItem () {
     return {
-      type: 'TOGGLE_ITEM',
+      type: 'START_TOGGLE_ITEM'
+    }
+  },
+
+  completeToggleItem (id) {
+    return {
+      type: 'COMPLETE_TOGGLE_ITEM',
       id
+    }
+  },
+
+  failToggleItem (err) {
+    return {
+      type: 'FAIL_TOGGLE_ITEM',
+      err
     }
   },
 

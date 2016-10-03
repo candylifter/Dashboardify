@@ -32,7 +32,7 @@ class ItemPanel extends React.Component {
     const { items, dashboardId, dispatch } = this.props
 
     let item = ItemsAPI.getSelectedItemDashboardId(items, dashboardId)
-    dispatch(ItemsActions.toggleItem(item.id))
+    dispatch(ItemsActions.toggleItem(item.id, item.isActive))
   }
 
   render () {

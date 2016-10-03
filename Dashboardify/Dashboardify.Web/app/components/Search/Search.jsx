@@ -1,29 +1,30 @@
-import React from 'react';
+import React from 'react'
 
-import TextField from 'material-ui/TextField';
+import TextField from 'material-ui/TextField'
 
-import { SearchTextActions } from 'actions';
-import { connect } from 'react-redux';
+import { SearchTextActions } from 'actions'
+import { connect } from 'react-redux'
 
 class Search extends React.Component {
   render () {
-    let { dispatch, searchText } = this.props;
+    let { dispatch, searchText } = this.props
 
     const style = {
       margin: 'auto',
+      width: '100%'
     }
 
     return (
-        <TextField
-          type="text"
-          hintText="Search"
-          style={style}
-          value={searchText}
-          onChange={(e) => {
-            let text = e.target.value.toLowerCase();
-            dispatch(SearchTextActions.setSearchText(text))
-          }}
-        />
+      <TextField
+        type='text'
+        hintText='Search'
+        style={style}
+        value={searchText}
+        onChange={(e) => {
+          let text = e.target.value.toLowerCase()
+          dispatch(SearchTextActions.setSearchText(text))
+        }}
+      />
     )
   }
 }
@@ -34,4 +35,4 @@ export default connect(
       searchText: state.searchText
     }
   }
-)(Search);
+)(Search)

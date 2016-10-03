@@ -14,7 +14,7 @@ namespace Dashboardify.Service
         
         private readonly ContentHandler _contentHandler = new ContentHandler();
         private ILog logger = LogManager.GetLogger("Dashboardify.Service");
-        private ItemsRepository _itemsRepository = new ItemsRepository(ConfigurationManager.ConnectionStrings["GCP"].ConnectionString);
+        private ItemsRepository _itemsRepository;
     
 
         public IList<Item> GetScheduledList(IList<Item> items)
@@ -37,28 +37,50 @@ namespace Dashboardify.Service
 
             foreach (var item in items)
             {
-                var newContent = _contentHandler.GetContentByXPath(item.Website, item.XPath);
+                var doc = _contentHandler.GetHtmlDocument(item.Website);
 
-                if (newContent == null)
+                if (doc != null)
                 {
-                    newContent = _contentHandler.GetContentByCSS(item.Website, item.CSS);
-                }
+                    string newContent = null;
 
-                if (newContent != null && item.Content != newContent)
-                {
-                    item.Content = newContent;
+                    try
+                    {
+                        newContent = _contentHandler.GetContentByXPath(doc, item.XPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Error(ex.Message);
+                    }
 
-                    outdatedItems.Add(item);
+                    if (string.IsNullOrEmpty(newContent))
+                    {
+                        try
+                        {
+                            newContent = _contentHandler.GetContentByCSS(doc, item.CSS);
+                        }
+                        catch (Exception ex)
+                        {
+                            logger.Error(ex.Message);
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(newContent) && item.Content != newContent)
+                    {
+                        item.Content = newContent;
+                        outdatedItems.Add(item);
+                    }
                 }
             }
 
-            logger.Info("Get outdated items");
+            logger.Info("Got outdated items");
 
             return outdatedItems;
         }
 
         public List<UsernameEmailItem> GetEmailContacts(IList<Item> items)
         {
+            _itemsRepository = new ItemsRepository(ConfigurationManager.ConnectionStrings["GCP"].ConnectionString);
+
             List<UsernameEmailItem> contactsToSendEmail = new List<UsernameEmailItem>();
 
             foreach (var item in items)
