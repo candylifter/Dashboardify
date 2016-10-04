@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
+import moment from 'moment'
 
 import Drawer from 'material-ui/Drawer'
 import AppBar from 'material-ui/AppBar'
@@ -72,6 +73,12 @@ class ItemPanel extends React.Component {
 
     let item = ItemsAPI.getSelectedItemDashboardId(items, dashboardId)
 
+    let renderScreenshots = () => {
+      return item.screenshots.map((screenshot, index) => {
+        return <img key={index} src={screenshot.ScrnshtURL} alt={`Older screenshot of ${item.name}`}/>
+      })
+    }
+
     let renderPanel = () => {
       if (item !== undefined) {
         return (
@@ -93,6 +100,11 @@ class ItemPanel extends React.Component {
                 onToggle={this.handleToggle}
                 />
               <CheckIntervalList itemId={item.id} onChange={this.handleIntervalChange} />
+              <p>Last checked: {moment(item.lastChecked).fromNow()}</p>
+              <p>Content changed: {moment(item.lastModified).fromNow()}</p>
+              <div>
+                {renderScreenshots()}
+              </div>
             </div>
           </div>
         )
