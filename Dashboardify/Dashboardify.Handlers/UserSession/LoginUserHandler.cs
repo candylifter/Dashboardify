@@ -101,7 +101,7 @@ namespace Dashboardify.Handlers.UserSession
             response.ExpireDate = expires;
             
             _userSessionRepository.AddSession(session);
-            response.SessionId = sessionId;
+            response.Ticket = sessionId;
         }
 
         
