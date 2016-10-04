@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
 
+import Paper from 'material-ui/Paper'
 import Drawer from 'material-ui/Drawer'
 import AppBar from 'material-ui/AppBar'
 import IconButton from 'material-ui/IconButton'
@@ -49,12 +50,15 @@ class ItemPanel extends React.Component {
 
   render () {
     const style = {
-      padding: '0em 1em',
+      padding: '0em 1em 1em',
       image: {
         maxWidth: '100%',
         margin: '1em 0',
+        padding: '1em',
         img: {
-          width: '100%'
+          width: '100%',
+          maxHeight: '300px',
+          objectFit: 'cover'
         }
       },
       title: {
@@ -82,9 +86,9 @@ class ItemPanel extends React.Component {
               title={item.name}
               />
             <div style={style}>
-              <div style={style.image}>
+              <Paper style={style.image}>
                 <img src={item.img} alt={`Screenshot of ${item.name}`} style={style.image.img} />
-              </div>
+              </Paper>
               <div style={style.url}>
                 <FlatButton href={item.url} target='_blank' label='Visit website' style={style.url.button} />
               </div>
