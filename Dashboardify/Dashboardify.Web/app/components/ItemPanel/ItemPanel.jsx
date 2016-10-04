@@ -20,6 +20,7 @@ class ItemPanel extends React.Component {
 
     this.handleClose = this.handleClose.bind(this)
     this.handleToggle = this.handleToggle.bind(this)
+    this.handleIntervalChange = this.handleIntervalChange.bind(this)
   }
 
   handleClose () {
@@ -32,7 +33,17 @@ class ItemPanel extends React.Component {
     const { items, dashboardId, dispatch } = this.props
 
     let item = ItemsAPI.getSelectedItemDashboardId(items, dashboardId)
-    dispatch(ItemsActions.toggleItem(item.id, !item.isActive))
+    item.isActive = !item.isActive
+
+    dispatch(ItemsActions.updateItem(item))
+  }
+
+  handleIntervalChange (event, index, value) {
+    const { items, dashboardId, dispatch } = this.props
+    let item = ItemsAPI.getSelectedItemDashboardId(items, dashboardId)
+
+    item.checkInterval = value
+    dispatch(ItemsActions.updateItem(item))
   }
 
   render () {
@@ -81,7 +92,7 @@ class ItemPanel extends React.Component {
                 toggled={item.isActive}
                 onToggle={this.handleToggle}
                 />
-              <CheckIntervalList itemId={item.id} />
+              <CheckIntervalList itemId={item.id} onChange={this.handleIntervalChange} />
             </div>
           </div>
         )

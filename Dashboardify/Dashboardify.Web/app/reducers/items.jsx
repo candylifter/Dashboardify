@@ -89,7 +89,12 @@ const itemsReducer = (state = initialState, action) => {
         ...state,
         isPosting: false,
         postError: undefined,
-        ...action.item
+        data: state.data.map((item) => {
+          if (item.id === action.item.id) {
+            item = action.item
+          }
+          return item
+        })
       }
     case 'FAIL_UPDATE_ITEM':
       return {
