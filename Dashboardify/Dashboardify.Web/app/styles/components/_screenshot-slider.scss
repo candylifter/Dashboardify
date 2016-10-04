@@ -1,0 +1,42 @@
+$drawer-width: 400px;
+$drawer-padding: 2em;
+
+$screenshot-width: calc(#{$drawer-width} - #{$drawer-padding});
+
+.screenshot-slider {
+  list-style: none;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  padding: 1em 0;
+  overflow-x: scroll;
+}
+
+.screenshot-slider__item {
+  display: inline-block;
+  width: $screenshot-width + 2em;
+  margin: 0 .5em;
+  padding: 1em;
+
+  &:first-child {
+    margin-left: 2px; // For material shadow
+  }
+
+  &:last-child {
+    margin-right: 2px; // For material shadow
+  }
+}
+
+.screenshot-slider__item__image {
+  object-fit: cover;
+  object-position: center;
+  width: $screenshot-width;
+  max-height: 50vh;
+}
+
+.screenshot-slider__item__header {
+  span {
+    font-size: .9em;
+    font-weight: bold;
+  }
+}

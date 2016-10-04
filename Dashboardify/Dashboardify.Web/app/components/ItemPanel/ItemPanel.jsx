@@ -11,7 +11,7 @@ import FlatButton from 'material-ui/FlatButton'
 
 import { ItemsActions, ItemPanelActions } from 'actions'
 import { ItemsAPI } from 'api'
-import { CheckIntervalList } from 'components'
+import { CheckIntervalList, ScreenshotSlider } from 'components'
 
 class ItemPanel extends React.Component {
   constructor (props, context) {
@@ -73,12 +73,6 @@ class ItemPanel extends React.Component {
 
     let item = ItemsAPI.getSelectedItemDashboardId(items, dashboardId)
 
-    let renderScreenshots = () => {
-      return item.screenshots.map((screenshot, index) => {
-        return <img key={index} src={screenshot.ScrnshtURL} alt={`Older screenshot of ${item.name}`}/>
-      })
-    }
-
     let renderPanel = () => {
       if (item !== undefined) {
         return (
@@ -102,9 +96,9 @@ class ItemPanel extends React.Component {
               <CheckIntervalList itemId={item.id} onChange={this.handleIntervalChange} />
               <p>Last checked: {moment(item.lastChecked).fromNow()}</p>
               <p>Content changed: {moment(item.lastModified).fromNow()}</p>
-              <div>
-                {renderScreenshots()}
-              </div>
+              <br /><br />
+              <p>Previous content:</p>
+              <ScreenshotSlider screenshots={item.screenshots} />
             </div>
           </div>
         )
@@ -112,7 +106,7 @@ class ItemPanel extends React.Component {
     }
 
     return (
-      <Drawer openSecondary width={300} open={open}>
+      <Drawer openSecondary width={400} open={open}>
         {renderPanel()}
       </Drawer>
     )
