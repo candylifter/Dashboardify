@@ -39,7 +39,7 @@ class ItemListItem extends React.Component {
           <img src={img} />
         </div>
         <div className='item__footer'>
-          <span>Last checked: {moment(lastChecked).fromNow()}</span><br/>
+          <span>Last checked: {moment(lastChecked).fromNow()}</span><br />
           <span>Content modified: {moment(lastModified).fromNow()}</span>
         </div>
       </Paper>
