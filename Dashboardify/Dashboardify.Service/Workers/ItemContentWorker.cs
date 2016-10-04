@@ -66,9 +66,9 @@ namespace Dashboardify.Service.Workers
             //UPDATING ITEMS
             _logger.Info("\n --> UPDATING ITEMS");
 
-            UpdateNonOutdatedItems(items, outdatedItems);
-
             UpdateOutdatedItems(outdatedItems);
+
+            UpdateNonOutdatedItems(scheduledItems, outdatedItems);
             
             //FILTERING ITEMS TO SEND EMAIL
             result = _itemFilters.GetEmailContacts(outdatedItems);
