@@ -13,7 +13,7 @@ function getXpath(str) {
 function getCSS(str) {
     theleft = str.indexOf("&css=") + 5;
     theright = str.length;
-    return (str.substring(theleft, theright));
+    return decodeURI((str.substring(theleft, theright)));
 }
 
 function onlyUrl(str){

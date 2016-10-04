@@ -1,8 +1,19 @@
 const HIGHLIGHT_CLASSNAME = 'dashboardify-highlight';
 
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+      switch (request.action) {
+        case 'HIGHLIGHT_ELEMENTS':
+          console.log('Should highlight elements')
+        default:
+          return null
+      }
+  }
+)
+
 function handleElementClick(e) {
-  e.stopPropagation();	//
-  e.preventDefault();	//
+  e.stopPropagation();
+  e.preventDefault();
 
   removeHighlight(this);
 
