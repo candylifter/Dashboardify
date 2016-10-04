@@ -1,6 +1,6 @@
 ﻿using System;
-using Dashboardify.Repositories;
 using System.Collections.Generic;
+using Dashboardify.Repositories;
 using Dashboardify.Contracts;
 using Dashboardify.Contracts.Dashboards;
 
@@ -9,35 +9,22 @@ namespace Dashboardify.Handlers.Dashboards
     public class GetDashboardsHandler : BaseHandler
     {
         private DashRepository _dashboardsRepository;
-
-        private UserSessionRepository _userSessionRepository;
-
+        
         public GetDashboardsHandler(string connectionString)
             : base(connectionString)
         {
             _dashboardsRepository = new DashRepository(connectionString);
-
-            _userSessionRepository = new UserSessionRepository(connectionString);
         }
 
         public GetDashboardsResponse Handle(GetDashboardsRequest request)
         {
             var response = new GetDashboardsResponse();
 
-            response.Errors = Validate(request);
-
-            if (response.HasErrors)
-            {
-                return response;
-            }
-
+            response.Errors = new List<ErrorStatus>();
+            
             try
             {
-                var ticket = request.Ticket;
-
-                var userId = _userSessionRepository.GetUserBySessionId(ticket).Id;
-
-                var dashboards = _dashboardsRepository.GetByUserId(userId);
+                var dashboards = _dashboardsRepository.GetByUserId(request.Id);
 
                 response.Dashboards = dashboards;
 
@@ -59,31 +46,6 @@ namespace Dashboardify.Handlers.Dashboards
             }
         }
 
-        private IList<ErrorStatus> Validate(GetDashboardsRequest request)
-        {
-            var errors = new List<ErrorStatus>();
-
-            if (IsRequestNull(request))
-            {
-                errors.Add(new ErrorStatus("TICKET_WAS_NOT_DEFINED"));
-                return errors;
-            }
-
-            if (string.IsNullOrEmpty(request.Ticket))
-            {
-                errors.Add(new ErrorStatus("TICKET_WAS_NOT_DEFINED"));
-                return errors;
-            }
-
-
-            if (!IsSessionValid(request.Ticket))
-            {
-                errors.Add(new ErrorStatus("SESSION_NOT_VALID"));
-                return errors;
-            }
-            
-            
-            return errors;
-        }
+        
     }
 }
