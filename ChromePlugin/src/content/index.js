@@ -1,12 +1,22 @@
 import getXPath from './getXPath'
-var xpath = require('xpath-dom')
-import unique from 'unique-selector'
+import cssSelectorGenerator from 'css-selector-generator'
 
+const css = new cssSelectorGenerator
 const HIGHLIGHT_CLASSNAME = 'dashboardify-highlight';
 
-// setTimeout(() => {
-//   highlightDOMElements()
-// }, 2000)
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+      console.log(request);
+      switch (request.action) {
+        case 'HIGHLIGHT_ELEMENTS':
+          console.log('Should highlight elements')
+          highlightDOMElements()
+          break;
+        default:
+          return null
+      }
+  }
+)
 
 function handleElementClick(e) {
   e.stopPropagation()
@@ -16,17 +26,11 @@ function handleElementClick(e) {
 
   var Item = {}
 
-  var options = {
-    selectorTypes : [ 'Class', 'Tag', 'NthChild', 'Attributes' ]
-  }
-
   Item.Website = window.location.href
-  Item.XPath = xpath.getXPath(this)
-  // Item.XPath = getXPath(this)
+  Item.XPath = getXPath(this)
   try {
-    Item.CSS = unique(this, options)
+    Item.CSS = css.getSelector(this)
   } catch (e) {
-    alert('Failed to get CSS, will set it to null. Check console for more detailed info.')
     console.error(e)
     Item.CSS = null
   }

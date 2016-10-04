@@ -50,6 +50,38 @@ export default {
     }
   },
 
+  updateItem (item) {
+    return (dispatch) => {
+      dispatch(this.startUpdateItem(item))
+
+      return ItemsAPI.updateItem(item)
+        .then(
+          (res) => dispatch(this.completeUpdateItem(item)),
+          (err) => dispatch(this.failUpdateItem(err))
+        )
+    }
+  },
+
+  startUpdateItem () {
+    return {
+      type: 'START_UPDATE_ITEM'
+    }
+  },
+
+  completeUpdateItem (item) {
+    return {
+      type: 'COMPLETE_UPDATE_ITEM',
+      item
+    }
+  },
+
+  failUpdateItem (err) {
+    return {
+      type: 'FAIL_UPDATE_ITEM',
+      err
+    }
+  },
+
   toggleItem (id, state) {
     return (dispatch) => {
       dispatch(this.startToggleItem())

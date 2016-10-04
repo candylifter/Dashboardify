@@ -77,6 +77,26 @@ const itemsReducer = (state = initialState, action) => {
           return item
         })
       }
+
+    case 'START_UPDATE_ITEM':
+      return {
+        ...state,
+        isPosting: true,
+        postError: undefined
+      }
+    case 'COMPLETE_UPDATE_ITEM':
+      return {
+        ...state,
+        isPosting: false,
+        postError: undefined,
+        ...action.item
+      }
+    case 'FAIL_UPDATE_ITEM':
+      return {
+        ...state,
+        isPosting: false,
+        postError: action.err.response
+      }
     default:
       return state
   }

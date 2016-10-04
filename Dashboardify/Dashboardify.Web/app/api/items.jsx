@@ -27,6 +27,7 @@ export default {
         created: item.Created,
         lastChecked: item.LastChecked,
         lastModified: item.Modified,
+        notifyByEmail: item.NotifyByEmail,
         screenshots: item.Screenshots
       }
     })
@@ -36,6 +37,19 @@ export default {
     return items.filter((item) => {
       return item.id === itemId
     })[0]
+  },
+
+  updateItem (item) {
+    let data = {
+      CheckInterval: item.checkInterval,
+      ItemId: item.id,
+      Name: item.name,
+      IsActive: item.isActive,
+      NotifyByEmail: item.notifyByEmail,
+      Ticket: Cookies.get('ticket')
+    }
+
+    return axios.post(`${rootDomain}/Items/Update`, data)
   },
 
   toggleItem (id, state) {

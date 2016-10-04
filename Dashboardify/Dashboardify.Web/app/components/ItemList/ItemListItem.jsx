@@ -28,7 +28,7 @@ class ItemListItem extends React.Component {
   }
 
   render () {
-    let { img, name, url, isSelected, lastModified } = this.props
+    let { img, name, url, isSelected, lastModified, lastChecked } = this.props
 
     let itemClassName = isSelected ? 'item item--selected' : 'item'
 
@@ -39,7 +39,8 @@ class ItemListItem extends React.Component {
           <img src={img} />
         </div>
         <div className='item__footer'>
-          <span>Last modified: {moment(lastModified).fromNow()}</span>
+          <span>Last checked: {moment(lastChecked).fromNow()}</span><br />
+          <span>Content modified: {moment(lastModified).fromNow()}</span>
         </div>
       </Paper>
     )

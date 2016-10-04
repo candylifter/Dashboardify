@@ -3,13 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     selectAreaToggle.onclick = function() {
         this.classList.toggle('active');
-
-        // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        //   chrome.tabs.sendMessage(tabs[0].id, {greeting: "hello"}, function(response) {
-        //     console.log(response.farewell);
-        //   });
-        // });
-
         chrome.runtime.sendMessage({
             action: "HIGHLIGHT_ITEMS"
         }, function(response) {});
