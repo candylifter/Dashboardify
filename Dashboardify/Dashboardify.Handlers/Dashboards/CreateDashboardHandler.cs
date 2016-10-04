@@ -75,7 +75,7 @@ namespace Dashboardify.Handlers.Dashboards
                 return errors;
             }
 
-            if (IsSessionValid(request.Ticket))
+            if (!IsSessionValid(request.Ticket))
             {
                 errors.Add(new ErrorStatus("SESSION_TIME_OUT"));
                 return errors;
