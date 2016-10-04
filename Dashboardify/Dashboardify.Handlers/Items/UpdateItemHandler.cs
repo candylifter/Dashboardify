@@ -106,10 +106,7 @@ namespace Dashboardify.Handlers.Items
                 errors.Add(new ErrorStatus("BAD_REQUEST"));
                 return errors;
             }
-            if (string.IsNullOrEmpty(request.Name))
-            {
-                errors.Add(new ErrorStatus("NO_DASHBOARDS_FOUND_ON_THIS_USER")); 
-            }
+           
             if (string.IsNullOrEmpty(request.Ticket))
             {
                 errors.Add(new ErrorStatus("INVALID_TICKET"));
