@@ -72,10 +72,32 @@ function getDashes(ticket) {
         success: handleSuccess,
         error: function(data) {
             document.getElementById("errors").innerHTML = "We couldn't get your dashboards list."
-            console.log("Įvyko klaida. ", data)
+            console.log("Error ecured. ", data)
         }
     })
 }
+
+// sessionValidation(ticketas);
+
+// function sessionValidation(ticket) {
+//     $.ajax({
+//         type: "POST",
+//         url: "http://localhost/api/Login/SessionValidation",
+//         data: {
+//             "Ticket": ticket
+//         },
+//         success: handleSession,
+//         error: function(data) {
+//             console.log("Įvyko klaida sessionValidation. ", data)
+//         }
+//     })
+// }
+//
+// function handleSession(data) {
+//     if(data.IsValid === false){
+//       window.location = "login.html";
+//     }
+// }
 
 getCookie();
 
@@ -120,7 +142,7 @@ form.onsubmit = function(event) {
     console.log(data);
     $.ajax({
         type: "POST",
-        url: "http://localhost/api/Items/createItem",
+        url: "http://23.251.133.254/api/Items/createItem",
         data: data,
         success: function(data) {
             console.log(data);

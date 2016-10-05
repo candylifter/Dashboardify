@@ -20,6 +20,18 @@ export default {
       {
         id: 5,
         checkInterval: 3600000 // 1 hour
+      },
+      {
+        id: 6,
+        checkInterval: 10800000 // 3 hours
+      },
+      {
+        id: 7,
+        checkInterval: 32400000 // 9 hours
+      },
+      {
+        id: 8,
+        checkInterval: 86400000 // 24 hours
       }
     ]
 
