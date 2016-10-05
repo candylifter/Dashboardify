@@ -13,9 +13,13 @@ namespace Dashboardify.Handlers.Users
     {
         private UsersRepository _userRepository;
 
+        private DashRepository _dashRepository;
+
         public CreateUserHandler(string connectionString):base(connectionString)
         {
             _userRepository = new UsersRepository(connectionString);
+
+            _dashRepository = new DashRepository(connectionString);
         }
 
         public CreateUserResponse Handle(CreateUserRequest request)
@@ -30,12 +34,15 @@ namespace Dashboardify.Handlers.Users
             }
             try
             {
+
+                var currentDate = DateTime.Now;
+                
                 request.Password = PasswordsHelper.HashPassword(request.Password);
 
-                _userRepository.CreateUser(new User()
+                int User_Id=_userRepository.CreateUserAndGetHisId(new User()
                 {
-                    DateModified = DateTime.Now,
-                    DateRegistered = DateTime.Now,
+                    DateModified = currentDate,
+                    DateRegistered = currentDate,
                     Name = request.Username,
                     Password = request.Password,
                     Email = request.Email,
@@ -44,12 +51,23 @@ namespace Dashboardify.Handlers.Users
 
                 EmailHelper.SendEmail(request);
 
+                _dashRepository.Create(new DashBoard
+                {
+                    DateCreated = currentDate,
+                    DateModified = currentDate,
+                    UserId = User_Id,
+                    Name = "Hello Dashboardify",
+                    IsActive = true,
+                
+                });
+
 
                 return response;
             }
             catch (Exception ex)
             {
-                response.Errors.Add(new ErrorStatus("BAD_REQUEST"));
+                //response.Errors.Add(new ErrorStatus("BAD_REQUEST"));
+                response.Errors.Add(new ErrorStatus(ex.Message));
 
                 return response;
             }

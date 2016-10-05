@@ -93,11 +93,7 @@ namespace Dashboardify.Repositories
         /// <param name="dash">Dashboard</param>
         public bool Create(DashBoard dash)
         {
-            //if (dash == null)
-            //{
-            //    throw new Exception("Object not found in DB");
-            //}
-
+            
             string query = @"INSERT INTO dbo.DashBoards 
                                 (UserId, 
                                 IsActive, 
