@@ -8,6 +8,7 @@ import FlatButton from 'material-ui/FlatButton'
 import CircularProgress from 'material-ui/CircularProgress'
 
 import { RegisterForm } from 'components'
+import { ErrorsAPI } from 'api'
 
 class Register extends React.Component {
   componentWillMount () {
@@ -60,7 +61,7 @@ class Register extends React.Component {
       }
     }
 
-    let { isRegistering, registerSuccess } = this.props
+    let { isRegistering, registerSuccess, registerError } = this.props
 
     let renderRegisterForm = () => {
       if (isRegistering) {
@@ -82,6 +83,16 @@ class Register extends React.Component {
       }
     }
 
+    let renderError = () => {
+      if (registerError && !isRegistering) {
+        return (
+          registerError.response.data.Errors.map((error, index) => {
+            return <p key={index} style={{fontSize: '1.1em', padding: '1em'}}>{ErrorsAPI.translate(error.Code)}</p>
+          })
+        )
+      }
+    }
+
     return (
       <div style={style}>
         <Card style={style.card}>
@@ -90,6 +101,9 @@ class Register extends React.Component {
             title={isRegistering ? 'Signing up' : registerSuccess ? 'Congratulations!' : 'Sign up'}
           />
           <Divider />
+          <div className='text-center'>
+            {renderError()}
+          </div>
           {renderRegisterForm()}
           <Divider />
           <CardActions style={style.card.footer}>
@@ -109,7 +123,8 @@ class Register extends React.Component {
 Register.propTypes = {
   isAuthenticated: PropTypes.bool,
   isRegistering: PropTypes.bool,
-  registerSuccess: PropTypes.bool
+  registerSuccess: PropTypes.bool,
+  registerError: PropTypes.object
 }
 
 export default connect(

@@ -107,6 +107,7 @@ class RegisterForm extends React.Component {
         <TextField
           floatingLabelText='Email'
           hintText='E. g. darth.vader@empire.gov'
+          noValidate
           onChange={this.handleEmailChange}
           errorText={this.state.emailError}
           type='email'
