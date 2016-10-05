@@ -116,7 +116,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SecurityProvider\SecurityProvider.cs" />
+    <Compile Include="SecurityProvider\DashSecurityProvider.cs" />
+    <Compile Include="SecurityProvider\ItemSecurityProvider.cs" />
+    <Compile Include="SecurityProvider\UserSecurityProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

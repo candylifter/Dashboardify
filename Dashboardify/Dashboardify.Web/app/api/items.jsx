@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie'
 import axios from 'axios'
 
+const screenshotDomain = 'http://23.251.133.254/screenshots/'
 const rootDomain = `http://${window.location.hostname}/api`
 
 export default {
@@ -19,7 +20,7 @@ export default {
         id: item.Id,
         dashboardId: item.DashBoardId,
         name: item.Name,
-        img: item.Screenshots.length >= 1 ? 'http://' + '23.251.133.254' + '/screenshots/' + item.Screenshots[0].ScrnshtURL : '',
+        img: item.Screenshots.length >= 1 ? screenshotDomain + item.Screenshots[0].ScrnshtURL : '',
         url: item.Website,
         isActive: item.IsActive,
         isSelected: false,
@@ -28,7 +29,10 @@ export default {
         lastChecked: item.LastChecked,
         lastModified: item.Modified,
         notifyByEmail: item.NotifyByEmail,
-        screenshots: item.Screenshots
+        screenshots: item.Screenshots.map((screenshot) => {
+          screenshot.ScrnshtURL = screenshotDomain + screenshot.ScrnshtURL
+          return screenshot
+        })
       }
     })
   },

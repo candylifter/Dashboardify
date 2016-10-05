@@ -8,30 +8,33 @@ import MenuItem from 'material-ui/MenuItem'
 import { ItemsActions } from 'actions'
 import { ItemsAPI } from 'api'
 
-// eslint-disable-next-line react/prop-types
-const CheckIntervalList = ({ checkIntervals, itemId, items, dispatch }) => {
-  const renderIntervals = () => {
-    return checkIntervals.map((interval) => {
-      return (
-        <MenuItem key={interval.id} value={interval.checkInterval} primaryText={moment.duration(interval.checkInterval).humanize()} />
+class CheckIntervalList extends React.Component {
+  render () {
+    let { checkIntervals, itemId, items, dispatch } = this.props
+
+    const renderIntervals = () => {
+      return checkIntervals.map((interval) => {
+        return (
+          <MenuItem key={interval.id} value={interval.checkInterval} primaryText={moment.duration(interval.checkInterval).humanize()} />
+        )
+      })
+    }
+
+    const item = ItemsAPI.getItemById(items, itemId)
+    //  onChange={(event, index, value) => dispatch(ItemsActions.setItemCheckInterval(item.id, value))}
+    return (
+      <div>
+        <SelectField
+          value={item.checkInterval}
+          onChange={this.props.onChange}
+          floatingLabelText='Check interval'
+          fullWidth
+        >
+          {renderIntervals()}
+        </SelectField>
+      </div>
       )
-    })
   }
-
-  const item = ItemsAPI.getItemById(items, itemId)
-
-  return (
-    <div>
-      <SelectField
-        value={item.checkInterval}
-        onChange={(event, index, value) => dispatch(ItemsActions.setItemCheckInterval(item.id, value))}
-        floatingLabelText='Check interval'
-        fullWidth
-      >
-        {renderIntervals()}
-      </SelectField>
-    </div>
-    )
 }
 
 export default connect(

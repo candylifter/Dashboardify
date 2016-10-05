@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
+import moment from 'moment'
 
+import Paper from 'material-ui/Paper'
 import Drawer from 'material-ui/Drawer'
 import AppBar from 'material-ui/AppBar'
 import IconButton from 'material-ui/IconButton'
@@ -10,7 +12,7 @@ import FlatButton from 'material-ui/FlatButton'
 
 import { ItemsActions, ItemPanelActions } from 'actions'
 import { ItemsAPI } from 'api'
-import { CheckIntervalList } from 'components'
+import { CheckIntervalList, ScreenshotSlider } from 'components'
 
 class ItemPanel extends React.Component {
   constructor (props, context) {
@@ -20,6 +22,7 @@ class ItemPanel extends React.Component {
 
     this.handleClose = this.handleClose.bind(this)
     this.handleToggle = this.handleToggle.bind(this)
+    this.handleIntervalChange = this.handleIntervalChange.bind(this)
   }
 
   handleClose () {
@@ -32,17 +35,30 @@ class ItemPanel extends React.Component {
     const { items, dashboardId, dispatch } = this.props
 
     let item = ItemsAPI.getSelectedItemDashboardId(items, dashboardId)
-    dispatch(ItemsActions.toggleItem(item.id, !item.isActive))
+    item.isActive = !item.isActive
+
+    dispatch(ItemsActions.updateItem(item))
+  }
+
+  handleIntervalChange (event, index, value) {
+    const { items, dashboardId, dispatch } = this.props
+    let item = ItemsAPI.getSelectedItemDashboardId(items, dashboardId)
+
+    item.checkInterval = value
+    dispatch(ItemsActions.updateItem(item))
   }
 
   render () {
     const style = {
-      padding: '0em 1em',
+      padding: '0em 1em 1em',
       image: {
         maxWidth: '100%',
         margin: '1em 0',
+        padding: '1em',
         img: {
-          width: '100%'
+          width: '100%',
+          maxHeight: '300px',
+          objectFit: 'cover'
         }
       },
       title: {
@@ -70,9 +86,9 @@ class ItemPanel extends React.Component {
               title={item.name}
               />
             <div style={style}>
-              <div style={style.image}>
+              <Paper style={style.image}>
                 <img src={item.img} alt={`Screenshot of ${item.name}`} style={style.image.img} />
-              </div>
+              </Paper>
               <div style={style.url}>
                 <FlatButton href={item.url} target='_blank' label='Visit website' style={style.url.button} />
               </div>
@@ -81,7 +97,12 @@ class ItemPanel extends React.Component {
                 toggled={item.isActive}
                 onToggle={this.handleToggle}
                 />
-              <CheckIntervalList itemId={item.id} />
+              <CheckIntervalList itemId={item.id} onChange={this.handleIntervalChange} />
+              <p>Last checked: {moment(item.lastChecked).fromNow()}</p>
+              <p>Content changed: {moment(item.lastModified).fromNow()}</p>
+              <br /><br />
+              <p>Previous content:</p>
+              <ScreenshotSlider screenshots={item.screenshots} />
             </div>
           </div>
         )
@@ -89,7 +110,7 @@ class ItemPanel extends React.Component {
     }
 
     return (
-      <Drawer openSecondary width={300} open={open}>
+      <Drawer openSecondary width={400} open={open}>
         {renderPanel()}
       </Drawer>
     )
