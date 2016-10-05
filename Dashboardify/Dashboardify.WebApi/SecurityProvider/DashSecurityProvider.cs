@@ -69,7 +69,7 @@ namespace Dashboardify.WebApi.SecurityProvider
             return _response;
         }
 
-        public UpdateDashboardResponse CheckForAuthentificationErrors(UpdateDashboardRequest request)
+        public UpdateDashboardResponse CheckForUpdateDashboardAuthentificationErrors(UpdateDashboardRequest request)
         {
             var updateDashResponse = new UpdateDashboardResponse();
 
@@ -110,8 +110,51 @@ namespace Dashboardify.WebApi.SecurityProvider
 
             
             return updateDashResponse;
+        }
 
+        public CreateDashboardResponse CheckForCreateDashboardAuthentificationErrors(CreateDashboardRequest request)
+        {
+            var response = new CreateDashboardResponse();
+            response.Errors = new List<ErrorStatus>();
 
+            if (request == null)
+            {
+                response.Errors.Add(new ErrorStatus("BAD_REQUEST"));
+                return response;
+            }
+
+            if (string.IsNullOrEmpty(request.Ticket))
+            {
+                response.Errors.Add(new ErrorStatus("TICKET_NOT_DEFINED"));
+                return response;
+            }
+
+            if (_userSessionRepository.GetSession(request.Ticket).Expires <DateTime.Now)
+            {
+                response.Errors.Add(new ErrorStatus("SESSION_TIME_OUT"));
+                return response;
+            }
+
+            if (string.IsNullOrEmpty(request.DashName))
+            {
+                response.Errors.Add(new ErrorStatus("DASHBOARD_NOT_DEFINED"));
+                return response;
+            }
+            var user = _userSessionRepository.GetUserBySessionId(request.Ticket);
+
+            
+            if (user == null)
+            {
+                response.Errors.Add(new ErrorStatus("USER_NOT_DEFINED"));
+                return response;
+            }
+
+            if (!_dashRepository.CheckIfNameAvailable(user.Id, request.DashName))
+            {
+                response.Errors.Add(new ErrorStatus("NAME_ALREADY_EXISTS"));
+            }
+
+            return response;
         }
 
         

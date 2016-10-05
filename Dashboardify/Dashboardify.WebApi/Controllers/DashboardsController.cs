@@ -58,7 +58,7 @@ namespace Dashboardify.WebApi.Controllers
 
             var authentificationResponse = new UpdateDashboardResponse();
 
-            authentificationResponse = securityProvider.CheckForAuthentificationErrors(request);
+            authentificationResponse = securityProvider.CheckForUpdateDashboardAuthentificationErrors(request);
 
             if (response.HasErrors)
             {
@@ -90,9 +90,38 @@ namespace Dashboardify.WebApi.Controllers
         [HttpPost]
         public HttpResponseMessage Create(CreateDashboardRequest request)
         {
+           
+            var response = new BaseResponse();
+
+            var securityProvider = new DashSecurityProvider(request);
+
+            response = securityProvider.CheckForAnyBaseErrors();
+
+            var authentificationErrors = new CreateDashboardResponse();
+
+            authentificationErrors = securityProvider.CheckForCreateDashboardAuthentificationErrors(request);
+            
+            if (response.HasErrors)
+            {
+                var statusCodeFail = ResolveStatusCode(response);
+
+                return Request.CreateResponse(statusCodeFail, response);
+            }
+
+            if (authentificationErrors.HasErrors)
+            {
+                var statusCodeFail = ResolveStatusCode(authentificationErrors);
+
+                return Request.CreateResponse(statusCodeFail, authentificationErrors);
+            }
+            
+            var CreateRequest = new CreateDashboardRequest();
+
+            CreateRequest.DashName = request.DashName;
+
             var handler = new CreateDashboardHandler(_connectionString);
             
-            var response = handler.Handle(request);
+            response = handler.Handle(request);
 
             var statusCode = ResolveStatusCode(response);
 

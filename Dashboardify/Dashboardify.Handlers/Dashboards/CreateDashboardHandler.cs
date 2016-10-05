@@ -24,14 +24,9 @@ namespace Dashboardify.Handlers.Dashboards
         {
             var response = new CreateDashboardResponse();
 
-            response.Errors = Validate(request);
+            response.Errors = new List<ErrorStatus>();
 
-            if (response.HasErrors)
-            {
-                return response;
-            }
-            try
-            {
+            
                 _dashRepository.Create(new DashBoard
                 {
                     Name = request.DashName,
@@ -47,60 +42,11 @@ namespace Dashboardify.Handlers.Dashboards
 
                 response.Dashboard = responseDash;
 
-
-            }
-            catch (Exception)
-            {
-                response.Errors.Add(new ErrorStatus("BAD_REQUEST"));
-
-                return response;
-            }
-
+            
             
             return response;
         }
 
-        private IList<ErrorStatus> Validate(CreateDashboardRequest request)
-        {
-            var errors = new List<ErrorStatus>();
-
-            if (IsRequestNull(request))
-            {
-                errors.Add(new ErrorStatus("BAD_REQUEST"));
-                return errors;
-            }
-            if (string.IsNullOrEmpty(request.Ticket))
-            {
-                errors.Add(new ErrorStatus("TICKET_NOT_DEFINED"));
-                return errors;
-            }
-
-            if (!IsSessionValid(request.Ticket))
-            {
-                errors.Add(new ErrorStatus("SESSION_TIME_OUT"));
-                return errors;
-            }
-
-            if (string.IsNullOrEmpty(request.DashName))
-            {
-                errors.Add(new ErrorStatus("DASHBOARD_NOT_DEFINED"));
-                return errors;
-            }
-            var user = _userSessionRepository.GetUserBySessionId(request.Ticket);
-
-            if (user == null)
-            {
-                errors.Add(new ErrorStatus("USER_NOT_DEFINED"));
-                return errors;
-            }
-
-            if (!_dashRepository.CheckIfNameAvailable(user.Id, request.DashName))
-            {
-                errors.Add(new ErrorStatus("NAME_ALREADY_EXISTS"));
-            }
-
-            //TODO method who checks ir name exsists
-            return errors;
-        }
+        
     }
 }
