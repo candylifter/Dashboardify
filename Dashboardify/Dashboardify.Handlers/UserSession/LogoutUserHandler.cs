@@ -28,7 +28,7 @@ namespace Dashboardify.Handlers.UserSession
             }
             try
             {
-                _userSessionRepository.DeleteUserSession(request.Ticket);
+                _userSessionRepository.DeleteUserSession(request.UserId);
             }
             catch (Exception ex)
             {
@@ -48,12 +48,7 @@ namespace Dashboardify.Handlers.UserSession
                 return errors;
             }
 
-            if (string.IsNullOrEmpty(request.Ticket))
-            {
-                errors.Add(new ErrorStatus("NO_SESSION_ID_RECIEVED"));
-                return errors;
-            }
-
+            
             return errors;
         }
 

@@ -2,5 +2,6 @@
 {
     public class CreateUserResponse:BaseResponse
     {
+        public int UserId;
     }
 }

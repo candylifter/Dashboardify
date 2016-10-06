@@ -10,8 +10,6 @@ namespace Dashboardify.Handlers.Items
     {
         private ItemsRepository _itemRepository;
 
-        private UserSessionRepository _userSessionRepository;
-
         private DashRepository _dashRepository;
 
         public CreateItemHandler(string connectionString): 
@@ -19,12 +17,10 @@ namespace Dashboardify.Handlers.Items
         {
             _itemRepository = new ItemsRepository(ConnectionString);
 
-            _userSessionRepository = new UserSessionRepository(ConnectionString);
-
-            _dashRepository = new DashRepository(ConnectionString);
+                        _dashRepository = new DashRepository(ConnectionString);
         }
 
-        public CreateItemResponse Handle(CreateItemRequest request) 
+        public CreateItemResponse Handle(CreateItemRequest request)  // TODO NEEDS WORK
         {
             var response = new CreateItemResponse();
 
@@ -37,10 +33,13 @@ namespace Dashboardify.Handlers.Items
 
             try
             {
+                var now = DateTime.Now;
+
                 request.Item.IsActive = true;
-                request.Item.Created = DateTime.Now;
-                request.Item.Modified = DateTime.Now;
-                request.Item.LastChecked = DateTime.Now.AddMonths(-1);
+                request.Item.UserNotified = false;
+                request.Item.Created = now;
+                request.Item.Modified = now;
+                request.Item.LastChecked = now.AddMinutes(-60);
                 request.Item.Content = "";
 
                 _itemRepository.Create(request.Item);
@@ -63,7 +62,7 @@ namespace Dashboardify.Handlers.Items
 
             if (IsRequestNull(request))
             {
-                errors.Add(new ErrorStatus("WRONG_REQUEST"));
+                errors.Add(new ErrorStatus("BAD_REQUEST"));
                 return errors;
             }
 
@@ -78,7 +77,7 @@ namespace Dashboardify.Handlers.Items
                 errors.Add(new ErrorStatus("DASHBOARDID_NOT_DEFINED"));
             }
 
-            if (request.Item.CheckInterval < 30000) //neigiamas irgi negali buti
+            if (request.Item.CheckInterval < 30000 && request.Item.CheckInterval> 86400000) 
             {
                 errors.Add(new ErrorStatus("CHECKINTERVAL_WRONG"));
             }
@@ -104,17 +103,14 @@ namespace Dashboardify.Handlers.Items
             }
 
             var UserIdByDash = _dashRepository.GetUserByDashId(request.Item.DashBoardId);
-            var UserIdBySessionId = _userSessionRepository.GetUserBySessionId(request.Ticket);
+            var requestUserId = request.UserId;
 
-            if (UserIdBySessionId != null && UserIdByDash != null && UserIdBySessionId.Id != UserIdByDash.Id) //TODO pasiklausti zilvino ar good practice
+            if (UserIdByDash != null && requestUserId != UserIdByDash.Id) //TODO pasiklausti zilvino ar good practice
             {
                 errors.Add(new ErrorStatus("UNAUTHORIZED_ACCESS"));
             }
 
-            if (!IsSessionValid(request.Ticket))
-            {
-                errors.Add(new ErrorStatus("SESSION_EXPIRED"));
-            }
+            
 
             return errors;
         }

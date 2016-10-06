@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Configuration;
 using Dashboardify.Contracts;
+using Dashboardify.Contracts.Dashboards;
 using Dashboardify.Contracts.Users;
+using Dashboardify.Handlers.Dashboards;
 using Dashboardify.Handlers.Helpers;
 using Dashboardify.Models;
 using Dashboardify.Repositories;
@@ -21,7 +23,11 @@ namespace Dashboardify.Handlers.Users
 
             _dashRepository = new DashRepository(connectionString);
         }
-
+        /// <summary>
+        /// Creates User and default dash
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public CreateUserResponse Handle(CreateUserRequest request)
         {
             var response = new CreateUserResponse();
@@ -51,23 +57,14 @@ namespace Dashboardify.Handlers.Users
 
                 EmailHelper.SendEmail(request);
 
-                _dashRepository.Create(new DashBoard
-                {
-                    DateCreated = currentDate,
-                    DateModified = currentDate,
-                    UserId = User_Id,
-                    Name = "Hello Dashboardify",
-                    IsActive = true,
+                response.UserId = User_Id;
                 
-                });
-
-
                 return response;
             }
             catch (Exception ex)
             {
-                //response.Errors.Add(new ErrorStatus("BAD_REQUEST"));
-                response.Errors.Add(new ErrorStatus(ex.Message));
+                response.Errors.Add(new ErrorStatus("BAD_REQUEST"));
+                //response.Errors.Add(new ErrorStatus(ex.Message));
 
                 return response;
             }
@@ -84,19 +81,21 @@ namespace Dashboardify.Handlers.Users
                 return errors;
             }
 
-            if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
+            if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password) || string.IsNullOrEmpty(request.InvitationCode))
             {
                 errors.Add(new ErrorStatus("WRONG_INPUT"));
                 return errors;
             }
+
+            if (request.Email.Contains("one.lt") || !request.Email.Contains("@"))
+            {
+                errors.Add(new ErrorStatus("WRONG_EMAIL_FORMAT"));
+                return errors;
+            }
+
             if (!string.IsNullOrEmpty(_userRepository.ReturnEmail(request.Email)))
             {
                 errors.Add(new ErrorStatus("EMAIL_ALREADY_TAKEN"));
-                return errors;
-            }
-            if (string.IsNullOrEmpty(request.InvitationCode))
-            {
-                errors.Add(new ErrorStatus("NO_INVITATION_CODE"));
                 return errors;
             }
             if (request.InvitationCode != ConfigurationManager.AppSettings["InvitationCode"])
@@ -105,40 +104,11 @@ namespace Dashboardify.Handlers.Users
                 return errors;
             }
             
-            
-
-            //todo metodas kuris patikrina ar email neuzimtas ir name
             return errors;
-
         }
-        
 
-        //private void SendEmail(CreateUserRequest request)//TODO refactor to mailsender in service layer
-        //{
-        //    var fromAddress = new MailAddress("dashboardifyacademy@gmail.com", "Dashboardify");
-        //    var toAddress = new MailAddress(request.Email, request.Username);
-        //    const string fromPassword = "desbordas";
-        //    const string subject = "Welcome";
-        //    string body = "Dear "+ request.Username +"\n We are happy that you are using our dashboardify app. (ITERPTI MAESTRO TRUMPA)";
-
-        //    var smtp = new SmtpClient
-        //    {
-        //        Host = "smtp.gmail.com",
-        //        Port = 587,
-        //        EnableSsl = true,
-        //        DeliveryMethod = SmtpDeliveryMethod.Network,
-        //        UseDefaultCredentials = false,
-        //        Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-        //    };
-        //    using (var message = new MailMessage(fromAddress, toAddress)
-        //    {
-        //        Subject = subject,
-        //        Body = body
-        //    })
-        //    {
-        //        smtp.Send(message);
-        //    }
-        //}
+      
+      
     }
     
 }
