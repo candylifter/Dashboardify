@@ -58,7 +58,7 @@ namespace Dashboardify.WebApi.Controllers
 
             var authentificationResponse = new UpdateDashboardResponse();
 
-            authentificationResponse = securityProvider.CheckForUpdateDashboardAuthentificationErrors(request);
+            authentificationResponse = securityProvider.CheckForUpdateDashboardErrors(request);
 
             if (response.HasErrors)
             {
@@ -99,7 +99,7 @@ namespace Dashboardify.WebApi.Controllers
 
             var authentificationErrors = new CreateDashboardResponse();
 
-            authentificationErrors = securityProvider.CheckForCreateDashboardAuthentificationErrors(request);
+            authentificationErrors = securityProvider.CheckForCreateDashboardErrors(request);
             
             if (response.HasErrors)
             {
@@ -131,9 +131,35 @@ namespace Dashboardify.WebApi.Controllers
         [HttpPost]
         public HttpResponseMessage Delete(DeleteDashRequest request)
         {
+            var response = new BaseResponse();
+
+            var securityProvider = new DashSecurityProvider(request);
+
+            response = securityProvider.CheckForAnyBaseErrors();
+
+            var authentificationErrors = new DeleteDashResponse();
+
+            authentificationErrors = securityProvider.CheckForDeleteDashboardErrors(request);
+
+            if (response.HasErrors)
+            {
+                var statusCodeFail = ResolveStatusCode(response);
+
+                return Request.CreateResponse(statusCodeFail, response);
+            }
+
+            if (authentificationErrors.HasErrors)
+            {
+                var statusCodeFail = ResolveStatusCode(authentificationErrors);
+
+                return Request.CreateResponse(statusCodeFail, authentificationErrors);
+            }
+
+            var deleteRequest = new DeleteDashRequest {DashboardId = request.DashboardId};
+
             var handler = new DeleteDashHandler(_connectionString);
 
-            var response = handler.Handle(request);
+            response = handler.Handle(request);
 
             var statusCode = ResolveStatusCode(response);
 
