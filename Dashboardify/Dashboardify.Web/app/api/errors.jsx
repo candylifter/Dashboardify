@@ -10,6 +10,8 @@ export default {
         return 'Can\'t create dashboard with the same name'
       case 'INVALID_USERNAME_OR_PASSWORD':
         return 'Incorrect email or password'
+      case 'INVITATION_CODE_DONT_MATCH':
+        return 'Incorrect invitation code'
       default:
         return 'Unexpected error occured, try again later'
     }

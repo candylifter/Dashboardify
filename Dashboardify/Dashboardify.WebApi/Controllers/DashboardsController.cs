@@ -1,10 +1,11 @@
 ﻿using System.Net.Http;
 using System.Web.Http;
 using System.Configuration;
-using Dashboardify.Contracts;
+using System.Net;
 using Dashboardify.Contracts.Dashboards;
 using Dashboardify.Handlers.Dashboards;
-using Dashboardify.WebApi.SecurityProvider;
+using Dashboardify.Models;
+using Dashboardify.Security;
 
 
 namespace Dashboardify.WebApi.Controllers
@@ -15,72 +16,54 @@ namespace Dashboardify.WebApi.Controllers
         
         
         [HttpPost]
-        public HttpResponseMessage GetList(BaseRequest request)
+        public HttpResponseMessage GetList(string ticket)
         {
+            var securityProvider = new SecurityProvider(_connectionString);
 
-            var response = new BaseResponse();
+            var sessionInfo = securityProvider.GetSessionInfo(ticket);
 
-            var securityProvider = new DashSecurityProvider(request);
-            
-            response = securityProvider.CheckForAnyBaseErrors();
-
-            if (response.HasErrors)
+            if (sessionInfo == null)
             {
-                var statusCodeFail = ResolveStatusCode(response);       //nezinau ar geriausias sprendimas, bet PX, veikia, net peles neatitrauki
-
-                return Request.CreateResponse(statusCodeFail,response);
+                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
             }
-            
-            var user = securityProvider.GetUser();
 
-            var GetDashBoardsRequest = new GetDashboardsRequest{ Id = user.Id};
+            var GetListRequest = new GetDashboardsRequest
+            {
+                Ticket = ticket,
+                Id = sessionInfo.User.Id
+            };
 
             var handler = new GetDashboardsHandler(_connectionString);
 
-            response = handler.Handle(GetDashBoardsRequest);
+            var response = handler.Handle(GetListRequest);
 
             var statusCode = ResolveStatusCode(response);
 
             return Request.CreateResponse(statusCode, response);
-            
 
-            
         }
 
         [HttpPost]
-        public HttpResponseMessage Update(UpdateDashboardRequest request)
+        public HttpResponseMessage Update(string ticket, DashBoard dash)
         {
-            var response = new BaseResponse();
+            var securityProvider = new SecurityProvider(_connectionString);
 
-            var securityProvider = new DashSecurityProvider(request);
+            var sessionInfo = securityProvider.GetSessionInfo(ticket);
 
-            response = securityProvider.CheckForAnyBaseErrors();
-
-            var authentificationResponse = new UpdateDashboardResponse();
-
-            authentificationResponse = securityProvider.CheckForAuthentificationErrors(request);
-
-            if (response.HasErrors)
+            if (sessionInfo == null)
             {
-                var statusCodeFail = ResolveStatusCode(response);
-
-                return Request.CreateResponse(statusCodeFail, response);
+                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
             }
-            if (authentificationResponse.HasErrors)
-            {
-                var statusCodeFail = ResolveStatusCode(authentificationResponse);
 
-                return Request.CreateResponse(statusCodeFail, authentificationResponse);
-            }
-            
-            var updateDashBoardRequest = new UpdateDashboardRequest
+            var UpdateRequest = new UpdateDashboardRequest
             {
-                DashBoard = request.DashBoard
+                DashBoard = dash,
+                UserId = sessionInfo.User.Id
             };
 
             var handler = new UpdateDashBoardHandler(_connectionString);
 
-            response = handler.Handle(updateDashBoardRequest);
+            var response = handler.Handle(UpdateRequest);
 
             var statusCode = ResolveStatusCode(response);
 
@@ -88,27 +71,59 @@ namespace Dashboardify.WebApi.Controllers
         }
 
         [HttpPost]
-        public HttpResponseMessage Create(CreateDashboardRequest request)
+        public HttpResponseMessage Create(string ticket, string dashName)
         {
+            var securityProvider = new Security.SecurityProvider(_connectionString);
+
+            var sessionInfo = securityProvider.GetSessionInfo(ticket);
+
+            if (sessionInfo == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
+            }
+
+            var deleteRequest = new CreateDashboardRequest
+            {
+                DashName = dashName,
+                UserId = sessionInfo.User.Id
+            };
+
             var handler = new CreateDashboardHandler(_connectionString);
-            
-            var response = handler.Handle(request);
+
+            var response = handler.Handle(deleteRequest);
 
             var statusCode = ResolveStatusCode(response);
 
             return Request.CreateResponse(statusCode, response);
+
         }
 
         [HttpPost]
-        public HttpResponseMessage Delete(DeleteDashRequest request)
+        public HttpResponseMessage Delete(string ticket, int id)
         {
+            var securityProvider = new Security.SecurityProvider(_connectionString);
+
+            var sessionInfo = securityProvider.GetSessionInfo(ticket);
+
+            if (sessionInfo == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
+            }
+
+            var deleteRequest = new DeleteDashRequest
+            {
+                DashboardId = id,
+                UserId = sessionInfo.User.Id
+            };
+
             var handler = new DeleteDashHandler(_connectionString);
 
-            var response = handler.Handle(request);
+            var response = handler.Handle(deleteRequest);
 
             var statusCode = ResolveStatusCode(response);
 
             return Request.CreateResponse(statusCode, response);
+
         }
     }
 }

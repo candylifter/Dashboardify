@@ -32,75 +32,49 @@ namespace Dashboardify.Handlers.Dashboards
             }
             try
             {
+                
                 _dashRepository.Create(new DashBoard
                 {
                     Name = request.DashName,
-                    UserId = _userSessionRepository.GetUserBySessionId(request.Ticket).Id,
+                    UserId = request.UserId,
                     DateCreated = DateTime.Now,
                     DateModified = DateTime.Now,
                     IsActive = true
                 });
 
-                int userId = _userSessionRepository.GetUserBySessionId(request.Ticket).Id;
+                int userId = _userSessionRepository.GetUserBySessionId(request.DashName).Id;
 
                 var responseDash = _dashRepository.GetByNameAndUserId(request.DashName, userId);
 
                 response.Dashboard = responseDash;
-
-
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 response.Errors.Add(new ErrorStatus("BAD_REQUEST"));
-
-                return response;
             }
-
             
             return response;
         }
 
-        private IList<ErrorStatus> Validate(CreateDashboardRequest request)
+        public List<ErrorStatus> Validate(CreateDashboardRequest request)
         {
             var errors = new List<ErrorStatus>();
 
-            if (IsRequestNull(request))
-            {
-                errors.Add(new ErrorStatus("BAD_REQUEST"));
-                return errors;
-            }
-            if (string.IsNullOrEmpty(request.Ticket))
-            {
-                errors.Add(new ErrorStatus("TICKET_NOT_DEFINED"));
-                return errors;
-            }
-
-            if (!IsSessionValid(request.Ticket))
-            {
-                errors.Add(new ErrorStatus("SESSION_TIME_OUT"));
-                return errors;
-            }
-
             if (string.IsNullOrEmpty(request.DashName))
             {
-                errors.Add(new ErrorStatus("DASHBOARD_NOT_DEFINED"));
+                errors.Add(new ErrorStatus("DASH_NAME_NOT_DEFINED"));
                 return errors;
             }
-            var user = _userSessionRepository.GetUserBySessionId(request.Ticket);
-
-            if (user == null)
+            if (string.IsNullOrEmpty(request.UserId.ToString()))
             {
-                errors.Add(new ErrorStatus("USER_NOT_DEFINED"));
+                errors.Add(new ErrorStatus("BAD_ID"));
                 return errors;
             }
+          
 
-            if (!_dashRepository.CheckIfNameAvailable(user.Id, request.DashName))
-            {
-                errors.Add(new ErrorStatus("NAME_ALREADY_EXISTS"));
-            }
-
-            //TODO method who checks ir name exsists
             return errors;
         }
+
+        
     }
 }

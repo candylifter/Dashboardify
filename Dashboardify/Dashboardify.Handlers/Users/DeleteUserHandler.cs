@@ -9,12 +9,11 @@ namespace Dashboardify.Handlers.Users
     public class DeleteUserHandler:BaseHandler
     {
         private UsersRepository _userRepository;
-        private UserSessionRepository _userSessionRepository;
+       
         public DeleteUserHandler(string connectionString):base (connectionString)
         {
-            _userSessionRepository = new UserSessionRepository(connectionString);
+
             _userRepository = new UsersRepository(connectionString);
-            
         }
 
         public DeleteUserResponse Handle(DeleteUserRequest request)
@@ -28,9 +27,7 @@ namespace Dashboardify.Handlers.Users
             }
             try
             {
-                var user = _userSessionRepository.GetUserBySessionId(request.Ticket);
-
-                _userRepository.DeleteUser(user.Id);
+                _userRepository.DeleteUser(request.userId);
 
                 return response;
             }
@@ -48,27 +45,7 @@ namespace Dashboardify.Handlers.Users
         {
             var errors = new List<ErrorStatus>();
 
-            if (IsRequestNull(request))
-            {
-                errors.Add(new ErrorStatus("BAD_REQUEST"));
-                return errors;
-            }
-
-            if (string.IsNullOrEmpty(request.Ticket))
-            {
-                errors.Add(new ErrorStatus("BAD_REQUEST"));
-            }
-
-            var user = _userSessionRepository.GetUserBySessionId(request.Ticket);
-
-            if (IsRequestNull(user))
-            {
-                errors.Add(new ErrorStatus("USER_NOT_FOUND"));
-
-            }
-            
-           
-            return errors;
+           return errors;
         }
     }
 }

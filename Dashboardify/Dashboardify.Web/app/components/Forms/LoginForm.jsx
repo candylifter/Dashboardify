@@ -69,8 +69,9 @@ class LoginForm extends React.Component {
           floatingLabelText='Email'
           hintText='E. g. darth.vader@empire.gov'
           fullWidth
-          type='text'
+          type='email'
           ref='email'
+          noValidate
           errorText={this.state.emailError}
           onChange={this.handleEmailChange}
           autoFocus

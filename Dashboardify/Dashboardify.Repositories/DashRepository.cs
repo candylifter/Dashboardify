@@ -93,11 +93,7 @@ namespace Dashboardify.Repositories
         /// <param name="dash">Dashboard</param>
         public bool Create(DashBoard dash)
         {
-            //if (dash == null)
-            //{
-            //    throw new Exception("Object not found in DB");
-            //}
-
+            
             string query = @"INSERT INTO dbo.DashBoards 
                                 (UserId, 
                                 IsActive, 
@@ -187,10 +183,10 @@ namespace Dashboardify.Repositories
         /// <summary>
         /// Checks if dash exsists by name
         /// </summary>
-        /// <param name="id">userId</param>
+        /// <param name="Userid">userId</param>
         /// <param name="name">DashName</param>
         /// <returns>true ir name not taken, false exsists</returns>
-        public bool CheckIfNameAvailable(int id, string name)
+        public bool CheckIfNameAvailable(int Userid, string name)
         {
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
@@ -198,7 +194,7 @@ namespace Dashboardify.Repositories
                     $@"SELECT
 	                                DashBoards.Name
                                 FROM DashBoards
-                                WHERE UserId = {id} AND DashBoards.Name = '{name}'";
+                                WHERE UserId = {Userid} AND DashBoards.Name = '{name}'";
 
 
                 var result = db.Query<string>(query).SingleOrDefault();

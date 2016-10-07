@@ -73,13 +73,13 @@ namespace Dashboardify.Repositories
             }
         }
 
-        public void DeleteUserSession(string ticket)
+        public void DeleteUserSession(int userId)
         {
             string query =
                 $@"DELETE FROM
                                 UserSession
                             WHERE 
-                                Ticket = '{ticket}'";
+                                UserId = '{userId}'";
 
             using (IDbConnection db = new SqlConnection(_connectionString))
             {

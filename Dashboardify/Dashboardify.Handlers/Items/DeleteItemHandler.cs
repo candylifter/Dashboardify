@@ -15,8 +15,7 @@ namespace Dashboardify.Handlers.Items
         public DeleteItemHandler(string connectionString):base (connectionString)
         {
             _itemsRepository = new ItemsRepository(connectionString);
-            _userSessionRepository = new UserSessionRepository(connectionString);
-      
+            
         }
 
         public DeleteItemResponse Handle(DeleteItemRequest request)
@@ -49,52 +48,29 @@ namespace Dashboardify.Handlers.Items
         {
             var errors = new List<ErrorStatus>();
 
-            if (IsRequestNull(request))
-            {
-                errors.Add(new ErrorStatus("BAD_REQUEST"));
-                return errors;
-            }
-            if (request.ItemId < 1)
-            {
-                errors.Add(new ErrorStatus("ITEM_NOT_DEFINED"));
-            }
+            var ItemOwner = _itemsRepository.GetUserByItemId(request.ItemId);
 
-            if (string.IsNullOrEmpty(request.Ticket))
-            {
-                errors.Add(new ErrorStatus("NO_TICKET"));
-                return errors;
-            }
-
-            if (!IsSessionValid(request.Ticket))
-            {
-                errors.Add(new ErrorStatus("SESSION_NOT_VALID"));
-                return errors;
-            }
-
-            var RequestUser = _userSessionRepository.GetUserBySessionId(request.Ticket);
-
-            var OwnerUser = _itemsRepository.GetUserByItemId(request.ItemId);
-
-            if (RequestUser == null || OwnerUser == null)
+            if (ItemOwner == null)
             {
                 errors.Add(new ErrorStatus("ITEM_NOT_FOUND"));
                 return errors;
             }
 
-            if (RequestUser.Id != OwnerUser.Id)
+            if (string.IsNullOrEmpty(ItemOwner.Id.ToString()))
             {
-                errors.Add(new ErrorStatus("UNAUTHORIZED_ACESS"));
+                errors.Add(new ErrorStatus("ITEM_NOT_FOUND")); // kaip cia validatinti
                 return errors;
             }
-            if (!IsSessionValid(request.Ticket))
-            {
-                errors.Add(new ErrorStatus("SESSION_EXPIRED"));
-            }
 
-            
+          
+            if (request.UserId != ItemOwner.Id)
+            {
+                errors.Add(new ErrorStatus("UNAUTHORIZED_ACCESS"));
+                return errors;
+            }
             if (request.ItemId < 1)
             {
-                errors.Add(new ErrorStatus("USER_NOT_FOUND"));
+                errors.Add(new ErrorStatus("WRONG_ID"));
             }
             
             return errors;

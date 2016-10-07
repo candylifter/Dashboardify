@@ -116,9 +116,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SecurityProvider\DashSecurityProvider.cs" />
-    <Compile Include="SecurityProvider\ItemSecurityProvider.cs" />
-    <Compile Include="SecurityProvider\UserSecurityProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -153,6 +150,10 @@
     <ProjectReference Include="..\Dashboardify.Repositories\Dashboardify.Repositories.csproj">
       <Project>{C46B3AE5-DBBB-4117-AB45-9F2FB4B16623}</Project>
       <Name>Dashboardify.Repositories</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dashboardify.Security\Dashboardify.Security.csproj">
+      <Project>{923d7558-7007-4f6e-9056-558ddccfb7ad}</Project>
+      <Name>Dashboardify.Security</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

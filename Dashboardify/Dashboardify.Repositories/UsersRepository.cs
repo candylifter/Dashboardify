@@ -115,9 +115,9 @@ namespace Dashboardify.Repositories
 
         }
 
-        public bool CreateUser(User user)
+        public int CreateUserAndGetHisId(User user)
         {
-            string query = @"INSERT INTO dbo.Users
+            string query = $@"INSERT INTO dbo.Users
                                 (Name,
                                 Password,
                                 Email,
@@ -125,20 +125,33 @@ namespace Dashboardify.Repositories
                                 DateRegistered, 
                                 DateModified) 
                            VALUES 
-                                (@Name,
-                                @Password,
-                                @Email,
-                                @IsActive,
-                                @DateRegistered,
-                                @Datemodified)";
-            
-                using (IDbConnection db = new SqlConnection(_connectionString))
+                                ('{user.Name}',
+                                '{user.Password}',
+                                '{user.Email}',
+                                '{user.IsActive}',
+                                '{user.DateRegistered}',
+                                '{user.DateModified}')
+                            
+                                SELECT SCOPE_IDENTITY()";
+
+
+            using (IDbConnection db = new SqlConnection(_connectionString))
                 {
-                    db.Execute(query, user);
-                    return true;
+                    //db.Execute(query, user);
+                    return db.Query<int>(query).SingleOrDefault();
                 }
             
           
+        }
+
+        public int GetLatestUserId()
+        {
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                string query = $@"SELECT SCOPE_IDENTITY() FROM USERS";
+
+                return db.Query<int>(query).SingleOrDefault();
+            }
         }
 
         public void DeleteUser(int userId)

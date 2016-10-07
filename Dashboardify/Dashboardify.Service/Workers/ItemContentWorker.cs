@@ -95,6 +95,7 @@ namespace Dashboardify.Service.Workers
 
                     item.LastChecked = now;
                     item.Modified = now;
+                    item.UserNotified = false; //krc
 
                     _itemsRepository.Update(item);
 
