@@ -41,6 +41,12 @@ var config = {
     }, {
       test: /\.css$/,
       loader: 'style!css?modules&localIdentName=[name]---[local]---[hash:base64:5]'
+    }, {
+      test: /\.(jpe?g|png|gif|svg)$/,
+      loader: 'url-loader'
+    }, {
+      test: /\.scss$/,
+      loader: 'style!css!sass'
     }]
   },
   resolve: {
@@ -63,7 +69,8 @@ var config = {
   sassLoader: {
     includePaths: [
       path.resolve(__dirname, './node_modules/bourbon/app/assets/stylesheets/'),
-      path.resolve(__dirname, './node_modules/bourbon-neat/app/assets/stylesheets/')
+      path.resolve(__dirname, './node_modules/bourbon-neat/app/assets/stylesheets/'),
+      path.resolve(__dirname, './node_modules/react-photoswipe/lib/')
     ]
   }
 }

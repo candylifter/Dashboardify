@@ -12,7 +12,7 @@ import { Navbar } from 'components'
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin()
 
-import 'style!css!sass!applicationStyles'
+import 'applicationStyles'
 
 class App extends React.Component {
   componentWillMount () {
