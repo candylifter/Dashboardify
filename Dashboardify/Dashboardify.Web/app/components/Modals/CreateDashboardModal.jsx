@@ -5,13 +5,19 @@ import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import TextField from 'material-ui/TextField'
 
+import { ValidationAPI } from 'api'
 import { ModalsActions, DashboardsActions } from 'actions'
 
 class CreateDashboardModal extends React.Component {
   constructor () {
     super()
 
+    this.state = {
+      nameError: ''
+    }
+
     this.handleClose = this.handleClose.bind(this)
+    this.handleNameChange = this.handleNameChange.bind(this)
     this.handleCreateDashboard = this.handleCreateDashboard.bind(this)
     this.handleKeyPress = this.handleKeyPress.bind(this)
   }
@@ -26,8 +32,22 @@ class CreateDashboardModal extends React.Component {
     let { dispatch } = this.props
     let { value: name } = this.refs.name.input
 
-    dispatch(DashboardsActions.createDashboard(name))
-    this.handleClose()
+    let validation = ValidationAPI.validateName(name)
+
+    if (validation.length < 1) {
+      dispatch(DashboardsActions.createDashboard(name))
+      this.handleClose()
+    } else {
+      this.setState({nameError: validation})
+    }
+  }
+
+  handleNameChange () {
+    let { value: name } = this.refs.name.input
+
+    this.setState({
+      nameError: ValidationAPI.validateName(name)
+    })
   }
 
   handleClose () {
@@ -65,6 +85,8 @@ class CreateDashboardModal extends React.Component {
           hintText='E. g. Rebel news'
           ref='name'
           fullWidth
+          errorText={this.state.nameError}
+          onChange={this.handleNameChange}
           onKeyPress={this.handleKeyPress}
         />
       </Dialog>

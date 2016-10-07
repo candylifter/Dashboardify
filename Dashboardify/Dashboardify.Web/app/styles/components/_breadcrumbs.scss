@@ -1,14 +1,27 @@
 .breadcrumbs {
   display: block;
+  white-space: nowrap;
   padding: 0;
   margin: auto 1.5em;
   list-style: none;
   color: rgba(0, 0, 0, 0.4);
 
+  @include media(max-width $breakpoint-tablet - 1) {
+    width: 100%;
+    margin-bottom: 1em;
+    overflow: hidden;
+  }
+
   &__breadcrumb {
     display: inline-block;
     font-size: 19px;
     vertical-align: middle;
+    max-width: 30vw;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    @include media(max-width $breakpoint-tablet - 1) {
+      max-width: 100%;
+    }
 
     &:not(:last-child) {
       &:after {
@@ -26,9 +39,11 @@
     }
 
     &__text {
+      width: 100%;
       vertical-align: middle;
       text-decoration: none;
       color: inherit;
+
       &--current {
         color: rgba(0, 0, 0, 0.8);
       }

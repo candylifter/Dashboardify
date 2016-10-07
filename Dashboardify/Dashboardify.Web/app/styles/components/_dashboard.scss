@@ -27,6 +27,8 @@
 .dashboard__paper__heading {
   padding: 1em;
   display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
   span {
     font-size: 1.2em;
   }
