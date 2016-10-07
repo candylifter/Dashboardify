@@ -6,9 +6,27 @@ export default {
     return re.test(email)
   },
 
+  hasInvalidSymbols (input) {
+    let re = /^[^!@#$%^&*()_=+\-<>?,.\\\/"'`~]+$/
+
+    return !re.test(input)
+  },
+
   validateName (name) {
     if (name.length < 1) {
       return 'Please enter your name'
+    }
+
+    if (/^\s/.test(name)) {
+      return 'Name cannot start with a space'
+    }
+
+    if (name.length > 50) {
+      return 'Name cannot be longer than 50 characters'
+    }
+
+    if (this.hasInvalidSymbols(name)) {
+      return 'Name cannot have invalid symbols'
     }
 
     return ''
@@ -17,6 +35,10 @@ export default {
   validateEmail (email) {
     if (email.length < 1) {
       return 'Please enter your email'
+    }
+
+    if (email.length > 50) {
+      return 'Email cannot be longer than 50 characters'
     }
 
     if (!this.isEmailValid(email)) {

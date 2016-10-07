@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import debounce from 'debounce'
 
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -22,9 +21,9 @@ class RegisterForm extends React.Component {
 
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleNameChange = this.handleNameChange.bind(this)
-    this.handleEmailChange = debounce(this.handleEmailChange.bind(this), 1000)
+    this.handleEmailChange = this.handleEmailChange.bind(this)
     this.handlePasswordChange = this.handlePasswordChange.bind(this)
-    this.handleRepeatPasswordChange = debounce(this.handleRepeatPasswordChange.bind(this), 1000)
+    this.handleRepeatPasswordChange = this.handleRepeatPasswordChange.bind(this)
     this.handleInvitationCodeChange = this.handleInvitationCodeChange.bind(this)
   }
 

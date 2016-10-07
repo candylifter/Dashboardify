@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import debounce from 'debounce'
 
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -18,7 +17,7 @@ class LoginForm extends React.Component {
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleEmailChange = debounce(this.handleEmailChange.bind(this), 1000)
+    this.handleEmailChange = this.handleEmailChange.bind(this)
     this.handlePasswordChange = this.handlePasswordChange.bind(this)
   }
 
