@@ -4,4 +4,9 @@
 
 .toolbar {
   background: transparent !important;
+  @include media(max-width $breakpoint-tablet - 1) {
+    padding: 1em 24px !important;
+    height: auto !important;
+    flex-direction: column;
+  }
 }
