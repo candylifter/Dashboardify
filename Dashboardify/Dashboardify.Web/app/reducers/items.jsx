@@ -28,7 +28,7 @@ const itemsReducer = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-        error: action.err.message
+        error: action.err.response
       }
     case 'SELECT_ITEM':
       return {

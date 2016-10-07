@@ -1,12 +1,13 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { hashHistory } from 'react-router'
 
 import CircularProgress from 'material-ui/CircularProgress'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 
 import { ErrorsAPI } from 'api'
-import { DashboardsActions, ModalsActions } from 'actions'
+import { DashboardsActions, ModalsActions, AuthActions } from 'actions'
 import { DashboardList, CreateDashboardModal, LoadingIndicator, ErrorSnackbar } from 'components'
 
 class Dashboards extends React.Component {
@@ -20,6 +21,17 @@ class Dashboards extends React.Component {
     let { dispatch } = this.props
 
     dispatch(DashboardsActions.fetchDashboards())
+  }
+
+  componentDidUpdate () {
+    let { dispatch, error } = this.props
+
+    if (error !== undefined) {
+      if (error.status === 400) {
+        dispatch(AuthActions.logout())
+        hashHistory.push('/login')
+      }
+    }
   }
 
   handleFabClick () {
@@ -64,18 +76,28 @@ class Dashboards extends React.Component {
       }
     }
 
+    let renderCreateDashboard = () => {
+      if (!isFetching && !error) {
+        return (
+          <div>
+            <FloatingActionButton
+              className='fab'
+              onClick={this.handleFabClick}
+              secondary
+              >
+              <ContentAdd />
+            </FloatingActionButton>
+            <CreateDashboardModal />
+          </div>
+        )
+      }
+    }
+
     return (
       <div className='dashboards-container'>
         <LoadingIndicator show={isPosting} />
         {renderDashboardList()}
-        <FloatingActionButton
-          className='fab'
-          onClick={this.handleFabClick}
-          secondary
-        >
-          <ContentAdd />
-        </FloatingActionButton>
-        <CreateDashboardModal />
+        {renderCreateDashboard()}
         {renderErrorSnackbar()}
       </div>
     )
