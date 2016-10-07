@@ -6,5 +6,9 @@ namespace Dashboardify.Contracts.Items
     {
         public Item Item { get; set; }
 
+        public int DashId { get; set; }
+
+        public int UserId { get; set; }
+
     }
 }

@@ -24,27 +24,55 @@ namespace Dashboardify.Handlers.Dashboards
         {
             var response = new CreateDashboardResponse();
 
-            response.Errors = new List<ErrorStatus>();
+            response.Errors = Validate(request);
 
-            
+            if (response.HasErrors)
+            {
+                return response;
+            }
+            try
+            {
+                
                 _dashRepository.Create(new DashBoard
                 {
                     Name = request.DashName,
-                    UserId = _userSessionRepository.GetUserBySessionId(request.Ticket).Id,
+                    UserId = request.UserId,
                     DateCreated = DateTime.Now,
                     DateModified = DateTime.Now,
                     IsActive = true
                 });
 
-                int userId = _userSessionRepository.GetUserBySessionId(request.Ticket).Id;
+                int userId = _userSessionRepository.GetUserBySessionId(request.DashName).Id;
 
                 var responseDash = _dashRepository.GetByNameAndUserId(request.DashName, userId);
 
                 response.Dashboard = responseDash;
-
-            
+            }
+            catch (Exception ex)
+            {
+                response.Errors.Add(new ErrorStatus("BAD_REQUEST"));
+            }
             
             return response;
+        }
+
+        public List<ErrorStatus> Validate(CreateDashboardRequest request)
+        {
+            var errors = new List<ErrorStatus>();
+
+            if (string.IsNullOrEmpty(request.DashName))
+            {
+                errors.Add(new ErrorStatus("DASH_NAME_NOT_DEFINED"));
+                return errors;
+            }
+            if (string.IsNullOrEmpty(request.UserId.ToString()))
+            {
+                errors.Add(new ErrorStatus("BAD_ID"));
+                return errors;
+            }
+          
+
+            return errors;
         }
 
         

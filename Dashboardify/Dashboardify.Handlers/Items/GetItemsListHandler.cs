@@ -10,7 +10,6 @@ namespace Dashboardify.Handlers.Items
     {
         private ItemsRepository _itemsRepository;
         private ScreenshotRepository _screenshotRepository;
-        private UserSessionRepository _userSessionRepository;
         private DashRepository _dashRepository;
 
         public GetItemsListHandler(string connectionString) :
@@ -18,11 +17,11 @@ namespace Dashboardify.Handlers.Items
         {
             _itemsRepository = new ItemsRepository(connectionString);
             _screenshotRepository = new ScreenshotRepository(connectionString);
-            _userSessionRepository = new UserSessionRepository(connectionString);
+            
             _dashRepository = new DashRepository(connectionString);
         }
 
-        public GetItemsListResponse Handle(GetItemsListRequest request) //TODO recheck all items handlers
+        public GetItemsListResponse Handle(GetItemsListRequest request) //TODO need to check for null 
         {
             var response = new GetItemsListResponse();
 
@@ -40,7 +39,7 @@ namespace Dashboardify.Handlers.Items
 
                 foreach (var item in items)
                 {
-                    var screenshot = _screenshotRepository.GetLastByItemId(item.Id);
+                    //var screenshot = _screenshotRepository.GetLastByItemId(item.Id);
                     var screenshots = _screenshotRepository.GetLastsByItemId(item.Id, 15);
 
                     if (screenshots.Count > 0)
@@ -71,19 +70,9 @@ namespace Dashboardify.Handlers.Items
                 errors.Add(new ErrorStatus("BAD_REQUEST"));
                 return errors;
             }
-            
-            if (string.IsNullOrEmpty(request.Ticket))
-            {
-                errors.Add(new ErrorStatus("TICKET_NOT_DEFINED"));
-                return errors;
-            }
-            if (request.DashboardId < 1)
-            {
-                errors.Add(new ErrorStatus("CORRUPTED_ID"));
-                return errors;
-            }
 
-            var requestUser = _userSessionRepository.GetUserBySessionId(request.Ticket);
+
+            var requestUser = request.User;
 
             var ownerUser = _dashRepository.GetUserByDashId(request.DashboardId);
 
@@ -92,11 +81,7 @@ namespace Dashboardify.Handlers.Items
                 errors.Add(new ErrorStatus("WRONG_REQUEST"));
                 return errors;
             }
-
-            if (!IsSessionValid(request.Ticket))
-            {
-                errors.Add(new ErrorStatus("SESSION_TIMEOUT"));
-            }
+        
             
             if (requestUser.Id != ownerUser.Id)
             {

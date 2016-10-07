@@ -12,11 +12,15 @@ namespace Dashboardify.Handlers.Dashboards
 
         private UserSessionRepository _userSessionRepository;
 
+        private UsersRepository _usersRepository;
+
         public DeleteDashHandler(string connectionString) : base(connectionString)
         {
             _dashRepository = new DashRepository(connectionString);
 
             _userSessionRepository = new UserSessionRepository(connectionString);
+
+            _usersRepository = new UsersRepository(connectionString);
         }
 
         public DeleteDashResponse Handle(DeleteDashRequest request)
@@ -31,7 +35,7 @@ namespace Dashboardify.Handlers.Dashboards
             }
             try
             {
-                int userId = _userSessionRepository.GetUserBySessionId(request.Ticket).Id;
+                int userId = _usersRepository.Get(request.UserId).Id;
 
                 _dashRepository.DeleteDashboard(userId, request.DashboardId);
 
@@ -49,16 +53,10 @@ namespace Dashboardify.Handlers.Dashboards
         {
             var errors = new List<ErrorStatus>();
             
-            var user = _userSessionRepository.GetUserBySessionId(request.Ticket);
-
-            if (user == null)
-            {
-                errors.Add(new ErrorStatus("USER_NOT_FOUND"));
-                return errors;
-            }
+            
 
           
-            if (_dashRepository.CheckIfExistsByUserId(request.DashboardId, user.Id))
+            if (_dashRepository.CheckIfExistsByUserId(request.DashboardId, request.UserId))
             {
                 errors.Add(new ErrorStatus("DASHBOARD_DOES_NOT_EXIST"));
                 return errors;

@@ -6,19 +6,15 @@ using Dashboardify.Contracts.Items;
 
 namespace Dashboardify.Handlers.Items
 {
-    public class UpdateItemHandler :BaseHandler
+    public class UpdateItemHandler : BaseHandler
     {
         private ItemsRepository _itemRepository;
 
-        private UserSessionRepository _userSessionRepository;
-
-        public UpdateItemHandler(string connectionString):base (connectionString)
+        public UpdateItemHandler(string connectionString) : base(connectionString)
         {
             _itemRepository = new ItemsRepository(connectionString);
 
-            _userSessionRepository = new UserSessionRepository(connectionString);
-
-        }
+           }
 
         public UpdateItemResponse Handle(UpdateItemRequest request)
         {
@@ -32,14 +28,14 @@ namespace Dashboardify.Handlers.Items
             }
             try
             {
-                var item = _itemRepository.Get(request.ItemId);
+                var item = _itemRepository.Get(request.Item.Id);
 
                 if (item == null)
                 {
                     throw new Exception("ITEM_NOT_FOUND");
                 }
 
-                UpdateItemObject(item,request.Name,request.CheckInterval,request.IsActive,request.NotifyByEmail);
+                UpdateItemObject(item, request.Item);
 
                 _itemRepository.Update(item);
 
@@ -47,112 +43,89 @@ namespace Dashboardify.Handlers.Items
             }
             catch (Exception)
             {
-                
+
                 response.Errors.Add(new ErrorStatus("BAD_REQUEST"));
 
                 return response;
             }
 
-            
+
         }
 
-        private void UpdateItemObject(Item origin, string requestName, int requestInterval, bool requestIsActive, bool requestNotifyByEmail)
+        private void UpdateItemObject(Item origin, Item Updated)
         {
+
+            if (!(Updated.CheckInterval < 30000 && Updated.CheckInterval > 86400000))
+            {
+                origin.CheckInterval = Updated.CheckInterval;
+            }
+
+            if (!string.IsNullOrEmpty(Updated.Name))
+            {
+                origin.Name = Updated.Name;
+            }
+
+            if (Updated.IsActive != origin.IsActive)
+            {
+                origin.IsActive = Updated.IsActive;
+            }
+            if (Updated.NotifyByEmail != origin.NotifyByEmail)
+            {
+                origin.NotifyByEmail = Updated.NotifyByEmail;
+            }
+
             
-            if (!(requestInterval < 30000 && requestInterval > 86400000))
-            {
-                origin.CheckInterval = requestInterval;
-            }
-
-            if (!string.IsNullOrEmpty(requestName))
-            {
-                origin.Name = requestName;
-            }
-
-            if (requestIsActive)
-            {
-                origin.IsActive = requestIsActive;
-            }
-            else
-            {
-                origin.IsActive = false;
-            }
-
-            if (requestNotifyByEmail)
-            {
-                origin.NotifyByEmail = requestNotifyByEmail;
-            }
-            else
-            {
-                origin.NotifyByEmail = false;
-            }
-            
-            origin.Modified = DateTime.Now;
-          
         }
 
         private IList<ErrorStatus> Validate(UpdateItemRequest request)
         {
             var errors = new List<ErrorStatus>();
 
-            if (IsRequestNull(request))
+            if (request.Item == null)
             {
-                errors.Add(new ErrorStatus("WRONG_REQUEST"));
+                errors.Add(new ErrorStatus("BAD_REQUEST"));
                 return errors;
+
             }
 
-            if (request.ItemId < 1)
+            if (!string.IsNullOrEmpty(request.Item.Name))
+            {
+                if (request.Item.Name.Length > 254)
+                {
+                    errors.Add(new ErrorStatus("NAME_TOO_LONG"));
+                    return errors;
+                }
+            }
+
+            if (request.Item.Id < 1)
             {
                 errors.Add(new ErrorStatus("BAD_REQUEST"));
                 return errors;
             }
-           
-            if (string.IsNullOrEmpty(request.Ticket))
-            {
-                errors.Add(new ErrorStatus("INVALID_TICKET"));
-                return errors;
-            }
-            if (request.CheckInterval < 30000 && request.CheckInterval > 86400000)
+
+            
+            if (request.Item.CheckInterval < 30000 && request.Item.CheckInterval > 86400000)
             {
                 errors.Add(new ErrorStatus("INVALID_CHECK_INTERVAL"));
                 return errors;
             }
-            
-            var user = _userSessionRepository.GetUserBySessionId(request.Ticket);
 
-            var ownerUser = _itemRepository.GetUserByItemId(request.ItemId);
+            var ownerUser = _itemRepository.GetUserByItemId(request.Item.Id);
 
-            if (user == null)
-            {
-                errors.Add(new ErrorStatus("USER_NOT_FOUND"));
-                return errors;
-            }
-            
             if (ownerUser == null)
             {
-                errors.Add(new ErrorStatus("BAD_REQUEST"));
+                errors.Add(new ErrorStatus("ITEM_NOT_FOUND"));
                 return errors;
             }
 
-            if (ownerUser.Id < 1)
+            if (request.UserId != ownerUser.Id)
             {
-                errors.Add(new ErrorStatus("BAD_REQUEST"));
-                return errors;
-            }
-
-            if (user.Id != ownerUser.Id)
-            {
-                errors.Add(new ErrorStatus("UNAUTHORIZED_ACCES"));
-                return errors;
-            }
-            if (!IsSessionValid(request.Ticket))
-            {
-                errors.Add(new ErrorStatus("SESSION_TIME_OUT"));
-                return errors;
+                errors.Add(new ErrorStatus("UNAUTHORIZED_ACCESS"));
             }
             
+
             return errors;
         }
-        
+
     }
 }

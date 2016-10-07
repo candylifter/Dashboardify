@@ -1,13 +1,16 @@
-﻿namespace Dashboardify.Contracts.Users
+﻿using Dashboardify.Models;
+
+namespace Dashboardify.Contracts.Users
 {
     public class UpdateUserRequest : BaseRequest
     {
         
-        public string Username { get; set; }
+        public User UserToUpdate { get; set; }
 
-        public string Password { get; set; }
+        public User UserOrigin { get; set; }
 
-        public string Email { get; set; }
+        
+        
 
     }
 }

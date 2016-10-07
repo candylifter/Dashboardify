@@ -2,22 +2,20 @@
 using System.Collections.Generic;
 using Dashboardify.Contracts;
 using Dashboardify.Contracts.Users;
+using Dashboardify.Handlers.Helpers;
 using Dashboardify.Models;
 using Dashboardify.Repositories;
 
 namespace Dashboardify.Handlers.Users
 {
-    public class UpdateUserHandler:BaseHandler
+    public class UpdateUserHandler : BaseHandler
     {
         private UsersRepository _usersRepository;
-
-        private UserSessionRepository _userSessionRepository;
-
-        public UpdateUserHandler(string connectionString):base(connectionString)
+        
+        public UpdateUserHandler(string connectionString) : base(connectionString)
         {
             _usersRepository = new UsersRepository(connectionString);
 
-            _userSessionRepository = new UserSessionRepository(connectionString);
         }
 
         public UpdateUserResponse Handle(UpdateUserRequest request)
@@ -25,52 +23,55 @@ namespace Dashboardify.Handlers.Users
             var response = new UpdateUserResponse();
 
             response.Errors = Validate(request);
-                        
+
             if (response.HasErrors)
             {
                 return response;
             }
 
-            var OriginUser = _userSessionRepository.GetUserBySessionId(request.Ticket);
-
-            if (!string.IsNullOrEmpty(request.Password)) //nes gali ir nepaduoti
+            
+            if (!string.IsNullOrEmpty(request.UserToUpdate.Password)) //nes gali ir nepaduoti
             {
-                request.Password = Helpers.PasswordsHelper.HashPassword(request.Password);
+                request.UserToUpdate.Password = PasswordsHelper.HashPassword(request.UserToUpdate.Password);
             }
 
             try
             {
-                UpdateUserObject(OriginUser, request.Username,request.Password,request.Email);
                 
-                _usersRepository.Update(OriginUser);
+                UpdateUserObject(request.UserOrigin, request.UserToUpdate);
+
+                _usersRepository.Update(request.UserOrigin);
 
                 return response;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                response.Errors.Add(new ErrorStatus("BAD_REQUEST"));
+                response.Errors.Add(new ErrorStatus(ex.Message));
+
+                //response.Errors.Add(new ErrorStatus("BAD_REQUEST"));
 
                 return response;
             }
 
-            
+
         }
 
-        private void UpdateUserObject(User origin, string name, string password, string email)
+        private void UpdateUserObject(User origin, User updated)
         {
-            
-            if (!string.IsNullOrEmpty(name)) { 
-                origin.Name = name;
+
+            if (!string.IsNullOrEmpty(updated.Name))
+            {
+                origin.Name = updated.Name;
             }
 
-            if (!string.IsNullOrEmpty(email))
+            if (!string.IsNullOrEmpty(updated.Email))
             {
-                origin.Email = email;
+                origin.Email = updated.Email;
             }
 
-            if (!string.IsNullOrEmpty(password))
+            if (!string.IsNullOrEmpty(updated.Password))
             {
-                origin.Password = password;
+                origin.Password = updated.Password;
             }
         }
 
@@ -78,27 +79,51 @@ namespace Dashboardify.Handlers.Users
         {
             var errors = new List<ErrorStatus>();
 
-            if (IsRequestNull(request))
+            if (request.UserToUpdate == null)
             {
                 errors.Add(new ErrorStatus("BAD_REQUEST"));
                 return errors;
             }
-            
-            if (string.IsNullOrEmpty(request.Ticket))
+
+            if (!string.IsNullOrEmpty(request.UserToUpdate.Name))
             {
-                errors.Add(new ErrorStatus("INVALID_TICKET"));
-                return errors;
+                if (request.UserToUpdate.Name.Length > 254)
+                {
+                    errors.Add(new ErrorStatus("USERNAME_TOO_LONG"));
+                    return errors;
+                }
+            }
+            
+            if (request.UserToUpdate.Id != request.UserOrigin.Id)
+            {
+                errors.Add(new ErrorStatus("UNAUTHORIZED_ACCESS"));
             }
 
-            var user = _userSessionRepository.GetUserBySessionId(request.Ticket);
-
-            if (user==null) 
+            if (!string.IsNullOrEmpty(request.UserToUpdate.Email))
             {
-                errors.Add(new ErrorStatus("USER_NOT_FOUND"));
-                return errors;
-            }            
+                if (request.UserOrigin.Email != request.UserToUpdate.Email)
+                    {
+                        if (request.UserToUpdate.Email.Length > 254)
+                        {
+                        errors.Add(new ErrorStatus("EMAIL_TOO_LONG"));
+                        return errors;
+                    }
+
+                    if (!request.UserToUpdate.Email.Contains("@"))
+                        {
+                            errors.Add(new ErrorStatus("BAD_EMAIL_FORMAT"));
+                            return errors;
+                        }
+                        if (_usersRepository.CheckIfEmailAvailable(request.UserToUpdate.Email))
+                        {
+                            errors.Add(new ErrorStatus("EMAIL_ALREADY_TAKEN"));
+                            return errors;
+                        }
+
+                    }
+            }
             
-            
+
             return errors;
         }
     }

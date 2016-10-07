@@ -183,10 +183,10 @@ namespace Dashboardify.Repositories
         /// <summary>
         /// Checks if dash exsists by name
         /// </summary>
-        /// <param name="id">userId</param>
+        /// <param name="Userid">userId</param>
         /// <param name="name">DashName</param>
         /// <returns>true ir name not taken, false exsists</returns>
-        public bool CheckIfNameAvailable(int id, string name)
+        public bool CheckIfNameAvailable(int Userid, string name)
         {
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
@@ -194,7 +194,7 @@ namespace Dashboardify.Repositories
                     $@"SELECT
 	                                DashBoards.Name
                                 FROM DashBoards
-                                WHERE UserId = {id} AND DashBoards.Name = '{name}'";
+                                WHERE UserId = {Userid} AND DashBoards.Name = '{name}'";
 
 
                 var result = db.Query<string>(query).SingleOrDefault();

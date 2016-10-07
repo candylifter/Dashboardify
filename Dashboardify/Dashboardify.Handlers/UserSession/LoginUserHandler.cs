@@ -17,6 +17,7 @@ namespace Dashboardify.Handlers.UserSession
         public LoginUserHandler(string connectionString):base(connectionString)
         {
             _usersRepository = new UsersRepository(connectionString);
+
             _userSessionRepository = new UserSessionRepository(connectionString);
 
         }
@@ -25,8 +26,8 @@ namespace Dashboardify.Handlers.UserSession
         {
             var response = new LoginUserResponse();
 
-            request.Password = PasswordsHelper.HashPassword(request.Password);
             response.Errors = Validate(request);
+           
 
             if (response.HasErrors)
             {
@@ -34,7 +35,8 @@ namespace Dashboardify.Handlers.UserSession
             }
             try
             {
-                
+                request.Password = PasswordsHelper.HashPassword(request.Password);
+
                 AddSession(request, response);
 
                 return response;
@@ -63,8 +65,10 @@ namespace Dashboardify.Handlers.UserSession
                 errors.Add(new ErrorStatus("WRONG_INPUT"));
                 return errors;
             }
-            
-            var user = _usersRepository.ReturnIfExsists(request.Email, request.Password);
+
+            var tempolarlyHash = PasswordsHelper.HashPassword(request.Password);
+
+            var user = _usersRepository.ReturnIfExsists(request.Email, tempolarlyHash);
 
             if (user == null)
             {
