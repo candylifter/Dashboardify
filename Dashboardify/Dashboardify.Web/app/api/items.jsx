@@ -74,7 +74,7 @@ export default {
     })
 
     filteredItems = filteredItems.filter((item) => {
-      let containsSearchText = item.name.toLowerCase().indexOf(searchText) !== -1
+      let containsSearchText = item.name.toLowerCase().indexOf(searchText.toLowerCase()) !== -1
       return searchText.length === 0 || containsSearchText
     })
 

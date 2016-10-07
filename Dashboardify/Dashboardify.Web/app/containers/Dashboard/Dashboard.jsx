@@ -37,25 +37,6 @@ class Dashboard extends React.Component {
   render () {
     let { isFetching, error, routeParams: { dashboardId } } = this.props
 
-    const style = {
-      error: {
-        width: '100%',
-        minHeight: 'calc(100vh - 64px)',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center',
-        color: '#9E9E9E',
-        icon: {
-          fontSize: '8em'
-        },
-        text: {
-          fontSize: '2em'
-        }
-      }
-    }
-
     dashboardId = parseInt(dashboardId)
 
     let renderItemList = () => {

@@ -33,4 +33,8 @@ class LoadingIndicator extends React.Component {
   }
 }
 
+LoadingIndicator.propTypes = {
+  show: PropTypes.bool
+}
+
 export default LoadingIndicator

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 
 import TextField from 'material-ui/TextField'
 
@@ -21,12 +21,18 @@ class Search extends React.Component {
         style={style}
         value={searchText}
         onChange={(e) => {
-          let text = e.target.value.toLowerCase()
+          // let text = e.target.value.toLowerCase()
+          let text = e.target.value
           dispatch(SearchTextActions.setSearchText(text))
         }}
       />
     )
   }
+}
+
+Search.propTypes = {
+  dispatch: PropTypes.func,
+  searchText: PropTypes.string
 }
 
 export default connect(

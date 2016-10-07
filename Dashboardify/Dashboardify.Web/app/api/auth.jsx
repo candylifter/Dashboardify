@@ -22,7 +22,7 @@ export default {
   },
 
   isLoggedIn () {
-    return !!Cookies.get('ticket') // TODO: Add expiration check (dunno if it's necessary here)
+    return !!Cookies.get('ticket')
   },
 
   register (name, email, password, invitationCode) {

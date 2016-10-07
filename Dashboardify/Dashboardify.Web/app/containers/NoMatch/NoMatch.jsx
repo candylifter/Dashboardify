@@ -38,6 +38,10 @@ class NoMatch extends React.Component {
   }
 }
 
+NoMatch.propTypes = {
+  isAuthenticated: PropTypes.bool
+}
+
 export default connect(
   (state) => state.auth
 )(NoMatch)
