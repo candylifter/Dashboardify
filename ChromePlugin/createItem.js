@@ -16,10 +16,10 @@ function getCSS(str) {
     return decodeURI((str.substring(theleft, theright)));
 }
 
-function onlyUrl(str){
-  theleft = str.indexOf("://") + 3;
-  theright = str.indexOf("/", 10);;
-  return (str.substring(theleft, theright));
+function onlyUrl(str) {
+    theleft = str.indexOf("://") + 3;
+    theright = str.indexOf("/", 10);;
+    return (str.substring(theleft, theright));
 }
 
 var buttonDissable = document.getElementById("form-submit")
@@ -146,6 +146,7 @@ form.onsubmit = function(event) {
         data: data,
         success: function(data) {
             console.log(data);
+            window.alert("Item created successfully.")
             window.close();
         },
         error: function(data) {
@@ -159,5 +160,5 @@ form.onsubmit = function(event) {
 
 var forWebsite = document.getElementById("for-website");
 forWebsite.innerHTML = " " + onlyUrl(website);
-forWebsite.title=website;
-forWebsite.href=website;
+forWebsite.title = website;
+forWebsite.href = website;
