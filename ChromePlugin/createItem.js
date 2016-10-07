@@ -36,6 +36,7 @@ var websiteInput = document.getElementById("website");
 var xpathInput = document.getElementById("xpath");
 var cssInput = document.getElementById("css");
 var ticketas;
+var closeTab;
 var errorMessage = document.getElementById("error-message");
 
 var createDashboard = document.getElementById("new-dashboard");
@@ -146,8 +147,21 @@ form.onsubmit = function(event) {
         data: data,
         success: function(data) {
             console.log(data);
-            window.alert("Item created successfully.")
-            window.close();
+            var element = document.getElementById("creation-form");
+            element.parentNode.removeChild(element);
+            var information = document.getElementById("success-handler");
+            information.innerHTML = "Item created successfully. Now you can close the tab.";
+            var divas = document.getElementById("for-success");
+            var buttonas = document.createElement("BUTTON");
+            divas.appendChild(buttonas);
+            var text = document.createTextNode("Close tab");
+            buttonas.appendChild(text);
+            buttonas.className = "mdl-button mdl-js-button mdl-button--raised mdl-button--colored form-buttons"
+            buttonas.id = "close-tab";
+            closeTab = document.getElementById("close-tab");
+            closeTab.onclick = function() {
+                window.close();
+            }
         },
         error: function(data) {
             document.getElementById("error-occured").className = "has-error"
@@ -157,6 +171,8 @@ form.onsubmit = function(event) {
         }
     })
 }
+
+
 
 var forWebsite = document.getElementById("for-website");
 forWebsite.innerHTML = " " + onlyUrl(website);
