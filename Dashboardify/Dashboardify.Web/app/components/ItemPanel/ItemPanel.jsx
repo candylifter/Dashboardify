@@ -20,9 +20,18 @@ class ItemPanel extends React.Component {
 
     this.state = {open: false}
 
+    this.handleDelete = this.handleDelete.bind(this)
     this.handleClose = this.handleClose.bind(this)
     this.handleToggle = this.handleToggle.bind(this)
     this.handleIntervalChange = this.handleIntervalChange.bind(this)
+  }
+
+  handleDelete () {
+    const { dispatch, items, dashboardId } = this.props
+
+    let item = ItemsAPI.getSelectedItemDashboardId(items, dashboardId)
+
+    dispatch(ItemsActions.deleteItem(item.id))
   }
 
   handleClose () {
@@ -103,6 +112,8 @@ class ItemPanel extends React.Component {
               <br /><br />
               <p>Previous content:</p>
               <ScreenshotSlider screenshots={item.screenshots} />
+              <br /><br />
+              <FlatButton label='Delete item' secondary style={style.url.button} onClick={this.handleDelete} />
             </div>
           </div>
         )

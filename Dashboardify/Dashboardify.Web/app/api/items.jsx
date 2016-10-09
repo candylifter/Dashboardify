@@ -16,12 +16,15 @@ export default {
 
   mapBackendData (data) {
     return data.Items.map((item) => {
+      let currentImg = item.Screenshots.length >= 1 ? screenshotDomain + item.Screenshots[0].ScrnshtURL : item.Failed >= 3 ? screenshotDomain + '404--white.png' : screenshotDomain + 'pending--white.png'
+
       return {
         id: item.Id,
         dashboardId: item.DashBoardId,
         name: item.Name,
-        img: item.Screenshots.length >= 1 ? screenshotDomain + item.Screenshots[0].ScrnshtURL : '',
+        img: currentImg,
         url: item.Website,
+        failed: item.Failed,
         isActive: item.IsActive,
         isSelected: false,
         checkInterval: item.CheckInterval,
@@ -54,6 +57,15 @@ export default {
     }
 
     return axios.post(`${rootDomain}/Items/Update`, data)
+  },
+
+  deleteItem (id) {
+    let data = {
+      Ticket: Cookies.get('ticket'),
+      ItemId: id
+    }
+
+    return axios.post(`${rootDomain}/Items/Delete`, data)
   },
 
   toggleItem (id, state) {
