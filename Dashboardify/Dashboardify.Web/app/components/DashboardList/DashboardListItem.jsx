@@ -15,6 +15,12 @@ class Dashboards extends React.Component {
     this.handleDelete = this.handleDelete.bind(this)
   }
 
+  componentWillUnmount () {
+    let { dispatch } = this.props
+
+    dispatch(DashboardsActions.removeError())
+  }
+
   handleDelete (e) {
     e.preventDefault()
 
@@ -42,6 +48,7 @@ class Dashboards extends React.Component {
                   onClick={this.handleDelete}
                   iconClassName='material-icons'
                   tooltip='Delete dashboard'
+                  tooltipPosition='top-left'
                   className='dashboard__paper__footer__right__icon-button'
                 >
                   delete
