@@ -27,10 +27,15 @@ class LoadingIndicator extends React.Component {
           top={16}
           status={show ? 'loading' : 'hide'}
           style={style.refresh}
+          className='loading-indicator__indicator'
           />
       </div>
     )
   }
+}
+
+LoadingIndicator.propTypes = {
+  show: PropTypes.bool
 }
 
 export default LoadingIndicator

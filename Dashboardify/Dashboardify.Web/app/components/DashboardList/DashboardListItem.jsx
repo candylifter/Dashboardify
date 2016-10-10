@@ -7,17 +7,37 @@ import Paper from 'material-ui/Paper'
 import IconButton from 'material-ui/IconButton'
 
 import { DashboardsActions } from 'actions'
+import { ConfirmModal } from 'components'
 
 class Dashboards extends React.Component {
   constructor () {
     super()
 
+    this.state = {
+      confirmOpen: false
+    }
+
+    this.handleOpenConfirm = this.handleOpenConfirm.bind(this)
+    this.handleCloseConfirm = this.handleCloseConfirm.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
   }
 
-  handleDelete (e) {
-    e.preventDefault()
+  componentWillUnmount () {
+    let { dispatch } = this.props
 
+    dispatch(DashboardsActions.removeError())
+  }
+
+  handleOpenConfirm (e) {
+    e.preventDefault()
+    this.setState({confirmOpen: true})
+  }
+
+  handleCloseConfirm () {
+    this.setState({confirmOpen: false})
+  }
+
+  handleDelete () {
     let { dispatch, id } = this.props
 
     dispatch(DashboardsActions.deleteDashboard(id))
@@ -39,9 +59,10 @@ class Dashboards extends React.Component {
               </div>
               <div className='dashboard__paper__footer__right'>
                 <IconButton
-                  onClick={this.handleDelete}
+                  onClick={this.handleOpenConfirm}
                   iconClassName='material-icons'
                   tooltip='Delete dashboard'
+                  tooltipPosition='top-left'
                   className='dashboard__paper__footer__right__icon-button'
                 >
                   delete
@@ -50,6 +71,18 @@ class Dashboards extends React.Component {
             </div>
           </Paper>
         </Link>
+        <ConfirmModal
+          open={this.state.confirmOpen}
+          onConfirm={() => {
+            this.handleCloseConfirm()
+            this.handleDelete()
+          }}
+          onCancel={this.handleCloseConfirm}
+          title={`Delete ${name}`}
+          text='Are you sure you want to delete this dashboard?'
+          confirmLabel='Delete'
+          cancelLabel='Cancel'
+          />
       </div>
     )
   }

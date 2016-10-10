@@ -28,7 +28,7 @@ const itemsReducer = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-        error: action.err.message
+        error: action.err.response
       }
     case 'SELECT_ITEM':
       return {
@@ -65,6 +65,21 @@ const itemsReducer = (state = initialState, action) => {
         ...state,
         isPosting: false,
         postError: action.err.response
+      }
+    case 'START_DELETE_ITEM':
+      return {
+        ...state,
+        isPosting: true,
+        postError: undefined
+      }
+    case 'COMPLETE_DELETE_ITEM':
+      return {
+        ...state,
+        isPosting: false,
+        postError: undefined,
+        data: state.data.filter((item) => {
+          return item.id !== action.id
+        })
       }
     case 'SET_ITEM_CHECK_INTERVAL':
       return {

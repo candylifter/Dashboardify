@@ -4,6 +4,7 @@ using System.Linq;
 using Dashboardify.Models;
 using System.Data;
 using System.Data.SqlClient;
+using System.Net.Sockets;
 using Dapper;
 
 namespace Dashboardify.Repositories
@@ -84,8 +85,31 @@ namespace Dashboardify.Repositories
                 }
 
             }
-           
-         
+
+
+
+
+
+        public int CreateAndGetId(DashBoard dashBoard)
+        {
+            string query = $@"INSERT INTO dbo.DashBoards 
+                                (UserId, 
+                                Name, 
+                                DateCreated, 
+                                DateModified)
+                            VALUES 
+                                ({dashBoard.UserId}, 
+                                '{dashBoard.Name}', 
+                                '{dashBoard.DateCreated}', 
+                                '{dashBoard.DateModified}')
+                            SELECT SCOPE_IDENTITY()";
+
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                return db.Query<int>(query).SingleOrDefault();
+            }
+
+        }
 
         /// <summary>
         /// Creates new dashboard
@@ -109,7 +133,7 @@ namespace Dashboardify.Repositories
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
                 
-                    var result = db.Execute(query, dash);
+                    db.Execute(query, dash);
                     return true;
                
                 

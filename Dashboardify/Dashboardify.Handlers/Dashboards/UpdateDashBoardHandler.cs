@@ -60,6 +60,18 @@ namespace Dashboardify.Handlers.Dashboards
         public IList<ErrorStatus> Validate(UpdateDashboardRequest request)
         {
             var errors = new List<ErrorStatus>();
+
+            if (request == null)
+            {
+                errors.Add(new ErrorStatus("BAD_REQUEST"));
+                return errors;
+            }
+
+            if (request.DashBoard == null)
+            {
+                errors.Add(new ErrorStatus("BAD_REQUEST"));
+                return errors;
+            }
            
             if (_dashRepository.Get(request.DashBoard.Id)==null)
             {
@@ -72,6 +84,22 @@ namespace Dashboardify.Handlers.Dashboards
                 errors.Add(new ErrorStatus("CORRUPTED_ID"));
                 return errors;
             }
+
+            if (request.DashBoard.Name.Length > 254)
+            {
+                errors.Add(new ErrorStatus("NAME_TOO_LONG"));
+                return errors;
+            }
+
+            var ownerUser = _dashRepository.GetUserByDashId(request.DashBoard.Id);
+
+            if (ownerUser!=null && ownerUser.Id != request.UserId)
+            {
+                errors.Add(new ErrorStatus("UNAUTHORIZED_ACCESS"));
+                return errors;
+            }
+
+            
             return errors;
         }
     }

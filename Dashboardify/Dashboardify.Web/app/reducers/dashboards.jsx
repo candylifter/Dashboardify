@@ -40,6 +40,11 @@ const dashboardsReducer = (state = initialState, action) => {
         isFetching: false,
         error: action.err.response
       }
+    case 'REMOVE_DASHBOARDS_ERROR':
+      return {
+        ...state,
+        error: undefined
+      }
     case 'START_CREATE_DASHBOARD':
       return {
         ...state,

@@ -100,6 +100,12 @@ export default {
     }
   },
 
+  removeError () {
+    return {
+      type: 'REMOVE_DASHBOARDS_ERROR'
+    }
+  },
+
   startDeleteDashboard () {
     return {
       type: 'START_DELETE_DASHBOARD'

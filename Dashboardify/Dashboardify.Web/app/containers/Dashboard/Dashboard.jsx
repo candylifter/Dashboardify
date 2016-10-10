@@ -1,11 +1,12 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { hashHistory } from 'react-router'
 
 import CircularProgress from 'material-ui/CircularProgress'
 
 import { CheckIntervalsAPI } from 'api'
 import { ItemList, ItemPanel, Toolbar } from 'components'
-import { ItemsActions, ItemPanelActions, CheckIntervalsActions } from 'actions'
+import { ItemsActions, ItemPanelActions, CheckIntervalsActions, AuthActions } from 'actions'
 
 class Dashboard extends React.Component {
   componentWillMount () {
@@ -22,27 +23,19 @@ class Dashboard extends React.Component {
     dispatch(ItemPanelActions.close())
   }
 
-  render () {
-    let { isFetching, error, routeParams: { dashboardId } } = this.props
+  componentDidUpdate () {
+    let { dispatch, error } = this.props
 
-    const style = {
-      error: {
-        width: '100%',
-        minHeight: 'calc(100vh - 64px)',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center',
-        color: '#9E9E9E',
-        icon: {
-          fontSize: '8em'
-        },
-        text: {
-          fontSize: '2em'
-        }
+    if (error !== undefined) {
+      if (error.status === 400) {
+        dispatch(AuthActions.logout())
+        hashHistory.push('/login')
       }
     }
+  }
+
+  render () {
+    let { isFetching, error, routeParams: { dashboardId } } = this.props
 
     dashboardId = parseInt(dashboardId)
 
@@ -62,7 +55,7 @@ class Dashboard extends React.Component {
           <div className='flex-container flex-container--toolbar'>
             <div className='error'>
               <i className='error__icon material-icons'>&#xE000;</i>
-              <p className='error__text'>{error}</p>
+              <p className='error__text'>{error.status}</p>
             </div>
           </div>
         )
@@ -91,7 +84,7 @@ Dashboard.propTypes = {
   dispatch: PropTypes.func,
   routeParams: PropTypes.object,
   isFetching: PropTypes.bool,
-  error: PropTypes.string
+  error: PropTypes.object
 }
 
 export default connect(

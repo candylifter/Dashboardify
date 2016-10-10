@@ -12,17 +12,39 @@ import FlatButton from 'material-ui/FlatButton'
 
 import { ItemsActions, ItemPanelActions } from 'actions'
 import { ItemsAPI } from 'api'
-import { CheckIntervalList, ScreenshotSlider } from 'components'
+import { CheckIntervalList, ScreenshotSlider, ConfirmModal } from 'components'
 
 class ItemPanel extends React.Component {
   constructor (props, context) {
     super(props, context)
 
-    this.state = {open: false}
+    this.state = {
+      open: false,
+      confirmOpen: false
+    }
 
+    this.handleOpenConfirm = this.handleOpenConfirm.bind(this)
+    this.handleCloseConfirm = this.handleCloseConfirm.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
     this.handleClose = this.handleClose.bind(this)
     this.handleToggle = this.handleToggle.bind(this)
     this.handleIntervalChange = this.handleIntervalChange.bind(this)
+  }
+
+  handleOpenConfirm () {
+    this.setState({confirmOpen: true})
+  }
+
+  handleCloseConfirm () {
+    this.setState({confirmOpen: false})
+  }
+
+  handleDelete () {
+    const { dispatch, items, dashboardId } = this.props
+
+    let item = ItemsAPI.getSelectedItemDashboardId(items, dashboardId)
+
+    dispatch(ItemsActions.deleteItem(item.id))
   }
 
   handleClose () {
@@ -49,30 +71,6 @@ class ItemPanel extends React.Component {
   }
 
   render () {
-    const style = {
-      padding: '0em 1em 1em',
-      image: {
-        maxWidth: '100%',
-        margin: '1em 0',
-        padding: '1em',
-        img: {
-          width: '100%',
-          maxHeight: '300px',
-          objectFit: 'cover'
-        }
-      },
-      title: {
-
-      },
-      url: {
-        margin: '1em 0',
-        display: 'block',
-        button: {
-          width: '100%'
-        }
-      }
-
-    }
     let { items, dashboardId, open } = this.props
 
     let item = ItemsAPI.getSelectedItemDashboardId(items, dashboardId)
@@ -85,12 +83,12 @@ class ItemPanel extends React.Component {
               iconElementLeft={<IconButton onClick={this.handleClose}><NavigationClose /></IconButton>}
               title={item.name}
               />
-            <div style={style}>
-              <Paper style={style.image}>
-                <img src={item.img} alt={`Screenshot of ${item.name}`} style={style.image.img} />
+            <div className='item-panel'>
+              <Paper className='item-panel__image'>
+                <img src={item.img} alt={`Screenshot of ${item.name}`} />
               </Paper>
-              <div style={style.url}>
-                <FlatButton href={item.url} target='_blank' label='Visit website' style={style.url.button} />
+              <div className='item-panel__url'>
+                <FlatButton href={item.url} target='_blank' label='Visit website' className='item-panel__button' />
               </div>
               <Toggle
                 label='Active'
@@ -103,6 +101,20 @@ class ItemPanel extends React.Component {
               <br /><br />
               <p>Previous content:</p>
               <ScreenshotSlider screenshots={item.screenshots} />
+              <br /><br />
+              <FlatButton label='Delete item' secondary className='item-panel__button' onClick={this.handleOpenConfirm} />
+              <ConfirmModal
+                open={this.state.confirmOpen}
+                onConfirm={() => {
+                  this.handleCloseConfirm()
+                  this.handleDelete()
+                }}
+                onCancel={this.handleCloseConfirm}
+                title='Delete item'
+                text='Are you sure you want to delete this item?'
+                confirmLabel='Delete'
+                cancelLabel='Cancel'
+                />
             </div>
           </div>
         )
@@ -130,76 +142,3 @@ export default connect((state) => {
     ...state.itemPanel
   }
 })(ItemPanel)
-
-//  let renderPanel = () => {
-  //   if (typeof item !== 'undefined') {
-  //     return (
-  //       <p>yo</p>
-  //   )
-  //   } else {
-  //     return (
-  //       <div className='panel-body'>Select item to view properties</div>
-  //     )
-  //   }
-  // }
-// {renderPanel()}
-//
-
-// <div className='panel-body'>
-//   <div className='row'>
-//     <div className='col-sm-12'>
-//       <a href='#' target='_blank' className='thumbnail'>
-//         <img src={item.img} />
-//       </a>
-//     </div>
-//   </div>
-//   <div className='row'>
-//     <div className='col-sm-6'>
-//       <span>
-//         <strong>{item.name}</strong>
-//       </span>
-//     </div>
-//     <div className='col-sm-6 text-right'>
-//       <a href={item.url}>Visit Website</a>
-//     </div>
-//   </div>
-//   <hr />
-//   <div className='row'>
-//     <div className='col-sm-6'>
-//       <span>Active</span>
-//     </div>
-//     <div className='col-sm-6 text-right'>
-//       <input
-//         type='checkbox'
-//         checked={item.isActive}
-//         onChange={() => dispatch(ItemsActions.toggleItem(item.id))}
-//           />
-//     </div>
-//   </div>
-//   <div className='row'>
-//     <div className='col-sm-6'>
-//       <span>Check interval</span>
-//     </div>
-//     <div className='col-sm-6'>
-//       <CheckIntervalList itemId={item.id} />
-//     </div>
-//   </div>
-//   <div className='row'>
-//     <div className='col-sm-6'>
-//       <span>Last Checked</span>
-//     </div>
-//     <div className='col-sm-6 text-right'>
-//       <span className='text-muted'>{moment(item.lastChecked).fromNow()}</span>
-//     </div>
-//   </div>
-//   <div className='row'>
-//     <div className='col-sm-6'>
-//       <span>Last Modified</span>
-//     </div>
-//     <div className='col-sm-6 text-right'>
-//       <span className='text-muted'>{moment(item.lastModified).fromNow()}</span>
-//     </div>
-//   </div>
-//   <hr />
-//   <div className='row' />
-// </div>

@@ -10,14 +10,10 @@ namespace Dashboardify.Handlers.Dashboards
     public class CreateDashboardHandler:BaseHandler
     {
         private DashRepository _dashRepository;
-
-        private UserSessionRepository _userSessionRepository;
-
+        
         public CreateDashboardHandler(string connectionString) : base(connectionString)
         {
             _dashRepository = new DashRepository(connectionString);
-
-            _userSessionRepository = new UserSessionRepository(connectionString);
         }
 
         public CreateDashboardResponse Handle(CreateDashboardRequest request)
@@ -32,25 +28,40 @@ namespace Dashboardify.Handlers.Dashboards
             }
             try
             {
-                
-                _dashRepository.Create(new DashBoard
+
+                if (request.DashName != "Hello_DashBoardify")
                 {
-                    Name = request.DashName,
-                    UserId = request.UserId,
-                    DateCreated = DateTime.Now,
-                    DateModified = DateTime.Now,
-                    IsActive = true
-                });
+                    int dashId = _dashRepository.CreateAndGetId(new DashBoard
+                    {
+                        Name = request.DashName,
+                        UserId = request.UserId,
+                        DateCreated = DateTime.Now,
+                        DateModified = DateTime.Now,
+                        IsActive = true
+                    });
 
-                int userId = _userSessionRepository.GetUserBySessionId(request.DashName).Id;
+                   
+                    response.Dashboard = _dashRepository.Get(dashId);
 
-                var responseDash = _dashRepository.GetByNameAndUserId(request.DashName, userId);
+                }
 
-                response.Dashboard = responseDash;
+                else
+                {
+                    _dashRepository.Create(new DashBoard
+                    {
+                        Name = request.DashName,
+                        UserId = request.UserId,
+                        DateCreated = DateTime.Now,
+                        DateModified = DateTime.Now
+                    });
+                    
+                }
+                
             }
             catch (Exception ex)
             {
-                response.Errors.Add(new ErrorStatus("BAD_REQUEST"));
+                //response.Errors.Add(new ErrorStatus("BAD_REQUEST"));
+                response.Errors.Add(new ErrorStatus(ex.Message));
             }
             
             return response;
@@ -65,12 +76,13 @@ namespace Dashboardify.Handlers.Dashboards
                 errors.Add(new ErrorStatus("DASH_NAME_NOT_DEFINED"));
                 return errors;
             }
-            if (string.IsNullOrEmpty(request.UserId.ToString()))
+
+            if (request.DashName.Length > 254)
             {
-                errors.Add(new ErrorStatus("BAD_ID"));
+                errors.Add(new ErrorStatus("NAME_TOO_LONG"));
                 return errors;
             }
-          
+            
 
             return errors;
         }

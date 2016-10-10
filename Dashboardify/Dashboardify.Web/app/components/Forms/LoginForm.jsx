@@ -55,15 +55,8 @@ class LoginForm extends React.Component {
   }
 
   render () {
-    const style = {
-      padding: '0 1em 1em 1em',
-      button: {
-        margin: '2em 0 1em'
-      }
-    }
-
     return (
-      <form style={style} onSubmit={this.handleSubmit}>
+      <form className='auth-form' onSubmit={this.handleSubmit}>
         <TextField
           floatingLabelText='Email'
           hintText='E. g. darth.vader@empire.gov'
@@ -84,7 +77,7 @@ class LoginForm extends React.Component {
           onChange={this.handlePasswordChange}
         />
         <RaisedButton
-          style={style.button}
+          className='auth-form__button'
           label='Sign in'
           type='submit'
           primary

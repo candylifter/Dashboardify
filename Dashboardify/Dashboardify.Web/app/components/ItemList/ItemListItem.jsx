@@ -61,23 +61,3 @@ ItemListItem.propTypes = {
 }
 
 export default connect()(ItemListItem)
-
-// <Card className='item' onClick={this.handleSelect} zDepth={zDepth}>
-//   <CardHeader title={name} subtitle={ItemsAPI.extractDomain(url)} style={style.header} textStyle={style.header.text} />
-//   <div style={style.body}>
-//     <img src={img} style={style.body.img} />
-//   </div>
-//   <div style={style.footer}>
-//     <span>Last modified: {moment(lastModified).fromNow()}</span>
-//   </div>
-// </Card>
-
-// <div className='col-xs-6 col-md-4 col-lg-3' onClick={() => dispatch(ItemsActions.selectItem(id, dashboardId))}>
-//   <div className={panelClass}>
-//     <div className='panel-heading'>{name}</div>
-//     <div className='panel-body'>
-//       <img src={img} alt={'Screenshot of ' + name} className='img-responsive' />
-//     </div>
-//     <div className='panel-footer'>Last modified: {moment(lastModified).fromNow()}</div>
-//   </div>
-// </div>

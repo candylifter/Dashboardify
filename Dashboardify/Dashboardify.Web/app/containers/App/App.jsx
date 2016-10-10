@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 
-import { AuthAPI, CheckIntervalsAPI } from 'api'
+import { CheckIntervalsAPI } from 'api'
 import { DashboardsActions, CheckIntervalsActions } from 'actions'
 
 import { Navbar } from 'components'

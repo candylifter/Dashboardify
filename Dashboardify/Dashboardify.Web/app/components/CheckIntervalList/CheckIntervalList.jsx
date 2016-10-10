@@ -1,16 +1,15 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
 
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 
-import { ItemsActions } from 'actions'
 import { ItemsAPI } from 'api'
 
 class CheckIntervalList extends React.Component {
   render () {
-    let { checkIntervals, itemId, items, dispatch } = this.props
+    let { checkIntervals, itemId, items } = this.props
 
     const renderIntervals = () => {
       return checkIntervals.map((interval) => {
@@ -21,7 +20,6 @@ class CheckIntervalList extends React.Component {
     }
 
     const item = ItemsAPI.getItemById(items, itemId)
-    //  onChange={(event, index, value) => dispatch(ItemsActions.setItemCheckInterval(item.id, value))}
     return (
       <div>
         <SelectField
@@ -35,6 +33,13 @@ class CheckIntervalList extends React.Component {
       </div>
       )
   }
+}
+
+CheckIntervalList.propTypes = {
+  checkIntervals: PropTypes.array,
+  itemId: PropTypes.number,
+  items: PropTypes.array,
+  onChange: PropTypes.func
 }
 
 export default connect(

@@ -1,4 +1,5 @@
 import { ItemsAPI } from 'api'
+import { ItemPanelActions } from 'actions'
 
 export default {
   addItems (items) {
@@ -110,6 +111,41 @@ export default {
   failToggleItem (err) {
     return {
       type: 'FAIL_TOGGLE_ITEM',
+      err
+    }
+  },
+
+  deleteItem (id) {
+    return (dispatch) => {
+      dispatch(this.startDeleteItem())
+
+      return ItemsAPI.deleteItem(id)
+        .then(
+          (res) => {
+            dispatch(this.completeDeleteItem(id))
+            dispatch(ItemPanelActions.close())
+          },
+          (err) => dispatch(this.failDelteItem(err))
+        )
+    }
+  },
+
+  startDeleteItem () {
+    return {
+      type: 'START_DELETE_ITEM'
+    }
+  },
+
+  completeDeleteItem (id) {
+    return {
+      type: 'COMPLETE_DELETE_ITEM',
+      id
+    }
+  },
+
+  failDeleteItem (err) {
+    return {
+      type: 'FAIL_DELETE_ITEM',
       err
     }
   },
