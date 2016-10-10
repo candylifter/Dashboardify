@@ -121,14 +121,12 @@ namespace Dashboardify.Repositories
                                 (Name,
                                 Password,
                                 Email,
-                                IsActive,
                                 DateRegistered, 
                                 DateModified) 
                            VALUES 
                                 ('{user.Name}',
                                 '{user.Password}',
                                 '{user.Email}',
-                                '{user.IsActive}',
                                 '{user.DateRegistered}',
                                 '{user.DateModified}')
                             

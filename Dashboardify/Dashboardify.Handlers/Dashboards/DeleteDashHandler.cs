@@ -9,17 +9,13 @@ namespace Dashboardify.Handlers.Dashboards
     public class DeleteDashHandler : BaseHandler
     {
         private DashRepository _dashRepository;
-
-        private UserSessionRepository _userSessionRepository;
-
+        
         private UsersRepository _usersRepository;
 
         public DeleteDashHandler(string connectionString) : base(connectionString)
         {
             _dashRepository = new DashRepository(connectionString);
-
-            _userSessionRepository = new UserSessionRepository(connectionString);
-
+            
             _usersRepository = new UsersRepository(connectionString);
         }
 
@@ -52,15 +48,24 @@ namespace Dashboardify.Handlers.Dashboards
         private IList<ErrorStatus> Validate(DeleteDashRequest request)
         {
             var errors = new List<ErrorStatus>();
-            
-            
 
-          
-            if (_dashRepository.CheckIfExistsByUserId(request.DashboardId, request.UserId))
+            var ownerId = _dashRepository.Get(request.DashboardId).UserId;
+
+            if (_dashRepository.Get(request.DashboardId) == null)
             {
-                errors.Add(new ErrorStatus("DASHBOARD_DOES_NOT_EXIST"));
+                errors.Add(new ErrorStatus("DASH_NOT_FOUND"));
                 return errors;
             }
+            
+                
+            
+
+            if (request.UserId != ownerId)
+            {
+                errors.Add(new ErrorStatus("UNAUTHORIZED_ACCESS"));
+                return errors;
+            }
+            
 
             return
             errors;

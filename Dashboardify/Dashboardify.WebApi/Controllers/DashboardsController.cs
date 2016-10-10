@@ -14,22 +14,23 @@ namespace Dashboardify.WebApi.Controllers
     {
         private readonly string _connectionString = ConfigurationManager.ConnectionStrings["GCP"].ConnectionString;
         
-        
         [HttpPost]
         public HttpResponseMessage GetList(string ticket)
         {
+            
+
             var securityProvider = new SecurityProvider(_connectionString);
 
             var sessionInfo = securityProvider.GetSessionInfo(ticket);
 
             if (sessionInfo == null)
             {
+                
                 return Request.CreateResponse(HttpStatusCode.NotAcceptable);
             }
 
             var GetListRequest = new GetDashboardsRequest
             {
-                Ticket = ticket,
                 Id = sessionInfo.User.Id
             };
 
@@ -57,7 +58,7 @@ namespace Dashboardify.WebApi.Controllers
 
             var UpdateRequest = new UpdateDashboardRequest
             {
-                DashBoard = dash,
+                DashBoard = dash, //TODO FIX HERE
                 UserId = sessionInfo.User.Id
             };
 
@@ -73,7 +74,7 @@ namespace Dashboardify.WebApi.Controllers
         [HttpPost]
         public HttpResponseMessage Create(string ticket, string dashName)
         {
-            var securityProvider = new Security.SecurityProvider(_connectionString);
+            var securityProvider = new SecurityProvider(_connectionString);
 
             var sessionInfo = securityProvider.GetSessionInfo(ticket);
 
@@ -101,7 +102,7 @@ namespace Dashboardify.WebApi.Controllers
         [HttpPost]
         public HttpResponseMessage Delete(string ticket, int id)
         {
-            var securityProvider = new Security.SecurityProvider(_connectionString);
+            var securityProvider = new SecurityProvider(_connectionString);
 
             var sessionInfo = securityProvider.GetSessionInfo(ticket);
 
