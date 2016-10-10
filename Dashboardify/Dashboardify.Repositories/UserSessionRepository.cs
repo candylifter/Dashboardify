@@ -33,7 +33,7 @@ namespace Dashboardify.Repositories
                 {
                     db.Execute(query, session);
                 }
-                return true;  
+                return true;  //dd
         }
 
         public UserSession GetSession(string ticket)
