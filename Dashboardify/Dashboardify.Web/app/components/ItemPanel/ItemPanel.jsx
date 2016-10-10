@@ -71,30 +71,6 @@ class ItemPanel extends React.Component {
   }
 
   render () {
-    const style = {
-      padding: '0em 1em 1em',
-      image: {
-        maxWidth: '100%',
-        margin: '1em 0',
-        padding: '1em',
-        img: {
-          width: '100%',
-          maxHeight: '300px',
-          objectFit: 'cover'
-        }
-      },
-      title: {
-
-      },
-      url: {
-        margin: '1em 0',
-        display: 'block',
-        button: {
-          width: '100%'
-        }
-      }
-
-    }
     let { items, dashboardId, open } = this.props
 
     let item = ItemsAPI.getSelectedItemDashboardId(items, dashboardId)
@@ -107,12 +83,12 @@ class ItemPanel extends React.Component {
               iconElementLeft={<IconButton onClick={this.handleClose}><NavigationClose /></IconButton>}
               title={item.name}
               />
-            <div style={style}>
-              <Paper style={style.image}>
-                <img src={item.img} alt={`Screenshot of ${item.name}`} style={style.image.img} />
+            <div className='item-panel'>
+              <Paper className='item-panel__image'>
+                <img src={item.img} alt={`Screenshot of ${item.name}`} />
               </Paper>
-              <div style={style.url}>
-                <FlatButton href={item.url} target='_blank' label='Visit website' style={style.url.button} />
+              <div className='item-panel__url'>
+                <FlatButton href={item.url} target='_blank' label='Visit website' className='item-panel__button' />
               </div>
               <Toggle
                 label='Active'
@@ -126,7 +102,7 @@ class ItemPanel extends React.Component {
               <p>Previous content:</p>
               <ScreenshotSlider screenshots={item.screenshots} />
               <br /><br />
-              <FlatButton label='Delete item' secondary style={style.url.button} onClick={this.handleOpenConfirm} />
+              <FlatButton label='Delete item' secondary className='item-panel__button' onClick={this.handleOpenConfirm} />
               <ConfirmModal
                 open={this.state.confirmOpen}
                 onConfirm={() => {
