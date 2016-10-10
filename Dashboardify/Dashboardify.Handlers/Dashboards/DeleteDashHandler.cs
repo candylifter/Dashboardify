@@ -48,19 +48,16 @@ namespace Dashboardify.Handlers.Dashboards
         private IList<ErrorStatus> Validate(DeleteDashRequest request)
         {
             var errors = new List<ErrorStatus>();
+            
+            var dash = _dashRepository.Get(request.DashboardId);
 
-            var ownerId = _dashRepository.Get(request.DashboardId).UserId;
-
-            if (_dashRepository.Get(request.DashboardId) == null)
+            if(dash == null)
             {
                 errors.Add(new ErrorStatus("DASH_NOT_FOUND"));
                 return errors;
             }
             
-                
-            
-
-            if (request.UserId != ownerId)
+            if (request.UserId != dash.UserId)
             {
                 errors.Add(new ErrorStatus("UNAUTHORIZED_ACCESS"));
                 return errors;

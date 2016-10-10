@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Dashboardify.Models;
 using System.Data;
 using System.Data.SqlClient;
-using System.Net.Sockets;
 using Dapper;
 
 namespace Dashboardify.Repositories
