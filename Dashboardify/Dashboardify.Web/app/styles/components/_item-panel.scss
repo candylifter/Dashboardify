@@ -1,0 +1,23 @@
+.item-panel {
+  padding: 0em 1em 1em;
+
+  &__button {
+    width: 100%;
+  }
+}
+
+.item-panel__image {
+  max-width: 100%;
+  margin: 1em 0;
+  padding: 1em;
+  img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+  }
+}
+
+.item-panel__url {
+  margin: 1em 0;
+  display: block;
+}

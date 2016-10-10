@@ -8,33 +8,6 @@ class ItemList extends React.Component {
   render () {
     let { items, searchText, dashboardId } = this.props
 
-    const style = {
-      // display: 'flex',
-      // justifyContent: 'space-between',
-      // flexWrap: 'wrap',
-      // margin: '0 -1em',
-      error: {
-        width: '100%',
-        minHeight: 'calc(100vh - 64px)',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center',
-        color: '#9E9E9E',
-        icon: {
-          fontSize: '8em'
-        },
-        text: {
-          fontSize: '2em'
-        },
-        subtext: {
-          margin: 0,
-          fontSize: '1.5em'
-        }
-      }
-    }
-
     let renderItems = () => {
       if (items.length === 0) {
         return (
@@ -56,8 +29,8 @@ class ItemList extends React.Component {
     }
 
     return (
-      <div style={style}>
-          {renderItems()}
+      <div>
+        {renderItems()}
       </div>
     )
   }

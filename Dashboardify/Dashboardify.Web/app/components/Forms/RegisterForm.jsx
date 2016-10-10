@@ -84,15 +84,8 @@ class RegisterForm extends React.Component {
   }
 
   render () {
-    const style = {
-      padding: '0 1em 1em 1em',
-      button: {
-        margin: '2em 0 1em'
-      }
-    }
-
     return (
-      <form style={style} onSubmit={this.handleSubmit}>
+      <form className='auth-form' onSubmit={this.handleSubmit}>
         <TextField
           floatingLabelText='Name'
           hintText='E. g. Darth Vader'
@@ -138,7 +131,7 @@ class RegisterForm extends React.Component {
           fullWidth
         />
         <RaisedButton
-          style={style.button}
+          className='auth-form__button'
           label='Sign up'
           type='submit'
           primary
