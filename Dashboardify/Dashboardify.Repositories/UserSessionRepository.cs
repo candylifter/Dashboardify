@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
@@ -10,7 +8,7 @@ namespace Dashboardify.Repositories
 {
     public class UserSessionRepository
     {
-        private string _connectionString;
+        private readonly string _connectionString;
 
         public UserSessionRepository(string connectionString)
         {
@@ -33,24 +31,22 @@ namespace Dashboardify.Repositories
                 {
                     db.Execute(query, session);
                 }
-                return true;  //dd
+                return true;  
         }
 
         public UserSession GetSession(string ticket)
         {
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                string query = $@"SELECT
+                return db.Query<UserSession>(@"SELECT
                            Id,
                            Ticket,
                            Expires
                         FROM UserSession
-                            WHERE Ticket = '{ticket}'";
-
-                return db.Query<UserSession>(query).SingleOrDefault();
+                            WHERE Ticket = @ticket",new { ticket }).SingleOrDefault();
             }
         }
-        //
+  
         public User GetUserBySessionId(string ticket)
         {
             string query =
@@ -65,25 +61,23 @@ namespace Dashboardify.Repositories
                 FROM Users
                 JOIN UserSession
 	                ON UserSession.UserId = Users.Id
-	            WHERE Ticket = '{ticket}'";
+	            WHERE Ticket = @ticket";
 
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                return db.Query<User>(query).SingleOrDefault();
+                return db.Query<User>(query, new {ticket}).SingleOrDefault();
             }
         }
 
         public void DeleteUserSession(int userId)
         {
-            string query =
-                $@"DELETE FROM
-                                UserSession
-                            WHERE 
-                                UserId = '{userId}'";
-
+            
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                db.Execute(query);
+               db.Execute($@"DELETE FROM 
+                                UserSession 
+                            WHERE UserSession.UserId = {userId}"); //Nebus SQL injection, nes po security providerio ateina id is ten
+             
             }
 
         }

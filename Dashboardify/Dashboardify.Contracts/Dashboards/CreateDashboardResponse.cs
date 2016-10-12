@@ -1,5 +1,4 @@
-﻿using System.Dynamic;
-using Dashboardify.Models;
+﻿using Dashboardify.Models;
 
 namespace Dashboardify.Contracts.Dashboards
 {

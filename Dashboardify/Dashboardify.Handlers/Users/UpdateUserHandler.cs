@@ -87,7 +87,7 @@ namespace Dashboardify.Handlers.Users
 
             if (!string.IsNullOrEmpty(request.UserToUpdate.Name))
             {
-                if (request.UserToUpdate.Name.Length > 254)
+                if (request.UserToUpdate.Name.Length > 254 || request.UserToUpdate.Name.Length < 5)
                 {
                     errors.Add(new ErrorStatus("USERNAME_TOO_LONG"));
                     return errors;
@@ -114,7 +114,7 @@ namespace Dashboardify.Handlers.Users
                             errors.Add(new ErrorStatus("BAD_EMAIL_FORMAT"));
                             return errors;
                         }
-                        if (_usersRepository.CheckIfEmailAvailable(request.UserToUpdate.Email))
+                        if (!_usersRepository.CheckIfEmailAvailable(request.UserToUpdate.Email))
                         {
                             errors.Add(new ErrorStatus("EMAIL_ALREADY_TAKEN"));
                             return errors;

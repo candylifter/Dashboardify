@@ -9,8 +9,6 @@ namespace Dashboardify.Handlers.Items
     public class DeleteItemHandler : BaseHandler
     {
         private ItemsRepository _itemsRepository;
-        private UserSessionRepository _userSessionRepository;
-
 
         public DeleteItemHandler(string connectionString):base (connectionString)
         {

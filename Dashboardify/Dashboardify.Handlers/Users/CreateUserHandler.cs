@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using Dashboardify.Contracts;
-using Dashboardify.Contracts.Dashboards;
 using Dashboardify.Contracts.Users;
-using Dashboardify.Handlers.Dashboards;
 using Dashboardify.Handlers.Helpers;
 using Dashboardify.Models;
 using Dashboardify.Repositories;
@@ -15,19 +13,12 @@ namespace Dashboardify.Handlers.Users
     {
         private UsersRepository _userRepository;
 
-        private DashRepository _dashRepository;
 
         public CreateUserHandler(string connectionString):base(connectionString)
         {
             _userRepository = new UsersRepository(connectionString);
-
-            _dashRepository = new DashRepository(connectionString);
         }
-        /// <summary>
-        /// Creates User and default dash
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        
         public CreateUserResponse Handle(CreateUserRequest request)
         {
             var response = new CreateUserResponse();
@@ -45,7 +36,7 @@ namespace Dashboardify.Handlers.Users
                 
                 request.Password = PasswordsHelper.HashPassword(request.Password);
 
-                int User_Id=_userRepository.CreateUserAndGetHisId(new User()
+                int userId=_userRepository.CreateUserAndGetHisId(new User()
                 {
                     DateModified = currentDate,
                     DateRegistered = currentDate,
@@ -57,7 +48,7 @@ namespace Dashboardify.Handlers.Users
 
                 EmailHelper.SendEmail(request);
 
-                response.UserId = User_Id;
+                response.UserId = userId;
                 
                 return response;
             }
@@ -81,7 +72,8 @@ namespace Dashboardify.Handlers.Users
                 return errors;
             }
 
-            if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password) || string.IsNullOrEmpty(request.InvitationCode))
+            if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Email) ||
+                string.IsNullOrEmpty(request.Password) || string.IsNullOrEmpty(request.InvitationCode))
             {
                 errors.Add(new ErrorStatus("WRONG_INPUT"));
                 return errors;
@@ -101,6 +93,16 @@ namespace Dashboardify.Handlers.Users
             if (request.InvitationCode != ConfigurationManager.AppSettings["InvitationCode"])
             {
                 errors.Add(new ErrorStatus("INVITATION_CODE_DONT_MATCH"));
+                return errors;
+            }
+            if (request.Email.Length > 254 || request.Email.Length < 3)
+            {
+                errors.Add(new ErrorStatus("WRONG_EMAIL_FORMAT"));
+                return errors;
+            }
+            if (request.Username.Length < 5 || request.Username.Length > 254)
+            {
+                errors.Add(new ErrorStatus("USERNAME_MUST_BE_ATLEAST_5_CHARACTERS_LONG"));
                 return errors;
             }
             

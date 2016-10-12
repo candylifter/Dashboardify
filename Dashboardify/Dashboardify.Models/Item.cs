@@ -42,18 +42,6 @@ namespace Dashboardify.Repositories
         {
             Screenshots = new List<Screenshot>();
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return
-                string.Format(
-                    "Id: {0}, DashBoardId: {1}, Name: {2},Website: {3}, Checkinterval: {4}, IsActive: {5}, XPath: {6}, LastChecked: {7}, Created: {8}, Modified:{9}, Content: {10}",
-                    Id, DashBoardId, Name, Website, CheckInterval, IsActive, XPath, LastChecked, Created, Modified,
-                    Content);
-        }
+        
     }
 }

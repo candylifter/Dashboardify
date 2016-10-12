@@ -25,15 +25,14 @@ namespace Dashboardify.Security
 
             var user = _userSessionRepository.GetUserBySessionId(ticket);
 
+
             var sessionInfo = new SessionInfo
             {
                 User = user,
                 Session = session
             };
 
-            // Call session repository and check if session with provided ticket exist +
-            // if session is valid, get user info from user repository and format SessionInfo object +
-            // otherwise return null
+            
 
             return sessionInfo;
         }

@@ -27,7 +27,7 @@ namespace Dashboardify.Handlers.Users
             }
             try
             {
-                _userRepository.DeleteUser(request.userId);
+                _userRepository.DeleteUser(request.UserId);
 
                 return response;
             }

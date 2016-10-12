@@ -17,7 +17,7 @@ namespace Dashboardify.Handlers.Items
         {
             _itemRepository = new ItemsRepository(ConnectionString);
 
-                        _dashRepository = new DashRepository(ConnectionString);
+            _dashRepository = new DashRepository(ConnectionString);
         }
 
         public CreateItemResponse Handle(CreateItemRequest request)  // TODO NEEDS WORK
@@ -102,10 +102,10 @@ namespace Dashboardify.Handlers.Items
                 errors.Add(new ErrorStatus("NAME_NOT_DEFINED"));
             }
 
-            var UserIdByDash = _dashRepository.GetUserByDashId(request.Item.DashBoardId);
+            var userIdByDash = _dashRepository.GetUserByDashId(request.Item.DashBoardId);
             var requestUserId = request.UserId;
 
-            if (UserIdByDash != null && requestUserId != UserIdByDash.Id) //TODO pasiklausti zilvino ar good practice
+            if (userIdByDash != null && requestUserId != userIdByDash.Id) //TODO pasiklausti zilvino ar good practice
             {
                 errors.Add(new ErrorStatus("UNAUTHORIZED_ACCESS"));
             }

@@ -10,7 +10,7 @@ namespace Dashboardify.Repositories
     public class DashRepository
     {
 
-        private string _connectionString;
+        private readonly string _connectionString;
 
 
         public DashRepository(string constring)
@@ -18,16 +18,12 @@ namespace Dashboardify.Repositories
             _connectionString = constring;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="DashId"></param>
-        /// <returns></returns>
-        public DashBoard Get(int DashId)
+        
+        public DashBoard Get(int dashId)
         {
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                var query = @"SELECT
+                const string query = @"SELECT
                                  Id,
                                  UserId,
                                  IsActive,
@@ -37,37 +33,13 @@ namespace Dashboardify.Repositories
                           FROM 
                                  DashBoards 
                           WHERE 
-                                 Id = " + DashId;
+                                 Id = @dashId";
 
-                return db.Query<DashBoard>(query).SingleOrDefault();
+                return db.Query<DashBoard>(query,new {dashId}).SingleOrDefault();
             }
         }
 
-    public DashBoard GetByNameAndUserId(string name, int id) //change to email
-        {
-            using (IDbConnection db = new SqlConnection(_connectionString))
-            {
-                var query = $@"SELECT
-                                 Id,
-                                 UserId,
-                                 IsActive,
-                                 Name,
-                                 DateCreated,
-                                 DateModified 
-                          FROM 
-                                 DashBoards 
-                          WHERE 
-                                 UserId = {id} AND Name ='{name}'";
-
-                return db.Query<DashBoard>(query).SingleOrDefault();
-            }
-        }
-    
-
-        /// <summary>
-        /// Updates dashboard in dashboard table
-        /// </summary>
-        /// <param name="dash">Dashboard Object</param>
+        
         public void Update(DashBoard dash)
         {
           
@@ -75,7 +47,7 @@ namespace Dashboardify.Repositories
                                 SET IsActive=@IsActive,
                                 Name=@Name,
                                 DateModified=@Datemodified
-                            WHERE Id = {dash.Id}";
+                            WHERE Id = @Id";
             
                 using (IDbConnection db = new SqlConnection(_connectionString))
                 {
@@ -90,30 +62,29 @@ namespace Dashboardify.Repositories
 
         public int CreateAndGetId(DashBoard dashBoard)
         {
-            string query = $@"INSERT INTO dbo.DashBoards 
+            string query =
+                $@"INSERT INTO dbo.DashBoards 
                                 (UserId, 
                                 Name, 
                                 DateCreated, 
                                 DateModified)
                             VALUES 
-                                ({dashBoard.UserId}, 
-                                '{dashBoard.Name}', 
-                                '{dashBoard.DateCreated}', 
-                                '{dashBoard.DateModified}')
+                                (@UserId, 
+                                @Name, 
+                                @DateCreated, 
+                                @DateModified)
                             SELECT SCOPE_IDENTITY()";
-
+            
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                return db.Query<int>(query).SingleOrDefault();
+                return db.Query<int>(query, dashBoard).SingleOrDefault();
             }
 
         }
 
-        /// <summary>
-        /// Creates new dashboard
-        /// </summary>
-        /// <param name="dash">Dashboard</param>
-        public bool Create(DashBoard dash)
+        
+
+        public void Create(DashBoard dash)
         {
             
             string query = @"INSERT INTO dbo.DashBoards 
@@ -132,17 +103,10 @@ namespace Dashboardify.Repositories
             {
                 
                     db.Execute(query, dash);
-                    return true;
-               
-                
-            }
+             }
         }
 
-        /// <summary>
-        /// Deletes dashboard
-        /// </summary>
-        /// <param name="dashId">DashboardId</param>
-        /// <returns>bool</returns>
+        
         public bool DeleteDashboard(int userId, int id)
         {
             string deleteQuery =
@@ -160,11 +124,7 @@ namespace Dashboardify.Repositories
             }
         
 
-        /// <summary>
-        /// Gets 
-        /// </summary>
-        /// <param name="userId">Id of the user</param>
-        /// <returns>Ilist</returns>
+       
         public IList<DashBoard> GetByUserId(int userId)
         {
             string query = @"SELECT
@@ -175,12 +135,11 @@ namespace Dashboardify.Repositories
                                 DateCreated,
                                 DateModified
                                 FROM DashBoards 
-                           WHERE UserId = " + userId;
+                           WHERE UserId = @userId";
 
             using (IDbConnection db = new SqlConnection(_connectionString))
-            {   
-                    return db.Query<DashBoard>
-                      (query).ToList();
+            {
+                return db.Query<DashBoard>(query, new {userId}).ToList();
             }
         }
 
@@ -188,7 +147,7 @@ namespace Dashboardify.Repositories
         {
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                string query = $@"SELECT
+                return db.Query<User>(@"SELECT
                                 [Users].Id,
                                 [Users].Name,
                                 [Users].Password,
@@ -197,46 +156,10 @@ namespace Dashboardify.Repositories
                                 Users
                             LEFT JOIN DashBoards
                                 ON [DashBoards].UserId = [Users].Id
-                            WHERE [DashBoards].Id = '{id}'";
-
-                return db.Query<User>(query).SingleOrDefault();
+                            WHERE [DashBoards].Id = @id",new {id}).SingleOrDefault();
             }
         }
-        /// <summary>
-        /// Checks if dash exsists by name
-        /// </summary>
-        /// <param name="Userid">userId</param>
-        /// <param name="name">DashName</param>
-        /// <returns>true ir name not taken, false exsists</returns>
-        public bool CheckIfNameAvailable(int Userid, string name)
-        {
-            using (IDbConnection db = new SqlConnection(_connectionString))
-            {
-                string query =
-                    $@"SELECT
-	                                DashBoards.Name
-                                FROM DashBoards
-                                WHERE UserId = {Userid} AND DashBoards.Name = '{name}'";
-
-
-                var result = db.Query<string>(query).SingleOrDefault();
-
-                return result == null;
-            }
-        }
-
-        public bool CheckIfExistsByUserId(int id, int userId)
-        {
-            using (IDbConnection db = new SqlConnection(_connectionString))
-            {
-                string query = $@"SELECT Id
-                                 FROM DashBoards
-                                 WHERE Id = {id} AND UserId = {userId}";
-
-                var result = db.Query(query).SingleOrDefault();
-
-                return result == null;
-            }
-        }
+       
+        
     }
 }
