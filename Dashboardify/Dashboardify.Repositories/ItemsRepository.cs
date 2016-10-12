@@ -129,7 +129,7 @@ namespace Dashboardify.Repositories
                 using (IDbConnection db = new SqlConnection(_connectionString))
                 {
                     return db.Query<Item>
-                        (query,dashId).ToList();
+                        (query, new { dashId}).ToList();
                 }
           
         }
@@ -180,7 +180,7 @@ namespace Dashboardify.Repositories
                 using (IDbConnection db = new SqlConnection(_connectionString))
                 {
                     string query = "DELETE FROM Items WHERE Id= @itemId";
-                    db.Execute(query,itemId);
+                    db.Execute(query,new { itemId});
                 }
 
         }

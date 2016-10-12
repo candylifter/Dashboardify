@@ -113,8 +113,8 @@ namespace Dashboardify.Repositories
                 $@"DELETE
                    FROM 
                         DashBoards
-                   WHERE UserId ={userId} AND Id ='{id}'";
-                            
+                   WHERE UserId ={userId} AND Id ='{id}'"; // pracheckinti
+            
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
                     db.Execute(deleteQuery);

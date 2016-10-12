@@ -45,7 +45,7 @@ namespace Dashboardify.WebApi.Controllers
         }
 
         [HttpPost]
-        public HttpResponseMessage CreateItem(string ticket, int dashId, Item item)
+        public HttpResponseMessage CreateItem(string ticket, Item item)
         {
             var securityProvider = new SecurityProvider(_connectionString);
 
@@ -59,7 +59,6 @@ namespace Dashboardify.WebApi.Controllers
             var createRequest = new CreateItemRequest
             {
                 Item = item,
-                DashId = dashId,
                 UserId = sessionInfo.User.Id
 
             };

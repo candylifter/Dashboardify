@@ -52,29 +52,31 @@ namespace Dashboardify.Handlers.Items
 
         }
 
-        private void UpdateItemObject(Item origin, Item Updated)
+        private void UpdateItemObject(Item origin, Item updated)
         {
 
-            if (!(Updated.CheckInterval < 30000 && Updated.CheckInterval > 86400000))
+            if (!(updated.CheckInterval < 30000 && updated.CheckInterval > 86400000))
             {
-                origin.CheckInterval = Updated.CheckInterval;
+                origin.CheckInterval = updated.CheckInterval;
             }
 
-            if (!string.IsNullOrEmpty(Updated.Name))
+            if (!string.IsNullOrEmpty(updated.Name))
             {
-                origin.Name = Updated.Name;
+                origin.Name = updated.Name;
             }
 
-            if (Updated.IsActive != origin.IsActive)
+            if (updated.IsActive != origin.IsActive)
             {
-                origin.IsActive = Updated.IsActive;
+                origin.IsActive = updated.IsActive;
             }
-            if (Updated.NotifyByEmail != origin.NotifyByEmail)
+            if (updated.NotifyByEmail != origin.NotifyByEmail)
             {
-                origin.NotifyByEmail = Updated.NotifyByEmail;
+                origin.NotifyByEmail = updated.NotifyByEmail;
             }
 
-            
+            origin.LastChecked = updated.LastChecked;
+
+
         }
 
         private IList<ErrorStatus> Validate(UpdateItemRequest request)
