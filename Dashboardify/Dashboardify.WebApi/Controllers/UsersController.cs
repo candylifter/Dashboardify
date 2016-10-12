@@ -42,7 +42,7 @@ namespace Dashboardify.WebApi.Controllers
             return Request.CreateResponse(statusCode, response);
         }
 
-        [HttpPost]
+        [HttpGet]
         public HttpResponseMessage Create(string username, string password, string email, string invitationCode) //done
         {
             var handler = new CreateUserHandler(_connectionString);
@@ -63,14 +63,17 @@ namespace Dashboardify.WebApi.Controllers
 
             var createDashHandler = new CreateDashboardHandler(_connectionString);
 
-            createDashHandler.Handle(createDashRequest); // validation? but no user input here
-            
-            var httpStatusCode = ResolveStatusCode(response);
+            var createResponse = createDashHandler.Handle(createDashRequest);
 
-            return Request.CreateResponse(httpStatusCode, response);
+            if (createResponse.HasErrors || response.HasErrors)
+            {
+                return Request.CreateResponse(HttpStatusCode.Accepted,response);
+            }
+
+            return Request.CreateResponse(HttpStatusCode.Accepted);
         }
 
-        [HttpPost] //done
+        [HttpGet] 
         public HttpResponseMessage Delete(string ticket)
         {
             var securityProvider = new SecurityProvider(_connectionString);
@@ -85,7 +88,7 @@ namespace Dashboardify.WebApi.Controllers
             var deleteRequest = new DeleteUserRequest
             {
                 Ticket = ticket,
-                userId = sessionInfo.User.Id
+                UserId = sessionInfo.User.Id
             };
             
             var handler = new DeleteUserHandler(_connectionString);

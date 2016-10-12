@@ -8,11 +8,11 @@ namespace Dashboardify.Handlers.UserSession
 {
     public class LogoutUserHandler:BaseHandler
     {
-        public UserSessionRepository _userSessionRepository;
+        private UserSessionRepository UserSessionRepository;
 
         public LogoutUserHandler(string connectionString):base (connectionString)
         {
-            _userSessionRepository = new UserSessionRepository(connectionString);
+            UserSessionRepository = new UserSessionRepository(connectionString);
         }
 
 
@@ -28,7 +28,7 @@ namespace Dashboardify.Handlers.UserSession
             }
             try
             {
-                _userSessionRepository.DeleteUserSession(request.UserId);
+                UserSessionRepository.DeleteUserSession(request.UserId);
             }
             catch (Exception ex)
             {

@@ -10,7 +10,7 @@ namespace Dashboardify.WebApi.Controllers
 {
     public class LoginController : BaseController
     {
-        private static string _connectionString = ConfigurationManager.ConnectionStrings["GCP"].ConnectionString;
+        private readonly string _connectionString = ConfigurationManager.ConnectionStrings["GCP"].ConnectionString;
 
         [HttpPost] //done
         public HttpResponseMessage Index(LoginUserRequest request)
@@ -24,7 +24,7 @@ namespace Dashboardify.WebApi.Controllers
             return Request.CreateResponse(httpSatusCode, response);
         }
 
-        [HttpPost]
+        [HttpGet]
         public HttpResponseMessage LogOut(string ticket)
         {
             var securityProvider = new SecurityProvider(_connectionString);
@@ -36,14 +36,14 @@ namespace Dashboardify.WebApi.Controllers
                 return Request.CreateResponse(HttpStatusCode.NotAcceptable);
             }
 
-            var LogOutRequest = new LogoutUserRequest
+            var logOutRequest = new LogoutUserRequest
             {
                 UserId = sessionInfo.User.Id
             };
 
             var handler = new LogoutUserHandler(_connectionString);
 
-            var response = handler.Handle(LogOutRequest);
+            var response = handler.Handle(logOutRequest);
 
             var httpStatusCode = ResolveStatusCode(response);
 

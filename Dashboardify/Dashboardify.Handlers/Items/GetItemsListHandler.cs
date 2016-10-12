@@ -39,7 +39,6 @@ namespace Dashboardify.Handlers.Items
 
                 foreach (var item in items)
                 {
-                    //var screenshot = _screenshotRepository.GetLastByItemId(item.Id);
                     var screenshots = _screenshotRepository.GetLastsByItemId(item.Id, 15);
 
                     if (screenshots.Count > 0)

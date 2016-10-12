@@ -38,7 +38,9 @@ namespace Dashboardify.Handlers.Dashboards
             }
             catch (Exception ex)
             {
-                response.Errors.Add(new ErrorStatus("SYSTEM_ERROR"));
+                //response.Errors.Add(new ErrorStatus("SYSTEM_ERROR"));
+
+                response.Errors.Add(new ErrorStatus(ex.Message));
 
                 // LOG TO FILE ex.Message
 

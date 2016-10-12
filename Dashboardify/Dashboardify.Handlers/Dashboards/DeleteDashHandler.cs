@@ -21,9 +21,8 @@ namespace Dashboardify.Handlers.Dashboards
 
         public DeleteDashResponse Handle(DeleteDashRequest request)
         {
-            var response = new DeleteDashResponse();
+            var response = new DeleteDashResponse {Errors = Validate(request)};
 
-            response.Errors = Validate(request);
 
             if (response.HasErrors)
             {

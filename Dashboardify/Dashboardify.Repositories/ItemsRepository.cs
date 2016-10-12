@@ -10,20 +10,14 @@ namespace Dashboardify.Repositories
 {
     public class ItemsRepository //TODO: Scrnsht url panaikintas pakeisti cia
     {
-        private string _connectionString;
-        /// <summary>
-        /// Item repository
-        /// </summary>
-        /// <param name="connString">ConnectionString to DB</param>
+        private readonly string _connectionString;
+        
         public ItemsRepository(string connString)
         {
             _connectionString = connString;
         }
 
-        /// <summary>
-        /// Gets list of all items from Item table
-        /// </summary>
-        /// <returns>Items</returns>
+       
         public IList<Item> GetList()
         {
             string queryString = @"SELECT Id,
@@ -56,11 +50,7 @@ namespace Dashboardify.Repositories
 
         }
 
-        /// <summary>
-        /// Updates Item in DB, and 
-        /// </summary>
-        /// <param name="item">Item object</param>
-        /// <returns>returns number of lines affected</returns>
+      
         public int Update(Item item)
         {
         
@@ -87,11 +77,7 @@ namespace Dashboardify.Repositories
                 }
         }
 
-        /// <summary>
-        /// Gets single item
-        /// </summary>
-        /// <param name="itemId">Item Id attribute</param>
-        /// <returns>Returns all data of selected item</returns>
+        
         public Item Get(int itemId)
         {
             
@@ -120,11 +106,6 @@ namespace Dashboardify.Repositories
             
         }
 
-        /// <summary>
-        /// Returns List of items in same dashboard
-        /// </summary>
-        /// <param name="dashId">Dashboard Id</param>
-        /// <returns>List of all items in same dash</returns>
         public IList<Item> GetByDashboardId(int dashId)
         {
             string query = @"SELECT
@@ -143,20 +124,17 @@ namespace Dashboardify.Repositories
                                 Modified, 
                                 Content  
                              FROM Items 
-                                 WHERE DashBoardId = " + dashId.ToString();
+                                 WHERE DashBoardId = @dashId";
             
                 using (IDbConnection db = new SqlConnection(_connectionString))
                 {
                     return db.Query<Item>
-                        (query).ToList();
+                        (query, new { dashId}).ToList();
                 }
           
         }
 
-        /// <summary>
-        /// CreatesItem
-        /// </summary>
-        /// <param name="item">Item object</param>
+       
         public void Create(Item item)
         {
             
@@ -196,17 +174,13 @@ namespace Dashboardify.Repositories
            
         }
 
-        /// <summary>
-        /// Deletes item by id
-        /// </summary>
-        /// <param name="itemId">ItemId</param>
-        /// <returns>Number of rows affected</returns>
+      
         public void Delete(int itemId)
         { 
                 using (IDbConnection db = new SqlConnection(_connectionString))
                 {
-                    string query = "DELETE FROM Items WHERE Id= " + itemId;
-                    db.Execute(query);
+                    string query = "DELETE FROM Items WHERE Id= @itemId";
+                    db.Execute(query,new { itemId});
                 }
 
         }

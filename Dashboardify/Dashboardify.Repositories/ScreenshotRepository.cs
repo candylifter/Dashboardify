@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -10,66 +9,17 @@ namespace Dashboardify.Repositories
 {
     public class ScreenshotRepository
     {
-        private string _connectionString;
+        private readonly string _connectionString;
 
         public ScreenshotRepository(string connectionString)
         {
-            this._connectionString = connectionString;
+            _connectionString = connectionString;
         }
 
-        public Screenshot GetLastByItemId(int ItemId)
+ 
+        public void Create(Screenshot screen)
         {
-            
-                    using (IDbConnection db = new SqlConnection(_connectionString))
-                    {
-                        return db.Query<Screenshot>(@"SELECT
-	                                                    TOP 1
-	                                                    Id,
-	                                                    ItemId,
-	                                                    ScrnshtURL,
-	                                                    DateTaken
-                                                    FROM 
-	                                                    ScreenShots 
-                                                    WHERE 
-	                                                    ItemId = @ItemId
-                                                    ORDER BY 
-	                                                    DateTaken DESC", new { ItemId }).SingleOrDefault();
-                    }
-               
-            
-
-           
-
-        }//Done Debuged
-
-        public IList<Screenshot> GetAll()
-        {
-            string query = @"SELECT
-                                Id, 
-                                ItemId,
-                                ScrnshtURL,
-                                DateTaken
-                            FROM 
-                                ScreenShots";
-
-            using (IDbConnection db = new SqlConnection(_connectionString))
-            {
-                
-                    return db.Query<Screenshot>
-                        (query).ToList();
-               
-            }
-
-        }//Done Debuged
-
-        public bool Create(Screenshot screen)
-        {
-            //if (screen == null)
-            //{
-            //    throw new Exception("Null object");                
-            //}
-            
-                string query = @"INSERT INTO dbo.ScreenShots                               
+            const string query = @"INSERT INTO dbo.ScreenShots                               
                                     (ItemId,
                                     ScrnshtURL,
                                     DateTaken) 
@@ -77,73 +27,28 @@ namespace Dashboardify.Repositories
                                     (@ItemId,
                                     @ScrnshtURL,
                                     @DateTaken)";
-                
-                    using (IDbConnection db = new SqlConnection(_connectionString))
+
+            using (IDbConnection db = new SqlConnection(_connectionString))
                     {
-                        var result = db.Execute(query, screen);
-                        return true;
+                         db.Execute(query, screen);
                     }
-               
-            
-        } //Done
+        }
 
-        public bool Delete(int screenId)
-        {
-           
-            
-                
-                string query = @"DELETE FROM ScreenShots
-                                WHERE Id =" + screenId.ToString();
-               
-                    using (IDbConnection db = new SqlConnection(_connectionString))
-                    {
-                        db.Execute(query, screenId);
-                    }
-                    return true;
-                
-                
-            
-            
-        } // Done
 
-        public Screenshot Get(int id)
-        {
-           
-            
-                string query = @"SELECT
-                                   Id,
-                                   ItemId,
-                                   ScrnshtURL, 
-                                   DateTaken
-                               FROM 
-                                    ScreenShots
-                                WHERE Id = " + id.ToString();
-
-                
-                    using (IDbConnection db = new SqlConnection(_connectionString))
-                    {
-                        return db.Query<Screenshot>(query, id).SingleOrDefault();
-                    }
-                              
-                
-            
-            
-        } //Done
-
-        public IList<Screenshot> GetLastsByItemId(int itemId, int count)
+        public IList<Screenshot> GetLastsByItemId(int itemId, int count) ////count statinis tai px
         {
             string query = @"SELECT TOP " + count + @" Id,ItemId,ScrnshtUrl,DateTaken 
                             FROM 
                                 ScreenShots 
                             WHERE 
-                                ItemId = "+ itemId +@" 
+                                ItemId =@itemId 
                             ORDER BY 
                                 DateTaken DESC";
 
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                var result = db.Query<Screenshot>(query, itemId).ToList();
-                return result;
+                return db.Query<Screenshot>(query, new {itemId}).ToList();
+              
             }
         }
 

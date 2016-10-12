@@ -17,14 +17,7 @@ namespace Dashboardify.Models
         public DateTime DateRegistered { get; set; }
 
         public DateTime DateModified { get; set; }
-
-        public override string ToString()
-        {
-            return
-                String.Format(
-                    "Id : {0} , Name: {1}, Password: {2}, Email: {3}, IsActive: {4}, DateRegistered: {5}, DateModified: {6}",
-                    Id, Name, Password, Email, IsActive, DateRegistered, DateModified);
-        }
+        
     }
 
     
