@@ -39,7 +39,7 @@ $screenshot-width: calc(#{$drawer-width} - #{$drawer-padding});
 }
 
 .screenshot-slider__item__image {
-  max-height: 300px;
+  // max-height: 300px;
   object-fit: cover;
   object-position: center;
   width: $screenshot-width;

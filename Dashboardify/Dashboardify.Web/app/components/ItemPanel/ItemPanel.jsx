@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
+import ImageZoom from 'react-medium-image-zoom'
 
 import Paper from 'material-ui/Paper'
 import Drawer from 'material-ui/Drawer'
@@ -85,7 +86,12 @@ class ItemPanel extends React.Component {
               />
             <div className='item-panel'>
               <Paper className='item-panel__image'>
-                <img src={item.img} alt={`Screenshot of ${item.name}`} />
+                <ImageZoom
+                  image={{
+                    src: `${item.img}?${Math.random()}`,
+                    alt: `Screenshot of ${item.name}`
+                  }}
+                />
               </Paper>
               <div className='item-panel__url'>
                 <FlatButton href={item.url} target='_blank' label='Visit website' className='item-panel__button' />
