@@ -13,6 +13,7 @@ class Dashboard extends React.Component {
     let { dashboardId } = this.props.routeParams
     let { dispatch } = this.props
 
+    dispatch(ItemsActions.removeItemError())
     dispatch(CheckIntervalsActions.addCheckIntervals(CheckIntervalsAPI.getCheckIntervals()))
     dispatch(ItemsActions.fetchItems(parseInt(dashboardId)))
   }

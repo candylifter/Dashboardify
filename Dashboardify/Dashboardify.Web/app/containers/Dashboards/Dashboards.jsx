@@ -20,6 +20,7 @@ class Dashboards extends React.Component {
   componentWillMount () {
     let { dispatch } = this.props
 
+    dispatch(DashboardsActions.removeError())
     dispatch(DashboardsActions.fetchDashboards())
   }
 

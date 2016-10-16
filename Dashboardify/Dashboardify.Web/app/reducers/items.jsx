@@ -117,6 +117,12 @@ const itemsReducer = (state = initialState, action) => {
         isPosting: false,
         postError: action.err.response
       }
+    case 'REMOVE_ITEM_ERROR':
+      return {
+        ...state,
+        error: undefined,
+        postError: undefined
+      }
     default:
       return state
   }

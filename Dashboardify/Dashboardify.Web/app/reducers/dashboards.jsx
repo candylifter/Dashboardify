@@ -43,7 +43,8 @@ const dashboardsReducer = (state = initialState, action) => {
     case 'REMOVE_DASHBOARDS_ERROR':
       return {
         ...state,
-        error: undefined
+        error: undefined,
+        postError: undefined
       }
     case 'START_CREATE_DASHBOARD':
       return {

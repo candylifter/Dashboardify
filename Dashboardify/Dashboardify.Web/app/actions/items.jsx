@@ -156,5 +156,11 @@ export default {
       id,
       checkInterval
     }
+  },
+
+  removeItemError () {
+    return {
+      type: 'REMOVE_ITEM_ERROR'
+    }
   }
 }
