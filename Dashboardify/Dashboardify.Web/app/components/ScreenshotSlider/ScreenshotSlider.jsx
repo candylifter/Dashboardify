@@ -15,10 +15,11 @@ class ScreenshotSlider extends React.Component {
               <Paper key={index} className='screenshot-slider__item'>
                 <ImageZoom
                   image={{
-                    src: `${screenshot.ScrnshtURL}?${Math.random()}`,
+                    src: screenshot.ScrnshtURL,
                     alt: 'Older screenshot',
                     className: 'screenshot-slider__item__image'
                   }}
+                  shouldReplaceImage={false}
                 />
                 <div className='screenshot-slider__item__header'>
                   <span>Screenshot taken {moment(screenshot.DateTaken).fromNow()}</span>

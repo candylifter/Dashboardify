@@ -88,9 +88,10 @@ class ItemPanel extends React.Component {
               <Paper className='item-panel__image'>
                 <ImageZoom
                   image={{
-                    src: `${item.img}?${Math.random()}`,
+                    src: item.img,
                     alt: `Screenshot of ${item.name}`
                   }}
+                  shouldReplaceImage={false}
                 />
               </Paper>
               <div className='item-panel__url'>
