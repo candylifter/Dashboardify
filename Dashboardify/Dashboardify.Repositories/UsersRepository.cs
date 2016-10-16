@@ -1,47 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Dashboardify.Models;
 using System.Data.SqlClient;
 using System.Data;
-using System.Net.Http;
 using Dapper;
 
 namespace Dashboardify.Repositories
 {
     public class UsersRepository
     {
-        private string _connectionString;
+        private readonly string _connectionString;
 
         public UsersRepository(string connectionString)
         {
-            this._connectionString = connectionString;
-        }
-
-        public IList<User> GetList()
-        {
-            string query = @"SELECT Id,
-                                Name,
-                                Password,
-                                Email,
-                                IsActive,
-                                DateRegistered,
-                                DateModified
-                            FROM 
-                                Users";
-            using (IDbConnection db = new SqlConnection(_connectionString))
-            {
-                try
-                {
-                    return db.Query<User>
-                        (query).ToList();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    throw;
-                }
-            }
+            _connectionString = connectionString;
         }
 
         public void Update(User user)
@@ -124,38 +96,27 @@ namespace Dashboardify.Repositories
                                 DateRegistered, 
                                 DateModified) 
                            VALUES 
-                                ('{user.Name}',
-                                '{user.Password}',
-                                '{user.Email}',
-                                '{user.DateRegistered}',
-                                '{user.DateModified}')
-                            
+                                (@Name,
+                                @Password,
+                                @Email,
+                                @DateRegistered,
+                                @DateModified)
+                       
                                 SELECT SCOPE_IDENTITY()";
 
 
             using (IDbConnection db = new SqlConnection(_connectionString))
                 {
-                    //db.Execute(query, user);
-                    return db.Query<int>(query).SingleOrDefault();
+                   return db.Query<int>(query, user).SingleOrDefault();
                 }
             
           
         }
 
-        public int GetLatestUserId()
-        {
-            using (IDbConnection db = new SqlConnection(_connectionString))
-            {
-                string query = $@"SELECT SCOPE_IDENTITY() FROM USERS";
-
-                return db.Query<int>(query).SingleOrDefault();
-            }
-        }
-
         public void DeleteUser(int userId)
         {
             
-            string query = $"DELETE FROM Users WHERE Id = {userId}";
+            string query = $"DELETE FROM Users WHERE Id = {userId}"; // nebus injection, nes po security provider
 
 
                 using (IDbConnection db = new SqlConnection(_connectionString))
@@ -165,12 +126,7 @@ namespace Dashboardify.Repositories
             
 
         }
-        /// <summary>
-        /// Returns User object by query null if does not exsists
-        /// </summary>
-        /// <param name="username"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
+       
         public User ReturnIfExsists(string email, string password)
         {
             using (IDbConnection db = new SqlConnection(_connectionString))
@@ -196,11 +152,7 @@ namespace Dashboardify.Repositories
                 return result;
             }
         }
-        /// <summary>
-        /// Return email by query
-        /// </summary>
-        /// <param name="email"></param>
-        /// <returns></returns>
+       
         public string ReturnEmail(string email)
         {
             using (IDbConnection db = new SqlConnection(_connectionString))
@@ -218,8 +170,6 @@ namespace Dashboardify.Repositories
                 return result;
             }
         }
-
-
 
         public bool CheckIfEmailAvailable(string email)
         {

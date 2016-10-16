@@ -28,35 +28,20 @@ namespace Dashboardify.Handlers.Dashboards
             }
             try
             {
+                var dateNow = DateTime.Now;
 
-                if (request.DashName != "Hello_DashBoardify")
+                int dashId =_dashRepository.CreateAndGetId(new DashBoard
                 {
-                    int dashId = _dashRepository.CreateAndGetId(new DashBoard
-                    {
-                        Name = request.DashName,
-                        UserId = request.UserId,
-                        DateCreated = DateTime.Now,
-                        DateModified = DateTime.Now,
-                        IsActive = true
-                    });
+                    Name = request.DashName,
+                    DateModified = dateNow,
+                    DateCreated = dateNow,
+                    UserId = request.UserId
+                 });
 
-                   
-                    response.Dashboard = _dashRepository.Get(dashId);
 
-                }
+                response.Dashboard = _dashRepository.Get(dashId);
 
-                else
-                {
-                    _dashRepository.Create(new DashBoard
-                    {
-                        Name = request.DashName,
-                        UserId = request.UserId,
-                        DateCreated = DateTime.Now,
-                        DateModified = DateTime.Now
-                    });
-                    
-                }
-                
+
             }
             catch (Exception ex)
             {

@@ -13,7 +13,7 @@ namespace Dashboardify.WebApi.Controllers
     {
         private static string _connectionString = ConfigurationManager.ConnectionStrings["GCP"].ConnectionString;
 
-        [HttpPost]
+        [HttpGet]
         public HttpResponseMessage GetList(int dashboardId, string ticket)
         {
 
@@ -45,7 +45,7 @@ namespace Dashboardify.WebApi.Controllers
         }
 
         [HttpPost]
-        public HttpResponseMessage CreateItem(string ticket, int dashId, Item item)
+        public HttpResponseMessage CreateItem(string ticket, Item item)
         {
             var securityProvider = new SecurityProvider(_connectionString);
 
@@ -59,7 +59,6 @@ namespace Dashboardify.WebApi.Controllers
             var createRequest = new CreateItemRequest
             {
                 Item = item,
-                DashId = dashId,
                 UserId = sessionInfo.User.Id
 
             };
@@ -100,7 +99,7 @@ namespace Dashboardify.WebApi.Controllers
             return Request.CreateResponse(httpStatusCode, response);
         }
 
-        [HttpPost]
+        [HttpGet]
         public HttpResponseMessage Delete(string ticket, int itemId)
         {
             var securityProvider = new SecurityProvider(_connectionString);

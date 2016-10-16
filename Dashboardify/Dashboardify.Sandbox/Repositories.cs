@@ -8,68 +8,16 @@
 //    {
 //        public void Do()
 //        {
-//            string connectionString = "Data Source=23.251.133.254;Initial Catalog=DashBoardify;User id=DashboardifyUser;Password=xc6AjzBx6QA2pKUU";
+//            string connectionString =
+//                "Data Source=23.251.133.254;Initial Catalog=DashBoardify;User id=DashboardifyUser;Password=xc6AjzBx6QA2pKUU";
 
 
-//            // PrintUsers(connectionString);
 
-//            //  CreateUser(connectionString);
 
-//            //PrintItems(connectionString);
-
-//            //UpdateItem(connectionString);
-
-//            //GetItem(connectionString);
-
-//            //GetByDashId(connectionString);
-
-//            //CreateItem(connectionString);
-
-//            //UpdateUser(connectionString);
-
-//            //GetDashList(connectionString);
-
-//            //GetDash(connectionString);
-
-//            //UpdateDash(connectionString);
-
-//            //CreateDash(connectionString);
-
-//            //GetDashByUserId(connectionString);
-
-//            //PrintAllScreens(connectionString);
-
-//            //GetScreen(connectionString);
-
-//            //CreateScreenShoot(connectionString);
-
-//            //DeleteScren(connectionString);
-
-//            //PrinScreen(connectionString);
-
-//            //DeleteUser(connectionString);
-
-//            //DeleteUser(connectionString);
-
-//            //DeleteDash(connectionString);
-
-//            //DeleteItem(connectionString);
-
-//            // TestAddSession(connectionString);
-
-//            //TestReturnIfExsists(connectionString);
-
-//            //TestReturnIfValidSession(connectionString);
-            
-//            //TestGetBySessionId(connectionString);
-
-//            //TestDeleteSession(connectionString);
-
-//            TestGetEmail(connectionString);
-
-            
-//            Console.ReadKey();
 //        }
+
+        
+
 
 //        public void PrintUsers(string connectionString)
 //        {
@@ -214,7 +162,7 @@
 //            var UserUpdate = userRepo.Get(1);
 //            UserUpdate.Email = "Maestro@Irmantas.com";
 //            UserUpdate.Id = 1;
-            
+
 //            UserUpdate.Name = "UniteTest";
 //            Console.WriteLine(UserOrigin.ToString());
 //            Console.WriteLine(UserUpdate.ToString());
@@ -374,7 +322,7 @@
 //                Expires = DateTime.Now
 //            };
 
-            
+
 //            if(userSesRep.AddSession(sesija)==true)
 //            {
 //                Console.WriteLine("Succes");
@@ -402,7 +350,7 @@
 //            else
 //            {
 //                Console.WriteLine("User does not exsist");   
-                
+
 //            }
 //        }
 

@@ -14,7 +14,7 @@ namespace Dashboardify.WebApi.Controllers
     {
         private readonly string _connectionString = ConfigurationManager.ConnectionStrings["GCP"].ConnectionString;
         
-        [HttpPost]
+        [HttpGet]
         public HttpResponseMessage GetList(string ticket)
         {
             
@@ -29,14 +29,14 @@ namespace Dashboardify.WebApi.Controllers
                 return Request.CreateResponse(HttpStatusCode.NotAcceptable);
             }
 
-            var GetListRequest = new GetDashboardsRequest
+            var getListRequest = new GetDashboardsRequest
             {
                 Id = sessionInfo.User.Id
             };
 
             var handler = new GetDashboardsHandler(_connectionString);
 
-            var response = handler.Handle(GetListRequest);
+            var response = handler.Handle(getListRequest);
 
             var statusCode = ResolveStatusCode(response);
 
@@ -56,7 +56,7 @@ namespace Dashboardify.WebApi.Controllers
                 return Request.CreateResponse(HttpStatusCode.NotAcceptable);
             }
 
-            var UpdateRequest = new UpdateDashboardRequest
+            var updateRequest = new UpdateDashboardRequest
             {
                 DashBoard = dash, //TODO FIX HERE
                 UserId = sessionInfo.User.Id
@@ -64,7 +64,7 @@ namespace Dashboardify.WebApi.Controllers
 
             var handler = new UpdateDashBoardHandler(_connectionString);
 
-            var response = handler.Handle(UpdateRequest);
+            var response = handler.Handle(updateRequest);
 
             var statusCode = ResolveStatusCode(response);
 
@@ -99,7 +99,7 @@ namespace Dashboardify.WebApi.Controllers
 
         }
 
-        [HttpPost]
+        [HttpGet]
         public HttpResponseMessage Delete(string ticket, int id)
         {
             var securityProvider = new SecurityProvider(_connectionString);
@@ -114,7 +114,7 @@ namespace Dashboardify.WebApi.Controllers
             var deleteRequest = new DeleteDashRequest
             {
                 DashboardId = id,
-                UserId = sessionInfo.User.Id
+                UserId = sessionInfo.User.Id //fix
             };
 
             var handler = new DeleteDashHandler(_connectionString);

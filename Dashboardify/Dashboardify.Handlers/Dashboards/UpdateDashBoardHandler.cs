@@ -11,8 +11,6 @@ namespace Dashboardify.Handlers.Dashboards
     {
         private DashRepository _dashRepository;
 
-        private UserSessionRepository _userSessionRepository;
-
         public UpdateDashBoardHandler(string connectionString) :base(connectionString)
         {
             _dashRepository = new DashRepository(connectionString);
