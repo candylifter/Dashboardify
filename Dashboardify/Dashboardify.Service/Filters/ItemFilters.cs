@@ -85,7 +85,7 @@ namespace Dashboardify.Service
 
             foreach (var item in items)
             {
-                if (!item.UserNotified && item.IsActive) 
+                if (item.NotifyByEmail) 
                 {
                     var user = _itemsRepository.GetUserByItemId(item.Id);
 
