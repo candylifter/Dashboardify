@@ -14,11 +14,7 @@ export default {
   },
 
   logout (ticket) {
-    let data = {
-      Ticket: ticket
-    }
-
-    return axios.post(`${rootDomain}/login/LogOut`, data)
+    return axios.get(`${rootDomain}/login/LogOut?ticket=${ticket}`)
   },
 
   isLoggedIn () {

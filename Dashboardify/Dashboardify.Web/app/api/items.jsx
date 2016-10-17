@@ -6,12 +6,9 @@ const rootDomain = `http://${window.location.hostname}/api`
 
 export default {
   fetchItems (dashboardId) {
-    let data = {
-      DashboardId: dashboardId,
-      Ticket: Cookies.get('ticket')
-    }
+    let ticket = Cookies.get('ticket')
 
-    return axios.post(`${rootDomain}/Items/GetList`, data)
+    return axios.get(`${rootDomain}/Items/GetList?ticket=${ticket}&dashboardId=${dashboardId}`)
   },
 
   mapBackendData (data) {
@@ -47,25 +44,23 @@ export default {
   },
 
   updateItem (item) {
+    let ticket = Cookies.get('ticket')
+
     let data = {
       CheckInterval: item.checkInterval,
-      ItemId: item.id,
+      Id: item.id,
       Name: item.name,
       IsActive: item.isActive,
-      NotifyByEmail: item.notifyByEmail,
-      Ticket: Cookies.get('ticket')
+      NotifyByEmail: item.notifyByEmail
     }
 
-    return axios.post(`${rootDomain}/Items/Update`, data)
+    return axios.post(`${rootDomain}/Items/Update?ticket=${ticket}`, data)
   },
 
   deleteItem (id) {
-    let data = {
-      Ticket: Cookies.get('ticket'),
-      ItemId: id
-    }
+    let ticket = Cookies.get('ticket')
 
-    return axios.post(`${rootDomain}/Items/Delete`, data)
+    return axios.get(`${rootDomain}/Items/Delete?ticket=${ticket}&itemId=${id}`)
   },
 
   toggleItem (id, state) {
