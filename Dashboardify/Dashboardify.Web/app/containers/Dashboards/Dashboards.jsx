@@ -28,7 +28,7 @@ class Dashboards extends React.Component {
     let { dispatch, error } = this.props
 
     if (error !== undefined) {
-      if (error.status === 400) {
+      if (error.status === 401) {
         dispatch(AuthActions.logout())
         hashHistory.push('/login')
       }

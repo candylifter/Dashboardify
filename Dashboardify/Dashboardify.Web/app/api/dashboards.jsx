@@ -22,28 +22,20 @@ export default {
   },
 
   fetchDashboards () {
-    let data = {
-      Ticket: Cookies.get('ticket')
-    }
+    let ticket = Cookies.get('ticket')
 
-    return axios.post(`${rootDomain}/Dashboards/GetList`, data)
+    return axios.get(`${rootDomain}/Dashboards/GetList?ticket=${ticket}`)
   },
 
   createDashboard (name) {
-    let data = {
-      Ticket: Cookies.get('ticket'),
-      DashName: name
-    }
+    let ticket = Cookies.get('ticket')
 
-    return axios.post(`${rootDomain}/Dashboards/Create`, data)
+    return axios.get(`${rootDomain}/Dashboards/Create?ticket=${ticket}&dashName=${name}`)
   },
 
   deleteDashboard (id) {
-    let data = {
-      Ticket: Cookies.get('ticket'),
-      DashboardId: id
-    }
+    let ticket = Cookies.get('ticket')
 
-    return axios.post(`${rootDomain}/Dashboards/Delete`, data)
+    return axios.get(`${rootDomain}/Dashboards/Delete/${id}?ticket=${ticket}`)
   }
 }
