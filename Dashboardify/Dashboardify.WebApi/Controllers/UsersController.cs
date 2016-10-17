@@ -42,17 +42,17 @@ namespace Dashboardify.WebApi.Controllers
             return Request.CreateResponse(statusCode, response);
         }
 
-        [HttpGet]
-        public HttpResponseMessage Create(string username, string password, string email, string invitationCode) //done
+        [HttpPost]
+        public HttpResponseMessage Create(User user, string inviteCode) //done
         {
             var handler = new CreateUserHandler(_connectionString);
 
             var response = handler.Handle(new CreateUserRequest
             {
-                Email = email,
-                Password = password,
-                Username = username,
-                InvitationCode = invitationCode
+                Email = user.Email,
+                Password = user.Password,
+                Username = user.Name,
+                InvitationCode = inviteCode
             });
 
             var createDashRequest = new CreateDashboardRequest

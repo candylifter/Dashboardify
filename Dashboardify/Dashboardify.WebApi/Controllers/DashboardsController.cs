@@ -71,7 +71,7 @@ namespace Dashboardify.WebApi.Controllers
             return Request.CreateResponse(statusCode, response);
         }
 
-        [HttpPost]
+        [HttpGet]
         public HttpResponseMessage Create(string ticket, string dashName)
         {
             var securityProvider = new SecurityProvider(_connectionString);
