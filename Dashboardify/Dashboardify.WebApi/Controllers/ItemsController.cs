@@ -11,7 +11,7 @@ namespace Dashboardify.WebApi.Controllers
 {
     public class ItemsController : BaseController
     {
-        private static string _connectionString = ConfigurationManager.ConnectionStrings["GCP"].ConnectionString;
+        private readonly string _connectionString = ConfigurationManager.ConnectionStrings["GCP"].ConnectionString;
 
         [HttpGet]
         public HttpResponseMessage GetList(int dashboardId, string ticket)
@@ -25,7 +25,7 @@ namespace Dashboardify.WebApi.Controllers
 
             if (sessionInfo == null)
             {
-                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
 
             var getListRequest = new GetItemsListRequest
@@ -53,7 +53,7 @@ namespace Dashboardify.WebApi.Controllers
 
             if (sessionInfo == null)
             {
-                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
 
             var createRequest = new CreateItemRequest
@@ -81,7 +81,7 @@ namespace Dashboardify.WebApi.Controllers
 
             if (sessionInfo == null)
             {
-                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
 
             var updateRequest = new UpdateItemRequest
@@ -108,7 +108,7 @@ namespace Dashboardify.WebApi.Controllers
 
             if (sessionInfo == null)
             {
-                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
 
             var deleteRequest = new DeleteItemRequest

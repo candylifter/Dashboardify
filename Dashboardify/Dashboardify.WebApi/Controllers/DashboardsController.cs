@@ -26,7 +26,7 @@ namespace Dashboardify.WebApi.Controllers
             if (sessionInfo == null)
             {
                 
-                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
 
             var getListRequest = new GetDashboardsRequest
@@ -53,7 +53,7 @@ namespace Dashboardify.WebApi.Controllers
 
             if (sessionInfo == null)
             {
-                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
 
             var updateRequest = new UpdateDashboardRequest
@@ -80,7 +80,7 @@ namespace Dashboardify.WebApi.Controllers
 
             if (sessionInfo == null)
             {
-                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
 
             var deleteRequest = new CreateDashboardRequest
@@ -108,7 +108,7 @@ namespace Dashboardify.WebApi.Controllers
 
             if (sessionInfo == null)
             {
-                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
 
             var deleteRequest = new DeleteDashRequest

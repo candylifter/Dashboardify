@@ -25,7 +25,7 @@ namespace Dashboardify.WebApi.Controllers
 
             if (sessionInfo == null)
             {
-                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
             var updateRequest = new UpdateUserRequest
             {
@@ -82,7 +82,7 @@ namespace Dashboardify.WebApi.Controllers
 
             if (sessionInfo == null)
             {
-                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
 
             var deleteRequest = new DeleteUserRequest

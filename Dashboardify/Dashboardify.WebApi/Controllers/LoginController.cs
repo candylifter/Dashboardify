@@ -33,7 +33,7 @@ namespace Dashboardify.WebApi.Controllers
 
             if (sessionInfo == null)
             {
-                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
 
             var logOutRequest = new LogoutUserRequest

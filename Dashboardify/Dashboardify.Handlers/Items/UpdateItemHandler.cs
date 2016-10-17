@@ -32,7 +32,8 @@ namespace Dashboardify.Handlers.Items
 
                 if (item == null)
                 {
-                    throw new Exception("ITEM_NOT_FOUND");
+                    response.Errors.Add(new ErrorStatus("ITEM_NOT_FOUND"));
+                    return response;
                 }
 
                 UpdateItemObject(item, request.Item);
@@ -41,9 +42,8 @@ namespace Dashboardify.Handlers.Items
 
                 return response;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
                 response.Errors.Add(new ErrorStatus("BAD_REQUEST"));
 
                 return response;
@@ -55,11 +55,11 @@ namespace Dashboardify.Handlers.Items
         private void UpdateItemObject(Item origin, Item updated)
         {
 
-            if (!(updated.CheckInterval < 30000 && updated.CheckInterval > 86400000))
+            if (updated.CheckInterval == 0)
             {
-                origin.CheckInterval = updated.CheckInterval;
+                origin.CheckInterval = origin.CheckInterval;
             }
-
+            
             if (!string.IsNullOrEmpty(updated.Name))
             {
                 origin.Name = updated.Name;
@@ -73,10 +73,7 @@ namespace Dashboardify.Handlers.Items
             {
                 origin.NotifyByEmail = updated.NotifyByEmail;
             }
-
-            origin.LastChecked = updated.LastChecked;
-
-
+            
         }
 
         private IList<ErrorStatus> Validate(UpdateItemRequest request)
@@ -105,11 +102,14 @@ namespace Dashboardify.Handlers.Items
                 return errors;
             }
 
-            
-            if (request.Item.CheckInterval < 30000 && request.Item.CheckInterval > 86400000)
+
+            if (request.Item.CheckInterval != 0)
             {
-                errors.Add(new ErrorStatus("INVALID_CHECK_INTERVAL"));
-                return errors;
+                if (request.Item.CheckInterval < 30000 || request.Item.CheckInterval > 86400000)
+                {
+                    errors.Add(new ErrorStatus("INVALID_CHECK_INTERVAL"));
+                    return errors;
+                }
             }
 
             var ownerUser = _itemRepository.GetUserByItemId(request.Item.Id);
