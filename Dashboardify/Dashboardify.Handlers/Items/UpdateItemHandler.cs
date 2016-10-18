@@ -73,7 +73,8 @@ namespace Dashboardify.Handlers.Items
             {
                 origin.NotifyByEmail = updated.NotifyByEmail;
             }
-            
+            origin.CheckInterval = origin.CheckInterval; // TODO check at home
+
         }
 
         private IList<ErrorStatus> Validate(UpdateItemRequest request)
