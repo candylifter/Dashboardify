@@ -67,10 +67,10 @@ namespace Dashboardify.WebApi.Controllers
 
             if (createResponse.HasErrors || response.HasErrors)
             {
-                return Request.CreateResponse(HttpStatusCode.Accepted,response);
+                return Request.CreateResponse(HttpStatusCode.BadRequest,response);
             }
 
-            return Request.CreateResponse(HttpStatusCode.Accepted);
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         [HttpGet] 
