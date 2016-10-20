@@ -55,9 +55,9 @@ namespace Dashboardify.Handlers.Items
         private void UpdateItemObject(Item origin, Item updated)
         {
 
-            if (updated.CheckInterval == 0)
+            if (updated.CheckInterval != 0)
             {
-                origin.CheckInterval = origin.CheckInterval;
+                origin.CheckInterval = updated.CheckInterval;
             }
             
             if (!string.IsNullOrEmpty(updated.Name))
@@ -73,7 +73,6 @@ namespace Dashboardify.Handlers.Items
             {
                 origin.NotifyByEmail = updated.NotifyByEmail;
             }
-            origin.CheckInterval = origin.CheckInterval; // TODO check at home
 
         }
 
