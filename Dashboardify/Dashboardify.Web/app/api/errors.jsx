@@ -7,6 +7,12 @@ export default {
         return 'Auth error, relog and try again'
       case 'DASHBOARD_NOT_DEFINED':
         return 'Dashboard has to have a name'
+      case 'WRONG_EMAIL_FORMAT':
+        return 'Email has wrong format, please try a valid one'
+      case 'USERNAME_MUST_BE_ATLEAST_5_CHARACTERS_LONG':
+        return 'Name has to be atleast 5 characters long'
+      case 'EMAIL_ALREADY_TAKEN':
+        return 'Email is already taken'
       case 'USER_NOT_DEFINED':
         return 'User has to have a name'
       case 'NAME_ALREADY_EXISTS':
