@@ -60,18 +60,6 @@ namespace Dashboardify.Handlers.Items
         {
             var errors = new List<ErrorStatus>();
 
-            if (IsRequestNull(request))
-            {
-                errors.Add(new ErrorStatus("BAD_REQUEST"));
-                return errors;
-            }
-
-            if (IsRequestNull(request.Item))
-            {
-                errors.Add(new ErrorStatus("ITEM_NOT_DEFINED"));
-                return errors;
-            }
-
             if (request.Item.DashBoardId == 0)
             {
                 errors.Add(new ErrorStatus("DASHBOARDID_NOT_DEFINED"));

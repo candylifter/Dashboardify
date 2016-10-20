@@ -66,12 +66,6 @@ namespace Dashboardify.Handlers.Users
         {
             var errors = new List<ErrorStatus>();
 
-            if (IsRequestNull(request))
-            {
-                errors.Add(new ErrorStatus("BAD_REQUEST"));
-                return errors;
-            }
-
             if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Email) ||
                 string.IsNullOrEmpty(request.Password) || string.IsNullOrEmpty(request.InvitationCode))
             {

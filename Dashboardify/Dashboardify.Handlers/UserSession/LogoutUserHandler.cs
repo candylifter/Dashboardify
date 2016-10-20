@@ -41,13 +41,6 @@ namespace Dashboardify.Handlers.UserSession
         private IList<ErrorStatus> Validate(LogoutUserRequest request)
         {
             var errors = new List<ErrorStatus>();
-
-            if (IsRequestNull(request))
-            {
-                errors.Add(new ErrorStatus("WRONG_REQUEST"));
-                return errors;
-            }
-
             
             return errors;
         }
