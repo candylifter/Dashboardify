@@ -23,12 +23,11 @@ export default {
 
   register (name, email, password, invitationCode) {
     let data = {
-      Username: name,
+      Name: name,
       Email: email,
-      Password: password,
-      InvitationCode: invitationCode
+      Password: password
     }
 
-    return axios.post(`${rootDomain}/Users/Create`, data)
+    return axios.post(`${rootDomain}/Users/Create?inviteCode=${invitationCode}`, data)
   }
 }
