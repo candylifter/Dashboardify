@@ -25,6 +25,9 @@ namespace Dashboardify.Service
 
             _timer = new Timer(Int32.Parse(ConfigurationManager.AppSettings["interval"])) { AutoReset = true };
             _timer.Elapsed += TimeElapsedEventHandler;
+
+            // Dev
+            //DoAction();
         }
 
         public void TimeElapsedEventHandler(object sender, ElapsedEventArgs e)
@@ -38,13 +41,15 @@ namespace Dashboardify.Service
 
             _logger.Info("Item content worker started.");
 
-            var items = _itemContentWorker.Do();
+            _itemContentWorker.Do();
 
             _logger.Info("Items Updated, starting to send emails");
 
             _logger.Info("Email notification worker started.");
 
-            _emailNotificationWorker.Do(items);
+            _emailNotificationWorker.Do();
+
+            _logger.Info("Sent emails");
 
             _logger.Info("Check ended.");
         }

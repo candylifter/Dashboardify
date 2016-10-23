@@ -30,9 +30,9 @@ namespace Dashboardify.Service.Workers
             _screenshotRepository = new ScreenshotRepository(_connectionString);
         }
 
-        public IList<UsernameEmailItem> Do()
+        public void Do()
         {
-            var result = new List<UsernameEmailItem>();
+            //var result = new List<UsernameEmailItem>();
             //GET ALL ITEMS
             var items = _itemsRepository.GetList();
             _logger.Info("\n --> ITEMS FROM DATABASE");
@@ -71,11 +71,11 @@ namespace Dashboardify.Service.Workers
             UpdateNonOutdatedItems(scheduledItems, outdatedItems);
             
             //FILTERING ITEMS TO SEND EMAIL
-            result = _itemFilters.GetEmailContacts(outdatedItems);
+            //result = _itemFilters.GetEmailContacts(outdatedItems);
 
-            _logger.Info($"Changed items to send email: {result.Count}");
+            //_logger.Info($"Changed items to send email: {result.Count}");
 
-            return result;
+            //return result;
         }
         
         public void UpdateOutdatedItems(IList<Item> items)

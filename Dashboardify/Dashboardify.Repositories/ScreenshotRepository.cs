@@ -34,7 +34,6 @@ namespace Dashboardify.Repositories
                     }
         }
 
-
         public IList<Screenshot> GetLastsByItemId(int itemId, int count) ////count statinis tai px
         {
             string query = @"SELECT TOP " + count + @" Id,ItemId,ScrnshtUrl,DateTaken 

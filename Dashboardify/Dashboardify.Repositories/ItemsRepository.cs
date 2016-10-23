@@ -197,6 +197,7 @@ namespace Dashboardify.Repositories
                                         JOIN Items
                                         ON Items.DashBoardId = DashBoards.Id
                                 WHERE Items.Id = {itemId}";
+
                 return db.Query<User>(query).SingleOrDefault();
             }
         }

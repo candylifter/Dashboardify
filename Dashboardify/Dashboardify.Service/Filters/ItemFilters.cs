@@ -31,6 +31,15 @@ namespace Dashboardify.Service
             return scheduledItems;
         }
 
+        public IList<Item> GetNotifyItems(IList<Item> items)
+        {
+            var notifyItems = items.Where(item => 
+                item.NotifyByEmail && !item.UserNotified
+            ).ToList();
+
+            return notifyItems;
+        }
+
         public IList<Item> GetOutdatedList(IList<Item> items)
         {
             var outdatedItems = new List<Item>();
@@ -77,39 +86,33 @@ namespace Dashboardify.Service
             return outdatedItems;
         }
 
-        public List<UsernameEmailItem> GetEmailContacts(IList<Item> items)
-        {
-            _itemsRepository = new ItemsRepository(ConfigurationManager.ConnectionStrings["GCP"].ConnectionString);
+        //public List<UsernameEmailItem> GetEmailContacts(IList<Item> items)
+        //{
+        //    _itemsRepository = new ItemsRepository(ConfigurationManager.ConnectionStrings["GCP"].ConnectionString);
 
-            List<UsernameEmailItem> contactsToSendEmail = new List<UsernameEmailItem>();
+        //    List<UsernameEmailItem> contactsToSendEmail = new List<UsernameEmailItem>();
 
-            foreach (var item in items)
-            {
-                if (item.NotifyByEmail) 
-                {
-                    var user = _itemsRepository.GetUserByItemId(item.Id);
+        //    foreach (var item in items)
+        //    {
+        //        if (item.NotifyByEmail) 
+        //        {
+        //            var user = _itemsRepository.GetUserByItemId(item.Id);
 
-                    var contactInfo = new UsernameEmailItem
-                    {
-                        Email = user.Email,
-                        ItemName = item.Name,
-                        Username = user.Name
-                    };
-
-
-                    contactsToSendEmail.Add(contactInfo);
-
-                    item.UserNotified = true;
-
-                    _itemsRepository.Update(item);
-                }
-                //prisideti db kur user notified
-                //po atsirinkimo suupdatinti kad notifiinta
-            }
+        //            var contactInfo = new UsernameEmailItem
+        //            {
+        //                Email = user.Email,
+        //                ItemName = item.Name,
+        //                Username = user.Name
+        //            };
 
 
-            return contactsToSendEmail;
-        }
+        //            contactsToSendEmail.Add(contactInfo);
+        //        }
+        //    }
+
+
+        //    return contactsToSendEmail;
+        //}
         
         
     }
