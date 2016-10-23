@@ -66,11 +66,11 @@ function getCookie() {
 
 function getDashes(ticket) {
     $.ajax({
-        type: "POST",
-        url: "http://23.251.133.254/api/Dashboards/GetList",
-        data: {
-            "Ticket": ticket
-        },
+        type: "GET",
+        url: "http://23.251.133.254/api/Dashboards/GetList?ticket="+ticket,
+        // data: {
+        //     "Ticket": ticket
+        // },
         success: handleSuccess,
         error: function(data) {
             document.getElementById("errors").innerHTML = "We couldn't get your dashboards list."
@@ -131,20 +131,17 @@ form.onsubmit = function(event) {
     buttonDissable.disabled = true;
 
     var data = {
-        Item: {
-            DashBoardId: dashboardId,
-            CheckInterval: intervalValue,
-            XPath: xpath,
-            CSS: css,
-            Website: website,
-            Name: name
-        },
-        Ticket: ticketas
+        DashBoardId: dashboardId,
+        CheckInterval: intervalValue,
+        XPath: xpath,
+        CSS: css,
+        Website: website,
+        Name: name
     }
     console.log(data);
     $.ajax({
         type: "POST",
-        url: "http://23.251.133.254/api/Items/createItem",
+        url: "http://23.251.133.254/api/Items/createItem?ticket="+ticketas,
         data: data,
         success: function(data) {
             console.log(data);
