@@ -25,6 +25,10 @@
   background-color: #F5F5F5 !important;
 }
 
+.item--inactive {
+  opacity: .5;
+}
+
 .item__header {
   border-bottom: 1px solid #ccc;
   display: block;

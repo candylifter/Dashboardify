@@ -28,9 +28,10 @@ class ItemListItem extends React.Component {
   }
 
   render () {
-    let { img, name, url, isSelected, lastModified, lastChecked } = this.props
+    let { img, name, url, isSelected, lastModified, lastChecked, isActive } = this.props
 
     let itemClassName = isSelected ? 'item item--selected' : 'item'
+    itemClassName = isActive ? itemClassName : itemClassName + ' item--inactive'
 
     return (
       <Paper className={itemClassName} onClick={this.handleSelect} zDepth={1}>
