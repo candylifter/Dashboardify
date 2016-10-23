@@ -59,7 +59,7 @@ namespace Dashboardify.Service.Workers
             {
                 var userId = _itemsRepository.GetUserByItemId(item.Id).Id;
                 var user = _usersRepository.Get(userId);
-                var screenshot = _screenshotRepository.GetLastsByItemId(item.Id, 1);
+                var screenshot = _screenshotRepository.GetLastsByItemId(item.Id, 2);
 
                 if (screenshot.Count >= 2)
                 {

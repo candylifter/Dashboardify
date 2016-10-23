@@ -29,6 +29,7 @@ class ItemPanel extends React.Component {
     this.handleDelete = this.handleDelete.bind(this)
     this.handleClose = this.handleClose.bind(this)
     this.handleToggle = this.handleToggle.bind(this)
+    this.handleToggleNotify = this.handleToggleNotify.bind(this)
     this.handleIntervalChange = this.handleIntervalChange.bind(this)
   }
 
@@ -59,6 +60,15 @@ class ItemPanel extends React.Component {
 
     let item = ItemsAPI.getSelectedItemDashboardId(items, dashboardId)
     item.isActive = !item.isActive
+
+    dispatch(ItemsActions.updateItem(item))
+  }
+
+  handleToggleNotify () {
+    const { items, dashboardId, dispatch } = this.props
+
+    let item = ItemsAPI.getSelectedItemDashboardId(items, dashboardId)
+    item.notifyByEmail = !item.notifyByEmail
 
     dispatch(ItemsActions.updateItem(item))
   }
@@ -101,6 +111,11 @@ class ItemPanel extends React.Component {
                 label='Active'
                 toggled={item.isActive}
                 onToggle={this.handleToggle}
+                />
+              <Toggle
+                label='Notify by email'
+                toggled={item.notifyByEmail}
+                onToggle={this.handleToggleNotify}
                 />
               <CheckIntervalList itemId={item.id} onChange={this.handleIntervalChange} />
               <p>Last checked: {moment(item.lastChecked).fromNow()}</p>
