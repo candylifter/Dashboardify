@@ -40,7 +40,7 @@ namespace Dashboardify.Handlers.Items
                 request.Item.NotifyByEmail = true;
                 request.Item.Created = now;
                 request.Item.Modified = now;
-                request.Item.LastChecked = now.AddMinutes(-60);
+                request.Item.LastChecked = now.AddDays(-30);
                 request.Item.Content = "";
 
                 _itemRepository.Create(request.Item);
